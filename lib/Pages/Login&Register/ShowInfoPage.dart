@@ -1,10 +1,6 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tester_app/Pages/Utils.dart';
+import 'package:tester_app/Utils/Utils.dart';
 
 class ShowInfoPage extends StatefulWidget {
   @override
@@ -28,8 +24,14 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
   }
 
   void initUserInfo() async {
-    _username = await StorageUtil.getStringItem("username");
-    _sex = await StorageUtil.getStringItem("sex");
+    String username = await StorageUtil.getStringItem("username");
+    int sexCode = await StorageUtil.getIntItem("sex");
+    setState(() {
+      _username = username;
+      if (sexCode == 0)
+        _sex = "先生";
+      else if (sexCode == 1) _sex = "女士";
+    });
   }
 
   TextStyle fontStyle =
@@ -48,7 +50,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                "$_username$_sex您好！",
+                "$_username $_sex 您好！",
                 style:
                     TextStyle(fontSize: setSp(60), fontWeight: FontWeight.bold),
               ),
@@ -102,7 +104,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
     );
   }
 
-  void _logout(BuildContext context) async {
+  void _logout(BuildContext context) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -113,10 +115,12 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                   onPressed: () => Navigator.pop(context),
                 ),
                 FlatButton(
-                  child: Text('确定'),
-                  onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                      context, "/login", (route) => false),
-                ),
+                    child: Text('确定'),
+                    onPressed: () {
+                      StorageUtil.clear();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/", (route) => false);
+                    }),
               ],
             ));
   }

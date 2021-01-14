@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tester_app/Pages/Utils.dart';
+import 'package:tester_app/Utils/Utils.dart';
 
 class MazePage extends StatefulWidget {
   @override

@@ -4,7 +4,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tester_app/Pages/Utils.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
+import 'package:tester_app/Utils/Utils.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -235,12 +236,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _onLogin() async {
-    try {
-      String token = await StorageUtil.getStringItem("token");
-      print(token);
-    } catch (e) {
-      print("没有token");
-    }
     Response response;
     Dio dio = Dio();
     try {
@@ -255,7 +250,6 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _isLogin = false;
           _loginText = "登  录  成  功";
-          // Navigator.of(context).pushNamed("/TMT");
         });
       }
     } catch (e) {
@@ -265,6 +259,23 @@ class _LoginPageState extends State<LoginPage> {
         _isLogin = false;
         _loginText = "登  录  失  败";
       });
+    }
+    try {
+      await getUserInfoByToken(response.data['access_token']);
+      String mobile = await StorageUtil.getStringItem("mobile");
+      print(mobile);
+      if (mobile != null) {
+        //  用户信息完整
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/showInfo", (route) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/completeInfo", (route) => false);
+      }
+    } catch (e) {
+      print(e);
+      StorageUtil.clear();
+      Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
     }
   }
 }

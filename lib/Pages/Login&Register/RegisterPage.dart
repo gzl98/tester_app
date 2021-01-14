@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../Utils.dart';
+import '../../Utils/Utils.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -22,7 +22,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String _username;
   String _password;
-  String _password2;
   String _registerText = "注  册";
 
   final _formKey = GlobalKey<FormState>();
@@ -144,7 +143,6 @@ class _RegisterPageState extends State<RegisterPage> {
     return TextFormField(
         key: _formPassword2Key,
         focusNode: _focusNodePassWord2,
-        onSaved: (value) => _password2 = value,
         style: fontStyle,
         obscureText: _isObscure2,
         validator: (value) {
@@ -294,8 +292,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _onRegister() async {
     Dio dio = Dio();
+    Response response;
     try {
-      Response response = await dio.post(baseUrl + "registerwithtoken",
+      response = await dio.post(baseUrl + "registerwithtoken",
           data: FormData.fromMap({
             'username': _username,
             'password': _password,
@@ -305,23 +304,23 @@ class _RegisterPageState extends State<RegisterPage> {
         setState(() {
           _isRegistering = false;
           _registerText = "注  册  成  功";
-          Navigator.of(context).pushNamed("/TMT");
         });
-      } else {
-        //TODO:显示错误信息
-        setState(() {
-          _isRegistering = false;
-          _registerText = "注  册  失  败";
-        });
+        Map userinfo = response.data["userinfo"];
+        await StorageUtil.setIntItem("id", userinfo["id"]);
+        await StorageUtil.setStringItem("username", userinfo["username"]);
+        await StorageUtil.setStringItem("token", response.data["token"]["access_token"]);
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/completeInfo", (router) => false);
       }
-      print(response);
     } catch (e) {
       print(e);
+      print(response);
       //TODO:显示错误信息
       setState(() {
         _isRegistering = false;
-        _registerText = "注  册  失  败";
+        _registerText = "注  册";
       });
+      showMessageDialog(context, "注册失败!$response");
     }
   }
 }

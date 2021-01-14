@@ -29,7 +29,7 @@ Future<bool> showQuitDialog(BuildContext context) {
   return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-            title: Text('题目还没有答完，确定退出程序吗?'),
+            title: Text('题目还没有答完，确定退出吗?'),
             actions: [
               FlatButton(
                 child: Text('暂不'),

@@ -8,12 +8,13 @@ import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/Maze/MazePage.dart';
 import 'package:tester_app/Pages/SymbolEncoding/SymbolEncodingPage.dart';
 import 'package:tester_app/Pages/TMT/TMTPage.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 
-import 'Pages/Utils.dart';
+import 'Utils/Utils.dart';
 
-// String bootPage = "/login";
+String bootPage = "/login";
 // String bootPage = "/completeInfo";
-String bootPage = "/showInfo";
+// String bootPage = "/showInfo";
 
 void main() {
   runApp(MyApp());
@@ -51,14 +52,38 @@ class _BootPageState extends State<BootPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Navigator.pushNamedAndRemoveUntil(context, bootPage, (route) => false);
+      checkLoginState();
     });
+  }
+
+  void checkLoginState() async {
+    String token = await StorageUtil.getStringItem("token");
+    if (token != null) {
+      try {
+        getUserInfoByToken(token);
+        String mobile = await StorageUtil.getStringItem("mobile");
+        if (mobile != null) {
+          //  用户信息完整
+          Navigator.pushNamedAndRemoveUntil(
+              context, "/showInfo", (route) => false);
+        } else {
+          Navigator.pushNamedAndRemoveUntil(
+              context, "/completeInfo", (route) => false);
+        }
+      } catch (e) {
+        print(e);
+        StorageUtil.clear();
+        Navigator.pushNamedAndRemoveUntil(context, bootPage, (route) => false);
+      }
+    } else {
+      StorageUtil.clear();
+      Navigator.pushNamedAndRemoveUntil(context, bootPage, (route) => false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     initialScreenUtil(context);
-    SharedPreferences.setMockInitialValues({});
     return Scaffold();
   }
 }

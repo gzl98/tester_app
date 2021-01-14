@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../Utils.dart';
+import '../../Utils/Utils.dart';
 
 class CompleteInfoPage extends StatefulWidget {
   @override
@@ -16,9 +16,7 @@ class CompleteInfoPage extends StatefulWidget {
 class _CompleteInfoPageState extends State<CompleteInfoPage> {
   int sexValue = 0;
 
-  bool _isObscure = true;
-  bool _isRegistering = false;
-  Color _eyeColor;
+  bool _isSubmitting = false;
   Color _sexManColor = Colors.lightBlueAccent;
   Color _sexWomanColor = Colors.transparent;
 
@@ -215,13 +213,13 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
             _focusNodeMobile.unfocus();
             _focusNodeIDCard.unfocus();
             _focusNodeAddress.unfocus();
-            if (_isRegistering) {
+            if (_isSubmitting) {
               return;
             }
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
               setState(() {
-                _isRegistering = true;
+                _isSubmitting = true;
                 _completeText = "正 在 提 交...";
               });
               _onSubmit();
@@ -314,36 +312,44 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
   }
 
   void _onSubmit() async {
-    return;
+    String _username = await StorageUtil.getStringItem("username");
+    String _token = await StorageUtil.getStringItem("token");
     Dio dio = Dio();
+    Response response;
     try {
-      Response response = await dio.post(baseUrl + "registerwithtoken",
+      response = await dio.put(baseUrl + "updateuser",
           data: FormData.fromMap({
-            'username': _mobile,
-            'password': _IDCard,
-            'Form_role': 1,
+            'username': _username,
+            'role': 1,
+            'sex': sexValue,
+            'mobilephone': _mobile,
+            'IDcard': _IDCard,
+            'adress': _address,
+          }),
+          options: Options(headers: {
+            "Authorization": "Bearer $_token",
           }));
       if (response.statusCode == HttpStatus.ok) {
         setState(() {
-          _isRegistering = false;
-          _completeText = "注  册  成  功";
-          Navigator.of(context).pushNamed("/TMT");
+          _isSubmitting = false;
+          _completeText = "提  交  成  功";
         });
-      } else {
-        //TODO:显示错误信息
-        setState(() {
-          _isRegistering = false;
-          _completeText = "注  册  失  败";
-        });
+        await StorageUtil.setIntItem("sex", sexValue);
+        await StorageUtil.setStringItem("mobilephone", _mobile);
+        await StorageUtil.setStringItem("IDcard", _IDCard);
+        await StorageUtil.setStringItem("adress", _address);
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/showInfo", (router) => false);
       }
-      print(response);
     } catch (e) {
       print(e);
+      print(response);
       //TODO:显示错误信息
       setState(() {
-        _isRegistering = false;
-        _completeText = "注  册  失  败";
+        _isSubmitting = false;
+        _completeText = "提  交";
       });
+      showMessageDialog(context, "提交失败!$response");
     }
   }
 }
