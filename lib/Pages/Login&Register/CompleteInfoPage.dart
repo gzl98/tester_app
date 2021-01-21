@@ -324,7 +324,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
             'sex': sexValue,
             'mobilephone': _mobile,
             'IDcard': _IDCard,
-            'adress': _address,
+            'address': _address,
           }),
           options: Options(headers: {
             "Authorization": "Bearer $_token",

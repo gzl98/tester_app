@@ -60,7 +60,7 @@ class _BootPageState extends State<BootPage> {
     String token = await StorageUtil.getStringItem("token");
     if (token != null) {
       try {
-        getUserInfoByToken(token);
+        await getUserInfoByToken(token);
         String mobile = await StorageUtil.getStringItem("mobile");
         if (mobile != null) {
           //  用户信息完整

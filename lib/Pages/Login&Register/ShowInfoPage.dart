@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 class ShowInfoPage extends StatefulWidget {
@@ -12,6 +14,7 @@ class ShowInfoPage extends StatefulWidget {
 class _ShowInfoPageState extends State<ShowInfoPage> {
   String _username;
   String _sex;
+  int _testCount;
 
   @override
   void initState() {
@@ -20,6 +23,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     initUserInfo();
+    getTestCount();
     super.initState();
   }
 
@@ -32,6 +36,23 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
         _sex = "先生";
       else if (sexCode == 1) _sex = "女士";
     });
+  }
+
+  void getTestCount() async {
+    String username = await StorageUtil.getStringItem("username");
+    String token = await StorageUtil.getStringItem("token");
+    Response response;
+    Dio dio = Dio();
+    try {
+      response = await dio.get(baseUrl + "queryQN_username",
+          queryParameters: {"username": username},
+          options: getAuthorizationOptions(token));
+      setState(() {
+        _testCount = response.data.length;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   TextStyle fontStyle =
@@ -50,7 +71,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                "$_username $_sex 您好！",
+                "$_username $_sex，您好！",
                 style:
                     TextStyle(fontSize: setSp(60), fontWeight: FontWeight.bold),
               ),
@@ -58,7 +79,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                 width: setWidth(100),
               ),
               Text(
-                "当前总测试数：6",
+                "当前总测试数：$_testCount",
                 style:
                     TextStyle(fontSize: setSp(60), fontWeight: FontWeight.bold),
               ),
@@ -80,7 +101,9 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                 ),
               ),
               onPressed: () {
-                Navigator.pushNamed(context, "/TMT");
+                _start(context); //开始答题
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/TMT", (router) => false);
               },
             ),
           ),
@@ -102,6 +125,24 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
         ],
       ),
     );
+  }
+
+  void _start(BuildContext context) async {
+    String token = await StorageUtil.getStringItem("token");
+    int userid = await StorageUtil.getIntItem("id");
+    Dio dio = Dio();
+    Response response;
+    try {
+      response = await dio.post(baseUrl + "addnewQN",
+          data: FormData.fromMap({
+            "userid": userid,
+          }),
+          options: getAuthorizationOptions(token));
+      // print(response.data);
+      await StorageUtil.setIntItem("QNid", response.data["id"]);
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _logout(BuildContext context) {
