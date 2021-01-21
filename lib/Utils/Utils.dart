@@ -37,7 +37,8 @@ Future<bool> showQuitDialog(BuildContext context) {
               ),
               FlatButton(
                 child: Text('确定'),
-                onPressed: () => Navigator.pop(context, true),
+                onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                    context, "/showInfo", (router) => false),
               ),
             ],
           ));

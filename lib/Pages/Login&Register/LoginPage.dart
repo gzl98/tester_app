@@ -263,7 +263,6 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await getUserInfoByToken(response.data['access_token']);
       String mobile = await StorageUtil.getStringItem("mobile");
-      print(mobile);
       if (mobile != null) {
         //  用户信息完整
         Navigator.pushNamedAndRemoveUntil(
