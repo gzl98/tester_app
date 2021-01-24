@@ -4,12 +4,14 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'WpPainter.dart';
 import 'ColorPicker.dart';
 import 'dart:ui' as ui;
 import '../Utils/EventBusType.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 //自定义画布画图组件
 class SelfForePainter extends CustomPainter {
   ui.Image _imageFrame;
@@ -70,31 +72,19 @@ class _MyPainterPageState extends State<MyPainterPage> {
   double _paintStokeWidth = 1.0;
   double _bottomBarLeft = 44.0;
   ui.Image _assetImageFrame;
+
   //截图获取的key
-  GlobalKey rootWidgetKey=GlobalKey();
+  GlobalKey rootWidgetKey = GlobalKey();
+
   //截图获取的图片
   List<Uint8List> images = List();
+
   @override
   void initState() {
-    //Map<PermissionGroup,PermissionStatus> permissions= await PermissionHandler().requestPermissions([PermissionGroup.camera]);
-    print('执行保存图片');
-    var permission=PermissionHandler().checkPermissionStatus(PermissionGroup.photos);
-
-    if(permission == PermissionStatus.denied){
-      //无权限 显示设置
-      //bool isOpened=await PermissionHandler().openAppSettings();
-      print('无权限');
-    }
-
-    //添加保存照片到相册的权限
-    PermissionHandler().requestPermissions(<PermissionGroup>[
-      PermissionGroup.storage,
-    ]);
     super.initState();
     _getAssetImage();
     //监听到下一题事件时触发->截图
-    eventBus.on<NextEvent>().listen((NextEvent data) =>capturePng(data.value));
-    print('监听到下一题！');
+    eventBus.on<NextEvent>().listen((NextEvent data) => capturePng(data.value));
   }
 
   //获取本地图片
@@ -108,25 +98,29 @@ class _MyPainterPageState extends State<MyPainterPage> {
       _assetImageFrame = imageFrame;
     });
   }
+
   //截图方法
   capturePng(index) async {
-    print('执行截图方法！');
     try {
+      print('监听到下一题信号！-执行截图方法');
       RenderRepaintBoundary boundary =
-      rootWidgetKey.currentContext.findRenderObject();
+          rootWidgetKey.currentContext.findRenderObject();
       var image = await boundary.toImage(pixelRatio: 3.0);
       ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
       Uint8List pngBytes = byteData.buffer.asUint8List();
+      print(pngBytes);
       images.add(pngBytes);
-      setState(() {});
+      setAnswer(3, 60, image: pngBytes.toList());
       //保存图片到相册的方法
-      saveToPictures(pngBytes);
+      // saveToPictures(pngBytes);
+      setState(() {});
       return pngBytes;
     } catch (e) {
       print(e);
     }
     return null;
   }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -150,12 +144,12 @@ class _MyPainterPageState extends State<MyPainterPage> {
               children: <Widget>[
                 GestureDetector(
                   child: RepaintBoundary(
-                  key:rootWidgetKey,
-                  child:CustomPaint(
-                    painter: SelfForePainter(_assetImageFrame),
-                    size: size,
-                    foregroundPainter: _MyPainter(_points),
-                  ),
+                    key: rootWidgetKey,
+                    child: CustomPaint(
+                      painter: SelfForePainter(_assetImageFrame),
+                      size: size,
+                      foregroundPainter: _MyPainter(_points),
+                    ),
                   ),
                   onPanUpdate: (detail) {
                     RenderBox referenceBox = context.findRenderObject();

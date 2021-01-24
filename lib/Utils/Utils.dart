@@ -164,12 +164,26 @@ Future<ui.Image> getAssetImage(String asset,{width,height}) async {
 }
 //保存图片到相册
 saveToPictures(pngBytes) async{
+  //Map<PermissionGroup,PermissionStatus> permissions= await PermissionHandler().requestPermissions([PermissionGroup.camera]);
+  print('执行保存图片');
+  var permission=PermissionHandler().checkPermissionStatus(PermissionGroup.photos);
+  print(permission.toString());
+  if(permission == PermissionStatus.denied){
+    //无权限 显示设置
+    //bool isOpened=await PermissionHandler().openAppSettings();
+    print('无权限');
+  }
 
+  //添加保存照片到相册的权限
+  PermissionHandler().requestPermissions(<PermissionGroup>[
+    PermissionGroup.storage,
+  ]);
   final result=await ImageGallerySaver.saveImage(pngBytes.buffer.asUint8List());
   print('保存图片');
   print(result);
   if(result){
     print('保存成功');
+    return result;
   }
   else{
     print('保存失败');
