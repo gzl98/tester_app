@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
 double maxHeight, maxWidth;
 
 String baseUrl = "http://39.96.37.82:8000/";
@@ -134,5 +139,53 @@ class StorageUtil {
   static clear() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
+  }
+}
+//获取网络图片 返回ui.Image
+Future<ui.Image> getNetImage(String url,{width,height}) async {
+  ByteData data = await NetworkAssetBundle(Uri.parse(url)).load(url);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),targetWidth: width,targetHeight: height);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return fi.image;
+}
+//获取本地图片  返回ui.Image 需要传入BuildContext context
+Future<ui.Image> getAssetImage2(String asset,BuildContext context,{width,height}) async {
+  ByteData data = await DefaultAssetBundle.of(context).load(asset);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),targetWidth: width,targetHeight: height);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return fi.image;
+}
+//获取本地图片 返回ui.Image 不需要传入BuildContext context
+Future<ui.Image> getAssetImage(String asset,{width,height}) async {
+  ByteData data = await rootBundle.load(asset);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),targetWidth: width,targetHeight: height);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return fi.image;
+}
+//保存图片到相册
+saveToPictures(pngBytes) async{
+  //Map<PermissionGroup,PermissionStatus> permissions= await PermissionHandler().requestPermissions([PermissionGroup.camera]);
+  print('执行保存图片');
+  var permission=PermissionHandler().checkPermissionStatus(PermissionGroup.photos);
+  print(permission.toString());
+  if(permission == PermissionStatus.denied){
+    //无权限 显示设置
+    //bool isOpened=await PermissionHandler().openAppSettings();
+    print('无权限');
+  }
+
+  //添加保存照片到相册的权限
+  PermissionHandler().requestPermissions(<PermissionGroup>[
+    PermissionGroup.storage,
+  ]);
+  final result=await ImageGallerySaver.saveImage(pngBytes.buffer.asUint8List());
+  print('保存图片');
+  print(result);
+  if(result){
+    print('保存成功');
+    return result;
+  }
+  else{
+    print('保存失败');
   }
 }

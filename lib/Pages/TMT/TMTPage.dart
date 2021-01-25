@@ -1,11 +1,8 @@
-import 'dart:io';
-import 'dart:ui' as ui;
 
-import 'package:dio/dio.dart';
+import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:tester_app/Utils/HttpUtils.dart';
+
 import 'package:tester_app/Utils/Utils.dart';
 
 class TMTPage extends StatefulWidget {
@@ -38,14 +35,14 @@ class _TMTPageState extends State<TMTPage> {
             ],
           ),
           onPressed: () {
-            print(File('images/logo.png').path);
-            setAnswer(
-              1,
-              50,
-              answerText: "asdasd",
-            );
-            // Navigator.pushNamedAndRemoveUntil(
-            //     context, "/SymbolEncoding", (route) => false);
+            // print(File('images/logo.png').path);
+            // setAnswer(
+            //   1,
+            //   50,
+            //   answerText: "asdasd",
+            // );
+            Navigator.pushNamedAndRemoveUntil(
+                context, "/SymbolEncoding", (route) => false);
           }),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tester_app/Pages/BVMT-R/BVMTPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
