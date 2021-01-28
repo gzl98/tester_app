@@ -36,7 +36,8 @@ Options getAuthorizationOptions(String token) {
 setAnswer(int type, int answerTimeDelta,
     {double score: -1,
     String answerText,
-    List<int> image,
+    String imagePath,
+    String imageName,
     File audio,
     File video}) async {
   String token = await StorageUtil.getStringItem("token");
@@ -55,9 +56,10 @@ setAnswer(int type, int answerTimeDelta,
     });
 
   FormData formData;
-  if (image != null) {
+  if (imagePath != null) {
+    var image=await MultipartFile.fromFile(imagePath,filename: imageName);
     formData = FormData.fromMap({
-      "answer_img": MultipartFile.fromBytes(image),
+      "answer_img": image,
     });
   }
   try {

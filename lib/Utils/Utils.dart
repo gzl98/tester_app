@@ -166,7 +166,7 @@ Future<ui.Image> getAssetImage(String asset,{width,height}) async {
 saveToPictures(pngBytes) async{
   //Map<PermissionGroup,PermissionStatus> permissions= await PermissionHandler().requestPermissions([PermissionGroup.camera]);
   print('执行保存图片');
-  var permission=PermissionHandler().checkPermissionStatus(PermissionGroup.photos);
+  var permission=PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
   print(permission.toString());
   if(permission == PermissionStatus.denied){
     //无权限 显示设置

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tester_app/Utils/Utils.dart';
+import 'dart:async';
 class MazePageTitle extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -9,9 +11,26 @@ class MazePageTitle extends StatefulWidget{
 }
 //标题栏组件
 class MazePageTitleState extends State<MazePageTitle>{
-  var testName="月宣布";
-  var testId="89008";
+  var _testName="月宣布";
+  int _testId=4;
   var mazeId="01";
+
+  @override
+  void initState()  {
+
+    // TODO: implement initState
+    super.initState();
+    getUserInfo();
+  }
+  void getUserInfo() async {
+    var username=await StorageUtil.getStringItem("username");
+    int id=await StorageUtil.getIntItem("id");
+    setState(() {
+      _testName = username;
+      _testId=id;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -21,15 +40,14 @@ class MazePageTitleState extends State<MazePageTitle>{
           Expanded(
             flex: 1,
             child:Align(
-              child: Text("患者姓名："+this.testName,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.0),),
+              child: Text("测试者姓名："+this._testName,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.0),),
               alignment:Alignment.bottomCenter,
             ),
-
           ),
           Expanded(
             flex: 1,
             child:Align(
-              child: Text("患者编号："+this.testId,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.0),),
+              child: Text("测试者编号："+this._testId.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.0),),
               alignment:Alignment.bottomCenter,
             ),
           ),
@@ -42,7 +60,7 @@ class MazePageTitleState extends State<MazePageTitle>{
           ),
           Expanded(
             flex: 2,
-            child: Text(""),
+            child: Text(''),
           ),
         ],
       ),
