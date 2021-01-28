@@ -226,64 +226,67 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          _focusNodeUsername.unfocus();
-          _focusNodePassWord.unfocus();
-          _focusNodePassWord2.unfocus();
-        },
-        child: Container(
-          color: Colors.white54,
-          width: maxWidth,
-          height: maxHeight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                width: setWidth(650),
-                height: setWidth(650),
-                decoration: BoxDecoration(
-                    image:
-                        DecorationImage(image: AssetImage('images/logo.jpg')),
-                    border: Border.all(color: Colors.black26),
-                    borderRadius: BorderRadius.all(Radius.circular(100)),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(0.0, 8.0), //阴影xy轴偏移量
-                          blurRadius: 15.0, //阴影模糊程度
-                          spreadRadius: 1.0 //阴影扩散程度
-                          )
-                    ]),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    // color: Colors.red,
-                    width: setWidth(800),
-                    child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            sizeBox,
-                            sizeBox,
-                            buildUsernameText(context),
-                            sizeBox,
-                            buildPasswordText(context),
-                            sizeBox,
-                            buildPasswordText2(context),
-                            sizeBox,
-                            sizeBox,
-                            buildRegisterButton(context),
-                            buildToLogin(context),
-                          ],
-                        )),
-                  ),
-                ],
-              ),
-            ],
+    return WillPopScope(
+      onWillPop: () => showQuitProgramDialog(context),
+      child: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            _focusNodeUsername.unfocus();
+            _focusNodePassWord.unfocus();
+            _focusNodePassWord2.unfocus();
+          },
+          child: Container(
+            color: Colors.white54,
+            width: maxWidth,
+            height: maxHeight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: setWidth(650),
+                  height: setWidth(650),
+                  decoration: BoxDecoration(
+                      image:
+                          DecorationImage(image: AssetImage('images/logo.jpg')),
+                      border: Border.all(color: Colors.black26),
+                      borderRadius: BorderRadius.all(Radius.circular(100)),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(0.0, 8.0), //阴影xy轴偏移量
+                            blurRadius: 15.0, //阴影模糊程度
+                            spreadRadius: 1.0 //阴影扩散程度
+                            )
+                      ]),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      // color: Colors.red,
+                      width: setWidth(800),
+                      child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              sizeBox,
+                              sizeBox,
+                              buildUsernameText(context),
+                              sizeBox,
+                              buildPasswordText(context),
+                              sizeBox,
+                              buildPasswordText2(context),
+                              sizeBox,
+                              sizeBox,
+                              buildRegisterButton(context),
+                              buildToLogin(context),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -308,7 +311,8 @@ class _RegisterPageState extends State<RegisterPage> {
         Map userinfo = response.data["userinfo"];
         await StorageUtil.setIntItem("id", userinfo["id"]);
         await StorageUtil.setStringItem("username", userinfo["username"]);
-        await StorageUtil.setStringItem("token", response.data["token"]["access_token"]);
+        await StorageUtil.setStringItem(
+            "token", response.data["token"]["access_token"]);
         Navigator.pushNamedAndRemoveUntil(
             context, "/completeInfo", (router) => false);
       }

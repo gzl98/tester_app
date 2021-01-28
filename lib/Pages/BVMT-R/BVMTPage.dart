@@ -31,7 +31,10 @@ class _BVMTPageState extends State<BVMTPage> {
               )
             ],
           ),
-          onPressed: () {}),
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, "/completePage", (route) => false);
+          }),
     );
   }
 

@@ -60,83 +60,82 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: setHeight(300),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                "$_username $_sex，您好！",
-                style:
-                    TextStyle(fontSize: setSp(60), fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                width: setWidth(100),
-              ),
-              Text(
-                "当前总测试数：$_testCount",
-                style:
-                    TextStyle(fontSize: setSp(60), fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Container(
-            width: setWidth(2000),
-            height: setHeight(400),
-            margin: EdgeInsets.only(top: setHeight(30)),
-            child: FlatButton(
-              // color: Colors.red,
-              child: Text(
-                "开 始 测 试",
-                style: TextStyle(
-                  fontSize: setSp(180),
-                  color: Colors.green[700],
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-              onPressed: () {
-                _start(context); //开始答题
-                Navigator.pushNamedAndRemoveUntil(
-                    context, "/TMT", (router) => false);
-              },
+    return WillPopScope(
+      onWillPop: () => showQuitProgramDialog(context),
+      child: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: setHeight(300),
             ),
-          ),
-          SizedBox(
-            height: setHeight(380),
-          ),
-          FlatButton(
-              onPressed: () {
-                _logout(context);
-              },
-              child: Text(
-                "退出登录",
-                style: TextStyle(
-                  color: Color.fromARGB(150, 0, 0, 0),
-                  fontSize: setSp(60),
-                  decoration: TextDecoration.underline,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "$_username $_sex，您好！",
+                  style: TextStyle(
+                      fontSize: setSp(60), fontWeight: FontWeight.bold),
                 ),
-              )),
-        ],
+                SizedBox(
+                  width: setWidth(100),
+                ),
+                Text(
+                  "当前总测试数：$_testCount",
+                  style: TextStyle(
+                      fontSize: setSp(60), fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            Container(
+              width: setWidth(2000),
+              height: setHeight(400),
+              margin: EdgeInsets.only(top: setHeight(30)),
+              child: FlatButton(
+                // color: Colors.red,
+                child: Text(
+                  "开 始 测 试",
+                  style: TextStyle(
+                    fontSize: setSp(180),
+                    color: Colors.green[700],
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                onPressed: () {
+                  _start(context); //开始答题
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "/TMT", (router) => false);
+                },
+              ),
+            ),
+            SizedBox(
+              height: setHeight(380),
+            ),
+            FlatButton(
+                onPressed: () {
+                  _logout(context);
+                },
+                child: Text(
+                  "退出登录",
+                  style: TextStyle(
+                    color: Color.fromARGB(150, 0, 0, 0),
+                    fontSize: setSp(60),
+                    decoration: TextDecoration.underline,
+                  ),
+                )),
+          ],
+        ),
       ),
     );
   }
 
   void _start(BuildContext context) async {
     String token = await StorageUtil.getStringItem("token");
-    int userid = await StorageUtil.getIntItem("id");
     Dio dio = Dio();
     Response response;
     try {
       response = await dio.post(baseUrl + "addnewQN",
-          data: FormData.fromMap({
-            "userid": userid,
-          }),
           options: getAuthorizationOptions(token));
       // print(response.data);
       await StorageUtil.setIntItem("QNid", response.data["id"]);
