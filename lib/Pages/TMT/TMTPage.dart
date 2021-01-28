@@ -61,7 +61,7 @@ class _TMTPageState extends State<TMTPage> {
           children: [
             Text(
               "TMTPage",
-              style: TextStyle(fontSize: 80),
+              style: TextStyle(fontSize: setSp(150)),
             ),
             buildButtonNextQuestion(),
           ],

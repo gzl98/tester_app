@@ -52,7 +52,7 @@ class _BVMTPageState extends State<BVMTPage> {
             children: [
               Text(
                 "BVMTPage",
-                style: TextStyle(fontSize: 80),
+                style: TextStyle(fontSize: setSp(150)),
               ),
               buildButtonNextQuestion(),
             ],

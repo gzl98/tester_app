@@ -52,7 +52,7 @@ class _SymbolEncodingState extends State<SymbolEncodingPage> {
             children: [
               Text(
                 "SymbolEncodingPage",
-                style: TextStyle(fontSize: 80),
+                style: TextStyle(fontSize: setSp(150)),
               ),
               buildButtonNextQuestion(),
             ],

@@ -58,6 +58,7 @@ class _BootPageState extends State<BootPage> {
   }
 
   void checkLoginState() async {
+    await initialScreenUtil(context);
     String token = await StorageUtil.getStringItem("token");
     if (token != null) {
       try {
@@ -84,7 +85,6 @@ class _BootPageState extends State<BootPage> {
 
   @override
   Widget build(BuildContext context) {
-    initialScreenUtil(context);
     return Scaffold();
   }
 }

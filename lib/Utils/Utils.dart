@@ -11,38 +11,49 @@ import 'package:permission_handler/permission_handler.dart';
 
 double maxHeight, maxWidth;
 
+bool flag = false; //false代表平板(Width>Height),true代表手机(Height>Width)
+
 String baseUrl = "http://39.96.37.82:8000/";
 
 initialScreenUtil(BuildContext context) {
-  ScreenUtil.instance = ScreenUtil(width: 2560, height: 1440)
-    ..init(context);
-  maxWidth = MediaQuery
-      .of(context)
-      .size
-      .width;
-  maxHeight = MediaQuery
-      .of(context)
-      .size
-      .height;
+  ScreenUtil.instance = ScreenUtil(width: 2560, height: 1440)..init(context);
+  maxWidth = MediaQuery.of(context).size.width;
+  maxHeight = MediaQuery.of(context).size.height;
+  print(maxWidth);
+  print(maxHeight);
+  if (maxWidth < maxHeight) {
+    //表示为手机设备
+    flag = true;
+    maxWidth = maxHeight;
+    maxHeight = MediaQuery.of(context).size.width;
+  }
 }
 
 setWidth(double width) {
+  if (flag) {
+    return ScreenUtil.getInstance().setHeight(width);
+  }
   return ScreenUtil.getInstance().setWidth(width);
 }
 
 setHeight(double height) {
+  if (flag) {
+    return ScreenUtil.getInstance().setWidth(height);
+  }
   return ScreenUtil.getInstance().setHeight(height);
 }
 
 setSp(double sp) {
-  return ScreenUtil.getInstance().setSp(sp);
+  if (flag) {
+    return ScreenUtil.getInstance().setWidth(sp);
+  }
+  return ScreenUtil.getInstance().setHeight(sp);
 }
 
 Future<bool> showQuitDialog(BuildContext context) {
   return showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(
+      builder: (context) => AlertDialog(
             title: Text('题目还没有答完，确定退出吗?'),
             actions: [
               FlatButton(
@@ -51,9 +62,8 @@ Future<bool> showQuitDialog(BuildContext context) {
               ),
               FlatButton(
                 child: Text('确定'),
-                onPressed: () =>
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, "/showInfo", (router) => false),
+                onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                    context, "/showInfo", (router) => false),
               ),
             ],
           ));
@@ -62,8 +72,7 @@ Future<bool> showQuitDialog(BuildContext context) {
 Future<bool> showQuitProgramDialog(BuildContext context) {
   return showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(
+      builder: (context) => AlertDialog(
             title: Text('确定退出程序吗?'),
             actions: [
               FlatButton(
@@ -72,9 +81,8 @@ Future<bool> showQuitProgramDialog(BuildContext context) {
               ),
               FlatButton(
                 child: Text('确定'),
-                onPressed: () async =>
-                await SystemChannels.platform.invokeMethod(
-                    'SystemNavigator.pop'),
+                onPressed: () async => await SystemChannels.platform
+                    .invokeMethod('SystemNavigator.pop'),
               ),
             ],
           ));
@@ -83,8 +91,7 @@ Future<bool> showQuitProgramDialog(BuildContext context) {
 Future<bool> showMessageDialog(BuildContext context, String message) {
   return showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(
+      builder: (context) => AlertDialog(
             title: Text(message),
             actions: [
               FlatButton(
@@ -207,7 +214,7 @@ saveToPictures(pngBytes) async {
   //Map<PermissionGroup,PermissionStatus> permissions= await PermissionHandler().requestPermissions([PermissionGroup.camera]);
   print('执行保存图片');
   var permission =
-  PermissionHandler().checkPermissionStatus(PermissionGroup.photos);
+      PermissionHandler().checkPermissionStatus(PermissionGroup.photos);
   print(permission.toString());
   if (permission == PermissionStatus.denied) {
     //无权限 显示设置
@@ -220,7 +227,7 @@ saveToPictures(pngBytes) async {
     PermissionGroup.storage,
   ]);
   final result =
-  await ImageGallerySaver.saveImage(pngBytes.buffer.asUint8List());
+      await ImageGallerySaver.saveImage(pngBytes.buffer.asUint8List());
   print('保存图片');
   print(result);
   if (result) {
