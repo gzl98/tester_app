@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import '../../Utils/EventBusType.dart';
+
 //页面底端组件
 // ignore: must_be_immutable
-class MazePageBottom extends StatelessWidget{
-  var _textStyle=TextStyle(
-      fontSize: 25.0,
-      fontWeight: FontWeight.w600
-  );
-  Widget buildButtonNextQuestion(context,value) {
+class MazePageBottom extends StatelessWidget {
+  var _textStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600);
+
+  Widget buildButtonNextQuestion(context, value) {
     return SizedBox(
       width: setWidth(260),
       height: setHeight(120),
@@ -30,21 +29,22 @@ class MazePageBottom extends StatelessWidget{
             ],
           ),
           onPressed: () {
-            if(value=='上一题'){
+            if (value == '上一题') {
               Navigator.pushNamedAndRemoveUntil(
                   context, "/SymbolEncoding", (route) => false);
-            }
-            else if(value=='下一题'){
+            } else if (value == '下一题') {
               // Navigator.pushNamedAndRemoveUntil(
               //     context, "/BVMT", (route) => false);
               //触发下一题事件
-              eventBus.fire(NextEvent(1));
+              // eventBus.fire(NextEvent(1));
+              Navigator.pushNamedAndRemoveUntil(
+                  context, "/BVMT", (route) => false);
               print('触发下一题！');
             }
-
           }),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -55,7 +55,7 @@ class MazePageBottom extends StatelessWidget{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              buildButtonNextQuestion(context,"上一题"),
+              buildButtonNextQuestion(context, "上一题"),
             ],
           ),
         ),
@@ -68,32 +68,34 @@ class MazePageBottom extends StatelessWidget{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              buildButtonNextQuestion(context,"下一题"),
+              buildButtonNextQuestion(context, "下一题"),
               // Icon(Icons.keyboard_arrow_right,size: setSp(60),),
               // Text("下一题",style: _textStyle,)
             ],
           ),
         )
-
       ],
     );
   }
 }
+
 //评分单选按钮
-class CheckScore extends StatefulWidget{
+class CheckScore extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     return _ScoreRadiaState();
   }
 }
+
 //单选按钮状态
-class _ScoreRadiaState extends State<CheckScore>{
-  int _score=1;
-  var _textStyle=TextStyle(
+class _ScoreRadiaState extends State<CheckScore> {
+  int _score = 1;
+  var _textStyle = TextStyle(
     fontSize: 25.0,
     fontWeight: FontWeight.w400,
   );
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -102,7 +104,10 @@ class _ScoreRadiaState extends State<CheckScore>{
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("请选择该测试者分数：",style: _textStyle,),
+          Text(
+            "请选择该测试者分数：",
+            style: _textStyle,
+          ),
           Radio(
             value: 1,
             groupValue: this._score,
@@ -112,7 +117,10 @@ class _ScoreRadiaState extends State<CheckScore>{
               });
             },
           ),
-          Text("0分",style: _textStyle,),
+          Text(
+            "0分",
+            style: _textStyle,
+          ),
           SizedBox(width: 20),
           Radio(
             value: 2,
@@ -123,7 +131,10 @@ class _ScoreRadiaState extends State<CheckScore>{
               });
             },
           ),
-          Text("1分",style: _textStyle,),
+          Text(
+            "1分",
+            style: _textStyle,
+          ),
           SizedBox(width: 20),
           Radio(
             value: 3,
@@ -134,38 +145,30 @@ class _ScoreRadiaState extends State<CheckScore>{
               });
             },
           ),
-          Text("2分",style: _textStyle,),
+          Text(
+            "2分",
+            style: _textStyle,
+          ),
         ],
       ),
     );
   }
 }
 
-
-
 //页面底端工具栏
-class ToolsBars extends StatelessWidget{
+class ToolsBars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
       child: ButtonBar(
         children: [
-          IconButton(
-              icon: Icon(Icons.create),
-              onPressed: null
-          ),
-          IconButton(
-              icon: Icon(Icons.undo),
-              onPressed: null
-          ),
-          IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: null
-          ),
+          IconButton(icon: Icon(Icons.create), onPressed: null),
+          IconButton(icon: Icon(Icons.undo), onPressed: null),
+          IconButton(icon: Icon(Icons.clear), onPressed: null),
         ],
         mainAxisSize: MainAxisSize.max,
-        alignment:MainAxisAlignment.center,
+        alignment: MainAxisAlignment.center,
       ),
     );
   }

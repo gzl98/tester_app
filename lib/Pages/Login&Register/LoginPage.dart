@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -173,62 +172,65 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          _focusNodeUsername.unfocus();
-          _focusNodePassWord.unfocus();
-        },
-        child: Container(
-          color: Colors.white54,
-          width: maxWidth,
-          height: maxHeight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                width: setWidth(650),
-                height: setWidth(650),
-                decoration: BoxDecoration(
-                    image:
-                        DecorationImage(image: AssetImage('images/logo.jpg')),
-                    border: Border.all(color: Colors.black26),
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(setWidth(150))),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(setWidth(5), setWidth(5)), //阴影xy轴偏移量
-                          blurRadius: setWidth(22), //阴影模糊程度
-                          spreadRadius: setWidth(1.5) //阴影扩散程度
-                          )
-                    ]),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    // color: Colors.red,
-                    width: setWidth(800),
-                    child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            sizeBox,
-                            sizeBox,
-                            buildUsernameText(),
-                            sizeBox,
-                            buildPasswordText(),
-                            sizeBox,
-                            sizeBox,
-                            buildLoginButton(),
-                            buildToRegister(),
-                          ],
-                        )),
-                  ),
-                ],
-              ),
-            ],
+    return WillPopScope(
+      onWillPop: () => showQuitProgramDialog(context),
+      child: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            _focusNodeUsername.unfocus();
+            _focusNodePassWord.unfocus();
+          },
+          child: Container(
+            color: Colors.white54,
+            width: maxWidth,
+            height: maxHeight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: setWidth(650),
+                  height: setWidth(650),
+                  decoration: BoxDecoration(
+                      image:
+                          DecorationImage(image: AssetImage('images/logo.jpg')),
+                      border: Border.all(color: Colors.black26),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(setWidth(150))),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(setWidth(5), setWidth(5)), //阴影xy轴偏移量
+                            blurRadius: setWidth(22), //阴影模糊程度
+                            spreadRadius: setWidth(1.5) //阴影扩散程度
+                            )
+                      ]),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      // color: Colors.red,
+                      width: setWidth(800),
+                      child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              sizeBox,
+                              sizeBox,
+                              buildUsernameText(),
+                              sizeBox,
+                              buildPasswordText(),
+                              sizeBox,
+                              sizeBox,
+                              buildLoginButton(),
+                              buildToRegister(),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

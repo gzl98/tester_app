@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tester_app/Pages/BVMT-R/BVMTPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
+import 'package:tester_app/Pages/Login&Register/CompletePage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         "/register": (context) => RegisterPage(),
         "/completeInfo": (context) => CompleteInfoPage(),
         "/showInfo": (context) => ShowInfoPage(),
+        "/completePage": (context) => CompletePage(),
         "/TMT": (context) => TMTPage(),
         "/SymbolEncoding": (context) => SymbolEncodingPage(),
         "/Maze": (context) => MazePage(),

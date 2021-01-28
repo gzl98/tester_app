@@ -269,42 +269,45 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          _focusNodeMobile.unfocus();
-          _focusNodeIDCard.unfocus();
-          _focusNodeAddress.unfocus();
-        },
-        child: Container(
-          color: Colors.white54,
-          width: maxWidth,
-          height: maxHeight,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "请完善您的用户信息",
-                style: TextStyle(
-                  fontSize: setSp(70),
-                  fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () => showQuitProgramDialog(context),
+      child: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            _focusNodeMobile.unfocus();
+            _focusNodeIDCard.unfocus();
+            _focusNodeAddress.unfocus();
+          },
+          child: Container(
+            color: Colors.white54,
+            width: maxWidth,
+            height: maxHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "请完善您的用户信息",
+                  style: TextStyle(
+                    fontSize: setSp(70),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              sizeBox,
-              sizeBox,
-              Container(
-                // color: Colors.red,
-                width: maxWidth,
-                child: buildForm(context),
-              ),
-              sizeBox,
-              sizeBox,
-              sizeBox,
-              buildSubmitButton(context),
-              sizeBox,
-              sizeBox,
-              sizeBox,
-            ],
+                sizeBox,
+                sizeBox,
+                Container(
+                  // color: Colors.red,
+                  width: maxWidth,
+                  child: buildForm(context),
+                ),
+                sizeBox,
+                sizeBox,
+                sizeBox,
+                buildSubmitButton(context),
+                sizeBox,
+                sizeBox,
+                sizeBox,
+              ],
+            ),
           ),
         ),
       ),
