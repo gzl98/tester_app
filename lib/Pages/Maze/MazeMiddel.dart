@@ -11,7 +11,7 @@ class MazePageMiddel extends StatelessWidget{
         Expanded(
             flex: 4,
             child:Container(
-              child:MyPainterPage(),
+              child:MyPainterPage(imgPath: 'images/migong.jpeg',),
             ),
         ),
         VerticalDivider(width: 3.0,color: Colors.blueGrey,thickness: 4.0,),
