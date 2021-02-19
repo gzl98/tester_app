@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tester_app/Utils/Rules.dart';
 import '../../DrawWidget/DrawPainter.dart';
-
-//定义打分规则
-const String mazeRules="1.测试者未完成——0分\n2.测试者在1-3s内完成——2分\n3.测试者在4-30s内完成——1分";
 //中间题目展示组件
 class MazePageMiddel extends StatelessWidget{
   @override
@@ -11,10 +9,10 @@ class MazePageMiddel extends StatelessWidget{
     return Row(
       children: <Widget>[
         Expanded(
-          flex: 4,
-          child:Container(
-            child:MyPainterPage(),
-          ),
+            flex: 4,
+            child:Container(
+              child:MyPainterPage(),
+            ),
         ),
         VerticalDivider(width: 3.0,color: Colors.blueGrey,thickness: 4.0,),
         Expanded(
@@ -62,44 +60,12 @@ class _TesterInfoState extends State<RightInfoColum>{
       crossAxisAlignment:CrossAxisAlignment.start ,
       children: <Widget>[
         Container(
-          color: Colors.black12,
-          child:Center(
-            child: Text("测试者信息",style: _titleStyle),
-          ) ,
-        ),
-
+            color: Colors.black12,
+            child:Center(
+              child: Text("题目说明",style: _titleStyle),
+            ) ,
+          ),
         Divider(height: 3.0,color: Colors.blueGrey,thickness:1,),
-        Container(
-          padding: paddingEdage,
-          child:Row(
-              children:<Widget>[
-                Text("测试者姓名：",style: _subTitleStyle),
-                Text(this.testName,style: _normalStyle,)
-              ]
-          ),
-        ),
-        Container(
-          padding: paddingEdage,
-          child:Row(
-              children:<Widget>[
-                Text("测试者是否完成：",style: _subTitleStyle),
-                Text(this.isFinish,style: _normalStyle,)
-              ]
-          ),
-        ),
-        Container(
-          padding: paddingEdage,
-          child:Row(
-              children:<Widget>[
-                Text("测试者用时：",style: _subTitleStyle),
-                Text(this.testTime,style: _normalStyle)
-              ]
-          ),
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Text("评分规则",style: _subTitleStyle),
-        ),
         Container(
           padding: paddingEdage,
           child: Text(this.scoreRules,style: _normalStyle),

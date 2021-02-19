@@ -1,6 +1,6 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -10,7 +10,7 @@ import 'WpPainter.dart';
 import 'ColorPicker.dart';
 import 'dart:ui' as ui;
 import '../Utils/EventBusType.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
 
 //自定义画布画图组件
 class SelfForePainter extends CustomPainter {
@@ -25,13 +25,13 @@ class SelfForePainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..isAntiAlias = true
       ..strokeCap = StrokeCap.butt
-      ..strokeWidth = 30.0;
+      ..strokeWidth = 10.0;
     canvas.drawImage(_imageFrame, Offset(0, 0), selfPaint);
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(SelfForePainter oldDelegate) {
+    return oldDelegate._imageFrame!=this._imageFrame;
   }
 }
 
@@ -84,7 +84,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
     super.initState();
     _getAssetImage();
     //监听到下一题事件时触发->截图
-    eventBus.on<NextEvent>().listen((NextEvent data) => capturePng(data.value));
+    eventBus.on<NextEvent>().listen((NextEvent data) => capturePng(data.value,data.answerTime));
   }
 
   //获取本地图片
@@ -100,7 +100,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
   }
 
   //截图方法
-  capturePng(index) async {
+  capturePng(index,time) async {
     try {
       print('监听到下一题信号！-执行截图方法');
       RenderRepaintBoundary boundary =
@@ -108,11 +108,19 @@ class _MyPainterPageState extends State<MyPainterPage> {
       var image = await boundary.toImage(pixelRatio: 3.0);
       ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
       Uint8List pngBytes = byteData.buffer.asUint8List();
-      print(pngBytes);
+      /*保存图片*/
+      Directory appDocPath = await getApplicationDocumentsDirectory();
+      String appDocPathString=appDocPath.path;
+      final imageFile = File(appDocPathString+"/capture.png");
       images.add(pngBytes);
-      setAnswer(3, 60, image: pngBytes.toList());
+      print("appDocPath= " +
+          appDocPathString +
+          " imageFile= " +
+          imageFile.path.toString());
+      await imageFile.writeAsBytes(pngBytes);
+      setAnswer(3, time, imagePath: imageFile.path.toString(),imageName: 'capture.png');
       //保存图片到相册的方法
-      // saveToPictures(pngBytes);
+      //saveToPictures(pngBytes);
       setState(() {});
       return pngBytes;
     } catch (e) {
@@ -123,7 +131,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+
     return CupertinoPageScaffold(
       child: OrientationBuilder(
         builder: (context, orientation) {
@@ -138,7 +146,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
             color3 = _paintColor;
           }
 //          rotationPoints(orientation, size);
-          return Container(
+          return ConstrainedBox(
             constraints: BoxConstraints.expand(),
             child: Stack(
               children: <Widget>[
@@ -147,8 +155,9 @@ class _MyPainterPageState extends State<MyPainterPage> {
                     key: rootWidgetKey,
                     child: CustomPaint(
                       painter: SelfForePainter(_assetImageFrame),
-                      size: size,
+                      size: Size(setWidth(2000), setWidth(1000)),
                       foregroundPainter: _MyPainter(_points),
+                      //child:Image.network("https://th.bing.com/th/id/R7ef1a6ba075098acb8075590a18337f7?rik=9e4NScfJ%2fTiFiA&riu=http%3a%2f%2fpic41.nipic.com%2f20140529%2f2531170_210244691000_2.jpg&ehk=a5ab0TIr49%2bQklED87xF63bD0yG7z4jxMx4%2fYkXYvgs%3d&risl=&pid=ImgRaw") ,
                     ),
                   ),
                   onPanUpdate: (detail) {
