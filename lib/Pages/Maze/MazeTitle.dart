@@ -17,7 +17,6 @@ class MazePageTitleState extends State<MazePageTitle>{
 
   @override
   void initState()  {
-
     // TODO: implement initState
     super.initState();
     getUserInfo();

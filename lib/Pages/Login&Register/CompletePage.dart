@@ -25,7 +25,6 @@ class _CompletePageState extends State<CompletePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => showQuitProgramDialog(context),
       child: Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -13,7 +13,7 @@ class TMTPageMiddel extends StatelessWidget{
         Expanded(
           flex: 4,
           child:Container(
-            child:MyPainterPage(),
+            child:MyPainterPage(imgPath: 'images/tmt.png',),
           ),
         ),
         VerticalDivider(width: 3.0,color: Colors.blueGrey,thickness: 4.0,),

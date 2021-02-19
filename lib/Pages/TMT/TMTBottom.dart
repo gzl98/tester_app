@@ -1,13 +1,72 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:tester_app/Utils/Rules.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import '../../Utils/EventBusType.dart';
 
 //页面底端组件
 // ignore: must_be_immutable
-class TMTPageBottom extends StatelessWidget {
-  var _textStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600);
+class TMTPageBottom extends StatefulWidget{
+  @override
+  State<TMTPageBottom> createState() {
+    // TODO: implement createState
+    return TMTPageBottomState();
+  }
+}
+class TMTPageBottomState extends State<TMTPageBottom>{
+  Timer _timer;
+  int _currentTime=0;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      //startCountdownTimer();
+      showConfirmDialog(context,tmtRules,startCountdownTimer);
+    });
+  }
+  void showConfirmDialog(BuildContext context,String content, Function confirmCallback) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return new AlertDialog(
+            title: new Text("请阅读该题的规则"),
+            content: new Text(content),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () {
+                  confirmCallback();
+                  Navigator.of(context).pop();
+                },
+                child: new Text("确认答题"),
+              ),
+            ],
+          );
+        });
+  }
 
-  Widget buildButtonNextQuestion(context, value) {
+  void startCountdownTimer() {
+    const oneSec = const Duration(seconds: 1);
+    var callback = (timer) => {
+      setState(() {
+        if (_currentTime >= 0) {
+          _currentTime = _currentTime + 1;
+        }
+      })
+    };
+    _timer = Timer.periodic(oneSec, callback);
+  }
+  var _textStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600);
+  Widget buildTime(){
+    return Text(
+      '倒计时：'+_currentTime.toString()+'s',
+      style: TextStyle(
+          fontSize: setSp(50),
+          color: _currentTime>10 ? Color.fromARGB(255, 17, 132, 255) : Color.fromARGB(255, 255, 0, 0)
+      ),
+    );
+  }
+  Widget buildButtonNextQuestion(context,value) {
     return SizedBox(
       width: setWidth(260),
       height: setHeight(120),
@@ -29,18 +88,14 @@ class TMTPageBottom extends StatelessWidget {
             ],
           ),
           onPressed: () {
-            if (value == '上一题') {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, "/SymbolEncoding", (route) => false);
-            } else if (value == '下一题') {
+            if(value=='下一题'){
               // Navigator.pushNamedAndRemoveUntil(
               //     context, "/BVMT", (route) => false);
               //触发下一题事件
-              // eventBus.fire(NextEvent(1));
-              Navigator.pushNamedAndRemoveUntil(
-                  context, "/SymbolEncoding", (route) => false);
+              eventBus.fire(NextEvent(1,30-this._currentTime));
               print('触发下一题！');
             }
+
           }),
     );
   }
@@ -61,7 +116,12 @@ class TMTPageBottom extends StatelessWidget {
         ),
         Expanded(
           flex: 10,
-          child: CheckScore(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              buildTime(),
+            ],
+          ),
         ),
         Expanded(
           flex: 5,
