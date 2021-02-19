@@ -62,6 +62,11 @@ class _MyPainter extends CustomPainter {
 }
 
 class MyPainterPage extends StatefulWidget {
+  final String imgPath;
+  const MyPainterPage({
+    Key key,
+    this.imgPath
+  }):super(key: key);
   @override
   _MyPainterPageState createState() => _MyPainterPageState();
 }
@@ -72,7 +77,8 @@ class _MyPainterPageState extends State<MyPainterPage> {
   double _paintStokeWidth = 1.0;
   double _bottomBarLeft = 44.0;
   ui.Image _assetImageFrame;
-
+  //画图的Path
+  String _imgPath;
   //截图获取的key
   GlobalKey rootWidgetKey = GlobalKey();
 
@@ -82,6 +88,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
   @override
   void initState() {
     super.initState();
+    this._imgPath=widget.imgPath;
     _getAssetImage();
     //监听到下一题事件时触发->截图
     eventBus.on<NextEvent>().listen((NextEvent data) => capturePng(data.value,data.answerTime));
@@ -89,7 +96,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
 
   //获取本地图片
   _getAssetImage() async {
-    ui.Image imageFrame = await getAssetImage('images/migong.jpeg',
+    ui.Image imageFrame = await getAssetImage(this._imgPath,
         width: double.parse(setWidth(2000).toString()).toInt(),
         height: double.parse(setWidth(1000).toString()).toInt());
 
