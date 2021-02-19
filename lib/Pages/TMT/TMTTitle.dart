@@ -55,6 +55,7 @@ class TMTPageTitleState extends State<TMTPageTitle>{
               alignment:Alignment.center,
             ),
           ),
+
           Expanded(
             flex: 2,
             child: Text(""),
