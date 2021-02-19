@@ -16,7 +16,7 @@ class TMTPageBottom extends StatefulWidget{
 }
 class TMTPageBottomState extends State<TMTPageBottom>{
   Timer _timer;
-  int _currentTime=0;
+  int _currentTime=300;
   @override
   void initState() {
     super.initState();
@@ -49,8 +49,10 @@ class TMTPageBottomState extends State<TMTPageBottom>{
     const oneSec = const Duration(seconds: 1);
     var callback = (timer) => {
       setState(() {
-        if (_currentTime >= 0) {
-          _currentTime = _currentTime + 1;
+        if (_currentTime < 1) {
+          _timer.cancel();
+        } else {
+          _currentTime = _currentTime - 1;
         }
       })
     };
@@ -89,8 +91,8 @@ class TMTPageBottomState extends State<TMTPageBottom>{
           ),
           onPressed: () {
             if(value=='下一题'){
-              // Navigator.pushNamedAndRemoveUntil(
-              //     context, "/BVMT", (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, "/SymbolEncoding", (route) => false);
               //触发下一题事件
               eventBus.fire(NextEvent(1,30-this._currentTime));
               print('触发下一题！');
@@ -108,10 +110,7 @@ class TMTPageBottomState extends State<TMTPageBottom>{
         Expanded(
           flex: 5,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildButtonNextQuestion(context, "上一题"),
-            ],
+
           ),
         ),
         Expanded(
