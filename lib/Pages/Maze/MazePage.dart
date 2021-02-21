@@ -33,34 +33,6 @@ class _MazePageState extends State<MazePage> {
       ],
     );
   }
-  Widget buildButtonNextQuestion() {
-    return SizedBox(
-      width: setWidth(260),
-      height: setHeight(120),
-      child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(setWidth(30)))),
-          color: Colors.green,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Icon(Icons.keyboard_arrow_right,size: setSp(80),),
-              Text(
-                "下一题",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: setSp(58)),
-              )
-            ],
-          ),
-          onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(
-                context, "/BVMT", (route) => false);
-          }),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

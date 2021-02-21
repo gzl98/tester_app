@@ -173,7 +173,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => showQuitProgramDialog(context),
       child: Scaffold(
         body: GestureDetector(
           onTap: () {

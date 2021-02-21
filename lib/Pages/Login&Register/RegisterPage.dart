@@ -227,7 +227,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => showQuitProgramDialog(context),
       child: Scaffold(
         body: GestureDetector(
           onTap: () {

@@ -270,7 +270,6 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => showQuitProgramDialog(context),
       child: Scaffold(
         body: GestureDetector(
           onTap: () {
