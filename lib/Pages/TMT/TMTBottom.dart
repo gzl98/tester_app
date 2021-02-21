@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:tester_app/Utils/Rules.dart';
 import 'package:tester_app/Utils/Utils.dart';
@@ -6,22 +7,22 @@ import '../../Utils/EventBusType.dart';
 
 //页面底端组件
 // ignore: must_be_immutable
-class MazePageBottom extends StatefulWidget{
+class TMTPageBottom extends StatefulWidget{
   @override
-  State<MazePageBottom> createState() {
+  State<TMTPageBottom> createState() {
     // TODO: implement createState
-    return MazePageBottomState();
+    return TMTPageBottomState();
   }
 }
-class MazePageBottomState extends State<MazePageBottom>{
+class TMTPageBottomState extends State<TMTPageBottom>{
   Timer _timer;
-  int _currentTime=30;
+  int _currentTime=300;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       //startCountdownTimer();
-      showConfirmDialog(context,mazeRules,startCountdownTimer);
+      showConfirmDialog(context,tmtRules,startCountdownTimer);
     });
   }
   void showConfirmDialog(BuildContext context,String content, Function confirmCallback) {
@@ -57,10 +58,7 @@ class MazePageBottomState extends State<MazePageBottom>{
     };
     _timer = Timer.periodic(oneSec, callback);
   }
-  var _textStyle=TextStyle(
-      fontSize: 25.0,
-      fontWeight: FontWeight.w600
-  );
+  var _textStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600);
   Widget buildTime(){
     return Text(
       '倒计时：'+_currentTime.toString()+'s',
@@ -92,13 +90,9 @@ class MazePageBottomState extends State<MazePageBottom>{
             ],
           ),
           onPressed: () {
-            if(value=='上一题'){
+            if(value=='下一题'){
               Navigator.pushNamedAndRemoveUntil(
                   context, "/SymbolEncoding", (route) => false);
-            }
-            else if(value=='下一题'){
-              // Navigator.pushNamedAndRemoveUntil(
-              //     context, "/BVMT", (route) => false);
               //触发下一题事件
               eventBus.fire(NextEvent(1,30-this._currentTime));
               print('触发下一题！');
@@ -116,10 +110,7 @@ class MazePageBottomState extends State<MazePageBottom>{
         Expanded(
           flex: 5,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildButtonNextQuestion(context,"上一题"),
-            ],
+
           ),
         ),
         Expanded(
@@ -136,43 +127,107 @@ class MazePageBottomState extends State<MazePageBottom>{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              buildButtonNextQuestion(context,"下一题"),
+              buildButtonNextQuestion(context, "下一题"),
               // Icon(Icons.keyboard_arrow_right,size: setSp(60),),
               // Text("下一题",style: _textStyle,)
             ],
           ),
         )
-
       ],
     );
   }
 }
 
+//评分单选按钮
+class CheckScore extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _ScoreRadiaState();
+  }
+}
 
+//单选按钮状态
+class _ScoreRadiaState extends State<CheckScore> {
+  int _score = 1;
+  var _textStyle = TextStyle(
+    fontSize: 25.0,
+    fontWeight: FontWeight.w400,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "请选择该测试者分数：",
+            style: _textStyle,
+          ),
+          Radio(
+            value: 1,
+            groupValue: this._score,
+            onChanged: (value) {
+              setState(() {
+                this._score = value;
+              });
+            },
+          ),
+          Text(
+            "0分",
+            style: _textStyle,
+          ),
+          SizedBox(width: 20),
+          Radio(
+            value: 2,
+            groupValue: this._score,
+            onChanged: (value) {
+              setState(() {
+                this._score = value;
+              });
+            },
+          ),
+          Text(
+            "1分",
+            style: _textStyle,
+          ),
+          SizedBox(width: 20),
+          Radio(
+            value: 3,
+            groupValue: this._score,
+            onChanged: (value) {
+              setState(() {
+                this._score = value;
+              });
+            },
+          ),
+          Text(
+            "2分",
+            style: _textStyle,
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 //页面底端工具栏
-class ToolsBars extends StatelessWidget{
+class ToolsBars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
       child: ButtonBar(
         children: [
-          IconButton(
-              icon: Icon(Icons.create),
-              onPressed: null
-          ),
-          IconButton(
-              icon: Icon(Icons.undo),
-              onPressed: null
-          ),
-          IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: null
-          ),
+          IconButton(icon: Icon(Icons.create), onPressed: null),
+          IconButton(icon: Icon(Icons.undo), onPressed: null),
+          IconButton(icon: Icon(Icons.clear), onPressed: null),
         ],
         mainAxisSize: MainAxisSize.max,
-        alignment:MainAxisAlignment.center,
+        alignment: MainAxisAlignment.center,
       ),
     );
   }
