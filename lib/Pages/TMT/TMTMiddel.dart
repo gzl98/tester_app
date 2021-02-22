@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:tester_app/Utils/Rules.dart';
 import '../../DrawWidget/DrawPainter.dart';
+
+//定义打分规则
+const String Rules="1.测试者未完成——0分\n2.测试者在规定时间内完成且完全正确——10分\n3.根据完成情况由医生自主给分";
 //中间题目展示组件
-class MazePageMiddel extends StatelessWidget{
+class TMTPageMiddel extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Row(
       children: <Widget>[
         Expanded(
-            flex: 4,
-            child:Container(
-              child:MyPainterPage(imgPath: 'images/migong.jpeg',),
-            ),
+          flex: 4,
+          child:Container(
+            child:MyPainterPage(imgPath: 'images/tmt.png',),
+          ),
         ),
         VerticalDivider(width: 3.0,color: Colors.blueGrey,thickness: 4.0,),
         Expanded(
@@ -29,7 +31,7 @@ class MazePageMiddel extends StatelessWidget{
 //右边信息栏
 class RightInfoColum extends StatefulWidget{
   @override
-  State<StatefulWidget> createState()=>_TesterInfoState("XXX","200s",mazeRules,"未完成");
+  State<StatefulWidget> createState()=>_TesterInfoState("XXX","300s",Rules,"未完成");
 
 }
 class _TesterInfoState extends State<RightInfoColum>{
@@ -60,12 +62,44 @@ class _TesterInfoState extends State<RightInfoColum>{
       crossAxisAlignment:CrossAxisAlignment.start ,
       children: <Widget>[
         Container(
-            color: Colors.black12,
-            child:Center(
-              child: Text("题目说明",style: _titleStyle),
-            ) ,
-          ),
+          color: Colors.black12,
+          child:Center(
+            child: Text("测试者信息",style: _titleStyle),
+          ) ,
+        ),
+
         Divider(height: 3.0,color: Colors.blueGrey,thickness:1,),
+        Container(
+          padding: paddingEdage,
+          child:Row(
+              children:<Widget>[
+                Text("测试者姓名：",style: _subTitleStyle),
+                Text(this.testName,style: _normalStyle,)
+              ]
+          ),
+        ),
+        Container(
+          padding: paddingEdage,
+          child:Row(
+              children:<Widget>[
+                Text("测试者是否完成：",style: _subTitleStyle),
+                Text(this.isFinish,style: _normalStyle,)
+              ]
+          ),
+        ),
+        Container(
+          padding: paddingEdage,
+          child:Row(
+              children:<Widget>[
+                Text("测试者用时：",style: _subTitleStyle),
+                Text(this.testTime,style: _normalStyle)
+              ]
+          ),
+        ),
+        Container(
+          padding: paddingEdage,
+          child: Text("评分规则",style: _subTitleStyle),
+        ),
         Container(
           padding: paddingEdage,
           child: Text(this.scoreRules,style: _normalStyle),

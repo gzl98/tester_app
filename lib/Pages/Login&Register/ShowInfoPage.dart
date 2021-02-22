@@ -61,7 +61,6 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => showQuitProgramDialog(context),
       child: Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,

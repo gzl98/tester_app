@@ -4,5 +4,6 @@ EventBus eventBus=new EventBus();
 
 class NextEvent{
   int value;
-  NextEvent(this.value);
+  int answerTime;
+  NextEvent(this.value,this.answerTime);
 }
