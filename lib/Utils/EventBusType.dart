@@ -7,3 +7,8 @@ class NextEvent{
   int answerTime;
   NextEvent(this.value,this.answerTime);
 }
+
+class ChractStartEvent{
+  int value;
+  ChractStartEvent(this.value);
+}
