@@ -1,18 +1,59 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:tester_app/Utils/EventBusType.dart';
 import 'package:tester_app/Utils/Rules.dart';
 import '../../DrawWidget/DrawPainter.dart';
 //中间题目展示组件
-class BMVTPageMiddel extends StatelessWidget{
+class BMVTPageMiddel extends StatefulWidget{
   @override
+  State<StatefulWidget> createState()=>_initialblank();
+
+}
+
+class _initialblank extends State<BMVTPageMiddel>{
+  @override
+  var imgchange="images/BVMT.jpg";
+  bool panelShow=false;
+  int flex_1=4;
+  int flex_2=1;
+  @override
+  void initState() {
+    super.initState();
+    //监听到下一题事件时触发->截图
+    eventBus.on<TimeCutDown>().listen((TimeCutDown data) => changeImg());
+  }
+  void changeImg() {
+    print("123456");
+    setState(() {
+      panelShow =! panelShow;
+      flex_1=0;
+      flex_2=4;
+    });
+    print(this.panelShow);
+  }
+
   Widget build(BuildContext context) {
+
     // TODO: implement build
     return Row(
       children: <Widget>[
         Expanded(
-            flex: 4,
+            flex: flex_1,
             child:Container(
-              child:MyPainterPage(imgPath: 'images/BMVT.jpeg',),
+              child:Offstage(
+                offstage: panelShow,
+                child:MyPainterPage(imgPath: imgchange,),
+              )
             ),
+        ),
+        Expanded(
+          flex: flex_2,
+          child:Container(
+              child:Offstage(
+                offstage: !panelShow,
+                child:MyPainterPage(imgPath: "images/blank.jpg",),
+              )
+          ),
         ),
         VerticalDivider(width: 3.0,color: Colors.blueGrey,thickness: 4.0,),
         Expanded(
@@ -29,7 +70,7 @@ class BMVTPageMiddel extends StatelessWidget{
 //右边信息栏
 class RightInfoColum extends StatefulWidget{
   @override
-  State<StatefulWidget> createState()=>_TesterInfoState("XXX","200s",mazeRules,"未完成");
+  State<StatefulWidget> createState()=>_TesterInfoState("XXX","200s",bvmtRules,"未完成");
 
 }
 class _TesterInfoState extends State<RightInfoColum>{

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tester_app/Pages/BVMT-R/BVMTPage.dart';
+import 'package:tester_app/Pages/BVMT-R/BMVTPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompletePage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         "/TMT": (context) => TMTPage(),
         "/SymbolEncoding": (context) => SymbolEncodingPage(),
         "/Maze": (context) => MazePage(),
-        "/BVMT": (context) => BVMTPage(),
+        "/BVMT": (context) => BMVTPage(),
       },
     );
   }

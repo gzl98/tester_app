@@ -7,3 +7,7 @@ class NextEvent{
   int answerTime;
   NextEvent(this.value,this.answerTime);
 }
+class TimeCutDown{
+  int value;
+  TimeCutDown(this.value);
+}

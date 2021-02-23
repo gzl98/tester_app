@@ -15,13 +15,13 @@ class BMVTPageBottom extends StatefulWidget{
 }
 class BMVTPageBottomState extends State<BMVTPageBottom>{
   Timer _timer;
-  int _currentTime=30;
+  int _currentTime=10;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       //startCountdownTimer();
-      showConfirmDialog(context,mazeRules,startCountdownTimer);
+      showConfirmDialog(context,bvmtRules,startCountdownTimer);
     });
   }
   void showConfirmDialog(BuildContext context,String content, Function confirmCallback) {
@@ -29,13 +29,21 @@ class BMVTPageBottomState extends State<BMVTPageBottom>{
         context: context,
         builder: (context) {
           return new AlertDialog(
-            title: new Text("请阅读该题的规则"),
+
+            title: new Text("请阅读该题的规则: \n \n \n"
+                "                                                                    在本题中，您将要对六个几何图案进行记忆，                                       \n \n\n"
+                "                                                                    六个几何图案是以2×3的形式排列在画板上的，      \n \n\n"
+                "                                                                    首先您有10s的学习时间，在10s后，图案会消失，      \n \n\n"
+                "                                                                    您需要在空白画板上尽可能在正确的位置绘制出相应图案，       \n\n\n"
+                "                                                                    如果您已准备好，点击确认答题按钮，10s倒计时即将开始。       \n\n\n"),
             content: new Text(content),
+            elevation:5,
             actions: <Widget>[
               new FlatButton(
                 onPressed: () {
                   confirmCallback();
                   Navigator.of(context).pop();
+
                 },
                 child: new Text("确认答题"),
               ),
@@ -50,9 +58,11 @@ class BMVTPageBottomState extends State<BMVTPageBottom>{
       setState(() {
         if (_currentTime < 1) {
           _timer.cancel();
+          eventBus.fire(TimeCutDown(10));
         } else {
           _currentTime = _currentTime - 1;
         }
+
       })
     };
     _timer = Timer.periodic(oneSec, callback);
@@ -66,7 +76,7 @@ class BMVTPageBottomState extends State<BMVTPageBottom>{
       '倒计时：'+_currentTime.toString()+'s',
       style: TextStyle(
           fontSize: setSp(50),
-          color: _currentTime>10 ? Color.fromARGB(255, 17, 132, 255) : Color.fromARGB(255, 255, 0, 0)
+          color: _currentTime>3 ? Color.fromARGB(255, 17, 132, 255) : Color.fromARGB(255, 255, 0, 0)
       ),
     );
   }
@@ -100,7 +110,8 @@ class BMVTPageBottomState extends State<BMVTPageBottom>{
               // Navigator.pushNamedAndRemoveUntil(
               //     context, "/BVMT", (route) => false);
               //触发下一题事件
-              eventBus.fire(NextEvent(1,30-this._currentTime));
+              eventBus.fire(NextEvent(4,30-this._currentTime));
+
               print('触发下一题！');
             }
 
