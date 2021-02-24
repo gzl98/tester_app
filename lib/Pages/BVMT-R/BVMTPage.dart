@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
-class SymbolEncodingPage extends StatefulWidget {
+class BVMTPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _SymbolEncodingState();
+    return _BVMTPageState();
   }
 }
 
-class _SymbolEncodingState extends State<SymbolEncodingPage> {
+class _BVMTPageState extends State<BVMTPage> {
   Widget buildButtonNextQuestion() {
     return SizedBox(
       width: setWidth(260),
@@ -33,7 +33,7 @@ class _SymbolEncodingState extends State<SymbolEncodingPage> {
           ),
           onPressed: () {
             Navigator.pushNamedAndRemoveUntil(
-                context, "/Maze", (route) => false);
+                context, "/completePage", (route) => false);
           }),
     );
   }
@@ -51,7 +51,7 @@ class _SymbolEncodingState extends State<SymbolEncodingPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "SymbolEncodingPage",
+                "BVMTPage",
                 style: TextStyle(fontSize: setSp(150)),
               ),
               buildButtonNextQuestion(),

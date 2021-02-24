@@ -40,6 +40,7 @@ setAnswer(int type, int answerTimeDelta,
     String imageName,
     File audio,
     File video}) async {
+  return;
   String token = await StorageUtil.getStringItem("token");
   int QNid = await StorageUtil.getIntItem("QNid");
   Dio dio = Dio();
@@ -57,7 +58,7 @@ setAnswer(int type, int answerTimeDelta,
 
   FormData formData;
   if (imagePath != null) {
-    var image=await MultipartFile.fromFile(imagePath,filename: imageName);
+    var image = await MultipartFile.fromFile(imagePath, filename: imageName);
     formData = FormData.fromMap({
       "answer_img": image,
     });

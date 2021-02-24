@@ -107,8 +107,8 @@ class BMVTPageBottomState extends State<BMVTPageBottom>{
                   context, "/SymbolEncoding", (route) => false);
             }
             else if(value=='下一题'){
-              // Navigator.pushNamedAndRemoveUntil(
-              //     context, "/BVMT", (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, "/completePage", (route) => false);
               //触发下一题事件
               eventBus.fire(NextEvent(4,30-this._currentTime));
 
@@ -127,10 +127,7 @@ class BMVTPageBottomState extends State<BMVTPageBottom>{
         Expanded(
           flex: 5,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildButtonNextQuestion(context,"上一题"),
-            ],
+
           ),
         ),
         Expanded(
