@@ -7,25 +7,29 @@ import '../../Utils/EventBusType.dart';
 
 //页面底端组件
 // ignore: must_be_immutable
-class TMTPageBottom extends StatefulWidget{
+class TMTPageBottom extends StatefulWidget {
   @override
   State<TMTPageBottom> createState() {
     // TODO: implement createState
     return TMTPageBottomState();
   }
 }
-class TMTPageBottomState extends State<TMTPageBottom>{
+
+class TMTPageBottomState extends State<TMTPageBottom> {
   Timer _timer;
-  int _currentTime=300;
+  int _currentTime = 300;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       //startCountdownTimer();
-      showConfirmDialog(context,tmtRules,startCountdownTimer);
+      showConfirmDialog(context, tmtRules, startCountdownTimer);
     });
   }
-  void showConfirmDialog(BuildContext context,String content, Function confirmCallback) {
+
+  void showConfirmDialog(
+      BuildContext context, String content, Function confirmCallback) {
     showDialog(
         context: context,
         builder: (context) {
@@ -48,27 +52,31 @@ class TMTPageBottomState extends State<TMTPageBottom>{
   void startCountdownTimer() {
     const oneSec = const Duration(seconds: 1);
     var callback = (timer) => {
-      setState(() {
-        if (_currentTime < 1) {
-          _timer.cancel();
-        } else {
-          _currentTime = _currentTime - 1;
-        }
-      })
-    };
+          setState(() {
+            if (_currentTime < 1) {
+              _timer.cancel();
+            } else {
+              _currentTime = _currentTime - 1;
+            }
+          })
+        };
     _timer = Timer.periodic(oneSec, callback);
   }
+
   var _textStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600);
-  Widget buildTime(){
+
+  Widget buildTime() {
     return Text(
-      '倒计时：'+_currentTime.toString()+'s',
+      '倒计时：' + _currentTime.toString() + 's',
       style: TextStyle(
           fontSize: setSp(50),
-          color: _currentTime>10 ? Color.fromARGB(255, 17, 132, 255) : Color.fromARGB(255, 255, 0, 0)
-      ),
+          color: _currentTime > 10
+              ? Color.fromARGB(255, 17, 132, 255)
+              : Color.fromARGB(255, 255, 0, 0)),
     );
   }
-  Widget buildButtonNextQuestion(context,value) {
+
+  Widget buildButtonNextQuestion(context, value) {
     return SizedBox(
       width: setWidth(260),
       height: setHeight(120),
@@ -90,14 +98,13 @@ class TMTPageBottomState extends State<TMTPageBottom>{
             ],
           ),
           onPressed: () {
-            if(value=='下一题'){
+            if (value == '下一题') {
               Navigator.pushNamedAndRemoveUntil(
                   context, "/Character", (route) => false);
               //触发下一题事件
-              eventBus.fire(NextEvent(1,30-this._currentTime));
+              eventBus.fire(NextEvent(1, 300 - this._currentTime));
               print('触发下一题！');
             }
-
           }),
     );
   }
@@ -109,9 +116,7 @@ class TMTPageBottomState extends State<TMTPageBottom>{
       children: <Widget>[
         Expanded(
           flex: 5,
-          child: Column(
-
-          ),
+          child: Column(),
         ),
         Expanded(
           flex: 10,
