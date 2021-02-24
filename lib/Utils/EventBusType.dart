@@ -1,17 +1,29 @@
 import 'package:event_bus/event_bus.dart';
 
-EventBus eventBus=new EventBus();
+EventBus eventBus = new EventBus();
 
-class NextEvent{
+class NextEvent {
   int value;
   int answerTime;
-  NextEvent(this.value,this.answerTime);
+
+  NextEvent(this.value, this.answerTime);
 }
-class TimeCutDown{
+
+class TimeCutDown {
   int value;
+
   TimeCutDown(this.value);
 }
-class ChractStartEvent{
+
+class ChractStartEvent {
   int value;
+
   ChractStartEvent(this.value);
+}
+
+class ChractSendDataEvent {
+  int value;
+  int answerTime;
+
+  ChractSendDataEvent(this.value, this.answerTime);
 }
