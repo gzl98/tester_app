@@ -79,7 +79,7 @@ class CharacterPageBottomState extends State<CharacterPageBottom> {
               Navigator.pushNamedAndRemoveUntil(
                   context, "/Maze", (route) => false);
               //触发下一题事件
-              // eventBus.fire(NextEvent(1, 30 - this._currentTime));
+              eventBus.fire(ChractSendDataEvent(1, 90 - this._currentTime));
               print('触发下一题！');
             }
           }),

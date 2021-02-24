@@ -40,13 +40,13 @@ setAnswer(int type, int answerTimeDelta,
     String imageName,
     File audio,
     File video}) async {
-  return;
   String token = await StorageUtil.getStringItem("token");
   int QNid = await StorageUtil.getIntItem("QNid");
   Dio dio = Dio();
   Response response;
   Map<String, dynamic> params = {
     "QNid": 15,
+    // "QNid": QNid,
     "type": type,
     "score": score,
     "answer_timedelta": answerTimeDelta,
