@@ -11,3 +11,7 @@ class TimeCutDown{
   int value;
   TimeCutDown(this.value);
 }
+class ChractStartEvent{
+  int value;
+  ChractStartEvent(this.value);
+}
