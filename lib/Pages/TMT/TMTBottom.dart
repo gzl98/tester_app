@@ -102,7 +102,7 @@ class TMTPageBottomState extends State<TMTPageBottom> {
               Navigator.pushNamedAndRemoveUntil(
                   context, "/Character", (route) => false);
               //触发下一题事件
-              eventBus.fire(NextEvent(1, 300 - this._currentTime));
+              eventBus.fire(NextEvent(0, 300 - this._currentTime));
               print('触发下一题！');
             }
           }),

@@ -45,8 +45,8 @@ setAnswer(int type, int answerTimeDelta,
   Dio dio = Dio();
   Response response;
   Map<String, dynamic> params = {
-    "QNid": 15,
-    // "QNid": QNid,
+    // "QNid": 157,
+    "QNid": QNid,
     "type": type,
     "score": score,
     "answer_timedelta": answerTimeDelta,
