@@ -111,7 +111,7 @@ class BMVTPageBottomState extends State<BMVTPageBottom> {
               Navigator.pushNamedAndRemoveUntil(
                   context, "/completePage", (route) => false);
               //触发下一题事件
-              eventBus.fire(NextEvent(4, 10 - this._currentTime));
+              eventBus.fire(NextEvent(3, 10 - this._currentTime));
 
               print('触发下一题！');
             }

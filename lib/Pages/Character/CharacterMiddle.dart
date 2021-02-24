@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Utils/EventBusType.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 
 //给出评分规则
 const String characterRules = "1.允许对照符号表填写\n2.禁止跳着填写，必须按顺序\n3.90s时间内完成，110分满分";
@@ -120,13 +121,18 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
       temp_Correct8
     ];
 
-    eventBus
-        .on<NextEvent>()
-        .listen((NextEvent data) => sendData(data.value, data.answerTime));
+    eventBus.on<ChractSendDataEvent>().listen(
+        (ChractSendDataEvent data) => sendData(data.value, data.answerTime));
   }
 
   sendData(value, answerTime) {
-    print("flagg" + mainanswer.toString());
+    print("flagg1 " + mainanswer.toString());
+    print("flagg2 " + mainCorrect.toString());
+    String mainanswer_str = mainanswer.toString();
+    mainanswer_str = mainanswer_str.replaceAll(',', '');
+
+    // setAnswer(value, answerTime,
+    //     answerText: 'answerText', score: double.parse(mainScore.toString()));
   }
 
   @override
