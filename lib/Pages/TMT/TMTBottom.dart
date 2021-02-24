@@ -92,7 +92,7 @@ class TMTPageBottomState extends State<TMTPageBottom>{
           onPressed: () {
             if(value=='下一题'){
               Navigator.pushNamedAndRemoveUntil(
-                  context, "/SymbolEncoding", (route) => false);
+                  context, "/Character", (route) => false);
               //触发下一题事件
               eventBus.fire(NextEvent(1,30-this._currentTime));
               print('触发下一题！');

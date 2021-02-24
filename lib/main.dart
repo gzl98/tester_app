@@ -6,7 +6,7 @@ import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/Maze/MazePage.dart';
-import 'package:tester_app/Pages/SymbolEncoding/SymbolEncodingPage.dart';
+import 'package:tester_app/Pages/Character/CharacterPage.dart';
 import 'package:tester_app/Pages/TMT/TMTPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         "/showInfo": (context) => ShowInfoPage(),
         "/completePage": (context) => CompletePage(),
         "/TMT": (context) => TMTPage(),
-        "/SymbolEncoding": (context) => SymbolEncodingPage(),
+        "/Character": (context) => CharacterPage(),
         "/Maze": (context) => MazePage(),
         "/BVMT": (context) => BVMTPage(),
       },
@@ -58,6 +58,7 @@ class _BootPageState extends State<BootPage> {
   }
 
   void checkLoginState() async {
+    await initialScreenUtil(context);
     String token = await StorageUtil.getStringItem("token");
     if (token != null) {
       try {
@@ -84,7 +85,6 @@ class _BootPageState extends State<BootPage> {
 
   @override
   Widget build(BuildContext context) {
-    initialScreenUtil(context);
     return Scaffold();
   }
 }

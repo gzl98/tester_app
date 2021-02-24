@@ -248,7 +248,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       image:
                           DecorationImage(image: AssetImage('images/logo.jpg')),
                       border: Border.all(color: Colors.black26),
-                      borderRadius: BorderRadius.all(Radius.circular(100)),
+                      borderRadius: BorderRadius.all(Radius.circular(setWidth(150))),
                       boxShadow: [
                         BoxShadow(
                             color: Colors.black12,

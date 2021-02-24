@@ -66,7 +66,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: setHeight(300),
+              height: setHeight(200),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
