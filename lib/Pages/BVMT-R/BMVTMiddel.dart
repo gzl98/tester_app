@@ -42,9 +42,7 @@ class _initialblank extends State<BMVTPageMiddel>{
             child:Container(
               child:Offstage(
                 offstage: panelShow,
-                child:Image.asset(
-                    "images/BVMT.jpg",
-                    fit:BoxFit.fill),
+                child:Image.asset("images/BVMT.jpg",fit: BoxFit.fill,),
               )
             ),
         ),
