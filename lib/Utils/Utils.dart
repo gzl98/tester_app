@@ -13,7 +13,7 @@ double maxHeight, maxWidth;
 String baseUrl = "http://39.96.37.82:8000/";
 
 initialScreenUtil(BuildContext context) {
-  ScreenUtil.instance = ScreenUtil(width: 2560, height: 1440)..init(context);
+  ScreenUtil.instance = ScreenUtil(width: 2560, height: 1600)..init(context);
   maxWidth = MediaQuery.of(context).size.width;
   maxHeight = MediaQuery.of(context).size.height;
 }
