@@ -14,13 +14,17 @@ class QuestionInfoFragment extends StatelessWidget {
   final int remainingTime;
   final int score;
 
-  final TextStyle scoreAndTimeFontStyle =
-      TextStyle(fontSize: setSp(60), fontWeight: FontWeight.w900, shadows: [
-    Shadow(
-        color: Colors.grey,
-        offset: Offset(setWidth(1), setHeight(1)),
-        blurRadius: setWidth(5)),
-  ]);
+  final TextStyle scoreFontStyle = TextStyle(
+    fontSize: setSp(60),
+    fontWeight: FontWeight.w900,
+    color: Color.fromARGB(255, 224, 98, 98),
+    shadows: [
+      Shadow(
+          color: Colors.grey,
+          offset: Offset(setWidth(1), setHeight(1)),
+          blurRadius: setWidth(5)),
+    ],
+  );
   final TextStyle questionTitleFontStyle = TextStyle(
       fontSize: setSp(70),
       fontWeight: FontWeight.bold,
@@ -76,7 +80,7 @@ class QuestionInfoFragment extends StatelessWidget {
                 child: Center(
                   child: Text(
                     "得分：$score",
-                    style: scoreAndTimeFontStyle,
+                    style: scoreFontStyle,
                   ),
                 ),
               )
@@ -88,7 +92,7 @@ class QuestionInfoFragment extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Text(
-                    "剩余时间：$remainingTime",
+                    "剩余时间：$remainingTime秒",
                     style: TextStyle(
                       color: (remainingTime > 30) ? Colors.black : Colors.red,
                       fontSize: setSp(60),

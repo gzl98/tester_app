@@ -20,7 +20,8 @@ class _MainFragmentState extends State<MainFragment> {
         fontSize: setSp(42),
         fontWeight: FontWeight.bold,
         // color: Colors.red[400],
-        color: Color.fromARGB(255, 253, 97, 94),
+        // color: Color.fromARGB(255, 224, 100, 14),
+        color: Colors.black54,
         shadows: [
           Shadow(
               color: Colors.grey,
