@@ -4,10 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Fragments/MainFragment.dart';
+import 'package:tester_app/Fragments/QuestionInfoFragment.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
-
-import '../../Fragments/QuestionInfoFragment.dart';
 
 class WMSPage extends StatefulWidget {
   @override
@@ -17,12 +16,6 @@ class WMSPage extends StatefulWidget {
 }
 
 class WMSPageState extends State<WMSPage> {
-  final String questionTitle = "空间广度";
-  final String questionContent =
-      "\t\t\t\t本题目主要考察空间记忆能力，当测试开始时，您需要记住方块亮起的顺序，之后按照相同或相反的顺序依次点击，点击顺序完全正确得一分，否则不得分，共32组测试，预计用时20分钟。";
-  double score = 30;
-  int remainingTime = 200;
-
   @override
   void initState() {
     // 强制横屏
@@ -32,6 +25,16 @@ class WMSPageState extends State<WMSPage> {
     super.initState();
   }
 
+  //TODO:定义题目名称，规则
+  final String questionTitle = "空间广度";
+  final String questionContent =
+      "\t\t\t\t本题目主要考察空间记忆能力，当测试开始时，您需要记住方块亮起的顺序，之后按照相同或相反的顺序依次点击，点击顺序完全正确得一分，否则不得分，共32组测试，预计用时20分钟。";
+
+  //TODO：根据情况定义分数和时间，不定义即为不显示
+  int score = 30;
+  int remainingTime;
+
+  //TODO: 定义主体布局，长宽分别为1960*1350像素，设置大小时统一使用setWidth和setHeight，setSp函数，使用maxWidth和maxHeight不需要使用上述3个函数
   Widget buildMainWidget() {
     return Container(
       // color: Colors.redAccent,
@@ -101,7 +104,7 @@ class WMSPageState extends State<WMSPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                //左侧题目信息Fragment
+                //左侧题目信息Fragment+
                 child: QuestionInfoFragment(
                   questionTitle: questionTitle,
                   questionContent: questionContent,

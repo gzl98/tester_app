@@ -12,7 +12,7 @@ class QuestionInfoFragment extends StatelessWidget {
   final String questionTitle;
   final String questionContent;
   final int remainingTime;
-  final double score;
+  final int score;
 
   final TextStyle scoreAndTimeFontStyle =
       TextStyle(fontSize: setSp(60), fontWeight: FontWeight.w900, shadows: [
