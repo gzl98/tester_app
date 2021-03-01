@@ -15,6 +15,7 @@ class TimeCutDown {
   TimeCutDown(this.value);
 }
 
+//跨组件事件
 class ChractStartEvent {
   int value;
 
