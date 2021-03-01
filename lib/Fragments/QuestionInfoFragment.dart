@@ -69,37 +69,41 @@ class QuestionInfoFragment extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          // color: Colors.amber,
-          height: setHeight(200),
-          child: Center(
-            child: Text(
-              "得分：$score",
-              style: scoreAndTimeFontStyle,
-            ),
-          ),
-        ),
-        Container(
-          // color: Colors.amber,
-          height: setHeight(160),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Text(
-              "剩余时间：$remainingTime",
-              style: TextStyle(
-                color: (score > 30) ? Colors.black : Colors.red,
-                fontSize: setSp(60),
-                fontWeight: FontWeight.w900,
-                shadows: [
-                  Shadow(
-                      color: Colors.grey,
-                      offset: Offset(setWidth(1), setHeight(1)),
-                      blurRadius: setWidth(5)),
-                ],
-              ),
-            ),
-          ),
-        ),
+        score != null
+            ? Container(
+                // color: Colors.amber,
+                height: setHeight(200),
+                child: Center(
+                  child: Text(
+                    "得分：$score",
+                    style: scoreAndTimeFontStyle,
+                  ),
+                ),
+              )
+            : Container(),
+        remainingTime != null
+            ? Container(
+                // color: Colors.amber,
+                height: setHeight(160),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    "剩余时间：$remainingTime",
+                    style: TextStyle(
+                      color: (remainingTime > 30) ? Colors.black : Colors.red,
+                      fontSize: setSp(60),
+                      fontWeight: FontWeight.w900,
+                      shadows: [
+                        Shadow(
+                            color: Colors.grey,
+                            offset: Offset(setWidth(1), setHeight(1)),
+                            blurRadius: setWidth(5)),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
       ],
     );
   }
