@@ -30,7 +30,6 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
   int cursorJump=0;
   //正式题目得分
   int mainScore = 0;
-
   //所有题目答题框
   List testField= new List<String>.generate(120, (int i) {
     return "";
