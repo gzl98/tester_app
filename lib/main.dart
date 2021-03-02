@@ -12,7 +12,7 @@ import 'package:tester_app/Utils/HttpUtils.dart';
 
 import 'Utils/Utils.dart';
 
-String bootPage = "/Character";
+String bootPage = "/login";
 // String bootPage = "/completeInfo";
 // String bootPage = "/showInfo";
 
