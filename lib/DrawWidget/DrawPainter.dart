@@ -127,7 +127,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
           " imageFile= " +
           imageFile.path.toString());
       await imageFile.writeAsBytes(pngBytes);
-      //setAnswer(index, time, imagePath: imageFile.path.toString(),imageName: 'capture.png');
+      setAnswer(index, time, imagePath: imageFile.path.toString(),imageName: 'capture.png');
       //保存图片到相册的方法
       //saveToPictures(pngBytes);
       setState(() {});

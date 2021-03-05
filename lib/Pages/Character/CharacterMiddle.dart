@@ -100,7 +100,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
     print(answerMerge.length);
     print(answerMerge.indexOf("&"));
     //上传数据到后台服务器
-    setAnswer(value, answerTime, score: double.parse(mainScore.toString()),
+    setAnswer(value, answerTime, score: mainScore,
       answerText: answerMerge);
   }
 
@@ -554,8 +554,8 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
         ),
         VerticalDivider(
           width: 3.0,
-          color: Colors.blueGrey,
-          thickness: 4.0,
+          color: Color.fromARGB(50, 0, 0, 0),
+          thickness: 2.0,
         ),
         //中间区域
         Expanded(
@@ -779,105 +779,93 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
             ],
           ),
         ),
-        VerticalDivider(
-          width: 3.0,
-          color: Colors.blueGrey,
-          thickness: 4.0,
-        ),
-        //右边区域
-        Expanded(
-          flex: 2,
-          child: Container(
-            child: RightInfoColumn(),
-          ),
-        ),
       ],
     );
   }
 }
 
-//右边信息栏
-class RightInfoColumn extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() =>
-      _TesterInfoState("XXX", "100s", characterRules, "未完成");
-}
-
-class _TesterInfoState extends State<RightInfoColumn> {
-  var personName = "";
-  var testTime = "";
-  var scoreRules = "";
-  var isFinish = "未完成";
-  var _titleStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600);
-  var _subTitleStyle = TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
-  var _normalStyle = TextStyle(
-    fontSize: 20.0,
-  );
-
-  _TesterInfoState(
-      this.personName, this.testTime, this.scoreRules, this.isFinish) {
-    print(this.scoreRules);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    //每列宽度
-    var paddingEdage = EdgeInsets.all(6);
-    // TODO: implement build
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          color: Colors.black12,
-          child: Center(
-            child: Text("测试者信息", style: _titleStyle),
-          ),
-        ),
-        Divider(
-          height: 3.0,
-          color: Colors.blueGrey,
-          thickness: 1,
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Row(children: <Widget>[
-            Text("测试者姓名：", style: _subTitleStyle),
-            Text(
-              this.personName,
-              style: _normalStyle,
-            )
-          ]),
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Row(children: <Widget>[
-            Text("测试者是否完成：", style: _subTitleStyle),
-            Text(
-              this.isFinish,
-              style: _normalStyle,
-            )
-          ]),
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Row(children: <Widget>[
-            Text("测试者用时：", style: _subTitleStyle),
-            Text(this.testTime, style: _normalStyle)
-          ]),
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Text("评分规则", style: _subTitleStyle),
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Text(this.scoreRules, style: _normalStyle),
-        ),
-      ],
-    );
-  }
-}
-
+// //右边信息栏
+// class RightInfoColumn extends StatefulWidget {
+//   @override
+//   State<StatefulWidget> createState() =>
+//       _TesterInfoState("XXX", "100s", characterRules, "未完成");
+// }
+//
+// class _TesterInfoState extends State<RightInfoColumn> {
+//   var personName = "";
+//   var testTime = "";
+//   var scoreRules = "";
+//   var isFinish = "未完成";
+//   var _titleStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600);
+//   var _subTitleStyle = TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
+//   var _normalStyle = TextStyle(
+//     fontSize: 20.0,
+//   );
+//
+//   _TesterInfoState(
+//       this.personName, this.testTime, this.scoreRules, this.isFinish) {
+//     print(this.scoreRules);
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     //每列宽度
+//     var paddingEdage = EdgeInsets.all(6);
+//     // TODO: implement build
+//     return Column(
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: <Widget>[
+//         Container(
+//           color: Colors.black12,
+//           child: Center(
+//             child: Text("测试者信息", style: _titleStyle),
+//           ),
+//         ),
+//         Divider(
+//           height: 3.0,
+//           color: Colors.blueGrey,
+//           thickness: 1,
+//         ),
+//         Container(
+//           padding: paddingEdage,
+//           child: Row(children: <Widget>[
+//             Text("测试者姓名：", style: _subTitleStyle),
+//             Text(
+//               this.personName,
+//               style: _normalStyle,
+//             )
+//           ]),
+//         ),
+//         Container(
+//           padding: paddingEdage,
+//           child: Row(children: <Widget>[
+//             Text("测试者是否完成：", style: _subTitleStyle),
+//             Text(
+//               this.isFinish,
+//               style: _normalStyle,
+//             )
+//           ]),
+//         ),
+//         Container(
+//           padding: paddingEdage,
+//           child: Row(children: <Widget>[
+//             Text("测试者用时：", style: _subTitleStyle),
+//             Text(this.testTime, style: _normalStyle)
+//           ]),
+//         ),
+//         Container(
+//           padding: paddingEdage,
+//           child: Text("评分规则", style: _subTitleStyle),
+//         ),
+//         Container(
+//           padding: paddingEdage,
+//           child: Text(this.scoreRules, style: _normalStyle),
+//         ),
+//       ],
+//     );
+//   }
+// }
+//
 
 
