@@ -4,14 +4,17 @@ import 'package:tester_app/Fragments/MainFragment.dart';
 import 'package:tester_app/Fragments/QuestionInfoFragment.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
-class ExamplePage extends StatefulWidget {
+import 'CharacterMiddle.dart';
+
+
+class CharacterNewPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return ExamplePageState();
+    return CharacterNewPageState();
   }
 }
 
-class ExamplePageState extends State<ExamplePage> {
+class CharacterNewPageState extends State<CharacterNewPage> {
   @override
   void initState() {
     // 强制横屏
@@ -33,7 +36,7 @@ class ExamplePageState extends State<ExamplePage> {
   //TODO: 定义主体布局，长宽分别为1960*1350像素，设置大小时统一使用setWidth和setHeight，setSp函数，使用maxWidth和maxHeight不需要使用上述3个函数
   Widget buildMainWidget() {
     return Container(
-      color: Colors.redAccent,
+      child:  CharacterPageMiddle(),
     );
   }
 
