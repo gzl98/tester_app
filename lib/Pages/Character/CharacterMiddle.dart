@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Utils/EventBusType.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
+import 'package:tester_app/Utils/Utils.dart';
 
 //给出评分规则
 const String characterRules = "1.允许对照符号表填写\n2.禁止跳着填写，必须按顺序\n3.90s时间内完成，110分满分";
@@ -671,7 +672,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                             child: Text(
                               "测试分数：",
                               style: TextStyle(
-                                  fontSize: 20.0, fontWeight: FontWeight.w600),
+                                  fontSize: setSp(40), fontWeight: FontWeight.w600),
                             ),
                           ),
                           alignment: Alignment.bottomRight,
@@ -715,7 +716,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                       child: Text(
                         "~~~~~~~开始正式测试~~~~~~~",
                         style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.w600),
+                            fontSize: setSp(40), fontWeight: FontWeight.w600),
                       ),
                     ),
                     alignment: Alignment.bottomCenter,
