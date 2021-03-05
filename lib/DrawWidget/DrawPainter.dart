@@ -31,7 +31,7 @@ class SelfForePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(SelfForePainter oldDelegate) {
-    return oldDelegate._imageFrame!=this._imageFrame;
+    return oldDelegate._imageFrame != this._imageFrame;
   }
 }
 
@@ -57,6 +57,7 @@ class _MyPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_MyPainter oldDelegate) {
+    print("画板重新绘制");
     return oldDelegate.points != this.points;
   }
 }
@@ -72,16 +73,17 @@ class MyPainterPage extends StatefulWidget {
 }
 
 class _MyPainterPageState extends State<MyPainterPage> {
-  List<WPPainter> _points = <WPPainter>[];
+  List<WPPainter> _pointsList = <WPPainter>[];
   Color _paintColor = blackColor;
   double _paintStokeWidth = 1.0;
   double _bottomBarLeft = 44.0;
+
+
   ui.Image _assetImageFrame;
   //画图的Path
   String _imgPath;
   //截图获取的key
   GlobalKey rootWidgetKey = GlobalKey();
-
   //截图获取的图片
   List<Uint8List> images = List();
 
@@ -125,7 +127,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
           " imageFile= " +
           imageFile.path.toString());
       await imageFile.writeAsBytes(pngBytes);
-      setAnswer(index, time, imagePath: imageFile.path.toString(),imageName: 'capture.png');
+      //setAnswer(index, time, imagePath: imageFile.path.toString(),imageName: 'capture.png');
       //保存图片到相册的方法
       //saveToPictures(pngBytes);
       setState(() {});
@@ -161,24 +163,51 @@ class _MyPainterPageState extends State<MyPainterPage> {
                   child: RepaintBoundary(
                     key: rootWidgetKey,
                     child: CustomPaint(
-                      painter: SelfForePainter(_assetImageFrame),
-                      size: Size(setWidth(2000), setWidth(1000)),
-                      foregroundPainter: _MyPainter(_points),
-                      //child:Image.network("https://th.bing.com/th/id/R7ef1a6ba075098acb8075590a18337f7?rik=9e4NScfJ%2fTiFiA&riu=http%3a%2f%2fpic41.nipic.com%2f20140529%2f2531170_210244691000_2.jpg&ehk=a5ab0TIr49%2bQklED87xF63bD0yG7z4jxMx4%2fYkXYvgs%3d&risl=&pid=ImgRaw") ,
+                      //painter: SelfForePainter(_assetImageFrame),
+                      size: Size(setWidth(2000), setWidth(1000)),    //定义child时不需要定义size
+                      foregroundPainter: _MyPainter(_pointsList),
+                      //isComplex: true,
+                      child:RepaintBoundary(
+                        child: Image.asset(_imgPath),
+                      )
                     ),
                   ),
                   onPanUpdate: (detail) {
                     RenderBox referenceBox = context.findRenderObject();
                     Offset localPosition =
                         referenceBox.globalToLocal(detail.globalPosition);
-
+                    // print(this._paintColor.toString());
+                    // print(localPosition.toString());
                     setState(() {
-                      _points = new List.from(_points)
-                        ..add(WPPainter(
-                            localPosition, _paintColor, _paintStokeWidth));
+                      if(_paintColor == whiteColor){
+                        print("白色"+_pointsList.length.toString());
+                        //this._pointsList.removeWhere((element) => element)
+                        for (var i = 0; i < _pointsList.length; i++) {
+                          if (localPosition!=null&&_pointsList[i] != null ) {
+                              if(_pointsList[i].eqOffset(localPosition,_paintStokeWidth)){
+                                  _pointsList[i].color=whiteColor;
+                                  //_pointsList.removeAt(i);
+                                  _pointsList[i]=null;
+                                  print("删除了");
+                              }
+                          }
+                        }
+                        _pointsList = new List.from(_pointsList);
+                        print("白色删除后"+_pointsList.length.toString());
+                      }
+                      else{
+                        _pointsList = new List.from(_pointsList)
+                          ..add(WPPainter(
+                              localPosition, _paintColor, _paintStokeWidth));
+                      }
+
                     });
                   },
-                  onPanEnd: (detail) => _points.add(null),
+                  onPanEnd: (detail) => {
+                    setState((){
+                      _pointsList.add(null);
+                    })
+                  }
                 ),
                 //黑色按钮
                 bottomCircleColorButton(whiteColor, 0),
