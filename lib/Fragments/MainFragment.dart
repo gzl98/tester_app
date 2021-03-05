@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 class MainFragment extends StatefulWidget {
-  const MainFragment({Key key, this.mainWidget, this.onNextButtonPressed})
+  const MainFragment(
+      {Key key, this.mainWidget, this.onNextButtonPressed, this.nextButtonText="下 一 题"})
       : super(key: key);
 
   final Widget mainWidget;
   final VoidCallback onNextButtonPressed;
+  final String nextButtonText;
 
   @override
   State<StatefulWidget> createState() {
@@ -70,7 +72,8 @@ class _MainFragmentState extends State<MainFragment> {
             )),
           ),
           child: Text(
-            "下 一 题",
+            // "下 一 题",
+            widget.nextButtonText,
             style: TextStyle(
               fontSize: setSp(44),
               fontWeight: FontWeight.w900,
