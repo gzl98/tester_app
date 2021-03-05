@@ -35,7 +35,7 @@ class CharacterNewPageState extends State<CharacterNewPage> {
 
   //TODO：根据情况定义分数和时间，不赋值即为不显示
   //剩余答题时间
-  int remainingTime = 9;
+  int remainingTime = 90;
 
   //是否停止答题
   bool stop = false;
