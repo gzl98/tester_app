@@ -31,7 +31,7 @@ class WMSPageState extends State<WMSPage> {
 
   //TODO：根据情况定义分数和时间，不定义即为不显示
   int score = 30;
-  int remainingTime;
+  int remainingTime = 30;
 
   //TODO: 定义主体布局，长宽分别为1960*1350像素，设置大小时统一使用setWidth和setHeight，setSp函数，使用maxWidth和maxHeight不需要使用上述3个函数
   Widget buildMainWidget() {
@@ -191,8 +191,8 @@ class WMSPageState extends State<WMSPage> {
                 child: QuestionInfoFragment(
                   questionTitle: questionTitle,
                   questionContent: questionContent,
-                  score: score,
                   remainingTime: remainingTime,
+                  score: score,
                 ),
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 230, 230, 230),

@@ -5,16 +5,15 @@ EventBus eventBus = new EventBus();
 class NextEvent {
   int value;
   int answerTime;
-
   NextEvent(this.value, this.answerTime);
 }
 
 class TimeCutDown {
   int value;
-
   TimeCutDown(this.value);
 }
 
+//跨组件事件
 class ChractStartEvent {
   int value;
 

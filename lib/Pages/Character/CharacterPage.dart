@@ -40,6 +40,7 @@ class CharacterPageState extends State<CharacterPage> {
       ],
     );
   }
+  //解决显示黑黄屏的问题
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

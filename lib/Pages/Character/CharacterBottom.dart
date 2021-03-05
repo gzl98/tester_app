@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:tester_app/Utils/EventBusType.dart';
 import 'package:tester_app/Utils/Utils.dart';
@@ -11,19 +10,20 @@ class CharacterPageBottom extends StatefulWidget {
     return CharacterPageBottomState();
   }
 }
+
 //页面底端组件
 //ignore: must_be_immutable
-
 class CharacterPageBottomState extends State<CharacterPageBottom> {
   Timer _timer;
+  //倒计时90s答题时间
   int _currentTime = 90;
 
   @override
   void initState() {
     super.initState();
-    eventBus
-        .on<ChractStartEvent>()
-        .listen((ChractStartEvent data) => startCountdownTimer());
+    eventBus.on<ChractStartEvent>().listen((ChractStartEvent data) {
+      startCountdownTimer();
+    });
   }
 
   void startCountdownTimer() {
@@ -39,8 +39,6 @@ class CharacterPageBottomState extends State<CharacterPageBottom> {
         };
     _timer = Timer.periodic(oneSec, callback);
   }
-
-  var _textStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600);
 
   Widget buildTime() {
     return Text(
@@ -78,7 +76,7 @@ class CharacterPageBottomState extends State<CharacterPageBottom> {
             if (value == '下一题') {
               Navigator.pushNamedAndRemoveUntil(
                   context, "/Maze", (route) => false);
-              //触发下一题事件
+              //触发下一题事件+回传测试所用时间
               eventBus.fire(ChractSendDataEvent(1, 90 - this._currentTime));
               print('触发下一题！');
             }

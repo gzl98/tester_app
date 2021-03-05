@@ -305,6 +305,20 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                 sizeBox,
                 sizeBox,
                 sizeBox,
+                sizeBox,
+                sizeBox,
+                FlatButton(
+                    onPressed: () {
+                      _logout(context);
+                    },
+                    child: Text(
+                      "退出登录",
+                      style: TextStyle(
+                        color: Color.fromARGB(150, 0, 0, 0),
+                        fontSize: setSp(60),
+                        decoration: TextDecoration.underline,
+                      ),
+                    )),
               ],
             ),
           ),
@@ -326,7 +340,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
             'sex': sexValue,
             'mobilephone': _mobile,
             'IDcard': _IDCard,
-            'address': _address,
+            'adress': _address,
           }),
           options: Options(headers: {
             "Authorization": "Bearer $_token",
@@ -339,7 +353,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
         await StorageUtil.setIntItem("sex", sexValue);
         await StorageUtil.setStringItem("mobilephone", _mobile);
         await StorageUtil.setStringItem("IDcard", _IDCard);
-        await StorageUtil.setStringItem("adress", _address);
+        await StorageUtil.setStringItem("address", _address);
         Navigator.pushNamedAndRemoveUntil(
             context, "/showInfo", (router) => false);
       }
@@ -353,5 +367,26 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
       });
       showMessageDialog(context, "提交失败!$response");
     }
+  }
+
+  void _logout(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("确定退出登录?"),
+              actions: [
+                FlatButton(
+                  child: Text('暂不'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                FlatButton(
+                    child: Text('确定'),
+                    onPressed: () {
+                      StorageUtil.clear();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/", (route) => false);
+                    }),
+              ],
+            ));
   }
 }
