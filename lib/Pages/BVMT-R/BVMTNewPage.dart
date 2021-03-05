@@ -38,6 +38,7 @@ class BVMTPageState extends State<BVMTPage> {
   int score;
 
   int remainingTime = 10;
+  int usedTime = 0;
   Timer _timer;
   bool panelShow = false;
 
@@ -84,6 +85,7 @@ class BVMTPageState extends State<BVMTPage> {
             if (remainingTime <= 0) {
               changeImg();
               _timer.cancel();
+              remainingTime = null;
               startCountdownTimer_1();
             } else {
               remainingTime = remainingTime - 1;
@@ -97,7 +99,7 @@ class BVMTPageState extends State<BVMTPage> {
     const oneSec = const Duration(seconds: 1);
     var callback = (timer) => {
           setState(() {
-            remainingTime = remainingTime + 1;
+            usedTime = usedTime + 1;
           })
         };
     _timer = Timer.periodic(oneSec, callback);
@@ -115,7 +117,7 @@ class BVMTPageState extends State<BVMTPage> {
       this._timer.cancel();
     }
     if (this.panelShow) {
-      eventBus.fire(NextEvent(3, this.remainingTime));
+      eventBus.fire(NextEvent(3, this.usedTime));
       Navigator.pushNamedAndRemoveUntil(
           context, "/completePage", (route) => false);
     }
