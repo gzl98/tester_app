@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:tester_app/Pages/BVMT-R/BMVTPage.dart';
+import 'package:tester_app/Pages/BVMT-R/BVMTNewPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompletePage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
-import 'package:tester_app/Pages/Maze/MazePage.dart';
+import 'package:tester_app/Pages/Maze/MazeNewPage.dart';
 import 'package:tester_app/Pages/Character/CharacterPage.dart';
-import 'package:tester_app/Pages/TMT/TMTPage.dart';
+import 'package:tester_app/Pages/TMT/TMTNewPage.dart';
 import 'package:tester_app/Pages/WMS/WMSPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 
 import 'Utils/Utils.dart';
 
-String bootPage = "/WMS";
-// String bootPage = "/login";
+//String bootPage = "/WMS";
+String bootPage = "/login";
 // String bootPage = "/completeInfo";
 // String bootPage = "/showInfo";
 
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         "/TMT": (context) => TMTPage(),
         "/Character": (context) => CharacterPage(),
         "/Maze": (context) => MazePage(),
-        "/BVMT": (context) => BMVTPage(),
+        "/BVMT": (context) => BVMTPage(),
         "/WMS": (context) => WMSPage(),
       },
     );

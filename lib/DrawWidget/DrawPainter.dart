@@ -168,7 +168,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
                       foregroundPainter: _MyPainter(_pointsList),
                       //isComplex: true,
                       child:RepaintBoundary(
-                        child: Image.asset(_imgPath),
+                        child: Image.asset(_imgPath,width:setWidth(1960),height: setWidth(1350),),
                       )
                     ),
                   ),
@@ -180,7 +180,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
                     // print(localPosition.toString());
                     setState(() {
                       if(_paintColor == whiteColor){
-                        print("白色"+_pointsList.length.toString());
+
                         //this._pointsList.removeWhere((element) => element)
                         for (var i = 0; i < _pointsList.length; i++) {
                           if (localPosition!=null&&_pointsList[i] != null ) {
@@ -188,12 +188,12 @@ class _MyPainterPageState extends State<MyPainterPage> {
                                   _pointsList[i].color=whiteColor;
                                   //_pointsList.removeAt(i);
                                   _pointsList[i]=null;
-                                  print("删除了");
+
                               }
                           }
                         }
                         _pointsList = new List.from(_pointsList);
-                        print("白色删除后"+_pointsList.length.toString());
+
                       }
                       else{
                         _pointsList = new List.from(_pointsList)
@@ -209,16 +209,16 @@ class _MyPainterPageState extends State<MyPainterPage> {
                     })
                   }
                 ),
-                //黑色按钮
+                //白色按钮
                 bottomCircleColorButton(whiteColor, 0),
                 //红色按钮
                 bottomCircleColorButton(redColor, 1),
-                //白色按钮
+                //黑色按钮
                 bottomCircleColorButton(blackColor, 2),
                 //其他颜色
-                //bottomCircleColorButton(color3, 2),
+                bottomCircleColorButton(color3, 3),
                 //画笔大小
-                bottomPencilWidthButton(0),
+                // bottomPencilWidthButton(0),
                 bottomPencilWidthButton(1),
                 bottomPencilWidthButton(2),
                 bottomPencilWidthButton(3),
@@ -263,6 +263,8 @@ class _MyPainterPageState extends State<MyPainterPage> {
             _setPaintColor(whiteColor);
           } else if (index == 1) {
             _setPaintColor(redColor);
+          } else if (index == 2){
+            _setPaintColor(blackColor);
           } else {
             _pickerColor();
           }
