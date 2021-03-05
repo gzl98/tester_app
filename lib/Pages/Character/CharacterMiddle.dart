@@ -17,48 +17,56 @@ class CharacterPageMiddle extends StatefulWidget {
 }
 
 class CharacterPageMiddleState extends State<CharacterPageMiddle> {
-
   //全局答题按键index
-  int indexNum=-1;
+  int indexNum = -1;
+
   //10道题测试分数
   int testScore = 0;
+
   //显示10道测试题目总分
-  String testScoreField="";
+  String testScoreField = "";
+
   //110道题目是否可见
   bool mainTestHidden = true;
+
   //光标是否跳转(0未跳转，1该跳转，-1跳转完成)
-  int cursorJump=0;
+  int cursorJump = 0;
+
   //正式题目得分
   int mainScore = 0;
+
   //所有题目答题框
-  List testField= new List<String>.generate(120, (int i) {
+  List testField = new List<String>.generate(120, (int i) {
     return "";
   });
+
   //所有题目答案
-  List testAnswer=[
+  List testAnswer = [
     //测试题目答案
-    1,5,2,1,3,6,2,4,1,6,
+    1, 5, 2, 1, 3, 6, 2, 4, 1, 6,
     //所有题目答案
     //前四行答案
-    2,1,6,1,2,
-    4,6,1,2,5,6,3,4,1,2,6,9,4,3,8,
-    4,5,7,8,1,3,7,4,8,5,2,9,3,4,7,
-    2,4,5,1,6,4,1,5,6,7,9,8,3,6,4,
+    2, 1, 6, 1, 2,
+    4, 6, 1, 2, 5, 6, 3, 4, 1, 2, 6, 9, 4, 3, 8,
+    4, 5, 7, 8, 1, 3, 7, 4, 8, 5, 2, 9, 3, 4, 7,
+    2, 4, 5, 1, 6, 4, 1, 5, 6, 7, 9, 8, 3, 6, 4,
     //后四行答案
-    9,5,8,3,6,7,4,5,2,3,7,9,2,8,1,
-    6,9,7,2,3,6,4,9,1,7,2,5,6,8,4,
-    2,8,7,9,3,7,8,5,1,9,2,1,4,3,6,
-    5,2,1,6,4,2,1,6,9,7,3,5,4,8,9
+    9, 5, 8, 3, 6, 7, 4, 5, 2, 3, 7, 9, 2, 8, 1,
+    6, 9, 7, 2, 3, 6, 4, 9, 1, 7, 2, 5, 6, 8, 4,
+    2, 8, 7, 9, 3, 7, 8, 5, 1, 9, 2, 1, 4, 3, 6,
+    5, 2, 1, 6, 4, 2, 1, 6, 9, 7, 3, 5, 4, 8, 9
   ];
+
   //正式测试题110道的正误
-  List testCorrect= new List<bool>.generate(110, (int i) {
+  List testCorrect = new List<bool>.generate(110, (int i) {
     return false;
   });
+
   //10道测试题答案评分函数
-  TestCompare(){
-    for(int i=0;i<10;i++){
-      if(testField[i]!=""){
-        if(int.parse(testField[i])==testAnswer[i]){
+  TestCompare() {
+    for (int i = 0; i < 10; i++) {
+      if (testField[i] != "") {
+        if (int.parse(testField[i]) == testAnswer[i]) {
           testScore++;
         }
       }
@@ -78,39 +86,38 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
     MainTestCompare();
     print("flag1 " + testField.toString());
     print("flag2 " + testCorrect.toString());
-    String test_temp="";
-    for(int i=10;i<120;i++){
-      test_temp+=testField[i];
+    String test_temp = "";
+    for (int i = 10; i < 120; i++) {
+      test_temp += testField[i];
     }
-    String correct_temp="";
-    for(int j=0;j<110;j++){
-      if(testCorrect[j]==true){
-        correct_temp+="1";
-      }else{
-        correct_temp+="0";
+    String correct_temp = "";
+    for (int j = 0; j < 110; j++) {
+      if (testCorrect[j] == true) {
+        correct_temp += "1";
+      } else {
+        correct_temp += "0";
       }
     }
-    print("flag3 "+test_temp);
-    print("flag4 "+correct_temp);
+    print("flag3 " + test_temp);
+    print("flag4 " + correct_temp);
     print(mainScore);
     print(answerTime);
-    String answerMerge="";
-    answerMerge=test_temp+"&"+correct_temp;
-    print("flag5 "+answerMerge);
+    String answerMerge = "";
+    answerMerge = test_temp + "&" + correct_temp;
+    print("flag5 " + answerMerge);
     print(answerMerge.length);
     print(answerMerge.indexOf("&"));
     //上传数据到后台服务器
-    setAnswer(value, answerTime, score: double.parse(mainScore.toString()),
-      answerText: answerMerge);
+    setAnswer(value, answerTime, score: mainScore, answerText: answerMerge);
   }
 
   //110道测试题答案评分函数
-  MainTestCompare(){
-    for(int i=10;i<120;i++){
-      if(testField[i]!=""){
-        if(int.parse(testField[i])==testAnswer[i]){
+  MainTestCompare() {
+    for (int i = 10; i < 120; i++) {
+      if (testField[i] != "") {
+        if (int.parse(testField[i]) == testAnswer[i]) {
           mainScore++;
-          testCorrect[i-10]=true;
+          testCorrect[i - 10] = true;
         }
       }
     }
@@ -118,39 +125,41 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
 
   //自定义控件
   //一个TextField范例，返回Expanded
-  Widget My_Text(int i){
+  Widget My_Text(int i) {
     return Expanded(
       flex: 1,
       child: Align(
         child: Text(
           testField[i],
-          style:TextStyle(color:testField[i]==""?Colors.white:Colors.black,fontSize: 20.0, fontWeight: FontWeight.w600),
+          style: TextStyle(
+              color: testField[i] == "" ? Colors.white : Colors.black,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w600),
         ),
         alignment: Alignment.center,
       ),
     );
   }
+
   //一行答题框示例，返回Expanded
-  Widget My_Row(int m,int n,int flex) {
+  Widget My_Row(int m, int n, int flex) {
     //建立数组用于存放循环生成的widget
     List<Widget> temp = [];
     //单独一个widget组件，用于返回需要生成的内容widget
     Widget content;
-    for (int i=m;i<n-1;i++) {
-      temp.add(
-          My_Text(i)
-      );
-      temp.add(
-          VerticalDivider(width: 2.0, color: Colors.grey, thickness: 2.0,)
-      );
+    for (int i = m; i < n - 1; i++) {
+      temp.add(My_Text(i));
+      temp.add(VerticalDivider(
+        width: 2.0,
+        color: Colors.grey,
+        thickness: 2.0,
+      ));
     }
-    temp.add(
-        My_Text(n-1)
-    );
+    temp.add(My_Text(n - 1));
 
     content = Expanded(
       flex: flex,
-      child:Container(
+      child: Container(
         decoration: BoxDecoration(
           border: new Border.all(width: 2.0, color: Colors.grey),
           color: Colors.white,
@@ -164,25 +173,28 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
     return content;
   }
 
-  Widget My_FlatButton(int num){
+  Widget My_FlatButton(int num) {
     return FlatButton(
       onPressed: () {
         setState(() {
-          if(indexNum<9){
+          if (indexNum < 9) {
             indexNum++;
           }
-          if(cursorJump==-1 && indexNum>9 && indexNum<119){
+          if (cursorJump == -1 && indexNum > 9 && indexNum < 119) {
             indexNum++;
           }
-          if(cursorJump==1){
-            indexNum=10;
-            cursorJump=-1;
+          if (cursorJump == 1) {
+            indexNum = 10;
+            cursorJump = -1;
           }
-          testField[indexNum]=num.toString();
+          testField[indexNum] = num.toString();
         });
       },
       color: Colors.white,
-      child: Text(num.toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600,color: Colors.black87),
+      child: Text(
+        num.toString(),
+        style: TextStyle(
+            fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.black87),
       ),
     );
   }
@@ -266,13 +278,13 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 ),
                 Expanded(
                   flex: 1,
-                  child:Row(
+                  child: Row(
                     children: <Widget>[
                       Expanded(
                         flex: 1,
                         child: Text(""),
                       ),
-                      My_Row(15,30,15),
+                      My_Row(15, 30, 15),
                       Expanded(
                         flex: 1,
                         child: Text(""),
@@ -310,13 +322,13 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 ),
                 Expanded(
                   flex: 1,
-                  child:Row(
+                  child: Row(
                     children: <Widget>[
                       Expanded(
                         flex: 1,
                         child: Text(""),
                       ),
-                      My_Row(30,45,15),
+                      My_Row(30, 45, 15),
                       Expanded(
                         flex: 1,
                         child: Text(""),
@@ -354,13 +366,13 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 ),
                 Expanded(
                   flex: 1,
-                  child:Row(
+                  child: Row(
                     children: <Widget>[
                       Expanded(
                         flex: 1,
                         child: Text(""),
                       ),
-                      My_Row(45,60,15),
+                      My_Row(45, 60, 15),
                       Expanded(
                         flex: 1,
                         child: Text(""),
@@ -398,13 +410,13 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 ),
                 Expanded(
                   flex: 1,
-                  child:Row(
+                  child: Row(
                     children: <Widget>[
                       Expanded(
                         flex: 1,
                         child: Text(""),
                       ),
-                      My_Row(60,75,15),
+                      My_Row(60, 75, 15),
                       Expanded(
                         flex: 1,
                         child: Text(""),
@@ -442,13 +454,13 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 ),
                 Expanded(
                   flex: 1,
-                  child:Row(
+                  child: Row(
                     children: <Widget>[
                       Expanded(
                         flex: 1,
                         child: Text(""),
                       ),
-                      My_Row(75,90,15),
+                      My_Row(75, 90, 15),
                       Expanded(
                         flex: 1,
                         child: Text(""),
@@ -486,13 +498,13 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 ),
                 Expanded(
                   flex: 1,
-                  child:Row(
+                  child: Row(
                     children: <Widget>[
                       Expanded(
                         flex: 1,
                         child: Text(""),
                       ),
-                      My_Row(90,105,15),
+                      My_Row(90, 105, 15),
                       Expanded(
                         flex: 1,
                         child: Text(""),
@@ -530,13 +542,13 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 ),
                 Expanded(
                   flex: 1,
-                  child:Row(
+                  child: Row(
                     children: <Widget>[
                       Expanded(
                         flex: 1,
                         child: Text(""),
                       ),
-                      My_Row(105,120,15),
+                      My_Row(105, 120, 15),
                       Expanded(
                         flex: 1,
                         child: Text(""),
@@ -569,7 +581,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                   child: Text(
                     "符号编码对照表",
                     style:
-                    TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
                   ),
                   alignment: Alignment.bottomCenter,
                 ),
@@ -604,7 +616,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                   child: Text(
                     "符号编码测试",
                     style:
-                    TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
                   ),
                   alignment: Alignment.bottomCenter,
                 ),
@@ -622,11 +634,8 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 ),
               ),
               //测试答题框
-              My_Row(0,10,1),
-              Expanded(
-                  flex:1,
-                  child: Text("")
-              ),
+              My_Row(0, 10, 1),
+              Expanded(flex: 1, child: Text("")),
               //测试结果分数
               Expanded(
                   flex: 1,
@@ -644,17 +653,16 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                             onPressed: () {
                               setState(() {
                                 TestCompare();
-                                testScoreField= "$testScore分";
+                                testScoreField = "$testScore分";
                                 //归零，避免重复点击分数累加
-                                testScore=0;
+                                testScore = 0;
                               });
                             },
                             // 设置边框样式
                             shape: Border.all(
                                 color: Colors.grey,
                                 style: BorderStyle.solid,
-                                width: 2
-                            ),
+                                width: 2),
                             child: Text(
                               "测试分数：",
                               style: TextStyle(
@@ -668,7 +676,10 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                       child: Align(
                           child: Text(
                             testScoreField,
-                            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, decoration: TextDecoration.underline),
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w600,
+                                decoration: TextDecoration.underline),
                           ),
                           alignment: Alignment.center),
                     ),
@@ -687,7 +698,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                       onPressed: () {
                         setState(() {
                           mainTestHidden = false;
-                          cursorJump=1;
+                          cursorJump = 1;
                           //计时器
                           eventBus.fire(ChractStartEvent(10));
                         });
@@ -710,68 +721,78 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
               ),
               //数字键盘
               Expanded(
-                flex: 6,
-                child:Table(
-                  border: TableBorder.all(color: Colors.grey, width: 1.0, style: BorderStyle.solid),
-                  children: <TableRow>[
-                    //123
-                    TableRow(
-                      children: <Widget>[
-                        My_FlatButton(1),
-                        My_FlatButton(2),
-                        My_FlatButton(3),
-                      ],
-                    ),
-                    //456
-                    TableRow(
-                      children: <Widget>[
-                        My_FlatButton(4),
-                        My_FlatButton(5),
-                        My_FlatButton(6),
-                      ],
-                    ),
-                    //789
-                    TableRow(
-                      children: <Widget>[
-                        My_FlatButton(7),
-                        My_FlatButton(8),
-                        My_FlatButton(9),
-                      ],
-                    ),
-                    //空白,0,delete
-                    TableRow(
-                      children: <Widget>[
-                        FlatButton(
-                          color: Colors.white,
-                          highlightColor: Colors.white,
-                          child: Text("")
-                        ),
-                        My_FlatButton(0),
-                        FlatButton(
+                  flex: 6,
+                  child: Table(
+                    border: TableBorder.all(
+                        color: Colors.grey,
+                        width: 1.0,
+                        style: BorderStyle.solid),
+                    children: <TableRow>[
+                      //123
+                      TableRow(
+                        children: <Widget>[
+                          My_FlatButton(1),
+                          My_FlatButton(2),
+                          My_FlatButton(3),
+                        ],
+                      ),
+                      //456
+                      TableRow(
+                        children: <Widget>[
+                          My_FlatButton(4),
+                          My_FlatButton(5),
+                          My_FlatButton(6),
+                        ],
+                      ),
+                      //789
+                      TableRow(
+                        children: <Widget>[
+                          My_FlatButton(7),
+                          My_FlatButton(8),
+                          My_FlatButton(9),
+                        ],
+                      ),
+                      //空白,0,delete
+                      TableRow(
+                        children: <Widget>[
+                          FlatButton(
+                              color: Colors.white,
+                              highlightColor: Colors.white,
+                              child: Text("")),
+                          My_FlatButton(0),
+                          FlatButton(
                             onPressed: () {
                               setState(() {
-                                if(indexNum>-1 && indexNum<10 && cursorJump==0){
+                                if (indexNum > -1 &&
+                                    indexNum < 10 &&
+                                    cursorJump == 0) {
                                   indexNum--;
-                                  testField[indexNum+1]="";
+                                  testField[indexNum + 1] = "";
                                 }
-                                if(cursorJump==-1 && indexNum>9 && indexNum<120){
+                                if (cursorJump == -1 &&
+                                    indexNum > 9 &&
+                                    indexNum < 120) {
                                   indexNum--;
-                                  testField[indexNum+1]="";
+                                  testField[indexNum + 1] = "";
                                 }
-                                if(cursorJump==1){
-                                  indexNum=9;
+                                if (cursorJump == 1) {
+                                  indexNum = 9;
                                 }
                               });
-                          },
-                          color: Colors.white,
-                          child: Text("Del", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600,color: Colors.black87),
+                            },
+                            color: Colors.white,
+                            child: Text(
+                              "Del",
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black87),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ),
+                        ],
+                      ),
+                    ],
+                  )),
               Expanded(
                 flex: 1,
                 child: Text(""),
@@ -878,6 +899,3 @@ class _TesterInfoState extends State<RightInfoColumn> {
     );
   }
 }
-
-
-
