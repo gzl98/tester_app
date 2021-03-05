@@ -7,7 +7,6 @@ import 'package:tester_app/Utils/Utils.dart';
 import 'CharacterMiddle.dart';
 import 'package:tester_app/Utils/EventBusType.dart';
 
-
 class CharacterNewPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -36,22 +35,25 @@ class CharacterNewPageState extends State<CharacterNewPage> {
 
   //TODO：根据情况定义分数和时间，不赋值即为不显示
   //剩余答题时间
-  int remainingTime=90;
+  int remainingTime = 9;
+
+  //是否停止答题
+  bool stop = false;
 
   //TODO: 定义主体布局，长宽分别为1960*1350像素，设置大小时统一使用setWidth和setHeight，setSp函数，使用maxWidth和maxHeight不需要使用上述3个函数
   Widget buildMainWidget() {
     return Container(
-      child:  CharacterPageMiddle(),
+      child: CharacterPageMiddle(stop: stop),
     );
   }
 
   //TODO: 定义下一题按钮的函数体
   buildButtonNextQuestion() {
-      Navigator.pushNamedAndRemoveUntil(
-          context, "/Maze", (route) => false);
-      //触发下一题事件+回传测试所用时间
-      eventBus.fire(ChractSendDataEvent(1, 90 - this.remainingTime));
-      print('触发下一题！');
+    if (_timer.isActive) _timer.cancel();
+    Navigator.pushNamedAndRemoveUntil(context, "/Maze", (route) => false);
+    //触发下一题事件+回传测试所用时间
+    eventBus.fire(ChractSendDataEvent(1, 90 - this.remainingTime));
+    print('触发下一题！');
   }
 
   @override
@@ -107,14 +109,15 @@ class CharacterNewPageState extends State<CharacterNewPage> {
   void startCountdownTimer() {
     const oneSec = const Duration(seconds: 1);
     var callback = (timer) => {
-      setState(() {
-        if (remainingTime < 1) {
-          _timer.cancel();
-        } else {
-          remainingTime = remainingTime - 1;
-        }
-      })
-    };
+          setState(() {
+            if (remainingTime < 1) {
+              _timer.cancel();
+              stop = true;
+            } else {
+              remainingTime = remainingTime - 1;
+            }
+          })
+        };
     _timer = Timer.periodic(oneSec, callback);
   }
 
@@ -128,5 +131,4 @@ class CharacterNewPageState extends State<CharacterNewPage> {
               : Color.fromARGB(255, 255, 0, 0)),
     );
   }
-
 }
