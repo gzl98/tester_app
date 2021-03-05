@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,6 +47,24 @@ Future<bool> showQuitDialog(BuildContext context) {
                 child: Text('确定'),
                 onPressed: () => Navigator.pushNamedAndRemoveUntil(
                     context, "/showInfo", (router) => false),
+              ),
+            ],
+          ));
+}
+
+Future<bool> showExitDialog(BuildContext context) {
+  return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text('确定退出程序吗?'),
+            actions: [
+              FlatButton(
+                child: Text('暂不'),
+                onPressed: () => Navigator.pop(context),
+              ),
+              FlatButton(
+                child: Text('确定'),
+                onPressed: () => exit(0),
               ),
             ],
           ));

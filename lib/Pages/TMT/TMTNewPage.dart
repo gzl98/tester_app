@@ -1,20 +1,22 @@
+
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/DrawWidget/DrawPainter.dart';
 import 'package:tester_app/Fragments/MainFragment.dart';
 import 'package:tester_app/Fragments/QuestionInfoFragment.dart';
-import 'package:tester_app/Utils/Utils.dart';
-import 'CharacterMiddle.dart';
 import 'package:tester_app/Utils/EventBusType.dart';
+import 'package:tester_app/Utils/Utils.dart';
 
-class CharacterNewPage extends StatefulWidget {
+class TMTPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return CharacterNewPageState();
+    return TMTPageState();
   }
 }
 
-class CharacterNewPageState extends State<CharacterNewPage> {
+class TMTPageState extends State<TMTPage> {
   @override
   void initState() {
     // 强制横屏
@@ -22,38 +24,67 @@ class CharacterNewPageState extends State<CharacterNewPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
-    //监听事件接受
-    eventBus.on<ChractStartEvent>().listen((ChractStartEvent data) {
-      startCountdownTimer();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      //startCountdownTimer();
+      showConfirmDialog(context,questionContent,startCountdownTimer);
     });
   }
 
   //TODO:定义题目名称，规则
-  final String questionTitle = "符号编码";
+  final String questionTitle = "连点成线";
   final String questionContent =
-      "一.允许对照符号表填写\n二.禁止跳着填写，必须按顺序\n三.90秒时间内完成，110分满分";
+      "\t\t\t\tTMT规则 ";
 
-  //TODO：根据情况定义分数和时间，不赋值即为不显示
-  //剩余答题时间
-  int remainingTime = 9;
-
-  //是否停止答题
-  bool stop = false;
+  //TODO：根据情况定义分数和时间，不定义即为不显示
+  int score ;
+  int remainingTime = 300;
+  Timer _timer;
 
   //TODO: 定义主体布局，长宽分别为1960*1350像素，设置大小时统一使用setWidth和setHeight，setSp函数，使用maxWidth和maxHeight不需要使用上述3个函数
   Widget buildMainWidget() {
     return Container(
-      child: CharacterPageMiddle(stop: stop),
+      // color: Colors.redAccent,
+        child: MyPainterPage(imgPath: 'images/tmt.png',),
     );
   }
-
+  void showConfirmDialog(BuildContext context,String content, Function confirmCallback) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return new AlertDialog(
+            title: new Text("请阅读该题的规则"),
+            content: new Text(content),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () {
+                  confirmCallback();
+                  Navigator.of(context).pop();
+                },
+                child: new Text("确认答题"),
+              ),
+            ],
+          );
+        });
+  }
+  void startCountdownTimer() {
+    const oneSec = const Duration(seconds: 1);
+    var callback = (timer) => {
+      setState(() {
+        if (remainingTime < 1) {
+          _timer.cancel();
+        } else {
+          remainingTime = remainingTime - 1;
+        }
+      })
+    };
+    _timer = Timer.periodic(oneSec, callback);
+  }
   //TODO: 定义下一题按钮的函数体
-  buildButtonNextQuestion() {
-    if (_timer.isActive) _timer.cancel();
-    Navigator.pushNamedAndRemoveUntil(context, "/MazeNew", (route) => false);
-    //触发下一题事件+回传测试所用时间
-    eventBus.fire(ChractSendDataEvent(1, 90 - this.remainingTime));
-    print('触发下一题！');
+  onNextButtonPressed() {
+    if(this._timer.isActive) {this._timer.cancel();}
+      eventBus.fire(NextEvent(0,300-this.remainingTime));
+      Navigator.pushNamedAndRemoveUntil(
+          context, "/CharacterNew", (route) => false);
   }
 
   @override
@@ -74,6 +105,7 @@ class CharacterNewPageState extends State<CharacterNewPage> {
                 child: QuestionInfoFragment(
                   questionTitle: questionTitle,
                   questionContent: questionContent,
+                  score: score,
                   remainingTime: remainingTime,
                 ),
                 decoration: BoxDecoration(
@@ -93,42 +125,13 @@ class CharacterNewPageState extends State<CharacterNewPage> {
                 //右侧主要布局Fragment
                 child: MainFragment(
                   mainWidget: buildMainWidget(),
-                  onNextButtonPressed: buildButtonNextQuestion,
+                  onNextButtonPressed: onNextButtonPressed,
                 ),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  //计时器功能
-  Timer _timer;
-
-  void startCountdownTimer() {
-    const oneSec = const Duration(seconds: 1);
-    var callback = (timer) => {
-          setState(() {
-            if (remainingTime < 1) {
-              _timer.cancel();
-              stop = true;
-            } else {
-              remainingTime = remainingTime - 1;
-            }
-          })
-        };
-    _timer = Timer.periodic(oneSec, callback);
-  }
-
-  Widget buildTime() {
-    return Text(
-      '倒计时：' + remainingTime.toString() + 's',
-      style: TextStyle(
-          fontSize: setSp(50),
-          color: remainingTime > 10
-              ? Color.fromARGB(255, 17, 132, 255)
-              : Color.fromARGB(255, 255, 0, 0)),
     );
   }
 }
