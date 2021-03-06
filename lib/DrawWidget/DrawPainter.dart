@@ -144,6 +144,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return CupertinoPageScaffold(
       child: OrientationBuilder(
         builder: (context, orientation) {
@@ -166,15 +167,16 @@ class _MyPainterPageState extends State<MyPainterPage> {
                     child: RepaintBoundary(
                       key: rootWidgetKey,
                       child: CustomPaint(
-                          //painter: SelfForePainter(_assetImageFrame),
-                          //size: Size(setWidth(2000), setWidth(1000)),    //定义child时不需要定义size
+                          painter: SelfForePainter(_assetImageFrame),
+                          size: size,    //定义child时不需要定义size
                           foregroundPainter: _MyPainter(_pointsList),
                           //isComplex: true,
-                          child: RepaintBoundary(
-                            child: Image.asset(
-                              _imgPath,
-                            ),
-                          )),
+                          // child: RepaintBoundary(
+                          //   child: Image.asset(
+                          //     _imgPath,
+                          //   ),
+                          // )
+                      ),
                     ),
                     onPanUpdate: (detail) {
                       RenderBox referenceBox = context.findRenderObject();
