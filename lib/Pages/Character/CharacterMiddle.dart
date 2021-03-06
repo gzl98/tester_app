@@ -586,8 +586,8 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 child: Align(
                   child: Text(
                     "符号编码对照表",
-                    style:
-                        TextStyle(fontSize: setSp(40), fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        fontSize: setSp(40), fontWeight: FontWeight.w600),
                   ),
                   alignment: Alignment.bottomCenter,
                 ),
@@ -621,15 +621,15 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 child: Align(
                   child: Text(
                     "符号编码测试",
-                    style:
-                        TextStyle(fontSize: setSp(40), fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        fontSize: setSp(40), fontWeight: FontWeight.w600),
                   ),
                   alignment: Alignment.bottomCenter,
                 ),
               ),
               //符号编码测试图片
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -640,8 +640,14 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 ),
               ),
               //测试答题框
+              Container(
+                height: setHeight(20),
+              ),
               My_Row(0, 10, 1),
-              Expanded(flex: 1, child: Text("")),
+              Container(
+                height: setHeight(10),
+              ),
+              // Expanded(flex: 1, child: Text("")),
               //测试结果分数
               Expanded(
                   flex: 1,
@@ -672,7 +678,8 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                             child: Text(
                               "测试分数：",
                               style: TextStyle(
-                                  fontSize: setSp(40), fontWeight: FontWeight.w600),
+                                  fontSize: setSp(40),
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                           alignment: Alignment.bottomRight,
@@ -721,10 +728,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                     ),
                     alignment: Alignment.bottomCenter,
                   )),
-              Expanded(
-                flex: 1,
-                child: Text(""),
-              ),
+              // Expanded(flex: 1, child: Text("")),
               //数字键盘
               Expanded(
                   flex: 6,
