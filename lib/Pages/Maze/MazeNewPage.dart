@@ -84,7 +84,7 @@ class MazePageState extends State<MazePage> {
     if(this._timer.isActive) {this._timer.cancel();}
       eventBus.fire(NextEvent(2,30-this.remainingTime));
       Navigator.pushNamedAndRemoveUntil(
-          context, "/BVMT", (route) => false);
+          context, "/BVMTNew", (route) => false);
   }
 
   @override

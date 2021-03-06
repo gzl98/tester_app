@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class BVMTPageState extends State<BVMTPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       //startCountdownTimer();
-      showConfirmDialog(context,questionContent,startCountdownTimer);
+      showConfirmDialog(context, questionContent, startCountdownTimer);
     });
   }
 
@@ -36,21 +35,30 @@ class BVMTPageState extends State<BVMTPage> {
       "\t\t\t\t在本题中，您将要对六个几何图案进行记忆，六个几何图案是以2×3的形式排列在画板上的，首先您有10s的学习时间，在10s后，图案会消失，您需要在空白画板上尽可能在正确的位置绘制出相应图案，如果您已准备好，点击确认答题按钮，10s倒计时即将开始。";
 
   //TODO：根据情况定义分数和时间，不定义即为不显示
-  int score ;
+  int score;
+
   int remainingTime = 10;
+  int usedTime = 0;
   Timer _timer;
-  bool panelShow=false;
+  bool panelShow = false;
+
   //TODO: 定义主体布局，长宽分别为1960*1350像素，设置大小时统一使用setWidth和setHeight，setSp函数，使用maxWidth和maxHeight不需要使用上述3个函数
   Widget buildMainWidget() {
     return Container(
       // color: Colors.redAccent,
-        child:
-          !this.panelShow
-              ? Image.asset("images/BVMT.jpg",fit: BoxFit.fill,)
-              : MyPainterPage(imgPath: "images/blank.jpg",),
+      child: !this.panelShow
+          ? Image.asset(
+              "images/BVMT.jpg",
+              fit: BoxFit.fill,
+            )
+          : MyPainterPage(
+              imgPath: "images/blank.jpg",
+            ),
     );
   }
-  void showConfirmDialog(BuildContext context,String content, Function confirmCallback) {
+
+  void showConfirmDialog(
+      BuildContext context, String content, Function confirmCallback) {
     showDialog(
         context: context,
         builder: (context) {
@@ -69,44 +77,50 @@ class BVMTPageState extends State<BVMTPage> {
           );
         });
   }
+
   void startCountdownTimer() {
     const oneSec = const Duration(seconds: 1);
     var callback = (timer) => {
-      setState(() {
-        if (remainingTime <= 0) {
-          changeImg();
-          _timer.cancel();
-          startCountdownTimer_1();
-        } else {
-          remainingTime = remainingTime - 1;
-        }
-      })
-    };
+          setState(() {
+            if (remainingTime <= 0) {
+              changeImg();
+              _timer.cancel();
+              remainingTime = null;
+              startCountdownTimer_1();
+            } else {
+              remainingTime = remainingTime - 1;
+            }
+          })
+        };
     _timer = Timer.periodic(oneSec, callback);
   }
+
   void startCountdownTimer_1() {
     const oneSec = const Duration(seconds: 1);
     var callback = (timer) => {
-      setState(() {
-          remainingTime = remainingTime + 1;
-      })
-    };
+          setState(() {
+            usedTime = usedTime + 1;
+          })
+        };
     _timer = Timer.periodic(oneSec, callback);
   }
+
   void changeImg() {
     setState(() {
-      panelShow =! panelShow;
+      panelShow = !panelShow;
     });
   }
+
   //TODO: 定义下一题按钮的函数体
   onNextButtonPressed() {
-    if(this._timer.isActive) {this._timer.cancel();}
-    if(this.panelShow){
-      eventBus.fire(NextEvent(3,this.remainingTime));
-      Navigator.pushNamedAndRemoveUntil(
-          context, "/WMS", (route) => false);
+    if (this._timer.isActive) {
+      this._timer.cancel();
     }
-
+    if (this.panelShow) {
+      eventBus.fire(NextEvent(3, this.usedTime));
+      Navigator.pushNamedAndRemoveUntil(
+          context, "/completePage", (route) => false);
+    }
   }
 
   @override

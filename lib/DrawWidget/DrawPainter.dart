@@ -64,10 +64,9 @@ class _MyPainter extends CustomPainter {
 
 class MyPainterPage extends StatefulWidget {
   final String imgPath;
-  const MyPainterPage({
-    Key key,
-    this.imgPath
-  }):super(key: key);
+
+  const MyPainterPage({Key key, this.imgPath}) : super(key: key);
+
   @override
   _MyPainterPageState createState() => _MyPainterPageState();
 }
@@ -78,22 +77,26 @@ class _MyPainterPageState extends State<MyPainterPage> {
   double _paintStokeWidth = 1.0;
   double _bottomBarLeft = 44.0;
 
-
   ui.Image _assetImageFrame;
+
   //画图的Path
   String _imgPath;
+
   //截图获取的key
   GlobalKey rootWidgetKey = GlobalKey();
+
   //截图获取的图片
   List<Uint8List> images = List();
 
   @override
   void initState() {
     super.initState();
-    this._imgPath=widget.imgPath;
+    this._imgPath = widget.imgPath;
     _getAssetImage();
     //监听到下一题事件时触发->截图
-    eventBus.on<NextEvent>().listen((NextEvent data) => capturePng(data.value,data.answerTime));
+    eventBus
+        .on<NextEvent>()
+        .listen((NextEvent data) => capturePng(data.value, data.answerTime));
   }
 
   //获取本地图片
@@ -109,7 +112,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
   }
 
   //截图方法
-  capturePng(index,time) async {
+  capturePng(index, time) async {
     try {
       print('监听到下一题信号！-执行截图方法');
       RenderRepaintBoundary boundary =
@@ -119,15 +122,16 @@ class _MyPainterPageState extends State<MyPainterPage> {
       Uint8List pngBytes = byteData.buffer.asUint8List();
       /*保存图片*/
       Directory appDocPath = await getApplicationDocumentsDirectory();
-      String appDocPathString=appDocPath.path;
-      final imageFile = File(appDocPathString+"/capture.png");
+      String appDocPathString = appDocPath.path;
+      final imageFile = File(appDocPathString + "/capture.png");
       images.add(pngBytes);
       print("appDocPath= " +
           appDocPathString +
           " imageFile= " +
           imageFile.path.toString());
       await imageFile.writeAsBytes(pngBytes);
-      //setAnswer(index, time, imagePath: imageFile.path.toString(),imageName: 'capture.png');
+      setAnswer(index, time,
+          imagePath: imageFile.path.toString(), imageName: 'capture.png');
       //保存图片到相册的方法
       //saveToPictures(pngBytes);
       setState(() {});
@@ -140,7 +144,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    var size = MediaQuery.of(context).size;
     return CupertinoPageScaffold(
       child: OrientationBuilder(
         builder: (context, orientation) {
@@ -160,55 +164,53 @@ class _MyPainterPageState extends State<MyPainterPage> {
             child: Stack(
               children: <Widget>[
                 GestureDetector(
-                  child: RepaintBoundary(
-                    key: rootWidgetKey,
-                    child: CustomPaint(
-                      //painter: SelfForePainter(_assetImageFrame),
-                      size: Size(setWidth(2000), setWidth(1000)),    //定义child时不需要定义size
-                      foregroundPainter: _MyPainter(_pointsList),
-                      //isComplex: true,
-                      child:RepaintBoundary(
-                        child: Image.asset(_imgPath,width:setWidth(1960),height: setWidth(1350),),
-                      )
+                    child: RepaintBoundary(
+                      key: rootWidgetKey,
+                      child: CustomPaint(
+                          painter: SelfForePainter(_assetImageFrame),
+                          size: size,    //定义child时不需要定义size
+                          foregroundPainter: _MyPainter(_pointsList),
+                          //isComplex: true,
+                          // child: RepaintBoundary(
+                          //   child: Image.asset(
+                          //     _imgPath,
+                          //   ),
+                          // )
+                      ),
                     ),
-                  ),
-                  onPanUpdate: (detail) {
-                    RenderBox referenceBox = context.findRenderObject();
-                    Offset localPosition =
-                        referenceBox.globalToLocal(detail.globalPosition);
-                    // print(this._paintColor.toString());
-                    // print(localPosition.toString());
-                    setState(() {
-                      if(_paintColor == whiteColor){
-
-                        //this._pointsList.removeWhere((element) => element)
-                        for (var i = 0; i < _pointsList.length; i++) {
-                          if (localPosition!=null&&_pointsList[i] != null ) {
-                              if(_pointsList[i].eqOffset(localPosition,_paintStokeWidth)){
-                                  _pointsList[i].color=whiteColor;
-                                  //_pointsList.removeAt(i);
-                                  _pointsList[i]=null;
-
+                    onPanUpdate: (detail) {
+                      RenderBox referenceBox = context.findRenderObject();
+                      Offset localPosition =
+                          referenceBox.globalToLocal(detail.globalPosition);
+                      // print(this._paintColor.toString());
+                      // print(localPosition.toString());
+                      setState(() {
+                        if (_paintColor == whiteColor) {
+                          //this._pointsList.removeWhere((element) => element)
+                          for (var i = 0; i < _pointsList.length; i++) {
+                            if (localPosition != null &&
+                                _pointsList[i] != null) {
+                              if (_pointsList[i]
+                                  .eqOffset(localPosition, _paintStokeWidth)) {
+                                _pointsList[i].color = whiteColor;
+                                //_pointsList.removeAt(i);
+                                _pointsList[i] = null;
                               }
+                            }
                           }
+                          _pointsList = new List.from(_pointsList);
+                        } else {
+                          _pointsList = new List.from(_pointsList)
+                            ..add(WPPainter(
+                                localPosition, _paintColor, _paintStokeWidth));
                         }
-                        _pointsList = new List.from(_pointsList);
-
-                      }
-                      else{
-                        _pointsList = new List.from(_pointsList)
-                          ..add(WPPainter(
-                              localPosition, _paintColor, _paintStokeWidth));
-                      }
-
-                    });
-                  },
-                  onPanEnd: (detail) => {
-                    setState((){
-                      _pointsList.add(null);
-                    })
-                  }
-                ),
+                      });
+                    },
+                    onPanEnd: (detail) => {
+                          setState(() {
+                            _pointsList.add(null);
+                          })
+                        }),
                 //白色按钮
                 bottomCircleColorButton(whiteColor, 0),
                 //红色按钮
@@ -263,7 +265,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
             _setPaintColor(whiteColor);
           } else if (index == 1) {
             _setPaintColor(redColor);
-          } else if (index == 2){
+          } else if (index == 2) {
             _setPaintColor(blackColor);
           } else {
             _pickerColor();

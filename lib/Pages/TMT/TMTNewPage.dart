@@ -84,7 +84,7 @@ class TMTPageState extends State<TMTPage> {
     if(this._timer.isActive) {this._timer.cancel();}
       eventBus.fire(NextEvent(0,300-this.remainingTime));
       Navigator.pushNamedAndRemoveUntil(
-          context, "/Character", (route) => false);
+          context, "/CharacterNew", (route) => false);
   }
 
   @override

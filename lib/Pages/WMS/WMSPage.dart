@@ -1,8 +1,10 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Fragments/MainFragment.dart';
 import 'package:tester_app/Fragments/QuestionInfoFragment.dart';
+import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 class WMSPage extends StatefulWidget {
@@ -29,7 +31,7 @@ class WMSPageState extends State<WMSPage> {
 
   //TODO：根据情况定义分数和时间，不定义即为不显示
   int score = 30;
-  int remainingTime;
+  int remainingTime = 30;
 
   //TODO: 定义主体布局，长宽分别为1960*1350像素，设置大小时统一使用setWidth和setHeight，setSp函数，使用maxWidth和maxHeight不需要使用上述3个函数
   Widget buildMainWidget() {
@@ -42,28 +44,72 @@ class WMSPageState extends State<WMSPage> {
   }
 
   List<double> buttonX = [
-    630,
-    1120,
+    300,
+    900,
     1610,
-    450,
-    1120,
-    1610,
+    400,
+    1000,
+    1500,
     140,
     630,
     1120,
     1610
   ];
-  List<double> buttonY = [125, 125, 125, 500, 615, 615, 800, 1000, 950, 1100];
+  List<double> buttonY = [200, 125, 200, 500, 520, 615, 800, 1000, 950, 1000];
+
+  int index;
+  Timer _timer;
+  int currentTime = 0;
+  WMSQuestion _wmsQuestion = WMSQuestion();
+  final pointOneSec = const Duration(milliseconds: 100);
+  ButtonState buttonState = ButtonState.showQuestion;
+  bool success = true;
+  Map nextButtonText = {
+    ButtonState.showQuestion: "开 始 做 题",
+    ButtonState.showingQuestion: "请观察方块亮起顺序",
+    ButtonState.nextQuestion: "下 一 题",
+    ButtonState.doingQuestion: "请按照顺序点击方块",
+  };
+
+  void callback(timer) {
+    setState(() {
+      if (currentTime == 0) {
+        if (_wmsQuestion.hasNextIndex()) {
+          index = _wmsQuestion.getNextQuestion();
+        } else {
+          _timer.cancel();
+          index = null;
+          buttonState = ButtonState.doingQuestion;
+          _wmsQuestion.resetIndex();
+        }
+      } else if (currentTime == 8) {
+        index = null;
+      }
+      currentTime = (currentTime + 1) % 10;
+    });
+  }
+
+  void showQuestions() {
+    setState(() {
+      buttonState = ButtonState.showingQuestion;
+    });
+    _wmsQuestion.generateRandomQuestionList();
+    _timer = Timer.periodic(pointOneSec, callback);
+  }
 
   List<Widget> buildClickedButtons() {
     List<Widget> buttons = [];
     for (int i = 0; i < 10; i++) {
       ElevatedButton button = ElevatedButton(
         onPressed: () => buttonClicked(i),
-        child: Text((i + 1).toString()),
+        child: Text(
+          (i + 1).toString(),
+          style: TextStyle(fontSize: setSp(75), fontWeight: FontWeight.bold),
+        ),
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.blue[700]),
-          elevation: MaterialStateProperty.all(setWidth(2)),
+          backgroundColor: MaterialStateProperty.all(
+              i == index ? Colors.amber : Colors.blue[700]),
+          elevation: MaterialStateProperty.all(setWidth(10)),
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(setWidth(20))),
           )),
@@ -83,10 +129,49 @@ class WMSPageState extends State<WMSPage> {
     return buttons;
   }
 
-  void buttonClicked(int index) {}
+  void buttonClicked(int index) {
+    if (buttonState != ButtonState.doingQuestion) return;
+    if (_wmsQuestion.hasNextIndex()) {
+      if (index != _wmsQuestion.getNextQuestion()) {
+        setState(() {
+          success = false;
+          buttonState = _wmsQuestion.questionAllDone()
+              ? ButtonState.nextQuestion
+              : ButtonState.showQuestion;
+        });
+        showMessageDialog(context, "回答错误！");
+      }
+      if (_wmsQuestion.currentQuestionIsDone()) {
+        setState(() {
+          success = false;
+          buttonState = _wmsQuestion.questionAllDone()
+              ? ButtonState.nextQuestion
+              : ButtonState.showQuestion;
+        });
+        showMessageDialog(context, "回答正确！");
+      }
+    }
+  }
 
   //TODO: 定义下一题按钮的函数体
-  onNextButtonPressed() {}
+  onNextButtonPressed() {
+    switch (buttonState) {
+      case ButtonState.showQuestion:
+        // showing questions
+        showQuestions();
+        break;
+      case ButtonState.showingQuestion:
+        break;
+      case ButtonState.doingQuestion:
+        break;
+      case ButtonState.doingQuestionDone:
+        break;
+      case ButtonState.nextQuestion:
+        // submit and goto next question
+        showMessageDialog(context, "提交成功");
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +191,8 @@ class WMSPageState extends State<WMSPage> {
                 child: QuestionInfoFragment(
                   questionTitle: questionTitle,
                   questionContent: questionContent,
-                  score: score,
                   remainingTime: remainingTime,
+                  score: score,
                 ),
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 230, 230, 230),
@@ -127,6 +212,10 @@ class WMSPageState extends State<WMSPage> {
                 child: MainFragment(
                   mainWidget: buildMainWidget(),
                   onNextButtonPressed: onNextButtonPressed,
+                  nextButtonText: buttonState != ButtonState.showQuestion
+                      ? nextButtonText[buttonState]
+                      : nextButtonText[buttonState] +
+                          _wmsQuestion.getCurrentLength().toString(),
                 ),
               ),
             ],
@@ -135,4 +224,12 @@ class WMSPageState extends State<WMSPage> {
       ),
     );
   }
+}
+
+enum ButtonState {
+  showQuestion,
+  showingQuestion,
+  doingQuestion,
+  doingQuestionDone,
+  nextQuestion,
 }

@@ -61,6 +61,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: () => showExitDialog(context),
       child: Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +105,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                 onPressed: () {
                   _start(context); //开始答题
                   Navigator.pushNamedAndRemoveUntil(
-                      context, "/TMT", (router) => false);
+                      context, "/TMTNew", (router) => false);
                 },
               ),
             ),
