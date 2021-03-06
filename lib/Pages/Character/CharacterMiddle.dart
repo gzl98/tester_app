@@ -200,7 +200,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
       child: Text(
         num.toString(),
         style: TextStyle(
-            fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.black87),
+            fontSize: setSp(50), fontWeight: FontWeight.w600, color: Colors.black87),
       ),
     );
   }
