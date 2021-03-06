@@ -587,7 +587,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                   child: Text(
                     "符号编码对照表",
                     style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+                        TextStyle(fontSize: setSp(40), fontWeight: FontWeight.w600),
                   ),
                   alignment: Alignment.bottomCenter,
                 ),
@@ -622,7 +622,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                   child: Text(
                     "符号编码测试",
                     style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+                        TextStyle(fontSize: setSp(40), fontWeight: FontWeight.w600),
                   ),
                   alignment: Alignment.bottomCenter,
                 ),
