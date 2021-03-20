@@ -43,7 +43,7 @@ class TMTPageState extends State<TMTPage> {
   //TODO: 定义主体布局，长宽分别为1960*1350像素，设置大小时统一使用setWidth和setHeight，setSp函数，使用maxWidth和maxHeight不需要使用上述3个函数
   Widget buildMainWidget() {
     return Container(
-      // color: Colors.redAccent,
+        color: Colors.redAccent,
         child: MyPainterPage(imgPath: 'images/tmt.png',),
     );
   }
