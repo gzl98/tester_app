@@ -9,7 +9,6 @@ class testNavPage extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return testNav();
   }
 }
@@ -413,7 +412,6 @@ class testNav extends State<testNavPage>{
   @override
   void initState() {
     super.initState();
-    // TODO: implement initState
   }
   
 }

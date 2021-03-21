@@ -83,6 +83,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_bubble:
+    dependency: "direct main"
+    description:
+      name: flutter_bubble
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.1"
   flutter_screenutil:
     dependency: "direct main"
     description:
