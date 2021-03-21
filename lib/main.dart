@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tester_app/Fragments/QuestionFirstFragment.dart';
+import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompletePage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
@@ -13,7 +15,8 @@ import 'package:tester_app/Utils/HttpUtils.dart';
 
 import 'Utils/Utils.dart';
 
-String bootPage = "/login";
+String bootPage = WMSPage.routerName;
+// String bootPage = QuestionFirstFragment.routerName;
 // String bootPage = "/login";
 // String bootPage = "/completeInfo";
 // String bootPage = "/showInfo";
@@ -40,11 +43,14 @@ class MyApp extends StatelessWidget {
         // "/Character": (context) => CharacterPage(),
         // "/Maze": (context) => MazePage(),
         // "/BVMT": (context) => BMVTPage(),
-        "/WMS": (context) => WMSPage(),
+        WMSPage.routerName: (context) => WMSPage(),
         "/TMTNew": (context) => TMTPage(),
         "/CharacterNew": (context) => CharacterNewPage(),
         "/MazeNew": (context) => MazePage(),
         "/BVMTNew": (context) => BVMTPage(),
+        QuestionFirstFragment.routerName: (context) => QuestionFirstFragment(),
+        QuestionSecondFragment.routerName: (context) =>
+            QuestionSecondFragment(),
       },
     );
   }
