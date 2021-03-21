@@ -7,12 +7,14 @@ import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/Maze/MazePage.dart';
 import 'package:tester_app/Pages/Character/CharacterPage.dart';
+import 'package:tester_app/Pages/Symbol/SymbolMainPage.dart';
 import 'package:tester_app/Pages/TMT/TMTPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
+import 'package:tester_app/Pages/Symbol/SymbolMainPage.dart';
 
 import 'Utils/Utils.dart';
 
-String bootPage = "/login";
+String bootPage = "/Symbol";
 // String bootPage = "/completeInfo";
 // String bootPage = "/showInfo";
 
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
         "/Character": (context) => CharacterPage(),
         "/Maze": (context) => MazePage(),
         "/BVMT": (context) => BMVTPage(),
+        "/Symbol":(context)=>SymbolMainPage(),
       },
     );
   }
