@@ -11,9 +11,10 @@ import 'package:tester_app/Pages/TMT/TMTNewPage.dart';
 import 'package:tester_app/Pages/WMS/WMSPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 
+import 'Pages/testNavPage/testNavPage.dart';
 import 'Utils/Utils.dart';
 
-String bootPage = "/login";
+String bootPage = "/testList";
 // String bootPage = "/login";
 // String bootPage = "/completeInfo";
 // String bootPage = "/showInfo";
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         "/CharacterNew": (context) => CharacterNewPage(),
         "/MazeNew": (context) => MazePage(),
         "/BVMTNew": (context) => BVMTPage(),
+        "/testList": (context) => testNavPage(),
       },
     );
   }
