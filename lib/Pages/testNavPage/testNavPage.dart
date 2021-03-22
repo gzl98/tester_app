@@ -6,6 +6,7 @@ import 'package:flutter_bubble/bubble_widget.dart';
 
 
 class testNavPage extends StatefulWidget{
+  static const routerName = "/testNavPage";
 
   @override
   State<StatefulWidget> createState() {

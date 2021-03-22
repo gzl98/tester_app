@@ -26,42 +26,27 @@ class WMSPageState extends State<WMSPage> {
     super.initState();
   }
 
-  Widget buildMainWidget() {
-    return Container(
-      // color: Colors.redAccent,
-      child: Stack(
-        children: buildClickedButtons(),
-      ),
-    );
-  }
-
   List<double> buttonX = [
-    300,
-    900,
-    1610,
     400,
-    1000,
-    1500,
-    140,
-    630,
-    1120,
-    1610
+    950,
+    1450,
+    2100,
+    2050,
+    250,
+    650,
+    1150,
+    1550,
+    1950
   ];
-  List<double> buttonY = [200, 125, 200, 500, 520, 615, 800, 1000, 950, 1000];
+  List<double> buttonY = [300, 100, 300, 100, 520, 1100, 800, 1100, 800, 1050];
 
   int index;
   Timer _timer;
   int currentTime = 0;
   WMSQuestion _wmsQuestion = WMSQuestion();
   final pointOneSec = const Duration(milliseconds: 100);
-  ButtonState buttonState = ButtonState.showQuestion;
+  CurrentState buttonState = CurrentState.showQuestion;
   bool success = true;
-  Map nextButtonText = {
-    ButtonState.showQuestion: "开 始 做 题",
-    ButtonState.showingQuestion: "请观察方块亮起顺序",
-    ButtonState.nextQuestion: "下 一 题",
-    ButtonState.doingQuestion: "请按照顺序点击方块",
-  };
 
   void callback(timer) {
     setState(() {
@@ -71,7 +56,7 @@ class WMSPageState extends State<WMSPage> {
         } else {
           _timer.cancel();
           index = null;
-          buttonState = ButtonState.doingQuestion;
+          buttonState = CurrentState.doingQuestion;
           _wmsQuestion.resetIndex();
         }
       } else if (currentTime == 8) {
@@ -83,7 +68,7 @@ class WMSPageState extends State<WMSPage> {
 
   void showQuestions() {
     setState(() {
-      buttonState = ButtonState.showingQuestion;
+      buttonState = CurrentState.showingQuestion;
     });
     _wmsQuestion.generateRandomQuestionList();
     _timer = Timer.periodic(pointOneSec, callback);
@@ -122,14 +107,14 @@ class WMSPageState extends State<WMSPage> {
   }
 
   void buttonClicked(int index) {
-    if (buttonState != ButtonState.doingQuestion) return;
+    if (buttonState != CurrentState.doingQuestion) return;
     if (_wmsQuestion.hasNextIndex()) {
       if (index != _wmsQuestion.getNextQuestion()) {
         setState(() {
           success = false;
           buttonState = _wmsQuestion.questionAllDone()
-              ? ButtonState.nextQuestion
-              : ButtonState.showQuestion;
+              ? CurrentState.questionAllDone
+              : CurrentState.showQuestion;
         });
         showMessageDialog(context, "回答错误！");
       }
@@ -137,12 +122,143 @@ class WMSPageState extends State<WMSPage> {
         setState(() {
           success = false;
           buttonState = _wmsQuestion.questionAllDone()
-              ? ButtonState.nextQuestion
-              : ButtonState.showQuestion;
+              ? CurrentState.questionAllDone
+              : CurrentState.showQuestion;
         });
         showMessageDialog(context, "回答正确！");
       }
     }
+  }
+
+  Widget buildTopWidget() {
+    return Container(
+      padding: EdgeInsets.only(left: setWidth(140)),
+      alignment: Alignment.centerLeft,
+      width: maxWidth,
+      height: setHeight(200),
+      color: Color.fromARGB(255, 48, 48, 48),
+      child: Text(
+        "长度：3位",
+        style: TextStyle(color: Colors.white, fontSize: setSp(55)),
+      ),
+    );
+  }
+
+  Widget buildMainWidget() {
+    return Container(
+      width: maxWidth,
+      height: maxHeight - setHeight(205),
+      color: Color.fromARGB(255, 238, 241, 240),
+      child: Stack(
+        children: buildClickedButtons() +
+            [
+              Center(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: setHeight(140)),
+                  width: setWidth(820),
+                  height: setHeight(120),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.35),
+                        blurRadius: setWidth(5),
+                        offset: Offset(setWidth(0), setHeight(3)),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Center(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: setHeight(140)),
+                  alignment: Alignment.center,
+                  width: setWidth(850),
+                  height: setHeight(120),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Color.fromARGB(255, 236, 239, 238),
+                        Color.fromARGB(255, 250, 250, 250),
+                        Color.fromARGB(255, 236, 239, 238),
+                      ],
+                    ),
+                  ),
+                  child: Text(
+                    "准 备",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: setSp(70), color: Colors.deepOrangeAccent),
+                  ),
+                ),
+              ),
+            ],
+      ),
+    );
+  }
+
+  Widget buildFloatWidget() {
+    return Container(
+      width: maxWidth,
+      height: maxHeight,
+      color: Color.fromARGB(220, 150, 150, 150),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: setHeight(100),
+          ),
+          Container(
+            width: setWidth(700),
+            height: setHeight(700),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 229, 229, 229),
+                borderRadius: BorderRadius.all(Radius.circular(setWidth(50))),
+                boxShadow: [
+                  BoxShadow(
+                      color: Color.fromARGB(255, 100, 100, 100),
+                      blurRadius: setWidth(10),
+                      offset: Offset(setWidth(1), setHeight(2)))
+                ]),
+            child: Text(
+              "熟悉操作方法",
+              style: TextStyle(fontSize: setSp(60)),
+            ),
+          ),
+          SizedBox(
+            height: setHeight(250),
+          ),
+          Container(
+            width: setWidth(500),
+            height: setHeight(120),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xff418ffc), Color(0xff174cfc)],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(setWidth(1), setHeight(1)),
+                    blurRadius: setWidth(5),
+                  )
+                ]),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.transparent)),
+              onPressed: () {},
+              child: Text(
+                "开始",
+                style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -151,30 +267,39 @@ class WMSPageState extends State<WMSPage> {
         onWillPop: () => showQuitDialog(context),
         child: Scaffold(
           body: Container(
-              // 主要背景
-              color: Colors.grey[100],
-              width: maxWidth,
-              height: maxHeight,
-              child: Stack(
-                children: [
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Container(
-                      width: maxWidth,
-                      height: setHeight(200),
-                      color: Color.fromARGB(255, 48, 48, 48),
-                    ),
-                    buildMainWidget(),
-                  ]),
-                ],
-              )),
+            // 主要背景
+            color: Colors.grey[100],
+            width: maxWidth,
+            height: maxHeight,
+            child: Stack(
+              children: [
+                Container(
+                  width: maxWidth,
+                  height: maxHeight,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        buildTopWidget(),
+                        Container(
+                          width: maxWidth,
+                          height: setHeight(5),
+                          color: Colors.red,
+                        ),
+                        buildMainWidget(),
+                      ]),
+                ),
+                buildFloatWidget(),
+              ],
+            ),
+          ),
         ));
   }
 }
 
-enum ButtonState {
-  showQuestion,
-  showingQuestion,
-  doingQuestion,
-  doingQuestionDone,
-  nextQuestion,
+enum CurrentState {
+  showQuestion, //显示开始浮窗
+  showingQuestion, //正式显示题目
+  doingQuestion, //开始答题
+  doingQuestionDone, //答题完毕
+  questionAllDone //全部答题完毕
 }

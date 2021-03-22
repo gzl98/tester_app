@@ -11,6 +11,7 @@ import 'package:tester_app/Pages/BVMT-R/BVMTNewPage.dart';
 import 'package:tester_app/Pages/Maze/MazeNewPage.dart';
 import 'package:tester_app/Pages/TMT/TMTNewPage.dart';
 import 'package:tester_app/Pages/WMS/WMSPage.dart';
+import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 
 import 'Utils/Utils.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         QuestionFirstFragment.routerName: (context) => QuestionFirstFragment(),
         QuestionSecondFragment.routerName: (context) =>
             QuestionSecondFragment(),
+        testNavPage.routerName: (context) => testNavPage(),
       },
     );
   }
