@@ -2,21 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tester_app/Fragments/MainFragment.dart';
-import 'package:tester_app/Fragments/QuestionInfoFragment.dart';
 import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
-class WMSPage extends StatefulWidget {
-  static const routerName = "/WMSPage";
+class StroopPage extends StatefulWidget {
+  static const routerName = "/StroopWordPage";
 
   @override
   State<StatefulWidget> createState() {
-    return WMSPageState();
+    return StroopPageState();
   }
 }
 
-class WMSPageState extends State<WMSPage> {
+class StroopPageState extends State<StroopPage> {
   @override
   void initState() {
     // 强制横屏
@@ -26,21 +24,9 @@ class WMSPageState extends State<WMSPage> {
     super.initState();
   }
 
-  List<double> buttonX = [
-    400,
-    950,
-    1450,
-    2100,
-    2050,
-    250,
-    650,
-    1150,
-    1550,
-    1950
-  ];
-  List<double> buttonY = [300, 100, 300, 100, 520, 1100, 800, 1100, 800, 1050];
 
   int index;
+  int _currentIndex=1;
   Timer _timer;
   int currentTime = 0;
   WMSQuestion _wmsQuestion = WMSQuestion();
@@ -97,61 +83,6 @@ class WMSPageState extends State<WMSPage> {
     });
   }
 
-  List<Widget> buildClickedButtons() {
-    List<Widget> buttons = [];
-    for (int i = 0; i < 10; i++) {
-      ElevatedButton button = ElevatedButton(
-        onPressed: () => buttonClicked(i),
-        child: Text(
-          (i + 1).toString(),
-          style: TextStyle(fontSize: setSp(75), fontWeight: FontWeight.bold),
-        ),
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-              i == index ? Colors.blue[700] : Color.fromARGB(255, 98, 78, 75)),
-          elevation: MaterialStateProperty.all(setWidth(10)),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(setWidth(20))),
-          )),
-        ),
-      );
-      Positioned positioned = Positioned(
-        left: setWidth(buttonX[i]),
-        top: setHeight(buttonY[i]),
-        child: Container(
-          width: setWidth(200),
-          height: setHeight(200),
-          child: button,
-        ),
-      );
-      buttons.add(positioned);
-    }
-    return buttons;
-  }
-
-  void buttonClicked(int index) {
-    if (currentState != CurrentState.doingQuestion) return;
-    if (_wmsQuestion.hasNextIndex()) {
-      if (index != _wmsQuestion.getNextQuestion()) {
-        setState(() {
-          success = false;
-          currentState = _wmsQuestion.questionAllDone()
-              ? CurrentState.questionAllDone
-              : CurrentState.questionBegin;
-        });
-        showMessageDialog(context, "回答错误！");
-      }
-      if (_wmsQuestion.currentQuestionIsDone()) {
-        setState(() {
-          success = false;
-          currentState = _wmsQuestion.questionAllDone()
-              ? CurrentState.questionAllDone
-              : CurrentState.questionBegin;
-        });
-        showMessageDialog(context, "回答正确！");
-      }
-    }
-  }
 
   Widget buildTopWidget() {
     return Container(
@@ -161,15 +92,14 @@ class WMSPageState extends State<WMSPage> {
       height: setHeight(200),
       color: Color.fromARGB(255, 48, 48, 48),
       child: Text(
-        "长度：3位",
+        "进度："+this._currentIndex.toString()+"/32",
         style: TextStyle(color: Colors.white, fontSize: setSp(55)),
       ),
     );
   }
-
   Widget buildMainWidget() {
     return Stack(
-      children: buildClickedButtons() +
+      children:
           [
             Center(
               child: Container(
