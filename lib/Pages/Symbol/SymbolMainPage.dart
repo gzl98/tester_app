@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -20,8 +21,35 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   bool delayedShow=false;
   //延时时间设置
   int delayedTime=1;
+  //符号检索图片数
+  int symbolPictureNumber=36;
+  //是否开始新一轮答题展示
+  bool newAnswerRound=false;
 
 
+
+  //获取随机图片编号
+  getRandomNumber(){
+    int index = Random().nextInt(symbolPictureNumber)+1;
+    return index;
+  }
+
+  //检索图片组件
+  Widget symbolWidget(){
+    int tempNum=getRandomNumber();
+    return Expanded(
+      flex: 1,
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('images/symbol/'+tempNum.toString()+'.png'),
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.center),
+        ),
+      ),
+    );
+  }
 
   //*顶部背景*
   Widget buildTopWidget() {
@@ -91,7 +119,17 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                   decoration: BoxDecoration(
                       color: Color.fromARGB(20, 0, 0, 0),
                       border: Border.all(color: Colors.blue, width: 3.0),
-                      borderRadius: BorderRadius.all(Radius.circular(20.0))))),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                child: delayedShow?
+                    Row(
+                      children: [
+                        symbolWidget(),
+                        symbolWidget(),
+                      ],
+                    ):
+                Text(""),
+              )
+          ),
           //空白中
           Expanded(
             flex: 1,
@@ -107,7 +145,16 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                     color: Color.fromARGB(20, 0, 0, 0),
                     border: Border.all(color: Colors.indigo[100], width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: Column(
+                child: delayedShow?Row(
+                  children: [
+                    symbolWidget(),
+                    symbolWidget(),
+                    symbolWidget(),
+                    symbolWidget(),
+                    symbolWidget(),
+                  ],
+                ):
+                Column(
                   children: <Widget>[
                     Expanded(
                       flex: 1,
@@ -125,7 +172,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                           //准备两个字
                           Expanded(
                             flex: 2,
-                            child: delayedShow ? Container(): Container(
+                            child: Container(
                               alignment: Alignment.center,
                               child: Text(
                                 "准备",
@@ -398,6 +445,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     );
   }
 
+  //主界面布局
   @override
   Widget buildPage(BuildContext context) {
     // TODO: implement build
