@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
         QuestionFirstFragment.routerName: (context) => QuestionFirstFragment(),
         QuestionSecondFragment.routerName: (context) =>
             QuestionSecondFragment(),
+        testNavPage.routerName: (context) => testNavPage(),
       },
     );
   }
