@@ -141,16 +141,13 @@ class WMSPageState extends State<WMSPage> {
               ? CurrentState.questionAllDone
               : CurrentState.questionWrong;
         });
-        showMessageDialog(context, "回答错误！");
-      }
-      if (_wmsQuestion.currentQuestionIsDone()) {
+      } else if (_wmsQuestion.currentQuestionIsDone()) {
         setState(() {
-          success = false;
+          success = true;
           currentState = _wmsQuestion.questionAllDone()
               ? CurrentState.questionAllDone
               : CurrentState.questionCorrect;
         });
-        showMessageDialog(context, "回答正确！");
       }
     }
   }
