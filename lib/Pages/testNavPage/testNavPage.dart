@@ -5,16 +5,16 @@ import 'package:flutter_bubble/flutter_bubble.dart';
 import 'package:flutter_bubble/bubble_widget.dart';
 
 
-class testNavPage extends StatefulWidget{
+class TestNavPage extends StatefulWidget{
   static const routerName = "/testNavPage";
 
   @override
   State<StatefulWidget> createState() {
-    return testNav();
+    return TestNav();
   }
 }
 
-class testNav extends State<testNavPage>{
+class TestNav extends State<TestNavPage>{
   String _username="Yu";
   String _playImgPath = "images/play.png";
   String _rightImgPath = "images/v2.0/right.png";
@@ -39,7 +39,7 @@ class testNav extends State<testNavPage>{
         ),
         new Spacer(flex: 1,),
         new Expanded(
-          flex: 140,
+          flex: 200,
           child: buildContext(),
         ),
         new Spacer(flex: 1,),

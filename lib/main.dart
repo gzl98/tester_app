@@ -16,7 +16,7 @@ import 'package:tester_app/Utils/HttpUtils.dart';
 
 import 'Utils/Utils.dart';
 
-String bootPage = WMSPage.routerName;
+String bootPage = TestNavPage.routerName;
 // String bootPage = QuestionFirstFragment.routerName;
 // String bootPage = "/login";
 // String bootPage = "/completeInfo";
@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
         "/CharacterNew": (context) => CharacterNewPage(),
         "/MazeNew": (context) => MazePage(),
         "/BVMTNew": (context) => BVMTPage(),
+        TestNavPage.routerName: (context) => TestNavPage(),
         QuestionFirstFragment.routerName: (context) => QuestionFirstFragment(),
         QuestionSecondFragment.routerName: (context) =>
             QuestionSecondFragment(),
