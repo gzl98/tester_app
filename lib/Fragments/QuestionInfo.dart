@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
 class QuestionInfo {
+  //导航页面
+  String questionAbility;
+  String questionNavPurpose;
+  String benefitExample;
+  String questionImgPath;
   //第一个页面
   String questionName; //题目名称
   String questionPurpose; //题目目的
@@ -19,10 +24,14 @@ class QuestionInfo {
 
   QuestionInfo(
     this.questionName,
+    this.questionAbility,
+    this.questionImgPath,
     this.questionPurpose,
     this.questionShowWidget,
     this.questionRules,
     this.questionRulesWidget, {
+    this.benefitExample,
+    this.questionNavPurpose,
     this.questionNotes,
     this.questionRuleNotes,
     this.questionRules2,
@@ -32,6 +41,8 @@ class QuestionInfo {
 
   QuestionInfo.fromMap(Map<String, String> data)
       : questionName = data["questionName"],
+        questionAbility = data["questionAbility"],
+        questionImgPath = data["questionImgPath"],
         questionPurpose = data["questionPurpose"],
         questionRules = data["questionRules"],
         questionNotes = data["questionNotes"],

@@ -34,8 +34,9 @@ dependencies:
   event_bus: ^1.0.1
   permission_handler: ^3.0.1
   image_gallery_saver: ^1.1.0
+  flutter_bubble: 0.0.1
   path_provider: ^1.6.27
-  flutter_bubble: ^0.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
