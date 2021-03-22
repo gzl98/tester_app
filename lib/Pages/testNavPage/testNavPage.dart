@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tester_app/Utils/Utils.dart';
-import 'package:flutter_bubble/flutter_bubble.dart';
 import 'package:flutter_bubble/bubble_widget.dart';
 
 
