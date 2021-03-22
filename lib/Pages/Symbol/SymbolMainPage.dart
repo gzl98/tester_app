@@ -16,6 +16,12 @@ class SymbolMainPageState extends State<SymbolMainPage> {
 
   //熟悉操作界面是否隐去
   bool knowOperationHidden=false;
+  //是否开始延迟显示
+  bool delayedShow=false;
+  //延时时间设置
+  int delayedTime=1;
+
+
 
   //*顶部背景*
   Widget buildTopWidget() {
@@ -119,7 +125,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                           //准备两个字
                           Expanded(
                             flex: 2,
-                            child: Container(
+                            child: delayedShow ? Container(): Container(
                               alignment: Alignment.center,
                               child: Text(
                                 "准备",
@@ -372,7 +378,13 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
                 setState(() {
-                  knowOperationHidden=true;
+                  knowOperationHidden=true; //要隐藏
+                });
+                //延时1s函数
+                Future.delayed(Duration(seconds: delayedTime), (){
+                  setState(() {
+                    delayedShow=true; //开始延迟显示
+                  });
                 });
               },
               child: Text(
