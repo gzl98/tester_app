@@ -45,8 +45,22 @@ class WMSPageState extends State<WMSPage> {
   int currentTime = 0;
   WMSQuestion _wmsQuestion = WMSQuestion();
   final pointOneSec = const Duration(milliseconds: 100);
-  CurrentState buttonState = CurrentState.showQuestion;
+  CurrentState currentState = CurrentState.questionBegin;
   bool success = true;
+
+  //中间显示的文字
+  Map showText = {
+    CurrentState.questionPrepare: "准 备",
+    CurrentState.showingQuestion: "题 目 播 放 中...",
+    CurrentState.doingQuestion: "开 始 作 答",
+  };
+
+  //中间显示文字的颜色
+  Map showTextColor = {
+    CurrentState.questionPrepare: Colors.deepOrangeAccent,
+    CurrentState.showingQuestion: Colors.blue[400],
+    CurrentState.doingQuestion: Colors.blue[400],
+  };
 
   void callback(timer) {
     setState(() {
@@ -56,7 +70,7 @@ class WMSPageState extends State<WMSPage> {
         } else {
           _timer.cancel();
           index = null;
-          buttonState = CurrentState.doingQuestion;
+          currentState = CurrentState.doingQuestion;
           _wmsQuestion.resetIndex();
         }
       } else if (currentTime == 8) {
@@ -68,10 +82,19 @@ class WMSPageState extends State<WMSPage> {
 
   void showQuestions() {
     setState(() {
-      buttonState = CurrentState.showingQuestion;
+      currentState = CurrentState.showingQuestion;
     });
     _wmsQuestion.generateRandomQuestionList();
     _timer = Timer.periodic(pointOneSec, callback);
+  }
+
+  void prepareShow() {
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        currentState = CurrentState.showingQuestion;
+      });
+      showQuestions();
+    });
   }
 
   List<Widget> buildClickedButtons() {
@@ -85,7 +108,7 @@ class WMSPageState extends State<WMSPage> {
         ),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(
-              i == index ? Colors.amber : Colors.blue[700]),
+              i == index ? Colors.blue[700] : Color.fromARGB(255, 98, 78, 75)),
           elevation: MaterialStateProperty.all(setWidth(10)),
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(setWidth(20))),
@@ -107,23 +130,23 @@ class WMSPageState extends State<WMSPage> {
   }
 
   void buttonClicked(int index) {
-    if (buttonState != CurrentState.doingQuestion) return;
+    if (currentState != CurrentState.doingQuestion) return;
     if (_wmsQuestion.hasNextIndex()) {
       if (index != _wmsQuestion.getNextQuestion()) {
         setState(() {
           success = false;
-          buttonState = _wmsQuestion.questionAllDone()
+          currentState = _wmsQuestion.questionAllDone()
               ? CurrentState.questionAllDone
-              : CurrentState.showQuestion;
+              : CurrentState.questionBegin;
         });
         showMessageDialog(context, "回答错误！");
       }
       if (_wmsQuestion.currentQuestionIsDone()) {
         setState(() {
           success = false;
-          buttonState = _wmsQuestion.questionAllDone()
+          currentState = _wmsQuestion.questionAllDone()
               ? CurrentState.questionAllDone
-              : CurrentState.showQuestion;
+              : CurrentState.questionBegin;
         });
         showMessageDialog(context, "回答正确！");
       }
@@ -145,56 +168,51 @@ class WMSPageState extends State<WMSPage> {
   }
 
   Widget buildMainWidget() {
-    return Container(
-      width: maxWidth,
-      height: maxHeight - setHeight(205),
-      color: Color.fromARGB(255, 238, 241, 240),
-      child: Stack(
-        children: buildClickedButtons() +
-            [
-              Center(
-                child: Container(
-                  margin: EdgeInsets.only(bottom: setHeight(140)),
-                  width: setWidth(820),
-                  height: setHeight(120),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.35),
-                        blurRadius: setWidth(5),
-                        offset: Offset(setWidth(0), setHeight(3)),
-                      )
+    return Stack(
+      children: buildClickedButtons() +
+          [
+            Center(
+              child: Container(
+                margin: EdgeInsets.only(bottom: setHeight(140)),
+                width: setWidth(820),
+                height: setHeight(120),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.35),
+                      blurRadius: setWidth(5),
+                      offset: Offset(setWidth(0), setHeight(3)),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                margin: EdgeInsets.only(bottom: setHeight(140)),
+                alignment: Alignment.center,
+                width: setWidth(850),
+                height: setHeight(120),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Color.fromARGB(255, 236, 239, 238),
+                      Color.fromARGB(255, 250, 250, 250),
+                      Color.fromARGB(255, 236, 239, 238),
                     ],
                   ),
                 ),
-              ),
-              Center(
-                child: Container(
-                  margin: EdgeInsets.only(bottom: setHeight(140)),
-                  alignment: Alignment.center,
-                  width: setWidth(850),
-                  height: setHeight(120),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [
-                        Color.fromARGB(255, 236, 239, 238),
-                        Color.fromARGB(255, 250, 250, 250),
-                        Color.fromARGB(255, 236, 239, 238),
-                      ],
-                    ),
-                  ),
-                  child: Text(
-                    "准 备",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: setSp(70), color: Colors.deepOrangeAccent),
-                  ),
+                child: Text(
+                  showText[currentState],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: setSp(70), color: showTextColor[currentState]),
                 ),
               ),
-            ],
-      ),
+            ),
+          ],
     );
   }
 
@@ -249,7 +267,12 @@ class WMSPageState extends State<WMSPage> {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  currentState = CurrentState.questionPrepare;
+                });
+                prepareShow();
+              },
               child: Text(
                 "开始",
                 style: TextStyle(color: Colors.white, fontSize: setSp(60)),
@@ -285,10 +308,47 @@ class WMSPageState extends State<WMSPage> {
                           height: setHeight(5),
                           color: Colors.red,
                         ),
-                        buildMainWidget(),
+                        Container(
+                          width: maxWidth,
+                          height: maxHeight - setHeight(205),
+                          color: Color.fromARGB(255, 238, 241, 240),
+                          child: currentState == CurrentState.questionBegin
+                              ? Container()
+                              : buildMainWidget(),
+                        ),
                       ]),
                 ),
-                buildFloatWidget(),
+                currentState == CurrentState.questionBegin
+                    ? buildFloatWidget()
+                    : Container(),
+                currentState == CurrentState.questionCorrect
+                    ? Center(
+                        child: Container(
+                            // color: Color(0xff3f882b),
+                            margin: EdgeInsets.only(top: setHeight(100)),
+                            child: Opacity(
+                              opacity: 0.85,
+                              child: Image.asset(
+                                "images/v2.0/duigou.png",
+                                width: setWidth(170),
+                              ),
+                            )),
+                      )
+                    : Container(),
+                currentState == CurrentState.questionWrong
+                    ? Center(
+                        child: Container(
+                            // color: Color(0xff3f882b),
+                            margin: EdgeInsets.only(top: setHeight(100)),
+                            child: Opacity(
+                              opacity: 0.85,
+                              child: Image.asset(
+                                "images/v2.0/wrong.png",
+                                width: setWidth(170),
+                              ),
+                            )),
+                      )
+                    : Container(),
               ],
             ),
           ),
@@ -297,9 +357,11 @@ class WMSPageState extends State<WMSPage> {
 }
 
 enum CurrentState {
-  showQuestion, //显示开始浮窗
+  questionBegin, //显示开始浮窗
+  questionPrepare, //显示准备字样
   showingQuestion, //正式显示题目
   doingQuestion, //开始答题
-  doingQuestionDone, //答题完毕
+  questionCorrect, //答题正确
+  questionWrong, //答题错误
   questionAllDone //全部答题完毕
 }
