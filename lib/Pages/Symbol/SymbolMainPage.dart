@@ -279,12 +279,15 @@ class SymbolMainPageState extends State<SymbolMainPage>{
   //*熟悉操作界面*
   Widget buildFloatWidget() {
     return Container(
+      //确保占满屏幕宽度和高度
       width: maxWidth,
       height: maxHeight,
       color: Color.fromARGB(220, 150, 150, 150),
       child: Column(
+        //主轴对齐位置
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          //空间位置调整
           SizedBox(
             height: setHeight(100),
           ),
@@ -340,36 +343,42 @@ class SymbolMainPageState extends State<SymbolMainPage>{
   @override
   Widget buildPage(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: <Widget>[
-        buildTopWidget(),
-        //分界线
-        Divider(
-          height: 3.0,
-          color: Color.fromARGB(120, 255, 0, 0),
-          thickness: 3.0,
+    return Stack(
+      children: [
+        //第一个child被绘制在最底端，后面的依次在前一个child的上面
+        //主界面
+        Column(
+          children: <Widget>[
+            buildTopWidget(),
+            //分界线
+            Divider(
+              height: 3.0,
+              color: Color.fromARGB(120, 255, 0, 0),
+              thickness: 3.0,
+            ),
+            //上面空白间隔
+            Expanded(
+              flex: 7,
+              child: Text(""),
+            ),
+            buildMediumWidget(),
+            //中间空白间隔
+            Expanded(
+              flex: 1,
+              child: Text(""),
+            ),
+            buildBottomWidget(),
+            //下面空白间隔
+            Expanded(
+              flex: 1,
+              child: Text(""),
+            ),
+          ],
         ),
-        //上面空白间隔
-        Expanded(
-          flex: 7,
-          child: Text(""),
-        ),
-        buildMediumWidget(),
-        //中间空白间隔
-        Expanded(
-          flex: 1,
-          child: Text(""),
-        ),
-        buildBottomWidget(),
-        //下面空白间隔
-        Expanded(
-          flex: 1,
-          child: Text(""),
-        ),
+        //浮窗界面
+        buildFloatWidget(),
       ],
     );
-    // return buildFloatWidget();
-
   }
 
   //解决显示黑黄屏的问题,Scaffold的问题导致的
