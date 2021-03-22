@@ -6,6 +6,7 @@ class QuestionInfo {
   String questionNavPurpose;
   String benefitExample;
   String questionImgPath;
+
   //第一个页面
   String questionName; //题目名称
   String questionPurpose; //题目目的
@@ -16,11 +17,13 @@ class QuestionInfo {
   String questionRules; //题目规则
   String questionRuleNotes; //规则注意事项
   Widget questionRulesWidget; //规则展示Widget
+  String nextPageRouter; //下一个页面的路由
 
   //第三个页面
   String questionRules2; //题目规则2
   String questionRuleNotes2; //规则注意事项2
   Widget questionRules2Widget; //规则展示Widget2
+  String nextPageRouter2; //下一个页面的路由
 
   QuestionInfo(
     this.questionName,

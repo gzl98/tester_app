@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Fragments/MainFragment.dart';
@@ -17,6 +18,8 @@ class WMSPage extends StatefulWidget {
 }
 
 class WMSPageState extends State<WMSPage> {
+  bool reverse;
+
   @override
   void initState() {
     // 强制横屏
@@ -43,10 +46,11 @@ class WMSPageState extends State<WMSPage> {
   int index;
   Timer _timer;
   int currentTime = 0;
-  WMSQuestion _wmsQuestion = WMSQuestion();
+  WMSQuestion _wmsQuestion = WMSQuestion(test: true);
   final pointOneSec = const Duration(milliseconds: 100);
   CurrentState currentState = CurrentState.questionBegin;
   bool success = true;
+  bool test = true;
 
   //中间显示的文字
   Map showText = {
@@ -62,6 +66,8 @@ class WMSPageState extends State<WMSPage> {
     CurrentState.questionPrepare: Colors.deepOrangeAccent,
     CurrentState.showingQuestion: Colors.blue[400],
     CurrentState.doingQuestion: Colors.blue[400],
+    CurrentState.questionCorrect: Colors.blue[400],
+    CurrentState.questionWrong: Colors.blue[400],
   };
 
   void callback(timer) {
@@ -90,7 +96,7 @@ class WMSPageState extends State<WMSPage> {
     _timer = Timer.periodic(pointOneSec, callback);
   }
 
-  void prepareShow() {
+  void prepareShowQuestion() {
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
         currentState = CurrentState.showingQuestion;
@@ -104,10 +110,10 @@ class WMSPageState extends State<WMSPage> {
     for (int i = 0; i < 10; i++) {
       ElevatedButton button = ElevatedButton(
         onPressed: () => buttonClicked(i),
-        child: Text(
-          (i + 1).toString(),
-          style: TextStyle(fontSize: setSp(75), fontWeight: FontWeight.bold),
-        ),
+        // child: Text(
+        //   (i + 1).toString(),
+        //   style: TextStyle(fontSize: setSp(75), fontWeight: FontWeight.bold),
+        // ),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(
               i == index ? Colors.blue[700] : Color.fromARGB(255, 98, 78, 75)),
@@ -134,20 +140,34 @@ class WMSPageState extends State<WMSPage> {
   void buttonClicked(int index) {
     if (currentState != CurrentState.doingQuestion) return;
     if (_wmsQuestion.hasNextIndex()) {
-      if (index != _wmsQuestion.getNextQuestion()) {
+      if (index != _wmsQuestion.getNextQuestion(reverse: reverse)) {
         setState(() {
           success = false;
-          currentState = _wmsQuestion.questionAllDone()
-              ? CurrentState.questionAllDone
-              : CurrentState.questionWrong;
+          currentState = CurrentState.questionWrong;
         });
+        if (!_wmsQuestion.questionAllDone()) {
+          Future.delayed(Duration(milliseconds: 100), () {
+            prepareShowQuestion();
+          });
+        }
       } else if (_wmsQuestion.currentQuestionIsDone()) {
         setState(() {
           success = true;
-          currentState = _wmsQuestion.questionAllDone()
-              ? CurrentState.questionAllDone
-              : CurrentState.questionCorrect;
+          currentState = CurrentState.questionCorrect;
         });
+        if (!_wmsQuestion.questionAllDone()) {
+          Future.delayed(Duration(milliseconds: 100), () {
+            prepareShowQuestion();
+          });
+        } else if (test) {
+          Future.delayed(Duration(seconds: 1), () {
+            setState(() {
+              test = false;
+              _wmsQuestion = WMSQuestion(test: false);
+              currentState = CurrentState.questionBegin;
+            });
+          });
+        }
       }
     }
   }
@@ -232,7 +252,8 @@ class WMSPageState extends State<WMSPage> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: Color.fromARGB(255, 229, 229, 229),
-                borderRadius: BorderRadius.all(Radius.circular(setWidth(50))),
+                borderRadius: BorderRadius.all(
+                    Radius.circular(setWidth(floatWindowRadios))),
                 boxShadow: [
                   BoxShadow(
                       color: Color.fromARGB(255, 100, 100, 100),
@@ -240,7 +261,7 @@ class WMSPageState extends State<WMSPage> {
                       offset: Offset(setWidth(1), setHeight(2)))
                 ]),
             child: Text(
-              "熟悉操作方法",
+              test ? "熟悉操作方法" : "正式测查",
               style: TextStyle(fontSize: setSp(60)),
             ),
           ),
@@ -262,7 +283,7 @@ class WMSPageState extends State<WMSPage> {
                     blurRadius: setWidth(5),
                   )
                 ]),
-            child: ElevatedButton(
+            child: TextButton(
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
@@ -270,7 +291,7 @@ class WMSPageState extends State<WMSPage> {
                 setState(() {
                   currentState = CurrentState.questionPrepare;
                 });
-                prepareShow();
+                prepareShowQuestion();
               },
               child: Text(
                 "开始",
@@ -283,8 +304,111 @@ class WMSPageState extends State<WMSPage> {
     );
   }
 
+  double floatWindowRadios = 30;
+  TextStyle resultTextStyle = TextStyle(
+      fontSize: setSp(45), fontWeight: FontWeight.bold, color: Colors.blueGrey);
+
+  Widget buildConsequenceFloatWidget() {
+    return Container(
+      width: maxWidth,
+      height: maxHeight,
+      color: Color.fromARGB(220, 45, 45, 45),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: setHeight(200)),
+          Container(
+            width: setWidth(800),
+            height: setHeight(450),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 229, 229, 229),
+                borderRadius: BorderRadius.all(
+                    Radius.circular(setWidth(floatWindowRadios))),
+                boxShadow: [
+                  BoxShadow(
+                      color: Color.fromARGB(255, 100, 100, 100),
+                      blurRadius: setWidth(10),
+                      offset: Offset(setWidth(1), setHeight(2)))
+                ]),
+            child: Column(children: [
+              Container(
+                height: setHeight(100),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow()],
+                  color: Color.fromARGB(255, 229, 229, 229),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(setWidth(floatWindowRadios)),
+                      topRight: Radius.circular(setWidth(floatWindowRadios))),
+                ),
+                child: Text(
+                  "测验结果",
+                  style: TextStyle(
+                      fontSize: setSp(50),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: setHeight(30)),
+                height: setHeight(230),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    // SizedBox(height: setHeight(30)),
+                    Text("正确数：0      ", style: resultTextStyle),
+                    // SizedBox(height: setHeight(15)),
+                    Text("错误数：0      ", style: resultTextStyle),
+                    // SizedBox(height: setHeight(15)),
+                    Text("最大长度：0位      ", style: resultTextStyle),
+                  ],
+                ),
+              ),
+            ]),
+          ),
+          SizedBox(height: setHeight(300)),
+          Container(
+            width: setWidth(500),
+            height: setHeight(120),
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.white,width: setWidth(1)),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromARGB(255, 253, 160, 60),
+                  Color.fromARGB(255, 217, 127, 63)
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black54,
+                  offset: Offset(setWidth(1), setHeight(1)),
+                  blurRadius: setWidth(5),
+                )
+              ],
+            ),
+            child: TextButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.transparent)),
+              onPressed: () {},
+              child: Text(
+                "结 束",
+                style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    reverse = false;
+    // reverse = ModalRoute.of(context).settings.arguments;
     return WillPopScope(
         onWillPop: () => showQuitDialog(context),
         child: Scaffold(
@@ -311,7 +435,8 @@ class WMSPageState extends State<WMSPage> {
                           width: maxWidth,
                           height: maxHeight - setHeight(205),
                           color: Color.fromARGB(255, 238, 241, 240),
-                          child: currentState == CurrentState.questionBegin
+                          child: currentState == CurrentState.questionBegin ||
+                                  currentState == CurrentState.questionAllDone
                               ? Container()
                               : buildMainWidget(),
                         ),
@@ -347,6 +472,18 @@ class WMSPageState extends State<WMSPage> {
                               ),
                             )),
                       )
+                    : Container(),
+                currentState == CurrentState.questionAllDone
+                    ? buildConsequenceFloatWidget()
+                    : Container(),
+                currentState == CurrentState.questionAllDone
+                    ? Positioned(
+                        right: setWidth(400),
+                        bottom: 0,
+                        child: Image.asset(
+                          "images/v2.0/doctor_consequence.png",
+                          width: setWidth(480),
+                        ))
                     : Container(),
               ],
             ),
