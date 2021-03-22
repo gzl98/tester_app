@@ -14,6 +14,9 @@ class SymbolMainPage extends StatefulWidget {
 
 class SymbolMainPageState extends State<SymbolMainPage> {
 
+  //熟悉操作界面是否隐去
+  bool knowOperationHidden=false;
+
   //*顶部背景*
   Widget buildTopWidget() {
     return Expanded(
@@ -198,12 +201,12 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 width: 250.0,
                 height: 260.0,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(5, 0, 0, 0),
+                  color: Color.fromARGB(255, 235, 235, 235),
                   border: Border.all(color: Colors.indigo[100], width: 2.0),
                   boxShadow: [
                     BoxShadow(
-                        color: Color.fromARGB(5, 0, 0, 0),
-                        offset: Offset(6.0, 6.0), //阴影x轴偏移量
+                        color: Color.fromARGB(150, 0, 0, 0),
+                        offset: Offset(5.0, 5.0), //阴影x轴偏移量
                         blurRadius: 10, //阴影模糊程度
                         spreadRadius: 0 //阴影扩散程度
                         )
@@ -229,6 +232,17 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                 //撑满组件维度
                                 height: double.infinity,
                                 width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 235, 235, 235),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Color.fromARGB(150, 0, 0, 0),
+                                        offset: Offset(1.0, 1.0), //阴影x轴偏移量
+                                        blurRadius: 1, //阴影模糊程度
+                                        spreadRadius: 0 //阴影扩散程度
+                                    )
+                                  ],
+                                ),
                                 child: RaisedButton(
                                   color: Colors.white,
                                   splashColor: Colors.pinkAccent,
@@ -252,6 +266,17 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                 //撑满组件维度
                                 height: double.infinity,
                                 width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 235, 235, 235),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Color.fromARGB(150, 0, 0, 0),
+                                        offset: Offset(1.0, 1.0), //阴影x轴偏移量
+                                        blurRadius: 1, //阴影模糊程度
+                                        spreadRadius: 0 //阴影扩散程度
+                                    )
+                                  ],
+                                ),
                                 child: RaisedButton(
                                   color: Colors.white,
                                   splashColor: Colors.pinkAccent,
@@ -313,7 +338,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 boxShadow: [
                   BoxShadow(
                       color: Color.fromARGB(255, 100, 100, 100),
+                      //数字越大越模糊。默认值是0，表示一点也不进行模糊
                       blurRadius: setWidth(10),
+                      //阴影与容器的距离
                       offset: Offset(setWidth(1), setHeight(2)))
                 ]),
             child: Text(
@@ -343,7 +370,11 @@ class SymbolMainPageState extends State<SymbolMainPage> {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  knowOperationHidden=true;
+                });
+              },
               child: Text(
                 "开始",
                 style: TextStyle(color: Colors.white, fontSize: setSp(60)),
@@ -359,7 +390,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   Widget buildPage(BuildContext context) {
     // TODO: implement build
     return Stack(
-      children: [
+      children: <Widget>[
         //第一个child被绘制在最底端，后面的依次在前一个child的上面
         //主界面
         Column(
@@ -391,7 +422,10 @@ class SymbolMainPageState extends State<SymbolMainPage> {
           ],
         ),
         // 浮窗界面
-        buildFloatWidget(),
+        Offstage(
+          offstage: knowOperationHidden,
+          child: buildFloatWidget(),
+        )
       ],
     );
   }
