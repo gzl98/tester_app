@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tester_app/Utils/Utils.dart';
-import 'package:flutter_bubble/bubble_widget.dart';
+import 'package:tester_app/Utils/bubble_widget.dart';
 
 
 class TestNavPage extends StatefulWidget{
