@@ -53,6 +53,8 @@ class WMSPageState extends State<WMSPage> {
     CurrentState.questionPrepare: "准 备",
     CurrentState.showingQuestion: "题 目 播 放 中...",
     CurrentState.doingQuestion: "开 始 作 答",
+    CurrentState.questionCorrect: "开 始 作 答",
+    CurrentState.questionWrong: "开 始 作 答",
   };
 
   //中间显示文字的颜色
@@ -137,7 +139,7 @@ class WMSPageState extends State<WMSPage> {
           success = false;
           currentState = _wmsQuestion.questionAllDone()
               ? CurrentState.questionAllDone
-              : CurrentState.questionBegin;
+              : CurrentState.questionWrong;
         });
         showMessageDialog(context, "回答错误！");
       }
@@ -146,7 +148,7 @@ class WMSPageState extends State<WMSPage> {
           success = false;
           currentState = _wmsQuestion.questionAllDone()
               ? CurrentState.questionAllDone
-              : CurrentState.questionBegin;
+              : CurrentState.questionCorrect;
         });
         showMessageDialog(context, "回答正确！");
       }
@@ -329,7 +331,7 @@ class WMSPageState extends State<WMSPage> {
                             child: Opacity(
                               opacity: 0.85,
                               child: Image.asset(
-                                "images/v2.0/duigou.png",
+                                "images/v2.0/correct.png",
                                 width: setWidth(170),
                               ),
                             )),
