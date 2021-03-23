@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:tester_app/Fragments/MainFragment.dart';
 import 'package:tester_app/Fragments/QuestionInfoFragment.dart';
 import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
+import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 class WMSPage extends StatefulWidget {
@@ -137,36 +138,72 @@ class WMSPageState extends State<WMSPage> {
     return buttons;
   }
 
-  void buttonClicked(int index) {
-    if (currentState != CurrentState.doingQuestion) return;
+  void buttonClicked(index) {
+    //触发方形按钮点击事件，index为按钮的id值
+    if (currentState != CurrentState.doingQuestion)
+      return; //如果不是开始答题状态，点击按钮没有效果
     if (_wmsQuestion.hasNextIndex()) {
+      //当前题目还没有答完
       if (index != _wmsQuestion.getNextQuestion(reverse: reverse)) {
+        //如果当前index不等于题目的答案，则进行判错
         setState(() {
+          //修改状态
           success = false;
-          currentState = CurrentState.questionWrong;
+          currentState = CurrentState.questionWrong; //判错
         });
-        if (!_wmsQuestion.questionAllDone()) {
-          Future.delayed(Duration(milliseconds: 100), () {
+        if (test) {
+          Future.delayed(pointOneSec, () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, TestNavPage.routerName, (route) => false);
+          });
+        }
+        if (_wmsQuestion.questionAllDone()) {
+          //如果所有题目都回答完毕，则延迟0.1秒将状态改为“全部答完”
+          Future.delayed(pointOneSec, () {
+            setState(() {
+              currentState = CurrentState.questionAllDone;
+            });
+          });
+        } else {
+          //否则延迟0.1秒继续进行下一道题
+          Future.delayed(pointOneSec, () {
             prepareShowQuestion();
           });
         }
-      } else if (_wmsQuestion.currentQuestionIsDone()) {
-        setState(() {
-          success = true;
-          currentState = CurrentState.questionCorrect;
-        });
-        if (!_wmsQuestion.questionAllDone()) {
-          Future.delayed(Duration(milliseconds: 100), () {
-            prepareShowQuestion();
+      } else {
+        //答题正确
+        if (_wmsQuestion.currentQuestionIsDone()) {
+          //当前题目答完，则进行判对
+          setState(() {
+            success = true;
+            currentState = CurrentState.questionCorrect; //判对
           });
-        } else if (test) {
-          Future.delayed(Duration(seconds: 1), () {
-            setState(() {
-              test = false;
-              _wmsQuestion = WMSQuestion(test: false);
-              currentState = CurrentState.questionBegin;
+          if (_wmsQuestion.questionAllDone()) {
+            //题目全部达答完
+            if (test) {
+              //如果为test阶段，则进入正式测试
+              Future.delayed(pointOneSec, () {
+                setState(() {
+                  test = false; //更改test标志
+                  _wmsQuestion = WMSQuestion(test: false); //重新创建测试题
+                  currentState = CurrentState.questionBegin; //恢复初始状态
+                });
+              });
+            } else {
+              //正式测试阶段
+              //如果所有题目都回答完毕，则延迟0.1秒将状态改为“全部答完”
+              Future.delayed(pointOneSec, () {
+                setState(() {
+                  currentState = CurrentState.questionAllDone;
+                });
+              });
+            }
+          } else {
+            //进行下一题
+            Future.delayed(pointOneSec, () {
+              prepareShowQuestion();
             });
-          });
+          }
         }
       }
     }
@@ -308,7 +345,7 @@ class WMSPageState extends State<WMSPage> {
   TextStyle resultTextStyle = TextStyle(
       fontSize: setSp(45), fontWeight: FontWeight.bold, color: Colors.blueGrey);
 
-  Widget buildConsequenceFloatWidget() {
+  Widget buildResultFloatWidget() {
     return Container(
       width: maxWidth,
       height: maxHeight,
@@ -393,7 +430,10 @@ class WMSPageState extends State<WMSPage> {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, TestNavPage.routerName, (route) => false);
+              },
               child: Text(
                 "结 束",
                 style: TextStyle(color: Colors.white, fontSize: setSp(60)),
@@ -474,14 +514,14 @@ class WMSPageState extends State<WMSPage> {
                       )
                     : Container(),
                 currentState == CurrentState.questionAllDone
-                    ? buildConsequenceFloatWidget()
+                    ? buildResultFloatWidget()
                     : Container(),
                 currentState == CurrentState.questionAllDone
                     ? Positioned(
                         right: setWidth(400),
                         bottom: 0,
                         child: Image.asset(
-                          "images/v2.0/doctor_consequence.png",
+                          "images/v2.0/doctor_result.png",
                           width: setWidth(480),
                         ))
                     : Container(),

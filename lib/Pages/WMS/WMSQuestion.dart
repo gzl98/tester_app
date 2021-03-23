@@ -43,6 +43,10 @@ class WMSQuestion {
   }
 
   int getNextQuestion({bool reverse = false}) {
+    if (hasNextIndex())
+      _questionIndex--;
+    else
+      throw Exception("题目不存在!");
     if (reverse) return _questionList[getCurrentLength() - 1 - _questionIndex];
     return _questionList[_questionIndex];
   }
@@ -65,7 +69,7 @@ class WMSQuestion {
 
   bool hasNextIndex() {
     if (_questionIndex > 0) {
-      _questionIndex--;
+      // _questionIndex--;
       return true;
     }
     return false;
