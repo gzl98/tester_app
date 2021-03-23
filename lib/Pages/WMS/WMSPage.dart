@@ -533,8 +533,8 @@ class WMSPageState extends State<WMSPage> {
 }
 
 enum CurrentState {
-  questionBegin, //显示开始浮窗
-  questionPrepare, //显示准备字样
+  questionBegin,    //显示开始浮窗
+  questionPrepare,  //显示准备字样
   showingQuestion, //正式显示题目
   doingQuestion, //开始答题
   questionCorrect, //答题正确

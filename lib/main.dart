@@ -9,14 +9,14 @@ import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/Character/CharactertNewPage.dart';
 import 'package:tester_app/Pages/BVMT-R/BVMTNewPage.dart';
 import 'package:tester_app/Pages/Maze/MazeNewPage.dart';
+import 'package:tester_app/Pages/STROOP/StroopPage.dart';
 import 'package:tester_app/Pages/TMT/TMTNewPage.dart';
 import 'package:tester_app/Pages/WMS/WMSPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
-
 import 'Utils/Utils.dart';
 
-String bootPage = WMSPage.routerName;
+String bootPage = StroopPage.routerName;
 // String bootPage = QuestionFirstFragment.routerName;
 // String bootPage = "/login";
 // String bootPage = "/completeInfo";
@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
         // "/Maze": (context) => MazePage(),
         // "/BVMT": (context) => BMVTPage(),
         WMSPage.routerName: (context) => WMSPage(),
+        StroopPage.routerName:(context) =>StroopPage(),
         "/TMTNew": (context) => TMTPage(),
         "/CharacterNew": (context) => CharacterNewPage(),
         "/MazeNew": (context) => MazePage(),

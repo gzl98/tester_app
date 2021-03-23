@@ -39,7 +39,6 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
           elevation: MaterialStateProperty.all(setWidth(2)),
         ),
         onPressed: () {
-          QuestionInfo questionInfo = QuestionInfo.fromMap(questionWMS);
           Navigator.pushNamed(context, QuestionSecondFragment.routerName,
               arguments: questionInfo);
         },
@@ -59,7 +58,8 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
 
   @override
   Widget build(BuildContext context) {
-    questionInfo = QuestionInfo.fromMap(questionWMS);
+    questionInfo = ModalRoute.of(context).settings.arguments;
+    // questionInfo = QuestionInfo.fromMap(questionWMS);
     return Scaffold(
       body: Container(
         width: maxWidth,

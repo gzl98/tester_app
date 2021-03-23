@@ -15,7 +15,7 @@ class TestNavPage extends StatefulWidget{
 
 class TestNav extends State<TestNavPage>{
   String _username="Yu";
-  String _playImgPath = "images/play.png";
+  String _playImgPath = "images/v2.0/play.png";
   String _rightImgPath = "images/v2.0/right.png";
   int _selectIndex = -1;
   @override
@@ -237,7 +237,7 @@ class TestNav extends State<TestNavPage>{
                       // width: setWidth(2000),
                       // height: setHeight(400),
                       child: Image.asset(
-                        "images/testPicture.jpg",
+                        "images/v2.0/testPicture.jpg",
                       ),
                     ),
                 ),
@@ -250,7 +250,7 @@ class TestNav extends State<TestNavPage>{
                     // width: setWidth(2000),
                     // height: setHeight(400),
                     child: Image.asset(
-                      "images/doctor.png",
+                      "images/v2.0/doctor.png",
                     ),
                   ),
                 ),
@@ -397,7 +397,7 @@ class TestNav extends State<TestNavPage>{
                     child:Container(
                       width: setWidth(300),
                       height: setHeight(300),
-                      child: Image.asset("images/watchPhone.png"),
+                      child: Image.asset("images/v2.0/watchPhone.png"),
                     ),
                   ),
 
