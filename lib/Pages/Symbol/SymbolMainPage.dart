@@ -17,14 +17,14 @@ class SymbolMainPageState extends State<SymbolMainPage> {
 
   //熟悉操作界面是否隐去
   bool knowOperationHidden=false;
-  //是否开始延迟显示,-2不显示，0显示，2生命周期结束
+  //熟悉界面延迟控制,-2不显示，0显示，2生命周期结束
   int delayedShow=-2;
-  //图片延时时间设置
-  int pictureDelayedTime=1;
+  //熟悉延时时间设置
+  int knowDelayedTime=1;
+  //对错延时时间设置
+  int rorwDelayedTime=1;
   //符号检索图片数
   int symbolPictureNumber=36;
-  //是否开始新一轮答题展示
-  bool newAnswerRound=false;
 
   //尝试的两张图片的基本组
   List<int> testBasic=new List();
@@ -38,6 +38,10 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   int totalClickNumber=0;
   //记录总的对错记录，判断展示√还是×的图片
   List<bool> totalCorrect=new List();
+  //每道题的延迟开始于结束标志(最多120道题)
+  List totalDelayed = new List<bool>.generate(120, (int i) {
+    return false;
+  });
 
   //准备二字
   Widget zhunben(){
@@ -277,7 +281,10 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                       color: Color.fromARGB(20, 0, 0, 0),
                       border: Border.all(color: Colors.blue, width: 3.0),
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: (delayedShow>-2)? ((delayedShow<2)?pictureWidget(testBasic, 2):Text("")): Text(""),
+                child: (delayedShow>-2)?
+                ((delayedShow<2)?pictureWidget(testBasic, 2):
+                (totalDelayed[totalClickNumber-1]==true?pictureWidget(testBasic, 2):Text(""))
+                ) : Text(""),
               )
           ),
           //空白中
@@ -296,7 +303,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                     border: Border.all(color: Colors.indigo[100], width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 child: (delayedShow>-2)?((delayedShow<2)?pictureWidget(testContrast, 5):
-                (totalCorrect[totalClickNumber-1]!=null?rorwWidget():Text(""))
+                (totalCorrect[totalClickNumber-1]!=null?
+                (totalDelayed[totalClickNumber-1]==false?rorwWidget():pictureWidget(testContrast, 5)) :
+                Text(""))
                 ):zhunben(),
               )
           ),
@@ -373,9 +382,16 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                   splashColor: Colors.transparent,
                                   onPressed: () {
                                     bool temp=judgeRightOrWrong(testBasic, testContrast);
+                                    //记录每道题的正误，进行√与×图片的展示
                                     setState(() {
                                       temp==true?totalCorrect.add(true):totalCorrect.add(false);
                                       print(totalCorrect[totalClickNumber-1]);
+                                    });
+                                    //正误图片延时效果设置
+                                    Future.delayed(Duration(seconds: rorwDelayedTime), (){
+                                      setState(() {
+                                        totalDelayed[totalClickNumber-1]=true;
+                                      });
                                     });
                                   },
                                   child: Text(
@@ -413,9 +429,16 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                   splashColor: Colors.transparent,
                                   onPressed: () {
                                     bool temp=judgeRightOrWrong(testBasic, testContrast);
+                                    //记录每道题的正误，进行√与×图片的展示
                                     setState(() {
                                       temp==false?totalCorrect.add(true):totalCorrect.add(false);
                                       print(totalCorrect[totalClickNumber-1]);
+                                    });
+                                    //正误图片延时效果设置
+                                    Future.delayed(Duration(seconds: rorwDelayedTime), (){
+                                      setState(() {
+                                        totalDelayed[totalClickNumber-1]=true;
+                                      });
                                     });
                                   },
                                   child: Text(
@@ -511,8 +534,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 setState(() {
                   knowOperationHidden=true; //要隐藏
                 });
-                //延时1s函数
-                Future.delayed(Duration(seconds: pictureDelayedTime), (){
+                //熟悉延时函数
+                Future.delayed(Duration(seconds: knowDelayedTime), (){
                   setState(() {
                     delayedShow=0; //开始延迟显示
                   });
