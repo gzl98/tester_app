@@ -25,6 +25,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   int symbolPictureNumber=36;
   //是否开始新一轮答题展示
   bool newAnswerRound=false;
+  //答题后展示√还是×图片，初始化为错的图片
+  bool showSymbolROrW=false;
 
   //尝试的两张图片的基本组
   List<int> testBasic=new List();
@@ -93,7 +95,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   judgeRightOrWrong(List<int> temp1,List<int> temp2){
     bool testRightOrWrong=false;  //当前题目正误
     for(int i=testBasicCount;i<testBasicCount+2;i++){
-      for(int j=testContrastCount;i<testContrastCount+5;j++){
+      for(int j=testContrastCount;j<testContrastCount+5;j++){
         if(temp1[i]==temp2[j]){
           testRightOrWrong=true;
         }
@@ -101,6 +103,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     }
     testBasicCount+=2;
     testContrastCount+=5;
+    print(testBasicCount);
+    print(testContrastCount);
     return testRightOrWrong;
   }
 
@@ -337,8 +341,14 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                 ),
                                 child: RaisedButton(
                                   color: Colors.white,
-                                  splashColor: Colors.pinkAccent,
-                                  onPressed: () {},
+                                  splashColor: Colors.transparent,
+                                  onPressed: () {
+                                    bool temp=judgeRightOrWrong(testBasic, testContrast);
+                                    setState(() {
+                                      temp==true?showSymbolROrW=true:showSymbolROrW=false;
+                                      print(showSymbolROrW);
+                                    });
+                                  },
                                   child: Text(
                                     "有",
                                     style: TextStyle(
@@ -371,8 +381,14 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                 ),
                                 child: RaisedButton(
                                   color: Colors.white,
-                                  splashColor: Colors.pinkAccent,
-                                  onPressed: () {},
+                                  splashColor: Colors.transparent,
+                                  onPressed: () {
+                                    bool temp=judgeRightOrWrong(testBasic, testContrast);
+                                    setState(() {
+                                      temp==false?showSymbolROrW=true:showSymbolROrW=false;
+                                      print(showSymbolROrW);
+                                    });
+                                  },
                                   child: Text(
                                     "无",
                                     style: TextStyle(
