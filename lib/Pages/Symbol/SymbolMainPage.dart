@@ -19,8 +19,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   bool knowOperationHidden=false;
   //是否开始延迟显示
   bool delayedShow=false;
-  //延时时间设置
-  int delayedTime=1;
+  //图片延时时间设置
+  int pictureDelayedTime=1;
   //符号检索图片数
   int symbolPictureNumber=36;
   //是否开始新一轮答题展示
@@ -30,8 +30,13 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   List<int> testBasic=new List();
   //尝试的五张图片的对照组
   List<int> testContrast=new List();
+  //记录测试的基本组评判序号
+  int testBasicCount=0;
+  //记录测试的对照组评判序号
+  int testContrastCount=0;
   //测试时的对错记录
   List<bool> testCorrect=new List();
+
 
   //获取随机图片编号
   getRandomNumber(List<int> temp,int num){
@@ -39,7 +44,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     int long=temp.length; //记录初始列表长度
     while(count<num){
       int tempNum=Random().nextInt(36)+1;
-      bool allow=true;
+      bool allow=true;  //是否加入列表
       //去除重复图案出现
       for(int i=long;i<temp.length;i++){
         if(temp[i]==tempNum){
@@ -82,6 +87,21 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     );
     print("此时的列表："+temp.toString());
     return content;
+  }
+
+  //判断对错
+  judgeRightOrWrong(List<int> temp1,List<int> temp2){
+    bool testRightOrWrong=false;  //当前题目正误
+    for(int i=testBasicCount;i<testBasicCount+2;i++){
+      for(int j=testContrastCount;i<testContrastCount+5;j++){
+        if(temp1[i]==temp2[j]){
+          testRightOrWrong=true;
+        }
+      }
+    }
+    testBasicCount+=2;
+    testContrastCount+=5;
+    return testRightOrWrong;
   }
 
 
@@ -447,7 +467,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                   knowOperationHidden=true; //要隐藏
                 });
                 //延时1s函数
-                Future.delayed(Duration(seconds: delayedTime), (){
+                Future.delayed(Duration(seconds: pictureDelayedTime), (){
                   setState(() {
                     delayedShow=true; //开始延迟显示
                   });
