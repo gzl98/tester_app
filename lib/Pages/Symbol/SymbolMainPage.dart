@@ -26,30 +26,64 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   //是否开始新一轮答题展示
   bool newAnswerRound=false;
 
-
+  //尝试的两张图片的基本组
+  List<int> testBasic=new List();
+  //尝试的五张图片的对照组
+  List<int> testContrast=new List();
+  //测试时的对错记录
+  List<bool> testCorrect=new List();
 
   //获取随机图片编号
-  getRandomNumber(){
-    int index = Random().nextInt(symbolPictureNumber)+1;
-    return index;
+  getRandomNumber(List<int> temp,int num){
+    int count=0;  //统计获取的图片数量
+    int long=temp.length; //记录初始列表长度
+    while(count<num){
+      int tempNum=Random().nextInt(36)+1;
+      bool allow=true;
+      //去除重复图案出现
+      for(int i=long;i<temp.length;i++){
+        if(temp[i]==tempNum){
+          allow=false;
+        }
+      }
+      if(allow==true){
+        temp.add(tempNum);
+        count++;
+      }
+    }
   }
 
   //检索图片组件
-  Widget symbolWidget(){
-    int tempNum=getRandomNumber();
+  Widget symbolWidget(int number){
     return Expanded(
       flex: 1,
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/symbol/'+tempNum.toString()+'.png'),
+              image: AssetImage('images/symbol/'+number.toString()+'.png'),
               fit: BoxFit.scaleDown,
               alignment: Alignment.center),
         ),
       ),
     );
   }
+
+  //一系列图片展示
+  Widget pictureWidget(List<int> temp,int num){
+    int long=temp.length; //记录初始长度
+    getRandomNumber(temp, num);
+    List<Widget>picture=[];  //存放部件
+    for(int i=long;i<temp.length;i++){
+      picture.add(symbolWidget(temp[i]));
+    }
+    Widget content=Row(
+      children: picture,
+    );
+    print("此时的列表："+temp.toString());
+    return content;
+  }
+
 
   //*顶部背景*
   Widget buildTopWidget() {
@@ -120,14 +154,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                       color: Color.fromARGB(20, 0, 0, 0),
                       border: Border.all(color: Colors.blue, width: 3.0),
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: delayedShow?
-                    Row(
-                      children: [
-                        symbolWidget(),
-                        symbolWidget(),
-                      ],
-                    ):
-                Text(""),
+                child: delayedShow? pictureWidget(testBasic, 2): Text(""),
               )
           ),
           //空白中
@@ -145,15 +172,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                     color: Color.fromARGB(20, 0, 0, 0),
                     border: Border.all(color: Colors.indigo[100], width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: delayedShow?Row(
-                  children: [
-                    symbolWidget(),
-                    symbolWidget(),
-                    symbolWidget(),
-                    symbolWidget(),
-                    symbolWidget(),
-                  ],
-                ):
+                child: delayedShow?pictureWidget(testContrast, 5):
                 Column(
                   children: <Widget>[
                     Expanded(
