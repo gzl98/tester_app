@@ -17,9 +17,11 @@ class SymbolMainPageState extends State<SymbolMainPage> {
 
   //熟悉操作界面是否隐去
   bool knowOperationHidden=false;
+  //正式界面是否隐去
+  bool checkOperationHidden=true;
   //熟悉界面延迟控制,-2不显示，0显示，2生命周期结束
   int delayedShow=-2;
-  //熟悉延时时间设置
+  //熟悉+正式延时时间设置
   int knowDelayedTime=1;
   //对错延时时间设置
   int rorwDelayedTime=1;
@@ -38,8 +40,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   int totalClickNumber=0;
   //记录总的对错记录，判断展示√还是×的图片
   List<bool> totalCorrect=new List();
-  //每道题的延迟开始于结束标志(最多120道题)
-  List totalDelayed = new List<bool>.generate(120, (int i) {
+  //每道题的延迟开始于结束标志(最多3+120道题)
+  List totalDelayed = new List<bool>.generate(123, (int i) {
     return false;
   });
 
@@ -174,7 +176,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     return content;
   }
 
-  //判断对错
+  //判断对错,点击次数增加
   judgeRightOrWrong(List<int> temp1,List<int> temp2){
     bool testRightOrWrong=false;  //当前题目正误
     for(int i=testBasicCount;i<testBasicCount+2;i++){
@@ -283,7 +285,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 child: (delayedShow>-2)?
                 ((delayedShow<2)?pictureWidget(testBasic, 2):
-                (totalDelayed[totalClickNumber-1]==true?pictureWidget(testBasic, 2):Text(""))
+                (totalDelayed[totalClickNumber-1]==true?
+                ((totalClickNumber==3)?Text(""):pictureWidget(testBasic, 2))
+                    :Text(""))
                 ) : Text(""),
               )
           ),
@@ -304,8 +308,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 child: (delayedShow>-2)?((delayedShow<2)?pictureWidget(testContrast, 5):
                 (totalCorrect[totalClickNumber-1]!=null?
-                (totalDelayed[totalClickNumber-1]==false?rorwWidget():pictureWidget(testContrast, 5)) :
-                Text(""))
+                (totalDelayed[totalClickNumber-1]==false?rorwWidget():
+                (totalClickNumber==3?Text(""):pictureWidget(testContrast, 5))
+                ) : Text(""))
                 ):zhunben(),
               )
           ),
@@ -393,6 +398,12 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                         totalDelayed[totalClickNumber-1]=true;
                                       });
                                     });
+                                    //跳转正式准备界面
+                                    setState(() {
+                                      if(totalClickNumber==3 && totalDelayed[2]==true){
+                                        checkOperationHidden=false;
+                                      }
+                                    });
                                   },
                                   child: Text(
                                     "有",
@@ -439,6 +450,12 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                       setState(() {
                                         totalDelayed[totalClickNumber-1]=true;
                                       });
+                                    });
+                                    //跳转正式准备界面
+                                    setState(() {
+                                      if(totalClickNumber==3 && totalDelayed[2]==true){
+                                        checkOperationHidden=false;
+                                      }
                                     });
                                   },
                                   child: Text(
@@ -504,7 +521,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                       offset: Offset(setWidth(1), setHeight(2)))
                 ]),
             child: Text(
-              "熟悉操作方法",
+              "熟悉操作界面",
               style: TextStyle(fontSize: setSp(60)),
             ),
           ),
@@ -538,6 +555,85 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 Future.delayed(Duration(seconds: knowDelayedTime), (){
                   setState(() {
                     delayedShow=0; //开始延迟显示
+                  });
+                });
+              },
+              child: Text(
+                "开始",
+                style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //*正式测查*
+  Widget buildCheckWidget() {
+    return Container(
+      //确保占满屏幕宽度和高度
+      width: maxWidth,
+      height: maxHeight,
+      color: Color.fromARGB(220, 150, 150, 150),
+      child: Column(
+        //主轴对齐位置
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          //空间位置调整
+          SizedBox(
+            height: setHeight(100),
+          ),
+          Container(
+            width: setWidth(700),
+            height: setHeight(700),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 229, 229, 229),
+                borderRadius: BorderRadius.all(Radius.circular(setWidth(50))),
+                boxShadow: [
+                  BoxShadow(
+                      color: Color.fromARGB(255, 100, 100, 100),
+                      //数字越大越模糊。默认值是0，表示一点也不进行模糊
+                      blurRadius: setWidth(10),
+                      //阴影与容器的距离
+                      offset: Offset(setWidth(1), setHeight(2)))
+                ]),
+            child: Text(
+              "正式测查",
+              style: TextStyle(fontSize: setSp(60)),
+            ),
+          ),
+          SizedBox(
+            height: setHeight(250),
+          ),
+          Container(
+            width: setWidth(500),
+            height: setHeight(120),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xff418ffc), Color(0xff174cfc)],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(setWidth(1), setHeight(1)),
+                    blurRadius: setWidth(5),
+                  )
+                ]),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                  MaterialStateProperty.all(Colors.transparent)),
+              onPressed: () {
+                setState(() {
+
+                });
+                //熟悉延时函数
+                Future.delayed(Duration(seconds: knowDelayedTime), (){
+                  setState(() {
+
                   });
                 });
               },
@@ -588,11 +684,16 @@ class SymbolMainPageState extends State<SymbolMainPage> {
             ),
           ],
         ),
-        // 浮窗界面
+        // 正式界面
+        Offstage(
+          offstage: checkOperationHidden,
+          child: buildCheckWidget(),
+        ),
+        //熟悉界面
         Offstage(
           offstage: knowOperationHidden,
           child: buildFloatWidget(),
-        )
+        ),
       ],
     );
   }
