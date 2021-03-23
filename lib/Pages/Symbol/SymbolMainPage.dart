@@ -17,16 +17,14 @@ class SymbolMainPageState extends State<SymbolMainPage> {
 
   //熟悉操作界面是否隐去
   bool knowOperationHidden=false;
-  //是否开始延迟显示
-  bool delayedShow=false;
+  //是否开始延迟显示,-2不显示，0显示，2生命周期结束
+  int delayedShow=-2;
   //图片延时时间设置
   int pictureDelayedTime=1;
   //符号检索图片数
   int symbolPictureNumber=36;
   //是否开始新一轮答题展示
   bool newAnswerRound=false;
-  //答题后展示√还是×图片，初始化为错的图片
-  bool showSymbolROrW=false;
 
   //尝试的两张图片的基本组
   List<int> testBasic=new List();
@@ -36,9 +34,87 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   int testBasicCount=0;
   //记录测试的对照组评判序号
   int testContrastCount=0;
-  //测试时的对错记录
-  List<bool> testCorrect=new List();
+  //记录总的测试点击次数
+  int totalClickNumber=0;
+  //记录总的对错记录，判断展示√还是×的图片
+  List<bool> totalCorrect=new List();
 
+  //准备二字
+  Widget zhunben(){
+    return Column(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text(""),
+        ),
+        Expanded(
+          flex: 2,
+          //准备框
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Text(""),
+              ),
+              //准备两个字
+              Expanded(
+                flex: 2,
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "准备",
+                    style: TextStyle(
+                      fontSize: setSp(88),
+                      fontWeight: FontWeight.w400,
+                      color: Colors.red[300],
+                    ),
+                  ),
+                  decoration: new BoxDecoration(
+                    // border: new Border.all(color: Color.fromARGB(20, 0, 0, 0), width: 0.5),
+                    border: Border(
+                        top: BorderSide(
+                            color: Color.fromARGB(20, 0, 0, 0),
+                            width: 0.5), // 上边边框
+                        right: BorderSide(
+                            color: Colors.transparent), // 右侧边框
+                        bottom: BorderSide(
+                            color: Color.fromARGB(20, 0, 0, 0),
+                            width: 5), // 底部边框
+                        left: BorderSide(
+                            color: Colors.transparent)), // 左侧边框
+                    gradient: LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 235, 235, 235),
+                          Color.fromARGB(255, 255, 255, 255),
+                          Color.fromARGB(255, 235, 235, 235),
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Color.fromARGB(5, 0, 0, 0),
+                          offset: Offset(0.0, 6.0), //阴影y轴偏移量
+                          blurRadius: 0, //阴影模糊程度
+                          spreadRadius: 0 //阴影扩散程度
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(""),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(""),
+        ),
+      ],
+    );
+  }
 
   //获取随机图片编号
   getRandomNumber(List<int> temp,int num){
@@ -88,6 +164,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
       children: picture,
     );
     print("此时的列表："+temp.toString());
+    if(delayedShow<2){
+      delayedShow+=1;
+    }
     return content;
   }
 
@@ -103,11 +182,31 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     }
     testBasicCount+=2;
     testContrastCount+=5;
-    print(testBasicCount);
-    print(testContrastCount);
+    totalClickNumber++;
+    print("testBasicCount："+testBasicCount.toString());
+    print("testContrastCount："+testContrastCount.toString());
+    print("totalClickNumber："+totalClickNumber.toString());
     return testRightOrWrong;
   }
 
+  //对错图片组件
+  Widget rorwWidget(){
+    String temp="";
+    if(totalCorrect[totalClickNumber-1]==true){
+      temp="correct";
+    }else{
+      temp="wrong";
+    }
+    return Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('images/'+temp+'.png'),
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.center),
+        ),
+      );
+  }
 
   //*顶部背景*
   Widget buildTopWidget() {
@@ -178,7 +277,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                       color: Color.fromARGB(20, 0, 0, 0),
                       border: Border.all(color: Colors.blue, width: 3.0),
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: delayedShow? pictureWidget(testBasic, 2): Text(""),
+                child: (delayedShow>-2)? ((delayedShow<2)?pictureWidget(testBasic, 2):Text("")): Text(""),
               )
           ),
           //空白中
@@ -196,81 +295,11 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                     color: Color.fromARGB(20, 0, 0, 0),
                     border: Border.all(color: Colors.indigo[100], width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: delayedShow?pictureWidget(testContrast, 5):
-                Column(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Text(""),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      //准备框
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 1,
-                            child: Text(""),
-                          ),
-                          //准备两个字
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                "准备",
-                                style: TextStyle(
-                                  fontSize: setSp(88),
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.red[300],
-                                ),
-                              ),
-                              decoration: new BoxDecoration(
-                                // border: new Border.all(color: Color.fromARGB(20, 0, 0, 0), width: 0.5),
-                                border: Border(
-                                    top: BorderSide(
-                                        color: Color.fromARGB(20, 0, 0, 0),
-                                        width: 0.5), // 上边边框
-                                    right: BorderSide(
-                                        color: Colors.transparent), // 右侧边框
-                                    bottom: BorderSide(
-                                        color: Color.fromARGB(20, 0, 0, 0),
-                                        width: 5), // 底部边框
-                                    left: BorderSide(
-                                        color: Colors.transparent)), // 左侧边框
-                                gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromARGB(255, 235, 235, 235),
-                                      Color.fromARGB(255, 255, 255, 255),
-                                      Color.fromARGB(255, 235, 235, 235),
-                                    ],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color.fromARGB(5, 0, 0, 0),
-                                      offset: Offset(0.0, 6.0), //阴影y轴偏移量
-                                      blurRadius: 0, //阴影模糊程度
-                                      spreadRadius: 0 //阴影扩散程度
-                                      )
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(""),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(""),
-                    ),
-                  ],
-                ),
-              )),
+                child: (delayedShow>-2)?((delayedShow<2)?pictureWidget(testContrast, 5):
+                (totalCorrect[totalClickNumber-1]!=null?rorwWidget():Text(""))
+                ):zhunben(),
+              )
+          ),
           //空白右
           Expanded(
             flex: 5,
@@ -345,8 +374,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                   onPressed: () {
                                     bool temp=judgeRightOrWrong(testBasic, testContrast);
                                     setState(() {
-                                      temp==true?showSymbolROrW=true:showSymbolROrW=false;
-                                      print(showSymbolROrW);
+                                      temp==true?totalCorrect.add(true):totalCorrect.add(false);
+                                      print(totalCorrect[totalClickNumber-1]);
                                     });
                                   },
                                   child: Text(
@@ -385,8 +414,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                   onPressed: () {
                                     bool temp=judgeRightOrWrong(testBasic, testContrast);
                                     setState(() {
-                                      temp==false?showSymbolROrW=true:showSymbolROrW=false;
-                                      print(showSymbolROrW);
+                                      temp==false?totalCorrect.add(true):totalCorrect.add(false);
+                                      print(totalCorrect[totalClickNumber-1]);
                                     });
                                   },
                                   child: Text(
@@ -485,7 +514,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 //延时1s函数
                 Future.delayed(Duration(seconds: pictureDelayedTime), (){
                   setState(() {
-                    delayedShow=true; //开始延迟显示
+                    delayedShow=0; //开始延迟显示
                   });
                 });
               },
