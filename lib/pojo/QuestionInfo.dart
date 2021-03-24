@@ -43,13 +43,18 @@ class QuestionInfo {
   });
 
   QuestionInfo.fromMap(Map<String, String> data)
-      : questionName = data["questionName"],
-        questionAbility = data["questionAbility"],
+      : questionAbility = data["questionAbility"],
         questionImgPath = data["questionImgPath"],
+        //第一个页面
+        questionName = data["questionName"],
         questionPurpose = data["questionPurpose"],
-        questionRules = data["questionRules"],
         questionNotes = data["questionNotes"],
+        //第二个页面
+        questionRules = data["questionRules"],
         questionRuleNotes = data["questionRuleNotes"],
+        nextPageRouter = data["nextPageRouter"],
+        //第三个页面
         questionRules2 = data["questionRules2"],
-        questionRuleNotes2 = data["questionRuleNotes2"];
+        questionRuleNotes2 = data["questionRuleNotes2"],
+        nextPageRouter2 = data["nextPageRouter2"];
 }

@@ -40,7 +40,7 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
         ),
         onPressed: () {
           Navigator.pushNamed(context, QuestionSecondFragment.routerName,
-              arguments: questionInfo);
+              arguments: {"questionInfo": questionInfo, "currentPage": 2});
         },
         child: Text(
           "下一步",

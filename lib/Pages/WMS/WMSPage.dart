@@ -42,16 +42,16 @@ class WMSPageState extends State<WMSPage> {
     1550,
     1950
   ];
-  List<double> buttonY = [300, 100, 300, 100, 520, 1100, 800, 1100, 800, 1050];
+  List<double> buttonY = [330, 130, 330, 130, 530, 1130, 830, 1130, 830, 1080];
 
-  int index;
-  Timer _timer;
-  int currentTime = 0;
-  WMSQuestion _wmsQuestion = WMSQuestion(test: true);
-  final pointOneSec = const Duration(milliseconds: 100);
-  CurrentState currentState = CurrentState.questionBegin;
+  int index; //高亮方形按钮的索引
+  Timer _timer; //计时器
+  int currentTime = 0; //辅助计时器你
+  WMSQuestion _wmsQuestion = WMSQuestion(test: true); //初始化出题器
+  final pointOneSec = const Duration(milliseconds: 100); //定义0.1秒的Duration
+  CurrentState currentState = CurrentState.questionBegin; //初始化当前页面状态为Begin
   bool success = true;
-  bool test = true;
+  bool test = true; //是否为test阶段的标志
 
   //中间显示的文字
   Map showText = {
@@ -71,37 +71,54 @@ class WMSPageState extends State<WMSPage> {
     CurrentState.questionWrong: Colors.blue[400],
   };
 
+  //定时器回调函数
   void callback(timer) {
     setState(() {
       if (currentTime == 0) {
+        //判断是否有下一道题
         if (_wmsQuestion.hasNextIndex()) {
+          //获取下一道题，并进行高亮
           index = _wmsQuestion.getNextQuestion();
         } else {
+          //取消定时器
           _timer.cancel();
+          //清除高亮状态
           index = null;
+          //改变当前状态为开始做题
           currentState = CurrentState.doingQuestion;
+          //重置题目生成器的索引
           _wmsQuestion.resetIndex();
         }
       } else if (currentTime == 8) {
+        //清除高亮状态，构成闪烁效果
         index = null;
       }
+      //递增计时器
       currentTime = (currentTime + 1) % 10;
     });
   }
 
   void showQuestions() {
+    //开始展示题目
     setState(() {
+      //设置当前状态为展示问题
       currentState = CurrentState.showingQuestion;
     });
+    //生成新的题目
     _wmsQuestion.generateRandomQuestionList();
+    //启动计时器和callback函数
     _timer = Timer.periodic(pointOneSec, callback);
   }
 
   void prepareShowQuestion() {
+    //准备展示题目
     Future.delayed(Duration(seconds: 1), () {
+      //延时一秒后开始展示题目
       setState(() {
+        //改变当前状态
         currentState = CurrentState.showingQuestion;
       });
+      //调用展示题目函数
       showQuestions();
     });
   }
@@ -111,10 +128,10 @@ class WMSPageState extends State<WMSPage> {
     for (int i = 0; i < 10; i++) {
       ElevatedButton button = ElevatedButton(
         onPressed: () => buttonClicked(i),
-        // child: Text(
-        //   (i + 1).toString(),
-        //   style: TextStyle(fontSize: setSp(75), fontWeight: FontWeight.bold),
-        // ),
+        child: Text(
+          (i + 1).toString(),
+          style: TextStyle(fontSize: setSp(75), fontWeight: FontWeight.bold),
+        ),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(
               i == index ? Colors.blue[700] : Color.fromARGB(255, 98, 78, 75)),
@@ -150,6 +167,7 @@ class WMSPageState extends State<WMSPage> {
           //修改状态
           success = false;
           currentState = CurrentState.questionWrong; //判错
+          _wmsQuestion.questionWrong(); //判错
         });
         if (test) {
           Future.delayed(pointOneSec, () {
@@ -177,6 +195,7 @@ class WMSPageState extends State<WMSPage> {
           setState(() {
             success = true;
             currentState = CurrentState.questionCorrect; //判对
+            _wmsQuestion.questionCorrect();
           });
           if (_wmsQuestion.questionAllDone()) {
             //题目全部达答完
@@ -214,7 +233,7 @@ class WMSPageState extends State<WMSPage> {
       padding: EdgeInsets.only(left: setWidth(140)),
       alignment: Alignment.centerLeft,
       width: maxWidth,
-      height: setHeight(200),
+      height: setHeight(150),
       color: Color.fromARGB(255, 48, 48, 48),
       child: Text(
         "长度：3位",
@@ -229,7 +248,7 @@ class WMSPageState extends State<WMSPage> {
           [
             Center(
               child: Container(
-                margin: EdgeInsets.only(bottom: setHeight(140)),
+                margin: EdgeInsets.only(bottom: setHeight(80)),
                 width: setWidth(820),
                 height: setHeight(120),
                 decoration: BoxDecoration(
@@ -245,7 +264,7 @@ class WMSPageState extends State<WMSPage> {
             ),
             Center(
               child: Container(
-                margin: EdgeInsets.only(bottom: setHeight(140)),
+                margin: EdgeInsets.only(bottom: setHeight(80)),
                 alignment: Alignment.center,
                 width: setWidth(850),
                 height: setHeight(120),
@@ -394,11 +413,21 @@ class WMSPageState extends State<WMSPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     // SizedBox(height: setHeight(30)),
-                    Text("正确数：0      ", style: resultTextStyle),
+                    Text(
+                        "正确数：" +
+                            _wmsQuestion.correctCounts.toString() +
+                            "      ",
+                        style: resultTextStyle),
                     // SizedBox(height: setHeight(15)),
-                    Text("错误数：0      ", style: resultTextStyle),
+                    Text(
+                        "错误数：" + _wmsQuestion.wrongCounts.toString() + "      ",
+                        style: resultTextStyle),
                     // SizedBox(height: setHeight(15)),
-                    Text("最大长度：0位      ", style: resultTextStyle),
+                    Text(
+                        "最大长度：" +
+                            _wmsQuestion.maxLength.toString() +
+                            "位      ",
+                        style: resultTextStyle),
                   ],
                 ),
               ),
@@ -473,7 +502,7 @@ class WMSPageState extends State<WMSPage> {
                         ),
                         Container(
                           width: maxWidth,
-                          height: maxHeight - setHeight(205),
+                          height: maxHeight - setHeight(155),
                           color: Color.fromARGB(255, 238, 241, 240),
                           child: currentState == CurrentState.questionBegin ||
                                   currentState == CurrentState.questionAllDone
@@ -533,8 +562,8 @@ class WMSPageState extends State<WMSPage> {
 }
 
 enum CurrentState {
-  questionBegin,    //显示开始浮窗
-  questionPrepare,  //显示准备字样
+  questionBegin, //显示开始浮窗
+  questionPrepare, //显示准备字样
   showingQuestion, //正式显示题目
   doingQuestion, //开始答题
   questionCorrect, //答题正确

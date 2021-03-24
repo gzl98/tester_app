@@ -14,6 +14,9 @@ class WMSQuestion {
 
   // List _questionLengthListTest = [3, 3, 3];
   List _questionLengthListFormal = [3, 3];
+  int maxLength = 0; //记录最大长度位数
+  int correctCounts = 0; //记录正确数
+  int wrongCounts = 0; //记录错误数
 
   // List _questionLengthListFormal = [
   //   3,
@@ -52,7 +55,8 @@ class WMSQuestion {
   }
 
   int getCurrentLength() {
-    return _questionLengthList[_questionLengthIndex];
+    //由于之前生成题目时对索引进行了递增，所以此处需要减1
+    return _questionLengthList[_questionLengthIndex - 1];
   }
 
   bool currentQuestionIsDone() {
@@ -74,4 +78,11 @@ class WMSQuestion {
     }
     return false;
   }
+
+  void questionCorrect() {
+    correctCounts++;
+    maxLength = getCurrentLength();
+  }
+
+  void questionWrong() => wrongCounts++;
 }
