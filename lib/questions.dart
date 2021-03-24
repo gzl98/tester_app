@@ -8,7 +8,7 @@ final Map<String, String> questionWMS = {
   "questionRuleNotes": "请在闪烁停止后再按照顺序依次点击",
   "questionRules2": null,
   "questionRuleNotes2": null,
-  "nextPageRouter": WMSPage.routerName,
+  "nextPageRouter2": WMSPage.routerName,
 };
 //Stroop词语
 final Map<String, String> questionStroop = {

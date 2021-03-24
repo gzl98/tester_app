@@ -39,8 +39,12 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
           elevation: MaterialStateProperty.all(setWidth(2)),
         ),
         onPressed: () {
-          Navigator.pushNamed(context, QuestionSecondFragment.routerName,
-              arguments: {"questionInfo": questionInfo, "currentPage": 2});
+          if (questionInfo.nextPageRouter != null) {
+            Navigator.pushNamed(context, questionInfo.nextPageRouter);
+          } else {
+            Navigator.pushNamed(context, QuestionSecondFragment.routerName,
+                arguments: {"questionInfo": questionInfo, "currentPage": 2});
+          }
         },
         child: Text(
           "下一步",
