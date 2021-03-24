@@ -6,6 +6,10 @@ import 'package:tester_app/Utils/Utils.dart';
 
 import 'package:tester_app/Pages/COT/COTQuestion.dart';
 
+//持续操作测试
+//这是一项检测持续注意力的测验。屏幕上会先出现一个图形您要记住它，之后屏幕中央会连续出现一系列的图形，每当出现您记住的图形时，请尽可能地按下屏幕中的按钮。
+//注意：总共约2分钟，您需要尽快、准确地对每个图形做出判断。
+
 class COTPage extends StatefulWidget {
   static const routerName = "/COTPage";
 
@@ -26,37 +30,93 @@ class COTPageState extends State<COTPage> {
   }
 
   Timer _timer;
-  int currentTime = 0;
-  final pointOneSec = const Duration(milliseconds: 100);
+  int currentTime = 0; //ms
+  final pointOneSec = const Duration(milliseconds: 10);
   COTQuestion _cotQuestion = COTQuestion(3, 0); // 出题器
-  int currentState = 0; // 题目流程 0:显示悬浮窗 1:显示题目 2:显示准备 3:显示图形 4:答题正确 5:答题错误 6:答题完毕
+  int _question = 0; // 当前问题
+  int _questionStartTime = 0;
+  int currentState =
+      0; // 题目流程 0:显示悬浮窗 1:显示题目 2:显示准备 3:显示图形 4:答题正确 5:答题错误 6:答题完毕
   bool formal = false; // 是否为正式测试
   String imagePath = "images/v2.0/COT/0.png"; // 显示图片的路径
-  bool success = true; // 答题正确或错误
+  int _answerTimes = 0;
+  int _answerCorrectTimes = 0;
+  int _answerTime = 0;
+  int _answerCorrectTime = 0;
+
+  void answerProblem() {
+    print(currentTime);
+    print(currentTime - _questionStartTime);
+    print(_question);
+    print(_cotQuestion.getAnswer());
+    if (_question == _cotQuestion.getAnswer()) {
+      setState(() {
+        currentState = 4;
+        imagePath = "images/v2.0/correct.png";
+        if (formal) {
+        } else {
+          _answerTime += 1;
+          if (_answerTime == 3) {
+            questionOver();
+          }
+        }
+      });
+    } else {
+      setState(() {
+        currentState = 5;
+        imagePath = "images/v2.0/wrong.png";
+      });
+    }
+  }
+
+  void questionOver() {
+    if (formal) {
+      setState(() {
+        currentState = 6;
+      });
+    } else {
+      _timer.cancel();
+      Future.delayed(Duration(seconds: 1), () {
+        setState(() {
+          setState(() {
+            formal = true;
+            currentState = 0;
+            currentTime = 0;
+            _cotQuestion.setQuestionState(1);
+            _cotQuestion.generateAnswer();
+          });
+        });
+      });
+    }
+  }
 
   void callback(timer) {
     setState(() {
-      if (currentTime == 0) {
-      } else if (currentTime == 8) {
+      if (currentTime >= 120 * 1000) {
+        _timer.cancel();
+        questionOver();
       }
-      currentTime = (currentTime + 1) % 10;
+      if (currentTime % 1000 == 0) {
+        int question = _cotQuestion.getNextQuestion();
+        String questionImagePath =
+            "images/v2.0/COT/" + question.toString() + ".png";
+        setState(() {
+          currentState = 3;
+          _question = _question;
+          imagePath = questionImagePath;
+          _questionStartTime = currentTime;
+        });
+      }
+      currentTime += 10;
     });
-  }
-
-  void showQuestions() {
-    setState(() {
-      currentState = 1;
-    });
-
-    _timer = Timer.periodic(pointOneSec, callback);
   }
 
   void prepareShow() {
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
-        currentState = 1;
+        currentState = 3;
       });
-      showQuestions();
+      _timer = Timer.periodic(pointOneSec, callback);
     });
   }
 
@@ -67,10 +127,15 @@ class COTPageState extends State<COTPage> {
       width: maxWidth,
       height: setHeight(150),
       color: Color.fromARGB(255, 48, 48, 48),
-      child: Text(
-        "用时：",
-        style: TextStyle(color: Colors.white, fontSize: setSp(55)),
-      ),
+      child: formal
+          ? Text(
+              "用时：" + (120 - currentTime ~/ 1000).toString() + 's',
+              style: TextStyle(color: Colors.white, fontSize: setSp(55)),
+            )
+          : Text(
+              "用时：",
+              style: TextStyle(color: Colors.white, fontSize: setSp(55)),
+            ),
     );
   }
 
@@ -157,6 +222,7 @@ class COTPageState extends State<COTPage> {
                           setState(() {
                             currentState = 2;
                           });
+                          prepareShow();
                         },
                         child: Text(
                           "开始",
@@ -189,16 +255,27 @@ class COTPageState extends State<COTPage> {
                                 offset: Offset(setWidth(1), setHeight(2)))
                           ]),
                       child: Center(
-                        child: currentState == 2 ?
-                            Text(
+                        child: currentState == 2
+                            ? Text(
                                 "准备",
-                              style: TextStyle(fontSize: setSp(180), color: Colors.red,),
-                            ) :
-                            Image.asset(
-                              imagePath,
-                              width: setWidth(350),
-                              fit: BoxFit.fill,
-                            ),
+                                style: TextStyle(
+                                  fontSize: setSp(180),
+                                  color: Colors.red,
+                                ),
+                              )
+                            : currentState == 3
+                                ? ((currentTime ~/ 100) % 2 == 0
+                                    ? Image.asset(
+                                        imagePath,
+                                        width: setWidth(350),
+                                        fit: BoxFit.fill,
+                                      )
+                                    : Container())
+                                : Image.asset(
+                                    imagePath,
+                                    width: setWidth(350),
+                                    fit: BoxFit.fill,
+                                  ),
                       ),
                     ),
                     SizedBox(
@@ -224,9 +301,7 @@ class COTPageState extends State<COTPage> {
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.transparent)),
                         onPressed: () {
-                          setState(() {
-                            currentState = 2;
-                          });
+                          answerProblem();
                         },
                         child: Text(
                           "确认",

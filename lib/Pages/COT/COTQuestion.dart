@@ -18,7 +18,7 @@ class COTQuestion {
   }
 
   int getAnswer() {
-    return _answer;
+    return _questionState == 0 ? 0 : _answer;
   }
 
   int getNextQuestion() {
