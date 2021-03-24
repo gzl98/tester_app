@@ -6,16 +6,6 @@ import 'package:tester_app/Utils/Utils.dart';
 
 import 'package:tester_app/Pages/COT/COTQuestion.dart';
 
-enum CurrentState {
-  questionBegin, //显示操作浮窗
-  questionPrepare, //显示准备字样
-  showingQuestion, //
-  doingQuestion, //开始答题
-  questionCorrect, //答题正确
-  questionWrong, //答题错误
-  questionAllDone //全部答题完毕
-}
-
 class COTPage extends StatefulWidget {
   static const routerName = "/COTPage";
 
@@ -35,36 +25,19 @@ class COTPageState extends State<COTPage> {
     super.initState();
   }
 
-  int index;
   Timer _timer;
   int currentTime = 0;
-  COTQuestion _cotQuestion = COTQuestion(0, 0);
   final pointOneSec = const Duration(milliseconds: 100);
-  CurrentState currentState = CurrentState.questionBegin;
-  bool success = true;
-
-  //中间显示的文字
-  Map showText = {
-    CurrentState.questionPrepare: "准 备",
-    CurrentState.showingQuestion: "题 目 播 放 中...",
-    CurrentState.doingQuestion: "开 始 作 答",
-    CurrentState.questionCorrect: "开 始 作 答",
-    CurrentState.questionWrong: "开 始 作 答",
-  };
-
-  //中间显示文字的颜色
-  Map showTextColor = {
-    CurrentState.questionPrepare: Colors.deepOrangeAccent,
-    CurrentState.showingQuestion: Colors.blue[400],
-    CurrentState.doingQuestion: Colors.blue[400],
-  };
+  COTQuestion _cotQuestion = COTQuestion(3, 0); // 出题器
+  int currentState = 0; // 题目流程 0:显示悬浮窗 1:显示题目 2:显示准备 3:显示图形 4:答题正确 5:答题错误 6:答题完毕
+  bool formal = false; // 是否为正式测试
+  String imagePath = "images/v2.0/COT/0.png"; // 显示图片的路径
+  bool success = true; // 答题正确或错误
 
   void callback(timer) {
     setState(() {
       if (currentTime == 0) {
-
       } else if (currentTime == 8) {
-        index = null;
       }
       currentTime = (currentTime + 1) % 10;
     });
@@ -72,7 +45,7 @@ class COTPageState extends State<COTPage> {
 
   void showQuestions() {
     setState(() {
-      currentState = CurrentState.showingQuestion;
+      currentState = 1;
     });
 
     _timer = Timer.periodic(pointOneSec, callback);
@@ -81,7 +54,7 @@ class COTPageState extends State<COTPage> {
   void prepareShow() {
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
-        currentState = CurrentState.showingQuestion;
+        currentState = 1;
       });
       showQuestions();
     });
@@ -92,17 +65,181 @@ class COTPageState extends State<COTPage> {
       padding: EdgeInsets.only(left: setWidth(140)),
       alignment: Alignment.centerLeft,
       width: maxWidth,
-      height: setHeight(200),
+      height: setHeight(150),
       color: Color.fromARGB(255, 48, 48, 48),
       child: Text(
-        "长度：3位",
+        "用时：",
         style: TextStyle(color: Colors.white, fontSize: setSp(55)),
       ),
     );
   }
 
   Widget buildMainWidget() {
-    return Stack();
+    return Stack(
+      children: [
+        currentState == 1
+            ? Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: setHeight(300),
+                    ),
+                    Container(
+                      width: setWidth(900),
+                      height: setHeight(600),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 229, 229, 229),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(setWidth(50))),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Color.fromARGB(255, 100, 100, 100),
+                                blurRadius: setWidth(10),
+                                offset: Offset(setWidth(1), setHeight(2)))
+                          ]),
+                      child: Center(
+                        child: Image.asset(
+                          "images/v2.0/COT/" +
+                              _cotQuestion.getAnswer().toString() +
+                              '.png',
+                          width: setWidth(350),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: setHeight(100),
+                    ),
+                    Container(
+                      child: Column(
+                        children: [
+                          Text(
+                            "请记住屏幕中央的这个图形，当该图形出现时请尽可能快地按下屏幕中的按钮",
+                            style: TextStyle(
+                              fontSize: setSp(50),
+                            ),
+                          ),
+                          SizedBox(
+                            height: setHeight(30),
+                          ),
+                          Text(
+                            "注意：请一定要又快又准地按下屏幕中的按钮，错误按键会使成绩下降",
+                            style: TextStyle(
+                                fontSize: setSp(50), color: Colors.red),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: setHeight(50),
+                    ),
+                    Container(
+                      width: setWidth(600),
+                      height: setHeight(150),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Color(0xff418ffc), Color(0xff174cfc)],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(setWidth(1), setHeight(1)),
+                              blurRadius: setWidth(5),
+                            )
+                          ]),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.transparent)),
+                        onPressed: () {
+                          setState(() {
+                            currentState = 2;
+                          });
+                        },
+                        child: Text(
+                          "开始",
+                          style: TextStyle(
+                              color: Colors.white, fontSize: setSp(60)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: setHeight(300),
+                    ),
+                    Container(
+                      width: setWidth(900),
+                      height: setHeight(600),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 229, 229, 229),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(setWidth(50))),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Color.fromARGB(255, 100, 100, 100),
+                                blurRadius: setWidth(10),
+                                offset: Offset(setWidth(1), setHeight(2)))
+                          ]),
+                      child: Center(
+                        child: currentState == 2 ?
+                            Text(
+                                "准备",
+                              style: TextStyle(fontSize: setSp(180), color: Colors.red,),
+                            ) :
+                            Image.asset(
+                              imagePath,
+                              width: setWidth(350),
+                              fit: BoxFit.fill,
+                            ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: setHeight(100),
+                    ),
+                    Container(
+                      width: setWidth(600),
+                      height: setHeight(150),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Color(0xff418ffc), Color(0xff174cfc)],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(setWidth(1), setHeight(1)),
+                              blurRadius: setWidth(5),
+                            )
+                          ]),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.transparent)),
+                        onPressed: () {
+                          setState(() {
+                            currentState = 2;
+                          });
+                        },
+                        child: Text(
+                          "确认",
+                          style: TextStyle(
+                              color: Colors.white, fontSize: setSp(60)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+      ],
+    );
   }
 
   Widget buildFloatWidget() {
@@ -130,7 +267,7 @@ class COTPageState extends State<COTPage> {
                       offset: Offset(setWidth(1), setHeight(2)))
                 ]),
             child: Text(
-              "熟悉操作方法",
+              formal ? "正式测试" : "熟悉操作方法",
               style: TextStyle(fontSize: setSp(60)),
             ),
           ),
@@ -155,12 +292,12 @@ class COTPageState extends State<COTPage> {
             child: ElevatedButton(
               style: ButtonStyle(
                   backgroundColor:
-                  MaterialStateProperty.all(Colors.transparent)),
+                      MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
                 setState(() {
-                  currentState = CurrentState.questionPrepare;
+                  currentState = 1;
                 });
-                prepareShow();
+                _cotQuestion.generateAnswer();
               },
               child: Text(
                 "开始",
@@ -191,53 +328,25 @@ class COTPageState extends State<COTPage> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        buildTopWidget(),
+                        currentState > 1 ? buildTopWidget() : Container(),
+                        currentState > 1
+                            ? Container(
+                                width: maxWidth,
+                                height: setHeight(5),
+                                color: Colors.red,
+                              )
+                            : Container(),
                         Container(
                           width: maxWidth,
-                          height: setHeight(5),
-                          color: Colors.red,
-                        ),
-                        Container(
-                          width: maxWidth,
-                          height: maxHeight - setHeight(205),
+                          height: maxHeight - setHeight(155),
                           color: Color.fromARGB(255, 238, 241, 240),
-                          child: currentState == CurrentState.questionBegin
+                          child: currentState == 0
                               ? Container()
                               : buildMainWidget(),
                         ),
                       ]),
                 ),
-                currentState == CurrentState.questionBegin
-                    ? buildFloatWidget()
-                    : Container(),
-                currentState == CurrentState.questionCorrect
-                    ? Center(
-                  child: Container(
-                    // color: Color(0xff3f882b),
-                      margin: EdgeInsets.only(top: setHeight(100)),
-                      child: Opacity(
-                        opacity: 0.85,
-                        child: Image.asset(
-                          "images/v2.0/correct.png",
-                          width: setWidth(170),
-                        ),
-                      )),
-                )
-                    : Container(),
-                currentState == CurrentState.questionWrong
-                    ? Center(
-                  child: Container(
-                    // color: Color(0xff3f882b),
-                      margin: EdgeInsets.only(top: setHeight(100)),
-                      child: Opacity(
-                        opacity: 0.85,
-                        child: Image.asset(
-                          "images/v2.0/wrong.png",
-                          width: setWidth(170),
-                        ),
-                      )),
-                )
-                    : Container(),
+                currentState == 0 ? buildFloatWidget() : Container(),
               ],
             ),
           ),

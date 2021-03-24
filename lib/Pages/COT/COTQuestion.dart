@@ -3,12 +3,22 @@ import 'dart:math';
 class COTQuestion {
   List _questionList = [];
   int _questionState;
+  int _answer;
   int _max;
   Random _random = Random();
 
   COTQuestion(int max, int state) {
     _max = max;
     _questionState = state;
+  }
+
+  int generateAnswer() {
+    _answer = _random.nextInt(_max);
+    return _answer;
+  }
+
+  int getAnswer() {
+    return _answer;
   }
 
   int getNextQuestion() {
