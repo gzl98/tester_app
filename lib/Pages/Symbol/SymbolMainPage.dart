@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -46,6 +47,51 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   List totalDelayed = new List<bool>.generate(123, (int i) {
     return false;
   });
+
+  //声明变量
+  Timer _timer;
+  //正式倒计时120s答题时间
+  int _currentTime = 20;
+  //是否开始计时
+  bool kaishiCount=false;
+
+  @override
+  void initState() {
+    super.initState();
+    //开始倒计时
+    if(kaishiCount==true){
+      startCountdownTimer();
+    }
+  }
+
+  //倒计时操作
+  void startCountdownTimer() {
+    const oneSec = const Duration(seconds: 1);
+    var callback = (timer) => {
+      setState(() {
+        if (_currentTime < 1) {
+          //倒计时结束操作
+          _timer.cancel();
+        } else {
+          _currentTime = _currentTime - 1;
+        }
+      })
+    };
+    _timer = Timer.periodic(oneSec, callback);
+  }
+
+  //倒计时组件
+  Widget buildTime() {
+    return Text(
+      '时间：' + _currentTime.toString() + 's',
+      style: TextStyle(
+          fontSize: setSp(60),
+          fontWeight: FontWeight.w600,
+          color: _currentTime > 10
+              ? Colors.white
+              : Color.fromARGB(255, 255, 0, 0)),
+    );
+  }
 
   //准备二字
   Widget zhunben(){
@@ -250,13 +296,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
             Expanded(
                 flex: 2,
                 child: Align(
-                  child: Text(
-                    "时间：120",
-                    style: TextStyle(
-                        fontSize: setSp(60),
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
+                  child: buildTime(),
                   alignment: Alignment.centerLeft,
                 )),
             Expanded(flex: 10, child: Text("")),
@@ -656,6 +696,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                   setState(() {
                     checkDelayedShow=0;
                   });
+                });
+                setState(() {
+                  kaishiCount=true;
                 });
               },
               child: Text(
