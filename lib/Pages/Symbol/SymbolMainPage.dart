@@ -20,7 +20,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   //正式界面是否隐去
   bool checkOperationHidden=true;
   //熟悉界面延迟控制,-2不显示，0显示，2生命周期结束
-  int delayedShow=-2;
+  int knowDelayedShow=-2;
+  //正式界面延迟控制
+  int checkDelayedShow=-8;
   //熟悉+正式延时时间设置
   int knowDelayedTime=1;
   //对错延时时间设置
@@ -170,13 +172,16 @@ class SymbolMainPageState extends State<SymbolMainPage> {
       children: picture,
     );
     print("此时的列表："+temp.toString());
-    if(delayedShow<2){
-      delayedShow+=1;
+    if(knowDelayedShow<2){
+      knowDelayedShow+=1;
+    }
+    if(checkDelayedShow<2){
+      checkDelayedShow+=1;
     }
     return content;
   }
 
-  //判断对错,点击次数增加
+  //判断对错,点击次数增加，具体对错记录在按键处实现
   judgeRightOrWrong(List<int> temp1,List<int> temp2){
     bool testRightOrWrong=false;  //当前题目正误
     for(int i=testBasicCount;i<testBasicCount+2;i++){
@@ -283,12 +288,16 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                       color: Color.fromARGB(20, 0, 0, 0),
                       border: Border.all(color: Colors.blue, width: 3.0),
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: (delayedShow>-2)?
-                ((delayedShow<2)?pictureWidget(testBasic, 2):
+                child: (knowDelayedShow>-2?
+                (knowDelayedShow<2?pictureWidget(testBasic, 2):
                 (totalDelayed[totalClickNumber-1]==true?
-                ((totalClickNumber==3)?Text(""):pictureWidget(testBasic, 2))
+                (totalClickNumber==3?
+                (checkDelayedShow>-2?
+                (checkDelayedShow<2?pictureWidget(testBasic, 2):Text(""))
                     :Text(""))
-                ) : Text(""),
+                    :pictureWidget(testBasic, 2))
+                    :Text(""))
+                ) : Text("")),
               )
           ),
           //空白中
@@ -306,12 +315,16 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                     color: Color.fromARGB(20, 0, 0, 0),
                     border: Border.all(color: Colors.indigo[100], width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: (delayedShow>-2)?((delayedShow<2)?pictureWidget(testContrast, 5):
+                child: (knowDelayedShow>-2?(knowDelayedShow<2?pictureWidget(testContrast, 5):
                 (totalCorrect[totalClickNumber-1]!=null?
                 (totalDelayed[totalClickNumber-1]==false?rorwWidget():
-                (totalClickNumber==3?Text(""):pictureWidget(testContrast, 5))
+                (totalClickNumber==3?
+                (checkDelayedShow>-2?
+                (checkDelayedShow<2?pictureWidget(testContrast, 5):Text(""))
+                    :zhunben())
+                    :pictureWidget(testContrast, 5))
                 ) : Text(""))
-                ):zhunben(),
+                ):zhunben()),
               )
           ),
           //空白右
@@ -387,6 +400,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                   splashColor: Colors.transparent,
                                   onPressed: () {
                                     bool temp=judgeRightOrWrong(testBasic, testContrast);
+                                    print("checkOperationHidden0: "+checkOperationHidden.toString());
                                     //记录每道题的正误，进行√与×图片的展示
                                     setState(() {
                                       temp==true?totalCorrect.add(true):totalCorrect.add(false);
@@ -398,12 +412,15 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                         totalDelayed[totalClickNumber-1]=true;
                                       });
                                     });
-                                    //跳转正式准备界面
-                                    setState(() {
-                                      if(totalClickNumber==3 && totalDelayed[2]==true){
-                                        checkOperationHidden=false;
-                                      }
-                                    });
+                                    //跳转正式准备界面，加延迟匹配对错图片展示
+                                    if(totalClickNumber==3){
+                                      Future.delayed(Duration(seconds: rorwDelayedTime), (){
+                                        setState(() {
+                                          checkOperationHidden=false;
+                                        });
+                                      });
+                                    }
+                                    print("checkOperationHidden1: "+checkOperationHidden.toString());
                                   },
                                   child: Text(
                                     "有",
@@ -440,6 +457,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                   splashColor: Colors.transparent,
                                   onPressed: () {
                                     bool temp=judgeRightOrWrong(testBasic, testContrast);
+                                    print("checkOperationHidden0: "+checkOperationHidden.toString());
                                     //记录每道题的正误，进行√与×图片的展示
                                     setState(() {
                                       temp==false?totalCorrect.add(true):totalCorrect.add(false);
@@ -451,12 +469,15 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                         totalDelayed[totalClickNumber-1]=true;
                                       });
                                     });
-                                    //跳转正式准备界面
-                                    setState(() {
-                                      if(totalClickNumber==3 && totalDelayed[2]==true){
-                                        checkOperationHidden=false;
-                                      }
-                                    });
+                                    //跳转正式准备界面,加延迟匹配对错图片展示
+                                    if(totalClickNumber==3){
+                                      Future.delayed(Duration(seconds: rorwDelayedTime), (){
+                                        setState(() {
+                                          checkOperationHidden=false;
+                                        });
+                                      });
+                                    }
+                                    print("checkOperationHidden1: "+checkOperationHidden.toString());
                                   },
                                   child: Text(
                                     "无",
@@ -554,7 +575,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 //熟悉延时函数
                 Future.delayed(Duration(seconds: knowDelayedTime), (){
                   setState(() {
-                    delayedShow=0; //开始延迟显示
+                    knowDelayedShow=0; //开始延迟显示
                   });
                 });
               },
@@ -628,12 +649,12 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                   MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
                 setState(() {
-
+                  checkOperationHidden=true;
                 });
                 //熟悉延时函数
                 Future.delayed(Duration(seconds: knowDelayedTime), (){
                   setState(() {
-
+                    checkDelayedShow=0;
                   });
                 });
               },
