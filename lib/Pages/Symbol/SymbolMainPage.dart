@@ -52,17 +52,6 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   Timer _timer;
   //正式倒计时120s答题时间
   int _currentTime = 20;
-  //是否开始计时
-  bool kaishiCount=false;
-
-  @override
-  void initState() {
-    super.initState();
-    //开始倒计时
-    if(kaishiCount==true){
-      startCountdownTimer();
-    }
-  }
 
   //倒计时操作
   void startCountdownTimer() {
@@ -697,9 +686,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                     checkDelayedShow=0;
                   });
                 });
-                setState(() {
-                  kaishiCount=true;
-                });
+                // startCountdownTimer();
               },
               child: Text(
                 "开始",
