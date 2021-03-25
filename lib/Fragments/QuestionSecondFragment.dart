@@ -38,10 +38,10 @@ class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
         ),
         onPressed: () {
           if (currentPage == 2) {
-            Navigator.pushNamed(context, questionInfo.nextPageRouter,
+            Navigator.pushNamed(context, questionInfo.nextPageRouter2,
                 arguments: {"questionInfo": questionInfo, "currentPage": 2});
           } else if (currentPage == 3) {
-            Navigator.pushNamed(context, questionInfo.nextPageRouter2);
+            Navigator.pushNamed(context, questionInfo.nextPageRouter3);
           }
         },
         child: Text(

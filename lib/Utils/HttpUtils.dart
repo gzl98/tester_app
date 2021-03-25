@@ -33,8 +33,9 @@ Options getAuthorizationOptions(String token) {
   });
 }
 
-setAnswer(int type, int answerTimeDelta,
-    {int score: -1,
+setAnswer(int type,
+    {int answerTimeDelta,
+    int score: -1,
     String answerText,
     String imagePath,
     String imageName,

@@ -1,12 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tester_app/Fragments/MainFragment.dart';
-import 'package:tester_app/Fragments/QuestionInfoFragment.dart';
 import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 class WMSPage extends StatefulWidget {
@@ -98,6 +98,9 @@ class WMSPageState extends State<WMSPage> {
     });
   }
 
+  List questionList = [];
+  List answerList = [];
+
   void showQuestions() {
     //开始展示题目
     setState(() {
@@ -106,6 +109,11 @@ class WMSPageState extends State<WMSPage> {
     });
     //生成新的题目
     _wmsQuestion.generateRandomQuestionList();
+    if (!test) {
+      //记录当前题目
+      questionList.add(_wmsQuestion.getQuestionList());
+      answerList.add([]);
+    }
     //启动计时器和callback函数
     _timer = Timer.periodic(pointOneSec, callback);
   }
@@ -128,10 +136,11 @@ class WMSPageState extends State<WMSPage> {
     for (int i = 0; i < 10; i++) {
       ElevatedButton button = ElevatedButton(
         onPressed: () => buttonClicked(i),
-        child: Text(
-          (i + 1).toString(),
-          style: TextStyle(fontSize: setSp(75), fontWeight: FontWeight.bold),
-        ),
+        child: Container(),
+        // Text(
+        //   (i + 1).toString(),
+        //   style: TextStyle(fontSize: setSp(75), fontWeight: FontWeight.bold),
+        // ),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(
               i == index ? Colors.blue[700] : Color.fromARGB(255, 98, 78, 75)),
@@ -161,6 +170,7 @@ class WMSPageState extends State<WMSPage> {
       return; //如果不是开始答题状态，点击按钮没有效果
     if (_wmsQuestion.hasNextIndex()) {
       //当前题目还没有答完
+      if (!test) answerList.last.add(index);
       if (index != _wmsQuestion.getNextQuestion(reverse: reverse)) {
         //如果当前index不等于题目的答案，则进行判错
         setState(() {
@@ -424,9 +434,7 @@ class WMSPageState extends State<WMSPage> {
                         style: resultTextStyle),
                     // SizedBox(height: setHeight(15)),
                     Text(
-                        "最大长度：" +
-                            _wmsQuestion.maxLength.toString() +
-                            "位      ",
+                        "最大长度：" + _wmsQuestion.maxLength.toString() + "位      ",
                         style: resultTextStyle),
                   ],
                 ),
@@ -460,6 +468,15 @@ class WMSPageState extends State<WMSPage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
+                Map map = {
+                  "question": questionList,
+                  "answer": answerList,
+                  "result": _wmsQuestion.result,
+                };
+                // map.addAll(_wmsQuestion.result);
+                String text = json.encode(map);
+                print(text);
+                // setAnswer(5, score: _wmsQuestion.correctCounts, answerText: "");
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
