@@ -44,6 +44,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   int correctNumber=0;
   //错误答题数
   int wrongNumber=0;
+  //是否展示结果界面
+  bool showResult=true;
 
   //记录总的测试点击次数
   int totalClickNumber=0;
@@ -67,6 +69,10 @@ class SymbolMainPageState extends State<SymbolMainPage> {
         if (_currentTime < 1) {
           //倒计时结束操作
           _timer.cancel();
+          setState(() {
+            showResult=false;
+          });
+          countRightOrWrongNumbers();
         } else {
           _currentTime = _currentTime - 1;
         }
@@ -215,6 +221,19 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     return content;
   }
 
+  //计算正误次数
+  countRightOrWrongNumbers(){
+    for(int i=3;i<totalCorrect.length;i++){
+      if(totalCorrect[i]==true){
+        correctNumber++;
+      }else{
+        wrongNumber++;
+      }
+    }
+    print(totalCorrect);
+    print("总正确数；"+correctNumber.toString());
+    print("总错误数："+wrongNumber.toString());
+  }
 
   //判断对错,点击次数增加，具体对错记录在按键处实现
   judgeRightOrWrong(){
@@ -225,11 +244,6 @@ class SymbolMainPageState extends State<SymbolMainPage> {
           testRightOrWrong=true;
         }
       }
-    }
-    if(testRightOrWrong==true){
-      correctNumber++;
-    }else{
-      wrongNumber++;
     }
     _symbolQuestion.testBasicCount+=2;
     _symbolQuestion.testContrastCount+=5;
@@ -430,12 +444,13 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                 child: RaisedButton(
                                   color: Colors.white,
                                   splashColor: Colors.transparent,
-                                  onPressed: () {
+                                  disabledColor: Colors.white,
+                                  onPressed:(showResult)? () {
                                     bool temp=judgeRightOrWrong();
                                     //记录每道题的正误，进行√与×图片的展示
                                     setState(() {
                                       temp==true?totalCorrect.add(true):totalCorrect.add(false);
-                                      print(totalCorrect[totalClickNumber-1]);
+                                      print("本题正误："+totalCorrect[totalClickNumber-1].toString());
                                     });
                                     //正误图片延时效果设置
                                     Future.delayed(Duration(seconds: rorwDelayedTime), (){
@@ -451,7 +466,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                         });
                                       });
                                     }
-                                  },
+                                  }:null,
                                   child: Text(
                                     "有",
                                     style: TextStyle(
@@ -484,13 +499,14 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                 ),
                                 child: RaisedButton(
                                   color: Colors.white,
+                                  disabledColor: Colors.white,
                                   splashColor: Colors.transparent,
-                                  onPressed: () {
+                                  onPressed:(showResult)? () {
                                     bool temp=judgeRightOrWrong();
                                     //记录每道题的正误，进行√与×图片的展示
                                     setState(() {
                                       temp==false?totalCorrect.add(true):totalCorrect.add(false);
-                                      print(totalCorrect[totalClickNumber-1]);
+                                      print("本题正误："+totalCorrect[totalClickNumber-1].toString());
                                     });
                                     //正误图片延时效果设置
                                     Future.delayed(Duration(seconds: rorwDelayedTime), (){
@@ -506,7 +522,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                         });
                                       });
                                     }
-                                  },
+                                  }:null,
                                   child: Text(
                                     "无",
                                     style: TextStyle(
@@ -706,7 +722,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
       fontSize: setSp(45), fontWeight: FontWeight.bold, color: Colors.blueGrey);
 
   //显示结果部件
-  // Widget buildResultFloatWidget() {
+  // Widget buildResultWidget() {
   //   return Container(
   //     width: maxWidth,
   //     height: maxHeight,
@@ -859,6 +875,10 @@ class SymbolMainPageState extends State<SymbolMainPage> {
             ),
           ],
         ),
+        // Offstage(
+        //   offstage: showResult,
+        //   child: buildResultWidget(),
+        // ),
         // 正式界面
         Offstage(
           offstage: checkOperationHidden,
@@ -872,6 +892,20 @@ class SymbolMainPageState extends State<SymbolMainPage> {
       ],
     );
   }
+
+  // currentState == CurrentState.questionAllDone
+  // ? buildResultFloatWidget()
+  //     : Container(),
+  //       currentState == CurrentState.questionAllDone
+  // ? Positioned(
+  // right: setWidth(400),
+  // bottom: 0,
+  // child: Image.asset(
+  // "images/v2.0/doctor_result.png",
+  // width: setWidth(480),
+  // ))
+  //     : Container(),
+
 
   //解决显示黑黄屏的问题,Scaffold的问题导致的
   @override
