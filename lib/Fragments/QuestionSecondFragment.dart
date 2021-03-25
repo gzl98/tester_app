@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tester_app/Fragments/QuestionInfo.dart';
+import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 class QuestionSecondFragment extends StatefulWidget {
@@ -16,6 +16,7 @@ class QuestionSecondFragment extends StatefulWidget {
 
 class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
   QuestionInfo questionInfo;
+  int currentPage;
 
   @override
   void initState() {
@@ -35,7 +36,14 @@ class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
           backgroundColor: MaterialStateProperty.all(Colors.transparent),
           elevation: MaterialStateProperty.all(setWidth(2)),
         ),
-        onPressed: () {},
+        onPressed: () {
+          if (currentPage == 2) {
+            Navigator.pushNamed(context, questionInfo.nextPageRouter2,
+                arguments: {"questionInfo": questionInfo, "currentPage": 2});
+          } else if (currentPage == 3) {
+            Navigator.pushNamed(context, questionInfo.nextPageRouter3);
+          }
+        },
         child: Text(
           "下一步",
           style: TextStyle(fontSize: setSp(55), fontWeight: FontWeight.bold),
@@ -52,8 +60,9 @@ class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
 
   @override
   Widget build(BuildContext context) {
-    questionInfo = ModalRoute.of(context).settings.arguments;
-    print("questionName:" + questionInfo.questionName);
+    Map arguments = Map.from(ModalRoute.of(context).settings.arguments);
+    questionInfo = arguments["questionInfo"];
+    currentPage = arguments["currentPage"];
     return Scaffold(
       body: Container(
         width: maxWidth,

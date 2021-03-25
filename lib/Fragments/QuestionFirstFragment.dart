@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tester_app/Fragments/QuestionInfo.dart';
+import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
@@ -39,8 +39,12 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
           elevation: MaterialStateProperty.all(setWidth(2)),
         ),
         onPressed: () {
-          Navigator.pushNamed(context, QuestionSecondFragment.routerName,
-              arguments: questionInfo);
+          if (questionInfo.nextPageRouter != null) {
+            Navigator.pushNamed(context, questionInfo.nextPageRouter);
+          } else {
+            Navigator.pushNamed(context, QuestionSecondFragment.routerName,
+                arguments: {"questionInfo": questionInfo, "currentPage": 2});
+          }
         },
         child: Text(
           "下一步",

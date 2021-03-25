@@ -113,7 +113,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
     print(answerMerge.length);
     print(answerMerge.indexOf("&"));
     //上传数据到后台服务器
-    setAnswer(value, answerTime, score: mainScore, answerText: answerMerge);
+    setAnswer(value,answerTimeDelta: answerTime, score: mainScore, answerText: answerMerge);
   }
 
   //110道测试题答案评分函数
