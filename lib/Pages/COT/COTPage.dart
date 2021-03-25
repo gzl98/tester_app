@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 import 'package:tester_app/Pages/COT/COTQuestion.dart';
@@ -36,7 +37,7 @@ class COTPageState extends State<COTPage> {
   int _question = 0; // 当前问题
   int _questionStartTime = 0;
   int currentState =
-      0; // 题目流程 0:显示悬浮窗 1:显示题目 2:显示准备 3:显示图形 4:答题正确 5:答题错误 6:答题完毕
+      6; // 题目流程 0:显示悬浮窗 1:显示题目 2:显示准备 3:显示图形 4:答题正确 5:答题错误 6:答题完毕
   bool formal = false; // 是否为正式测试
   String imagePath = "images/v2.0/COT/0.png"; // 显示图片的路径
   int _answerTimes = 0;
@@ -385,6 +386,118 @@ class COTPageState extends State<COTPage> {
     );
   }
 
+  double floatWindowRadios = 30;
+  TextStyle resultTextStyle = TextStyle(
+      fontSize: setSp(45), fontWeight: FontWeight.bold, color: Colors.blueGrey);
+
+  Widget buildResultFloatWidget() {
+    return Container(
+      width: maxWidth,
+      height: maxHeight,
+      color: Color.fromARGB(220, 45, 45, 45),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: setHeight(200)),
+          Container(
+            width: setWidth(800),
+            height: setHeight(450),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 229, 229, 229),
+                borderRadius: BorderRadius.all(
+                    Radius.circular(setWidth(floatWindowRadios))),
+                boxShadow: [
+                  BoxShadow(
+                      color: Color.fromARGB(255, 100, 100, 100),
+                      blurRadius: setWidth(10),
+                      offset: Offset(setWidth(1), setHeight(2)))
+                ]),
+            child: Column(children: [
+              Container(
+                height: setHeight(100),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow()],
+                  color: Color.fromARGB(255, 229, 229, 229),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(setWidth(floatWindowRadios)),
+                      topRight: Radius.circular(setWidth(floatWindowRadios))),
+                ),
+                child: Text(
+                  "测验结果",
+                  style: TextStyle(
+                      fontSize: setSp(50),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: setHeight(30)),
+                height: setHeight(320),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    // SizedBox(height: setHeight(30)),
+                    Text("总反应数：" + _answerTimes.toString() + "s      ",
+                        style: resultTextStyle),
+                    // SizedBox(height: setHeight(15)),
+                    Text("正确反应数：" + _answerCorrectTimes.toString() + "s      ",
+                        style: resultTextStyle),
+                    // SizedBox(height: setHeight(15)),
+                    Text("反应时间：" + (_answerTime / 1000).toString() + "s      ",
+                        style: resultTextStyle),
+                    Text(
+                        "平均正确反应时间：" +
+                            (_answerTime / 1000).toString() +
+                            "s      ",
+                        style: resultTextStyle),
+                  ],
+                ),
+              ),
+            ]),
+          ),
+          SizedBox(height: setHeight(230)),
+          Container(
+            width: setWidth(500),
+            height: setHeight(120),
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.white,width: setWidth(1)),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromARGB(255, 253, 160, 60),
+                  Color.fromARGB(255, 217, 127, 63)
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black54,
+                  offset: Offset(setWidth(1), setHeight(1)),
+                  blurRadius: setWidth(5),
+                )
+              ],
+            ),
+            child: TextButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.transparent)),
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, TestNavPage.routerName, (route) => false);
+              },
+              child: Text(
+                "结 束",
+                style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -422,6 +535,16 @@ class COTPageState extends State<COTPage> {
                       ]),
                 ),
                 currentState == 0 ? buildFloatWidget() : Container(),
+                currentState == 6 ? buildResultFloatWidget() : Container(),
+                currentState == 6
+                    ? Positioned(
+                        right: setWidth(400),
+                        bottom: 0,
+                        child: Image.asset(
+                          "images/v2.0/doctor_result.png",
+                          width: setWidth(480),
+                        ))
+                    : Container(),
               ],
             ),
           ),
