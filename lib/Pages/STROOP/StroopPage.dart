@@ -3,12 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Pages/STROOP/StroopTestInfo.dart';
-import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
+import 'package:tester_app/Utils/TTSUtil.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 class StroopPage extends StatefulWidget {
   static const routerName = "/StroopWordPage";
-
   @override
   State<StatefulWidget> createState() {
     return StroopPageState();
@@ -18,16 +17,17 @@ class StroopPage extends StatefulWidget {
 class StroopPageState extends State<StroopPage> {
   @override
   void initState() {
+
     // 强制横屏
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
-    CreateStroopTest createTest = new CreateStroopTest(32);
-    this._testList = createTest.getListStroopWordTest();
+    CreateStroopTest createTest = new CreateStroopTest();
+    this.testList = createTest.getListStroopWordTest(32);
+    //初始化语音播放器
+
   }
-
-
 
   int _currentIndex=1;
   Timer _timer;
@@ -36,65 +36,92 @@ class StroopPageState extends State<StroopPage> {
   bool  _wordflag=true;
   //显示对题标志
   bool _rightFlag = false;
+  //准备操作是否完成标志
+  int _prepareFinishedFlag=  0;
+  //时间控制
   final pointOneSec = const Duration(milliseconds: 100);
+
   CurrentState currentState = CurrentState.questionBegin;
   bool success = true;
-  //题目列表
-  List<SingleStroopCard> _testList;
+  //正式题目列表
+  List<SingleStroopCard> testList;
+
+  TTSUtil tts =new TTSUtil();
   //中间显示的文字
   Map showText = {
     CurrentState.questionPrepare: "准 备",
-    CurrentState.showingQuestion: "题 目 播 放 中...",
-    CurrentState.doingQuestion: "开 始 作 答",
   };
 
   //中间显示文字的颜色
   Map showTextColor = {
     CurrentState.questionPrepare: Colors.deepOrangeAccent,
-    CurrentState.showingQuestion: Colors.blue[400],
-    CurrentState.doingQuestion: Colors.blue[400],
   };
+  //初始化正式开始答题的状态
+  initDoingQuestionBegin(){
+    setState(() {
+      //时钟取消
+      this._timer.cancel();
+      this.currentState = CurrentState.doingQuestionBegin;
+      CreateStroopTest createTest = new CreateStroopTest();
+      //重新生成测试题
+      this.testList=createTest.getListStroopWordTest(32);
+      this._currentIndex=1;
+      this._rightFlag=false;
+      this._wordflag=true;
+      this.currentTime=0;
+    });
+  }
+  initSingleTest(){
+    setState(() {
+      this._wordflag = true;
+      this._rightFlag = false;
+      this.tts.speak(this.testList[this._currentIndex-1].sound);
+    });
+  }
+  void doingQuestion(){
+    setState(() {
+      this.currentTime=0;
+      this.currentState = CurrentState.doingQuestion;
+    });
+    Future.delayed(Duration(seconds: 2), () {
+      //读第一次的值
+      this.initSingleTest();
+      this._timer = Timer.periodic(pointOneSec, callbackTime);
+    });
+  }
 
   void callbackTime(timer) {
     setState(() {
-      if (currentTime == 0) {
-        //显示文字
-        this._wordflag = true;
-        this._currentIndex += 1;
-      } else if (currentTime == 5) {
-        //隐藏文字
-        _wordflag = false;
-        if(this._currentIndex == 32){
+      if (currentTime == 20) {
+        if(this._currentIndex<32){
+            this._currentIndex++;
+            this.initSingleTest();
+        }
+        else{
           this._timer.cancel();
         }
       }
-      currentTime = (currentTime + 1) % 20;
+      else if (this.currentTime == 5) {
+        //隐藏文字
+        this._wordflag = false;
+      }
+      this.currentTime= (this.currentTime+1)%21;
     });
-  }
-
-  void showQuestions() {
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        currentState = CurrentState.doingQuestion;
-      });
-      this._timer = Timer.periodic(pointOneSec, callbackTime);
-    });
-
   }
 
   void prepareShow() {
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        currentState = CurrentState.showingQuestion;
-      });
-      showQuestions();
+    setState(() {
+      currentState = CurrentState.preDoingQuestion;
     });
-
+    Future.delayed(Duration(seconds: 2), () {
+      this.initSingleTest();
+      this._timer = Timer.periodic(pointOneSec, callbackTime);
+    });
   }
-  //检查用户测试的对错
-  bool checkRight(){
 
-    return true;
+  //检查用户测试的对错
+  bool _checkRight(){
+    return this.testList[this._currentIndex-1].checkSoundAndWord();
   }
 
   Widget buildTopWidget() {
@@ -153,29 +180,28 @@ class StroopPageState extends State<StroopPage> {
               width: setWidth(900),
               height: setHeight(500),
               left: setWidth(850),
-              child: buildWordCard(this._testList[this._currentIndex-1]),
+              child: buildWordCard(this.testList[this._currentIndex-1]),
             ),
-            currentState == CurrentState.doingQuestion
-                ? Container()
-                : Center(
-            child: Container(
-              margin: EdgeInsets.only(bottom: setHeight(140)),
-              width: setWidth(820),
-              height: setHeight(120),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.35),
-                    blurRadius: setWidth(5),
-                    offset: Offset(setWidth(0), setHeight(3)),
-                  )
-                ],
+            currentState == CurrentState.questionPrepare
+                ? Center(
+              child: Container(
+                margin: EdgeInsets.only(bottom: setHeight(140)),
+                width: setWidth(820),
+                height: setHeight(120),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.35),
+                      blurRadius: setWidth(5),
+                      offset: Offset(setWidth(0), setHeight(3)),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ),
-            currentState == CurrentState.doingQuestion
-                ? Container()
-                : Center(
+            )
+            :Container(),
+            currentState == CurrentState.questionPrepare
+                ? Center(
               child: Container(
                 margin: EdgeInsets.only(bottom: setHeight(140)),
                 alignment: Alignment.center,
@@ -199,12 +225,13 @@ class StroopPageState extends State<StroopPage> {
                       fontSize: setSp(70), color: showTextColor[currentState]),
                 ),
               ),
-            ),
+            )
+                :Container(),
           ],
     );
   }
 
-  Widget buildFloatWidget() {
+  Widget buildFloatWidget(String warning) {
     return Container(
       width: maxWidth,
       height: maxHeight,
@@ -229,7 +256,7 @@ class StroopPageState extends State<StroopPage> {
                       offset: Offset(setWidth(1), setHeight(2)))
                 ]),
             child: Text(
-              "熟悉操作方法",
+              warning,
               style: TextStyle(fontSize: setSp(60)),
             ),
           ),
@@ -257,9 +284,14 @@ class StroopPageState extends State<StroopPage> {
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
                 setState(() {
-                  currentState = CurrentState.questionPrepare;
+                  if(currentState == CurrentState.questionBegin){
+                    currentState = CurrentState.questionPrepare;
+                    prepareShow();
+                  }
+                  else if(currentState == CurrentState.doingQuestionBegin){
+                    doingQuestion();
+                  }
                 });
-                prepareShow();
               },
               child: Text(
                 "开始",
@@ -289,6 +321,21 @@ class StroopPageState extends State<StroopPage> {
 
           ),
           onPressed: () {
+            if(this._checkRight()){
+              setState(() {
+                this._rightFlag=true;
+                if(this.currentState==CurrentState.preDoingQuestion){
+                  this._prepareFinishedFlag++;
+                  print(this._prepareFinishedFlag);
+                  //准备答对三次显示正式答题浮窗
+                  if(this._prepareFinishedFlag==3) initDoingQuestionBegin();
+                }
+              });
+            }
+            //反应错误 反应错误数据加一
+            else{
+
+            }
 
           }),
     );
@@ -335,7 +382,10 @@ class StroopPageState extends State<StroopPage> {
                     child: buildButtonRect()
                 ),
                 currentState == CurrentState.questionBegin
-                    ? buildFloatWidget()
+                    ? buildFloatWidget("熟悉操作")
+                    : Container(),
+                currentState == CurrentState.doingQuestionBegin
+                    ? buildFloatWidget("正式开始")
                     : Container(),
               ],
             ),
@@ -347,7 +397,10 @@ class StroopPageState extends State<StroopPage> {
 enum CurrentState {
   questionBegin,    //显示开始浮窗
   questionPrepare,  //显示准备字样
-  showingQuestion, //正式显示题目
-  doingQuestion, //开始答题
-  questionAllDone //全部答题完毕
+  preDoingQuestion,  //准备答题
+
+  doingQuestionBegin, //正式准备答题
+  doingQuestion,    //开始答题
+  questionAllDone   //全部答题完毕
 }
+enum TtsState { playing, stopped, paused, continued }
