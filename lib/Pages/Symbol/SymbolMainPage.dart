@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Utils/Utils.dart';
+import 'package:tester_app/Pages/Symbol/SymbolTemp.dart';
 
 class SymbolMainPage extends StatefulWidget {
   @override
@@ -16,6 +17,17 @@ class SymbolMainPage extends StatefulWidget {
 
 class SymbolMainPageState extends State<SymbolMainPage> {
 
+  @override
+  void initState() {
+    // 强制横屏
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    super.initState();
+  }
+
+  //初始化出题器
+  SymbolQuestion _symbolQuestion=new SymbolQuestion();
   //熟悉操作界面是否隐去
   bool knowOperationHidden=false;
   //正式界面是否隐去
@@ -31,14 +43,6 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   //符号检索图片数
   int symbolPictureNumber=36;
 
-  //尝试的两张图片的基本组
-  List<int> testBasic=new List();
-  //尝试的五张图片的对照组
-  List<int> testContrast=new List();
-  //记录测试的基本组评判序号
-  int testBasicCount=0;
-  //记录测试的对照组评判序号
-  int testContrastCount=0;
   //记录总的测试点击次数
   int totalClickNumber=0;
   //记录总的对错记录，判断展示√还是×的图片
@@ -83,7 +87,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   }
 
   //准备二字
-  Widget zhunben(){
+  Widget prepare(){
     return Column(
       children: <Widget>[
         Expanded(
@@ -159,25 +163,6 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     );
   }
 
-  //获取随机图片编号
-  getRandomNumber(List<int> temp,int num){
-    int count=0;  //统计获取的图片数量
-    int long=temp.length; //记录初始列表长度
-    while(count<num){
-      int tempNum=Random().nextInt(36)+1;
-      bool allow=true;  //是否加入列表
-      //去除重复图案出现
-      for(int i=long;i<temp.length;i++){
-        if(temp[i]==tempNum){
-          allow=false;
-        }
-      }
-      if(allow==true){
-        temp.add(tempNum);
-        count++;
-      }
-    }
-  }
 
   //检索图片组件
   Widget symbolWidget(int number){
@@ -195,12 +180,11 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     );
   }
 
-  //一系列图片展示
-  Widget pictureWidget(List<int> temp,int num){
-    int long=temp.length; //记录初始长度
-    getRandomNumber(temp, num);
+  //基础图片展示
+  Widget basicPictureWidget(){
+    List temp=_symbolQuestion.getBasicPictureNumber();
     List<Widget>picture=[];  //存放部件
-    for(int i=long;i<temp.length;i++){
+    for(int i=0;i<temp.length;i++){
       picture.add(symbolWidget(temp[i]));
     }
     Widget content=Row(
@@ -216,21 +200,44 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     return content;
   }
 
+  //对照图片展示
+  Widget contrastPictureWidget(){
+    List temp=_symbolQuestion.getContrastPictureNumber();
+    List<Widget>picture=[];  //存放部件
+    for(int i=0;i<temp.length;i++){
+      picture.add(symbolWidget(temp[i]));
+    }
+    Widget content=Row(
+      children: picture,
+    );
+    print("此时的列表："+temp.toString());
+    if(knowDelayedShow<2){
+      knowDelayedShow+=1;
+    }
+    if(checkDelayedShow<2){
+      checkDelayedShow+=1;
+    }
+    return content;
+  }
+
+
   //判断对错,点击次数增加，具体对错记录在按键处实现
-  judgeRightOrWrong(List<int> temp1,List<int> temp2){
+  judgeRightOrWrong(){
     bool testRightOrWrong=false;  //当前题目正误
-    for(int i=testBasicCount;i<testBasicCount+2;i++){
-      for(int j=testContrastCount;j<testContrastCount+5;j++){
-        if(temp1[i]==temp2[j]){
+    for(int i=_symbolQuestion.testBasicCount;i<_symbolQuestion.testBasicCount+2;i++){
+      for(int j=_symbolQuestion.testContrastCount;j<_symbolQuestion.testContrastCount+5;j++){
+        if(_symbolQuestion.testBasicList[i]==_symbolQuestion.testContrastList[j]){
           testRightOrWrong=true;
         }
       }
     }
-    testBasicCount+=2;
-    testContrastCount+=5;
+    _symbolQuestion.testBasicCount+=2;
+    _symbolQuestion.testContrastCount+=5;
     totalClickNumber++;
-    print("testBasicCount："+testBasicCount.toString());
-    print("testContrastCount："+testContrastCount.toString());
+    _symbolQuestion.generateBasicRandom();
+    _symbolQuestion.generateContrastRandom();
+    print("testBasicCount："+_symbolQuestion.testBasicCount.toString());
+    print("testContrastCount："+_symbolQuestion.testContrastCount.toString());
     print("totalClickNumber："+totalClickNumber.toString());
     return testRightOrWrong;
   }
@@ -318,13 +325,13 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                       border: Border.all(color: Colors.blue, width: 3.0),
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 child: (knowDelayedShow>-2?
-                (knowDelayedShow<2?pictureWidget(testBasic, 2):
+                (knowDelayedShow<2?basicPictureWidget():
                 (totalDelayed[totalClickNumber-1]==true?
                 (totalClickNumber==3?
                 (checkDelayedShow>-2?
-                (checkDelayedShow<2?pictureWidget(testBasic, 2):Text(""))
+                (checkDelayedShow<2?basicPictureWidget():Text(""))
                     :Text(""))
-                    :pictureWidget(testBasic, 2))
+                    :basicPictureWidget())
                     :Text(""))
                 ) : Text("")),
               )
@@ -344,16 +351,16 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                     color: Color.fromARGB(20, 0, 0, 0),
                     border: Border.all(color: Colors.indigo[100], width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: (knowDelayedShow>-2?(knowDelayedShow<2?pictureWidget(testContrast, 5):
+                child: (knowDelayedShow>-2?(knowDelayedShow<2?contrastPictureWidget():
                 (totalCorrect[totalClickNumber-1]!=null?
                 (totalDelayed[totalClickNumber-1]==false?rorwWidget():
                 (totalClickNumber==3?
                 (checkDelayedShow>-2?
-                (checkDelayedShow<2?pictureWidget(testContrast, 5):Text(""))
-                    :zhunben())
-                    :pictureWidget(testContrast, 5))
+                (checkDelayedShow<2?contrastPictureWidget():Text(""))
+                    :prepare())
+                    :contrastPictureWidget())
                 ) : Text(""))
-                ):zhunben()),
+                ):prepare()),
               )
           ),
           //空白右
@@ -428,7 +435,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                   color: Colors.white,
                                   splashColor: Colors.transparent,
                                   onPressed: () {
-                                    bool temp=judgeRightOrWrong(testBasic, testContrast);
+                                    bool temp=judgeRightOrWrong();
                                     print("checkOperationHidden0: "+checkOperationHidden.toString());
                                     //记录每道题的正误，进行√与×图片的展示
                                     setState(() {
@@ -485,7 +492,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                   color: Colors.white,
                                   splashColor: Colors.transparent,
                                   onPressed: () {
-                                    bool temp=judgeRightOrWrong(testBasic, testContrast);
+                                    bool temp=judgeRightOrWrong();
                                     print("checkOperationHidden0: "+checkOperationHidden.toString());
                                     //记录每道题的正误，进行√与×图片的展示
                                     setState(() {
@@ -607,6 +614,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                     knowDelayedShow=0; //开始延迟显示
                   });
                 });
+                //初次要先产生一次
+                _symbolQuestion.generateBasicRandom();
+                _symbolQuestion.generateContrastRandom();
               },
               child: Text(
                 "开始",
@@ -686,7 +696,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                     checkDelayedShow=0;
                   });
                 });
-                // startCountdownTimer();
+                startCountdownTimer();
               },
               child: Text(
                 "开始",
