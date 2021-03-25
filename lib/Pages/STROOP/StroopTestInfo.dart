@@ -48,3 +48,41 @@ class CreateStroopTest {
   }
 
 }
+
+class StroopTestResultInfo {
+  int _totalRect = 0;
+  int _rightRect = 0;
+
+  //List记录每一个RectTime
+  List<double> totalRectTime=List<double>();
+  //记录每一个反应的结果
+  List<bool> rectResult =List<bool>();
+
+  int get totalRect => this._totalRect;
+  int get rightRect => this._rightRect;
+
+  //添加每一个反应的时间与结果
+  void addSingleTimeResult(double rectTime,bool result){
+    print(rectTime);
+    this.totalRectTime.add(rectTime);
+    this.rectResult.add(result);
+    if(result)  this._rightRect++;
+    this._totalRect++;
+  }
+  //错误反应数
+  int getErrorRectCount(){
+    return this._totalRect-this._rightRect;
+  }
+  //计算
+  //算平均反应时间_正确反应的平均
+  double getMeanRectTime(){
+    double sum=0;
+    for(int i=0;i<this.totalRect;i++){
+      if(this.rectResult[i]==true){
+        sum+=this.totalRectTime[i];
+      }
+    }
+    //ms
+    return (sum / this._rightRect)*100;
+  }
+}

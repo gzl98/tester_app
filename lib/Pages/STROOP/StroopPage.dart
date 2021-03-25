@@ -8,6 +8,7 @@ import 'package:tester_app/Utils/Utils.dart';
 
 class StroopPage extends StatefulWidget {
   static const routerName = "/StroopWordPage";
+
   @override
   State<StatefulWidget> createState() {
     return StroopPageState();
@@ -17,7 +18,6 @@ class StroopPage extends StatefulWidget {
 class StroopPageState extends State<StroopPage> {
   @override
   void initState() {
-
     // 强制横屏
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
@@ -26,27 +26,30 @@ class StroopPageState extends State<StroopPage> {
     CreateStroopTest createTest = new CreateStroopTest();
     this.testList = createTest.getListStroopWordTest(32);
     //初始化语音播放器
-
   }
 
-  int _currentIndex=1;
+  int _currentIndex = 1;
   Timer _timer;
   double currentTime = 0;
+
   //闪烁文字标志
-  bool  _wordflag=true;
+  bool _wordflag = true;
   //显示对题标志
   bool _rightFlag = false;
   //准备操作是否完成标志
-  int _prepareFinishedFlag=  0;
+  int _prepareFinishedFlag = 0;
+  //每道题按钮禁用类
+  bool _pressAableFlag = true;
   //时间控制
   final pointOneSec = const Duration(milliseconds: 100);
-
   CurrentState currentState = CurrentState.questionBegin;
-  bool success = true;
+  //存放结果类
+  StroopTestResultInfo _resultInfo = StroopTestResultInfo();
   //正式题目列表
   List<SingleStroopCard> testList;
+  //语音工具类
+  TTSUtil tts = new TTSUtil();
 
-  TTSUtil tts =new TTSUtil();
   //中间显示的文字
   Map showText = {
     CurrentState.questionPrepare: "准 备",
@@ -56,31 +59,40 @@ class StroopPageState extends State<StroopPage> {
   Map showTextColor = {
     CurrentState.questionPrepare: Colors.deepOrangeAccent,
   };
+
   //初始化正式开始答题的状态
-  initDoingQuestionBegin(){
+  initDoingQuestionBegin() {
     setState(() {
       //时钟取消
       this._timer.cancel();
       this.currentState = CurrentState.doingQuestionBegin;
       CreateStroopTest createTest = new CreateStroopTest();
       //重新生成测试题
-      this.testList=createTest.getListStroopWordTest(32);
-      this._currentIndex=1;
-      this._rightFlag=false;
-      this._wordflag=true;
-      this.currentTime=0;
+      this.testList = createTest.getListStroopWordTest(32);
+      this._currentIndex = 1;
+      this._rightFlag = false;
+      this._wordflag = true;
+      this.currentTime = 0;
     });
   }
-  initSingleTest(){
+
+  initSingleTest() {
     setState(() {
       this._wordflag = true;
       this._rightFlag = false;
-      this.tts.speak(this.testList[this._currentIndex-1].sound);
+      //每题开始按钮可以用
+      this._pressAableFlag = true;
+      this.tts.speak(this.testList[this._currentIndex - 1].sound);
     });
   }
-  void doingQuestion(){
+  //初始化结束状态
+  void initEndingAll(){
+    this.currentState=CurrentState.questionAllDone;
+    this._timer.cancel();
+  }
+  void doingQuestion() {
     setState(() {
-      this.currentTime=0;
+      this.currentTime = 0;
       this.currentState = CurrentState.doingQuestion;
     });
     Future.delayed(Duration(seconds: 2), () {
@@ -93,19 +105,18 @@ class StroopPageState extends State<StroopPage> {
   void callbackTime(timer) {
     setState(() {
       if (currentTime == 20) {
-        if(this._currentIndex<32){
-            this._currentIndex++;
-            this.initSingleTest();
-        }
-        else{
+        if (this._currentIndex < 32) {
+          this._currentIndex++;
+          this.initSingleTest();
+        } else {
+          if(this.currentState == CurrentState.doingQuestion) initEndingAll();
           this._timer.cancel();
         }
-      }
-      else if (this.currentTime == 5) {
+      } else if (this.currentTime == 5) {
         //隐藏文字
         this._wordflag = false;
       }
-      this.currentTime= (this.currentTime+1)%21;
+      this.currentTime = (this.currentTime + 1) % 21;
     });
   }
 
@@ -120,10 +131,34 @@ class StroopPageState extends State<StroopPage> {
   }
 
   //检查用户测试的对错
-  bool _checkRight(){
-    return this.testList[this._currentIndex-1].checkSoundAndWord();
+  bool _checkRight() {
+    return this.testList[this._currentIndex - 1].checkSoundAndWord();
   }
-
+  //按下按钮
+  doingTestPress(){
+    setState(() {
+      if(this._pressAableFlag==true){
+        if (this._checkRight()) {
+          setState(() {
+            this._rightFlag = true;
+            if (this.currentState == CurrentState.preDoingQuestion) {
+              this._prepareFinishedFlag++;
+              print(this._prepareFinishedFlag);
+              //准备答对三次显示正式答题浮窗
+              if (this._prepareFinishedFlag == 3) initDoingQuestionBegin();
+            }
+          });
+        }
+        //反应错误 反应错误数据加一
+        else {
+          this._rightFlag = false;
+        }
+        if(this.currentState==CurrentState.doingQuestion)
+          this._resultInfo.addSingleTimeResult(this.currentTime, this._rightFlag);
+        this._pressAableFlag=false;
+      }
+    });
+  }
   Widget buildTopWidget() {
     return Container(
       padding: EdgeInsets.only(left: setWidth(140)),
@@ -132,16 +167,17 @@ class StroopPageState extends State<StroopPage> {
       height: setHeight(200),
       color: Color.fromARGB(255, 48, 48, 48),
       child: Text(
-        "进度："+this._currentIndex.toString()+"/32",
+        "进度：" + this._currentIndex.toString() + "/32",
         style: TextStyle(color: Colors.white, fontSize: setSp(55)),
       ),
     );
   }
-  Widget buildWordCard(SingleStroopCard card){
+
+  Widget buildWordCard(SingleStroopCard card) {
     var circleBoxDecoration = new BoxDecoration(
       border: new Border.all(color: Color(0xFFB9BBBB), width: 0.5), // 边色与边宽度
       borderRadius: new BorderRadius.circular((25)), // 圆角度
-      color:Color(0xFFE2E4E6),
+      color: Color(0xFFE2E4E6),
       //borderRadius: new BorderRadius.vertical(top: Radius.elliptical(20, 50)),
     );
     var cardWordStyle = TextStyle(
@@ -151,83 +187,83 @@ class StroopPageState extends State<StroopPage> {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: setHeight(40)),
-      child:
-      this._wordflag == true
-        ?Text(
-        card.word,
-        style: cardWordStyle,
-      )
-        : this._rightFlag == true
-            ? Container(
-          child: Opacity(
-          opacity: 0.85,
-          child: Image.asset(
-            "images/v2.0/correct.png",
-            width: setWidth(350),
-          ),
-        ),
-      )
-            : Container(),
+      child: this._wordflag == true
+          ? Text(
+              card.word,
+              style: cardWordStyle,
+            )
+          : this._rightFlag == true
+              ? Container(
+                  child: Opacity(
+                    opacity: 0.85,
+                    child: Image.asset(
+                      "images/v2.0/correct.png",
+                      width: setWidth(350),
+                    ),
+                  ),
+                )
+              : Container(),
       decoration: circleBoxDecoration,
     );
   }
+
   Widget buildMainWidget() {
     return Stack(
-      children:
-          [
-            Positioned(
-              top: setHeight(300),
-              width: setWidth(900),
-              height: setHeight(500),
-              left: setWidth(850),
-              child: buildWordCard(this.testList[this._currentIndex-1]),
-            ),
-            currentState == CurrentState.questionPrepare
-                ? Center(
-              child: Container(
-                margin: EdgeInsets.only(bottom: setHeight(140)),
-                width: setWidth(820),
-                height: setHeight(120),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.35),
-                      blurRadius: setWidth(5),
-                      offset: Offset(setWidth(0), setHeight(3)),
-                    )
-                  ],
-                ),
-              ),
-            )
-            :Container(),
-            currentState == CurrentState.questionPrepare
-                ? Center(
-              child: Container(
-                margin: EdgeInsets.only(bottom: setHeight(140)),
-                alignment: Alignment.center,
-                width: setWidth(850),
-                height: setHeight(120),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      Color.fromARGB(255, 236, 239, 238),
-                      Color.fromARGB(255, 250, 250, 250),
-                      Color.fromARGB(255, 236, 239, 238),
+      children: [
+        Positioned(
+          top: setHeight(300),
+          width: setWidth(900),
+          height: setHeight(500),
+          left: setWidth(850),
+          child: buildWordCard(this.testList[this._currentIndex - 1]),
+        ),
+        currentState == CurrentState.questionPrepare
+            ? Center(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: setHeight(140)),
+                  width: setWidth(820),
+                  height: setHeight(120),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.35),
+                        blurRadius: setWidth(5),
+                        offset: Offset(setWidth(0), setHeight(3)),
+                      )
                     ],
                   ),
                 ),
-                child: Text(
-                  showText[currentState],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: setSp(70), color: showTextColor[currentState]),
+              )
+            : Container(),
+        currentState == CurrentState.questionPrepare
+            ? Center(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: setHeight(140)),
+                  alignment: Alignment.center,
+                  width: setWidth(850),
+                  height: setHeight(120),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Color.fromARGB(255, 236, 239, 238),
+                        Color.fromARGB(255, 250, 250, 250),
+                        Color.fromARGB(255, 236, 239, 238),
+                      ],
+                    ),
+                  ),
+                  child: Text(
+                    showText[currentState],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: setSp(70),
+                        color: showTextColor[currentState]),
+                  ),
                 ),
-              ),
-            )
-                :Container(),
-          ],
+              )
+            : Container(),
+      ],
     );
   }
 
@@ -284,11 +320,10 @@ class StroopPageState extends State<StroopPage> {
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
                 setState(() {
-                  if(currentState == CurrentState.questionBegin){
+                  if (currentState == CurrentState.questionBegin) {
                     currentState = CurrentState.questionPrepare;
                     prepareShow();
-                  }
-                  else if(currentState == CurrentState.doingQuestionBegin){
+                  } else if (currentState == CurrentState.doingQuestionBegin) {
                     doingQuestion();
                   }
                 });
@@ -303,43 +338,124 @@ class StroopPageState extends State<StroopPage> {
       ),
     );
   }
+
+  double floatWindowRadios = 30;
+  TextStyle resultTextStyle = TextStyle(
+      fontSize: setSp(45), fontWeight: FontWeight.bold, color: Colors.blueGrey);
+
+  Widget buildResultFloatWidget() {
+    return Container(
+      width: maxWidth,
+      height: maxHeight,
+      color: Color.fromARGB(220, 45, 45, 45),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: setHeight(200)),
+          Container(
+            width: setWidth(800),
+            height: setHeight(450),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 229, 229, 229),
+                borderRadius: BorderRadius.all(
+                    Radius.circular(setWidth(floatWindowRadios))),
+                boxShadow: [
+                  BoxShadow(
+                      color: Color.fromARGB(255, 100, 100, 100),
+                      blurRadius: setWidth(10),
+                      offset: Offset(setWidth(1), setHeight(2)))
+                ]),
+            child: Column(children: [
+              Container(
+                height: setHeight(100),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow()],
+                  color: Color.fromARGB(255, 229, 229, 229),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(setWidth(floatWindowRadios)),
+                      topRight: Radius.circular(setWidth(floatWindowRadios))),
+                ),
+                child: Text(
+                  "测验结果",
+                  style: TextStyle(
+                      fontSize: setSp(50),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: setHeight(30)),
+                height: setHeight(250),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("总反应数："+this._resultInfo.totalRect.toString()+"      ", style: resultTextStyle),
+                    Text("正确反应数："+this._resultInfo.rightRect.toString()+"      ", style: resultTextStyle),
+                    Text("错误反应数："+this._resultInfo.getErrorRectCount().toString()+"      ", style: resultTextStyle),
+                    Text("平均反应时间："+this._resultInfo.getMeanRectTime().toStringAsFixed(2)+"ms    ", style: resultTextStyle),
+                  ],
+                ),
+              ),
+            ]),
+          ),
+          SizedBox(height: setHeight(300)),
+          Container(
+            width: setWidth(500),
+            height: setHeight(120),
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.white,width: setWidth(1)),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromARGB(255, 253, 160, 60),
+                  Color.fromARGB(255, 217, 127, 63)
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black54,
+                  offset: Offset(setWidth(1), setHeight(1)),
+                  blurRadius: setWidth(5),
+                )
+              ],
+            ),
+            child: TextButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.transparent)),
+              onPressed: () {},
+              child: Text(
+                "结 束",
+                style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget buildButtonRect() {
     return SizedBox(
       child: RaisedButton(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(setWidth(30)))),
-          color: Color(0xFF737779),
+          color: Color(0xFF7D7A7A),
           child: Container(
-            child:
-              Text(
-                "空格按钮",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: setSp(58)),
-              )
-
-          ),
-          onPressed: () {
-            if(this._checkRight()){
-              setState(() {
-                this._rightFlag=true;
-                if(this.currentState==CurrentState.preDoingQuestion){
-                  this._prepareFinishedFlag++;
-                  print(this._prepareFinishedFlag);
-                  //准备答对三次显示正式答题浮窗
-                  if(this._prepareFinishedFlag==3) initDoingQuestionBegin();
-                }
-              });
-            }
-            //反应错误 反应错误数据加一
-            else{
-
-            }
-
-          }),
-    );
+              child: Text(
+                this._pressAableFlag?"空格按钮":"禁用",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: setSp(58)),
+          )),
+          onPressed:()=>this.doingTestPress(),
+    ));
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -379,13 +495,24 @@ class StroopPageState extends State<StroopPage> {
                     width: setWidth(500),
                     top: setHeight(1400),
                     height: setHeight(150),
-                    child: buildButtonRect()
-                ),
+                    child: buildButtonRect()),
                 currentState == CurrentState.questionBegin
                     ? buildFloatWidget("熟悉操作")
                     : Container(),
                 currentState == CurrentState.doingQuestionBegin
                     ? buildFloatWidget("正式开始")
+                    : Container(),
+                currentState == CurrentState.questionAllDone
+                    ? buildResultFloatWidget()
+                    : Container(),
+                currentState == CurrentState.questionAllDone
+                    ? Positioned(
+                        right: setWidth(400),
+                        bottom: 0,
+                        child: Image.asset(
+                          "images/v2.0/doctor_result.png",
+                          width: setWidth(480),
+                        ))
                     : Container(),
               ],
             ),
@@ -395,12 +522,12 @@ class StroopPageState extends State<StroopPage> {
 }
 
 enum CurrentState {
-  questionBegin,    //显示开始浮窗
-  questionPrepare,  //显示准备字样
-  preDoingQuestion,  //准备答题
+  questionBegin, //显示开始浮窗
+  questionPrepare, //显示准备字样
+  preDoingQuestion, //准备答题
 
   doingQuestionBegin, //正式准备答题
-  doingQuestion,    //开始答题
-  questionAllDone   //全部答题完毕
+  doingQuestion, //开始答题
+  questionAllDone //全部答题完毕
 }
 enum TtsState { playing, stopped, paused, continued }
