@@ -35,7 +35,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   //熟悉界面延迟控制,-2不显示，0显示，2生命周期结束
   int knowDelayedShow=-2;
   //正式界面延迟控制
-  int checkDelayedShow=-8;
+  int checkDelayedShow=-2;
   //熟悉+正式延时时间设置
   int knowDelayedTime=1;
   //对错延时时间设置
@@ -163,7 +163,6 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     );
   }
 
-
   //检索图片组件
   Widget symbolWidget(int number){
     return Expanded(
@@ -190,12 +189,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     Widget content=Row(
       children: picture,
     );
-    print("此时的列表："+temp.toString());
+    print("基础此时的列表："+_symbolQuestion.testBasicList.toString());
     if(knowDelayedShow<2){
       knowDelayedShow+=1;
-    }
-    if(checkDelayedShow<2){
-      checkDelayedShow+=1;
     }
     return content;
   }
@@ -210,12 +206,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     Widget content=Row(
       children: picture,
     );
-    print("此时的列表："+temp.toString());
+    print("对照此时的列表："+_symbolQuestion.testContrastList.toString());
     if(knowDelayedShow<2){
       knowDelayedShow+=1;
-    }
-    if(checkDelayedShow<2){
-      checkDelayedShow+=1;
     }
     return content;
   }
@@ -328,9 +321,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 (knowDelayedShow<2?basicPictureWidget():
                 (totalDelayed[totalClickNumber-1]==true?
                 (totalClickNumber==3?
-                (checkDelayedShow>-2?
-                (checkDelayedShow<2?basicPictureWidget():Text(""))
-                    :Text(""))
+                (checkDelayedShow>-2? basicPictureWidget() :Text(""))
                     :basicPictureWidget())
                     :Text(""))
                 ) : Text("")),
@@ -355,9 +346,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 (totalCorrect[totalClickNumber-1]!=null?
                 (totalDelayed[totalClickNumber-1]==false?rorwWidget():
                 (totalClickNumber==3?
-                (checkDelayedShow>-2?
-                (checkDelayedShow<2?contrastPictureWidget():Text(""))
-                    :prepare())
+                (checkDelayedShow>-2? contrastPictureWidget() :prepare())
                     :contrastPictureWidget())
                 ) : Text(""))
                 ):prepare()),
@@ -436,7 +425,6 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                   splashColor: Colors.transparent,
                                   onPressed: () {
                                     bool temp=judgeRightOrWrong();
-                                    print("checkOperationHidden0: "+checkOperationHidden.toString());
                                     //记录每道题的正误，进行√与×图片的展示
                                     setState(() {
                                       temp==true?totalCorrect.add(true):totalCorrect.add(false);
@@ -456,7 +444,6 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                         });
                                       });
                                     }
-                                    print("checkOperationHidden1: "+checkOperationHidden.toString());
                                   },
                                   child: Text(
                                     "有",
@@ -493,7 +480,6 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                   splashColor: Colors.transparent,
                                   onPressed: () {
                                     bool temp=judgeRightOrWrong();
-                                    print("checkOperationHidden0: "+checkOperationHidden.toString());
                                     //记录每道题的正误，进行√与×图片的展示
                                     setState(() {
                                       temp==false?totalCorrect.add(true):totalCorrect.add(false);
@@ -513,7 +499,6 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                         });
                                       });
                                     }
-                                    print("checkOperationHidden1: "+checkOperationHidden.toString());
                                   },
                                   child: Text(
                                     "无",
