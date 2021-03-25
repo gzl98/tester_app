@@ -11,13 +11,15 @@ class SymbolQuestion {
   int testBasicCount=0;
   //记录测试的对照组评判序号
   int testContrastCount=0;
+  //符号检索图片数
+  int symbolPictureNumber=36;
 
   //产生基本的图片列表
   generateBasicRandom() {
     int count = 0; //统计获取的图片数量
     int long = getBasicLength(); //记录初始列表长度
     while (count < 2) {
-      int tempNum = _random.nextInt(36) + 1;
+      int tempNum = _random.nextInt(symbolPictureNumber) + 1;
       bool allow = true; //是否加入列表
       //去除重复图案出现
       for (int i = long; i < getBasicLength(); i++) {

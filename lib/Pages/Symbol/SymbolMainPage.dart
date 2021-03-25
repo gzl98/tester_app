@@ -40,8 +40,10 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   int knowDelayedTime=1;
   //对错延时时间设置
   int rorwDelayedTime=1;
-  //符号检索图片数
-  int symbolPictureNumber=36;
+  //正确答题数
+  int correctNumber=0;
+  //错误答题数
+  int wrongNumber=0;
 
   //记录总的测试点击次数
   int totalClickNumber=0;
@@ -223,6 +225,11 @@ class SymbolMainPageState extends State<SymbolMainPage> {
           testRightOrWrong=true;
         }
       }
+    }
+    if(testRightOrWrong==true){
+      correctNumber++;
+    }else{
+      wrongNumber++;
     }
     _symbolQuestion.testBasicCount+=2;
     _symbolQuestion.testContrastCount+=5;
@@ -693,6 +700,128 @@ class SymbolMainPageState extends State<SymbolMainPage> {
       ),
     );
   }
+
+  double floatWindowRadios = 30;
+  TextStyle resultTextStyle = TextStyle(
+      fontSize: setSp(45), fontWeight: FontWeight.bold, color: Colors.blueGrey);
+
+  //显示结果部件
+  // Widget buildResultFloatWidget() {
+  //   return Container(
+  //     width: maxWidth,
+  //     height: maxHeight,
+  //     color: Color.fromARGB(220, 45, 45, 45),
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         SizedBox(height: setHeight(200)),
+  //         Container(
+  //           width: setWidth(800),
+  //           height: setHeight(450),
+  //           alignment: Alignment.center,
+  //           decoration: BoxDecoration(
+  //               color: Color.fromARGB(255, 229, 229, 229),
+  //               borderRadius: BorderRadius.all(
+  //                   Radius.circular(setWidth(floatWindowRadios))),
+  //               boxShadow: [
+  //                 BoxShadow(
+  //                     color: Color.fromARGB(255, 100, 100, 100),
+  //                     blurRadius: setWidth(10),
+  //                     offset: Offset(setWidth(1), setHeight(2)))
+  //               ]),
+  //           child: Column(children: [
+  //             Container(
+  //               height: setHeight(100),
+  //               alignment: Alignment.center,
+  //               decoration: BoxDecoration(
+  //                 boxShadow: [BoxShadow()],
+  //                 color: Color.fromARGB(255, 229, 229, 229),
+  //                 borderRadius: BorderRadius.only(
+  //                     topLeft: Radius.circular(setWidth(floatWindowRadios)),
+  //                     topRight: Radius.circular(setWidth(floatWindowRadios))),
+  //               ),
+  //               child: Text(
+  //                 "测验结果",
+  //                 style: TextStyle(
+  //                     fontSize: setSp(50),
+  //                     fontWeight: FontWeight.bold,
+  //                     color: Colors.blue),
+  //               ),
+  //             ),
+  //             Container(
+  //               margin: EdgeInsets.only(top: setHeight(30)),
+  //               height: setHeight(230),
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //                 children: [
+  //                   // SizedBox(height: setHeight(30)),
+  //                   Text(
+  //                       "正确数：" +
+  //                           correctNumber.toString() +
+  //                           "      ",
+  //                       style: resultTextStyle),
+  //                   // SizedBox(height: setHeight(15)),
+  //                   Text(
+  //                       "错误数：" + wrongNumber.toString() + "      ",
+  //                       style: resultTextStyle),
+  //                   // SizedBox(height: setHeight(15)),
+  //                   Text(
+  //                       "准确率：" + (correctNumber/(correctNumber+wrongNumber)).toString() + "%      ",
+  //                       style: resultTextStyle),
+  //                 ],
+  //               ),
+  //             ),
+  //           ]),
+  //         ),
+  //         SizedBox(height: setHeight(300)),
+  //         Container(
+  //           width: setWidth(500),
+  //           height: setHeight(120),
+  //           decoration: BoxDecoration(
+  //             // border: Border.all(color: Colors.white,width: setWidth(1)),
+  //             gradient: LinearGradient(
+  //               begin: Alignment.topCenter,
+  //               end: Alignment.bottomCenter,
+  //               colors: [
+  //                 Color.fromARGB(255, 253, 160, 60),
+  //                 Color.fromARGB(255, 217, 127, 63)
+  //               ],
+  //             ),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.black54,
+  //                 offset: Offset(setWidth(1), setHeight(1)),
+  //                 blurRadius: setWidth(5),
+  //               )
+  //             ],
+  //           ),
+  //           child: TextButton(
+  //             style: ButtonStyle(
+  //                 backgroundColor:
+  //                 MaterialStateProperty.all(Colors.transparent)),
+  //             onPressed: () {
+  //               Map map = {
+  //                 "question": questionList,
+  //                 "answer": answerList,
+  //                 "result": _wmsQuestion.result,
+  //               };
+  //               // map.addAll(_wmsQuestion.result);
+  //               String text = json.encode(map);
+  //               print(text);
+  //               // setAnswer(5, score: _wmsQuestion.correctCounts, answerText: "");
+  //               Navigator.pushNamedAndRemoveUntil(
+  //                   context, TestNavPage.routerName, (route) => false);
+  //             },
+  //             child: Text(
+  //               "结 束",
+  //               style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   //主界面布局
   @override
