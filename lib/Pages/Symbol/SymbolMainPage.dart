@@ -338,8 +338,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
           Expanded(
               flex: 6,
               child: Container(
-                  width: 200.0,
-                  height: 200.0,
+                  width: double.infinity,
+                  height: double.infinity,
                   decoration: BoxDecoration(
                       color: Color.fromARGB(20, 0, 0, 0),
                       border: Border.all(color: Colors.blue, width: 3.0),
@@ -363,8 +363,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
           Expanded(
               flex: 15,
               child: Container(
-                width: 200.0,
-                height: 200.0,
+                width: double.infinity,
+                height: double.infinity,
                 decoration: BoxDecoration(
                     color: Color.fromARGB(20, 0, 0, 0),
                     border: Border.all(color: Colors.indigo[100], width: 2.0),
@@ -402,8 +402,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
           Expanded(
               flex: 6,
               child: Container(
-                width: 250.0,
-                height: 260.0,
+                width: double.infinity,
+                height: setHeight(520),
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 235, 235, 235),
                   border: Border.all(color: Colors.indigo[100], width: 2.0),
