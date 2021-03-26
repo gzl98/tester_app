@@ -32,12 +32,13 @@ class COTPageState extends State<COTPage> {
 
   Timer _timer;
   int currentTime = 0; //ms
+  int nextQuestionTime = 0; //ms
   final pointOneSec = const Duration(milliseconds: 10);
   COTQuestion _cotQuestion = COTQuestion(3, 0); // 出题器
   int _question = 0; // 当前问题
   int _questionStartTime = 0;
   int currentState =
-      6; // 题目流程 0:显示悬浮窗 1:显示题目 2:显示准备 3:显示图形 4:答题正确 5:答题错误 6:答题完毕
+      0; // 题目流程 0:显示悬浮窗 1:显示题目 2:显示准备 3:显示图形 4:答题正确 5:答题错误 6:答题完毕
   bool formal = false; // 是否为正式测试
   String imagePath = "images/v2.0/COT/0.png"; // 显示图片的路径
   int _answerTimes = 0;
@@ -50,11 +51,17 @@ class COTPageState extends State<COTPage> {
     print(currentTime - _questionStartTime);
     print(_question);
     print(_cotQuestion.getAnswer());
+    int t = currentTime - _questionStartTime;
     if (_question == _cotQuestion.getAnswer()) {
       setState(() {
         currentState = 4;
         imagePath = "images/v2.0/correct.png";
+        nextQuestionTime = currentTime + 200;
         if (formal) {
+          _answerCorrectTimes += 1;
+          _answerTimes += 1;
+          _answerTime += t;
+          _answerCorrectTime += t;
         } else {
           _answerTime += 1;
           if (_answerTime == 3) {
@@ -65,6 +72,11 @@ class COTPageState extends State<COTPage> {
     } else {
       setState(() {
         currentState = 5;
+        if (formal) {
+          _answerTimes += 1;
+          _answerTime += t;
+        }
+        nextQuestionTime = currentTime + 200;
         imagePath = "images/v2.0/wrong.png";
       });
     }
@@ -97,13 +109,14 @@ class COTPageState extends State<COTPage> {
         _timer.cancel();
         questionOver();
       }
-      if (currentTime % 1000 == 0) {
+      if (currentTime == nextQuestionTime) {
         int question = _cotQuestion.getNextQuestion();
         String questionImagePath =
             "images/v2.0/COT/" + question.toString() + ".png";
         setState(() {
+          nextQuestionTime += 1000;
           currentState = 3;
-          _question = _question;
+          _question = question;
           imagePath = questionImagePath;
           _questionStartTime = currentTime;
         });
@@ -265,7 +278,7 @@ class COTPageState extends State<COTPage> {
                                 ),
                               )
                             : currentState == 3
-                                ? ((currentTime ~/ 100) % 2 == 0
+                                ? ((currentTime ~/ 200) % 2 == 0
                                     ? Image.asset(
                                         imagePath,
                                         width: setWidth(350),
@@ -439,18 +452,18 @@ class COTPageState extends State<COTPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     // SizedBox(height: setHeight(30)),
-                    Text("总反应数：" + _answerTimes.toString() + "s      ",
+                    Text("总反应数：" + _answerTimes.toString() + "次",
                         style: resultTextStyle),
                     // SizedBox(height: setHeight(15)),
-                    Text("正确反应数：" + _answerCorrectTimes.toString() + "s      ",
+                    Text("正确反应数：" + _answerCorrectTimes.toString() + "次",
                         style: resultTextStyle),
                     // SizedBox(height: setHeight(15)),
-                    Text("反应时间：" + (_answerTime / 1000).toString() + "s      ",
+                    Text("反应时间：" + (_answerTime / 1000).toString() + "s",
                         style: resultTextStyle),
                     Text(
                         "平均正确反应时间：" +
-                            (_answerTime / 1000).toString() +
-                            "s      ",
+                            (_answerCorrectTime / 1000).toString() +
+                            "s",
                         style: resultTextStyle),
                   ],
                 ),
