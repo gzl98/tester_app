@@ -49,7 +49,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //记录正确率
   int correctPercent;
   //测试次数
-  int testTimes=1;
+  int testTimes=2;
 
   //记录总的测试点击次数
   int totalClickNumber=0;
@@ -59,6 +59,8 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   List totalDelayed = new List<bool>.generate(123, (int i) {
     return false;
   });
+  //测试者的答题记录
+  List<int> answerList=new List();
 
   //声明变量
   Timer _timer;
@@ -177,7 +179,9 @@ class CharacterMainPageState extends State<CharacterMainPage> {
 
   //检索图片组件
   Widget characterWidget(){
-    _characterQuestion.generateNumberRandom();
+    if(knowDelayedShow<1){
+      knowDelayedShow+=1;
+    }
     int number=_characterQuestion.getNewRandomNumber();
     return Container(
       alignment: Alignment.center,
@@ -207,25 +211,17 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   }
 
   //判断对错,点击次数增加，具体对错记录在按键处实现
-  // judgeRightOrWrong(){
-  //   bool testRightOrWrong=false;  //当前题目正误
-  //   for(int i=_symbolQuestion.testBasicCount;i<_symbolQuestion.testBasicCount+2;i++){
-  //     for(int j=_symbolQuestion.testContrastCount;j<_symbolQuestion.testContrastCount+5;j++){
-  //       if(_symbolQuestion.testBasicList[i]==_symbolQuestion.testContrastList[j]){
-  //         testRightOrWrong=true;
-  //       }
-  //     }
-  //   }
-  //   _symbolQuestion.testBasicCount+=2;
-  //   _symbolQuestion.testContrastCount+=5;
-  //   totalClickNumber++;
-  //   _symbolQuestion.generateBasicRandom();
-  //   _symbolQuestion.generateContrastRandom();
-  //   print("testBasicCount："+_symbolQuestion.testBasicCount.toString());
-  //   print("testContrastCount："+_symbolQuestion.testContrastCount.toString());
-  //   print("totalClickNumber："+totalClickNumber.toString());
-  //   return testRightOrWrong;
-  // }
+  judgeRightOrWrong(){
+    bool testRightOrWrong=false;  //当前题目正误
+    int long=answerList.length;
+    if(answerList[long-1]==_characterQuestion.getNewRandomNumber()){
+      testRightOrWrong=true;
+    }
+    totalClickNumber++;
+    _characterQuestion.generateNumberRandom();
+    print("totalClickNumber："+totalClickNumber.toString());
+    return testRightOrWrong;
+  }
 
   //对错图片组件
   Widget rorwWidget(){
@@ -309,15 +305,14 @@ class CharacterMainPageState extends State<CharacterMainPage> {
                     color: Color.fromARGB(20, 0, 0, 0),
                     border: Border.all(color: Colors.indigo[100], width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: characterWidget(),
-                // (knowDelayedShow>-2?(knowDelayedShow<2?characterWidget():
-                // (totalCorrect[totalClickNumber-1]!=null?
-                // (totalDelayed[totalClickNumber-1]==false?rorwWidget():
-                // (totalClickNumber==testTimes?
-                // (checkDelayedShow>-2? characterWidget() :prepare())
-                //     :characterWidget())
-                // ) : Text(""))
-                // ):prepare()),
+                child: (knowDelayedShow>-2?(knowDelayedShow<1?characterWidget():
+                (totalCorrect[totalClickNumber-1]!=null?
+                (totalDelayed[totalClickNumber-1]==false?rorwWidget():
+                (totalClickNumber==testTimes?
+                (checkDelayedShow>-2? characterWidget() :prepare())
+                    :characterWidget())
+                ) : Text(""))
+                ):prepare()),
               )
           ),
           //空白右
@@ -438,9 +433,31 @@ class CharacterMainPageState extends State<CharacterMainPage> {
       ),
       child: FlatButton(
           splashColor: Colors.transparent,
-          onPressed: (){
-
-          },
+          onPressed: (showResult)?(){
+            setState(() {
+              answerList.add(num);
+            });
+            bool temp=judgeRightOrWrong();
+            //记录每道题的正误，进行√与×图片的展示
+            setState(() {
+              temp==true?totalCorrect.add(true):totalCorrect.add(false);
+              print("本题正误："+totalCorrect[totalClickNumber-1].toString());
+            });
+            //正误图片延时效果设置
+            Future.delayed(Duration(seconds: rorwDelayedTime), (){
+              setState(() {
+                totalDelayed[totalClickNumber-1]=true;
+              });
+            });
+            //跳转正式准备界面，加延迟匹配对错图片展示
+            if(totalClickNumber==testTimes){
+              Future.delayed(Duration(seconds: rorwDelayedTime), (){
+                setState(() {
+                  checkOperationHidden=false;
+                });
+              });
+            }
+          }:null,
           child: Text(
             num.toString(),
             style: TextStyle(
@@ -763,7 +780,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
                 setState(() {
                   checkOperationHidden=true;
                 });
-                //熟悉延时函数
+                //正式延时函数
                 Future.delayed(Duration(seconds: knowDelayedTime), (){
                   setState(() {
                     checkDelayedShow=0;
@@ -899,28 +916,28 @@ class CharacterMainPageState extends State<CharacterMainPage> {
             ),
           ],
         ),
-        // //结果界面
-        // Offstage(
-        //   offstage: showResult,
-        //   child: buildResultWidget(),
-        // ),
-        // //医生形象
-        // showResult==false?Positioned(
-        //   //设置距离四个边的距离
-        //     right:setWidth(400),
-        //     bottom: 0,
-        //     child: Image.asset("images/doctor_result.png", width: setWidth(480),)
-        // ):Container(),
-        // // 正式界面
-        // Offstage(
-        //   offstage: checkOperationHidden,
-        //   child: buildCheckWidget(),
-        // ),
-        // //熟悉界面
-        // Offstage(
-        //   offstage: knowOperationHidden,
-        //   child: buildFloatWidget(),
-        // ),
+        //结果界面
+        Offstage(
+          offstage: showResult,
+          child: buildResultWidget(),
+        ),
+        //医生形象
+        showResult==false?Positioned(
+          //设置距离四个边的距离
+            right:setWidth(400),
+            bottom: 0,
+            child: Image.asset("images/doctor_result.png", width: setWidth(480),)
+        ):Container(),
+        // 正式界面
+        Offstage(
+          offstage: checkOperationHidden,
+          child: buildCheckWidget(),
+        ),
+        //熟悉界面
+        Offstage(
+          offstage: knowOperationHidden,
+          child: buildFloatWidget(),
+        ),
       ],
     );
   }
