@@ -1,7 +1,7 @@
 import 'dart:math';
 
 //出题器
-class SymbolQuestion {
+class CharacterQuestion {
   //基本的两张图片序号列表
   List<int> testBasicList = [];
   //对照的五章图片序号列表

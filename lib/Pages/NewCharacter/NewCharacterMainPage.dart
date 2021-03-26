@@ -7,15 +7,15 @@ import 'package:flutter/services.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Pages/NewCharacter/NewCharacterTemp.dart';
 
-class SymbolMainPage extends StatefulWidget {
+class CharacterMainPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return SymbolMainPageState();
+    return CharacterMainPageState();
   }
 }
 
-class SymbolMainPageState extends State<SymbolMainPage> {
+class CharacterMainPageState extends State<CharacterMainPage> {
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   }
 
   //初始化出题器
-  SymbolQuestion _symbolQuestion=new SymbolQuestion();
+  CharacterQuestion _symbolQuestion=new CharacterQuestion();
   //熟悉操作界面是否隐去
   bool knowOperationHidden=false;
   //正式界面是否隐去
