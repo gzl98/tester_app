@@ -433,6 +433,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
       ),
       child: FlatButton(
           splashColor: Colors.transparent,
+          disabledColor: Colors.transparent,
           onPressed: (showResult)?(){
             setState(() {
               answerList.add(num);
