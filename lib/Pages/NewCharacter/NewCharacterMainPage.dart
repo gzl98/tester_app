@@ -179,16 +179,13 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   Widget characterWidget(){
     _characterQuestion.generateNumberRandom();
     int number=_characterQuestion.getNewRandomNumber();
-    return Expanded(
-      flex: 1,
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('images/character/'+number.toString()+'.png'),
-              fit: BoxFit.scaleDown,
-              alignment: Alignment.center),
-        ),
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage('images/character/'+number.toString()+'.png'),
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.center),
       ),
     );
   }
@@ -324,8 +321,8 @@ class CharacterMainPageState extends State<CharacterMainPage> {
           Expanded(
               flex: 1,
               child: Container(
-                width: 200.0,
-                height: 200.0,
+                width: double.infinity,
+                height: double.infinity,
                 decoration: BoxDecoration(
                     color: Color.fromARGB(20, 0, 0, 0),
                     border: Border.all(color: Colors.indigo[100], width: 2.0),
@@ -351,24 +348,92 @@ class CharacterMainPageState extends State<CharacterMainPage> {
     );
   }
 
-  //*图片+数字竖直放置*
-  Widget pictureAndNumber(){
-    return Container(
-      width: 260.0,
-      height: 260.0,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 235, 235, 235),
-        border: Border.all(color: Colors.indigo[100], width: 2.0),
-        boxShadow: [
-          BoxShadow(
-              color: Color.fromARGB(150, 0, 0, 0),
-              offset: Offset(5.0, 5.0), //阴影x轴偏移量
-              blurRadius: 10, //阴影模糊程度
-              spreadRadius: 0 //阴影扩散程度
-          )
-        ],
-      ),
-      child: Text(""),
+  //*图片竖直放置*
+  Widget singlePicture(int number){
+    return Expanded(
+      flex: 12,
+      child:Align(
+        child: Container(
+          width: setWidth(200),
+          height: setHeight(200),
+          decoration: BoxDecoration(
+              color: Color.fromARGB(20, 0, 0, 0),
+              border: Border.all(color: Colors.indigo[100], width: 2.0),
+              borderRadius: BorderRadius.only(topLeft:Radius.circular(20.0),topRight:Radius.circular(20.0))
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/character/'+number.toString()+'.png'),
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.center),
+            ),
+          ),
+        ),
+        alignment: Alignment.bottomCenter,
+      )
+
+    );
+  }
+
+  //*九连图片*
+  Widget ninePictureUnion(){
+    List<Widget> temp = [];
+    for(int i=0;i<8;i++){
+      temp.add(singlePicture(i+1));
+      temp.add(Expanded(
+        flex: 1,
+        child: Text(""),
+      ));
+    }
+    temp.add(singlePicture(9));
+
+    return Row(
+      children: temp,
+    );
+  }
+
+  //*文字竖直放置*
+  Widget singleNumber(int number){
+    return Expanded(
+      flex: 12,
+      child:Align(
+        child:Container(
+          width: setWidth(200),
+          height: setHeight(200),
+          decoration: BoxDecoration(
+              color: Color.fromARGB(20, 0, 0, 0),
+              border: Border.all(color: Colors.indigo[100], width: 2.0),
+              borderRadius: BorderRadius.only(bottomLeft:Radius.circular(20.0),bottomRight:Radius.circular(20.0))
+          ),
+          child:Container(
+            alignment: Alignment.center,
+            child: Text(number.toString(),
+              style: TextStyle(fontSize: setSp(88), fontWeight: FontWeight.w400, color: Colors.black,),
+            ),
+          ),
+        ),
+        alignment: Alignment.topCenter,
+      )
+
+    );
+  }
+
+  //*九连文字*
+  Widget nineNumberUnion(){
+    List<Widget> temp = [];
+    for(int i=0;i<8;i++){
+      temp.add(singleNumber(i+1));
+      temp.add(Expanded(
+        flex: 1,
+        child: Text(""),
+      ));
+    }
+    temp.add(singleNumber(9));
+
+    return Row(
+      children: temp,
     );
   }
 
@@ -379,14 +444,42 @@ class CharacterMainPageState extends State<CharacterMainPage> {
       child: Row(
         children: <Widget>[
           Expanded(
-            flex: 24,
+            flex: 3,
+            child: Text(""),
+          ),
+          Expanded(
+            flex: 19,
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: ninePictureUnion(),
+                ),
+                Divider(
+                  height: 3.0,
+                  color: Colors.transparent,
+                  thickness: 3.0,
+                ),
+                Expanded(
+                  flex: 3,
+                  child: nineNumberUnion(),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
             child: Text(""),
           ),
           Expanded(
               flex: 7,
               child: Container(
-                width: 260.0,
-                height: 260.0,
+                width: setWidth(520),
+                height: setHeight(520),
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 235, 235, 235),
                   border: Border.all(color: Colors.indigo[100], width: 2.0),
