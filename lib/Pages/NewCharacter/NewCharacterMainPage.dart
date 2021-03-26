@@ -65,7 +65,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //声明变量
   Timer _timer;
   //正式倒计时120s答题时间
-  int _currentTime = 120;
+  int _currentTime = 20;
 
   //倒计时操作
   void startCountdownTimer() {
@@ -854,19 +854,71 @@ class CharacterMainPageState extends State<CharacterMainPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     // SizedBox(height: setHeight(30)),
-                    Text(
-                        "正确数：" +
-                            correctNumber.toString() +
-                            "      ",
-                        style: resultTextStyle),
-                    // SizedBox(height: setHeight(15)),
-                    Text(
-                        "错误数：" + wrongNumber.toString() + "      ",
-                        style: resultTextStyle),
-                    // SizedBox(height: setHeight(15)),
-                    Text(
-                        "准确率：" + correctPercent.toString() + " %",
-                        style: resultTextStyle),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Text(""),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Align(
+                            child:Text(
+                                "正确数：" +
+                                    correctNumber.toString() +
+                                    "      ",
+                                style: resultTextStyle),
+                            alignment: Alignment.centerLeft,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Text(""),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Text(""),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child:Align(
+                            child:Text(
+                                "错误数：" + wrongNumber.toString() + "      ",
+                                style: resultTextStyle),
+                            alignment: Alignment.centerLeft,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Text(""),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Text(""),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child:Align(
+                            child:Text(
+                                "准确率：" + correctPercent.toString() + " %",
+                                style: resultTextStyle),
+                            alignment: Alignment.centerLeft,
+                          )
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Text(""),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
