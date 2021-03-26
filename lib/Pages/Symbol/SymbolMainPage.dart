@@ -46,6 +46,10 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   int wrongNumber=0;
   //是否展示结果界面
   bool showResult=true;
+  //正确率取整
+  int correctPercent;
+  //测试次数
+  int testTimes=3;
 
   //记录总的测试点击次数
   int totalClickNumber=0;
@@ -59,7 +63,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   //声明变量
   Timer _timer;
   //正式倒计时120s答题时间
-  int _currentTime = 20;
+  int _currentTime = 120;
 
   //倒计时操作
   void startCountdownTimer() {
@@ -223,7 +227,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
 
   //计算正误次数
   countRightOrWrongNumbers(){
-    for(int i=3;i<totalCorrect.length;i++){
+    for(int i=testTimes;i<totalCorrect.length;i++){
       if(totalCorrect[i]==true){
         correctNumber++;
       }else{
@@ -233,6 +237,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     print(totalCorrect);
     print("总正确数；"+correctNumber.toString());
     print("总错误数："+wrongNumber.toString());
+    correctPercent=((correctNumber*100)/(correctNumber+wrongNumber)).truncate();
+    print("正确率数值："+correctPercent.toString());
   }
 
   //判断对错,点击次数增加，具体对错记录在按键处实现
@@ -341,7 +347,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 child: (knowDelayedShow>-2?
                 (knowDelayedShow<2?basicPictureWidget():
                 (totalDelayed[totalClickNumber-1]==true?
-                (totalClickNumber==3?
+                (totalClickNumber==testTimes?
                 (checkDelayedShow>-2? basicPictureWidget() :Text(""))
                     :basicPictureWidget())
                     :Text(""))
@@ -366,7 +372,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 child: (knowDelayedShow>-2?(knowDelayedShow<2?contrastPictureWidget():
                 (totalCorrect[totalClickNumber-1]!=null?
                 (totalDelayed[totalClickNumber-1]==false?rorwWidget():
-                (totalClickNumber==3?
+                (totalClickNumber==testTimes?
                 (checkDelayedShow>-2? contrastPictureWidget() :prepare())
                     :contrastPictureWidget())
                 ) : Text(""))
@@ -459,7 +465,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                       });
                                     });
                                     //跳转正式准备界面，加延迟匹配对错图片展示
-                                    if(totalClickNumber==3){
+                                    if(totalClickNumber==testTimes){
                                       Future.delayed(Duration(seconds: rorwDelayedTime), (){
                                         setState(() {
                                           checkOperationHidden=false;
@@ -515,7 +521,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                                       });
                                     });
                                     //跳转正式准备界面,加延迟匹配对错图片展示
-                                    if(totalClickNumber==3){
+                                    if(totalClickNumber==testTimes){
                                       Future.delayed(Duration(seconds: rorwDelayedTime), (){
                                         setState(() {
                                           checkOperationHidden=false;
@@ -719,125 +725,81 @@ class SymbolMainPageState extends State<SymbolMainPage> {
 
   double floatWindowRadios = 30;
   TextStyle resultTextStyle = TextStyle(
-      fontSize: setSp(45), fontWeight: FontWeight.bold, color: Colors.blueGrey);
+      fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blueGrey);
 
   //显示结果部件
-  // Widget buildResultWidget() {
-  //   return Container(
-  //     width: maxWidth,
-  //     height: maxHeight,
-  //     color: Color.fromARGB(220, 45, 45, 45),
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         SizedBox(height: setHeight(200)),
-  //         Container(
-  //           width: setWidth(800),
-  //           height: setHeight(450),
-  //           alignment: Alignment.center,
-  //           decoration: BoxDecoration(
-  //               color: Color.fromARGB(255, 229, 229, 229),
-  //               borderRadius: BorderRadius.all(
-  //                   Radius.circular(setWidth(floatWindowRadios))),
-  //               boxShadow: [
-  //                 BoxShadow(
-  //                     color: Color.fromARGB(255, 100, 100, 100),
-  //                     blurRadius: setWidth(10),
-  //                     offset: Offset(setWidth(1), setHeight(2)))
-  //               ]),
-  //           child: Column(children: [
-  //             Container(
-  //               height: setHeight(100),
-  //               alignment: Alignment.center,
-  //               decoration: BoxDecoration(
-  //                 boxShadow: [BoxShadow()],
-  //                 color: Color.fromARGB(255, 229, 229, 229),
-  //                 borderRadius: BorderRadius.only(
-  //                     topLeft: Radius.circular(setWidth(floatWindowRadios)),
-  //                     topRight: Radius.circular(setWidth(floatWindowRadios))),
-  //               ),
-  //               child: Text(
-  //                 "测验结果",
-  //                 style: TextStyle(
-  //                     fontSize: setSp(50),
-  //                     fontWeight: FontWeight.bold,
-  //                     color: Colors.blue),
-  //               ),
-  //             ),
-  //             Container(
-  //               margin: EdgeInsets.only(top: setHeight(30)),
-  //               height: setHeight(230),
-  //               child: Column(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //                 children: [
-  //                   // SizedBox(height: setHeight(30)),
-  //                   Text(
-  //                       "正确数：" +
-  //                           correctNumber.toString() +
-  //                           "      ",
-  //                       style: resultTextStyle),
-  //                   // SizedBox(height: setHeight(15)),
-  //                   Text(
-  //                       "错误数：" + wrongNumber.toString() + "      ",
-  //                       style: resultTextStyle),
-  //                   // SizedBox(height: setHeight(15)),
-  //                   Text(
-  //                       "准确率：" + (correctNumber/(correctNumber+wrongNumber)).toString() + "%      ",
-  //                       style: resultTextStyle),
-  //                 ],
-  //               ),
-  //             ),
-  //           ]),
-  //         ),
-  //         SizedBox(height: setHeight(300)),
-  //         Container(
-  //           width: setWidth(500),
-  //           height: setHeight(120),
-  //           decoration: BoxDecoration(
-  //             // border: Border.all(color: Colors.white,width: setWidth(1)),
-  //             gradient: LinearGradient(
-  //               begin: Alignment.topCenter,
-  //               end: Alignment.bottomCenter,
-  //               colors: [
-  //                 Color.fromARGB(255, 253, 160, 60),
-  //                 Color.fromARGB(255, 217, 127, 63)
-  //               ],
-  //             ),
-  //             boxShadow: [
-  //               BoxShadow(
-  //                 color: Colors.black54,
-  //                 offset: Offset(setWidth(1), setHeight(1)),
-  //                 blurRadius: setWidth(5),
-  //               )
-  //             ],
-  //           ),
-  //           child: TextButton(
-  //             style: ButtonStyle(
-  //                 backgroundColor:
-  //                 MaterialStateProperty.all(Colors.transparent)),
-  //             onPressed: () {
-  //               Map map = {
-  //                 "question": questionList,
-  //                 "answer": answerList,
-  //                 "result": _wmsQuestion.result,
-  //               };
-  //               // map.addAll(_wmsQuestion.result);
-  //               String text = json.encode(map);
-  //               print(text);
-  //               // setAnswer(5, score: _wmsQuestion.correctCounts, answerText: "");
-  //               Navigator.pushNamedAndRemoveUntil(
-  //                   context, TestNavPage.routerName, (route) => false);
-  //             },
-  //             child: Text(
-  //               "结 束",
-  //               style: TextStyle(color: Colors.white, fontSize: setSp(60)),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget buildResultWidget() {
+    return Container(
+      width: maxWidth,
+      height: maxHeight,
+      color: Color.fromARGB(220, 45, 45, 45),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: setHeight(200)),
+          Container(
+            width: setWidth(800),
+            height: setHeight(450),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 229, 229, 229),
+                borderRadius: BorderRadius.all(
+                    Radius.circular(setWidth(floatWindowRadios))),
+                boxShadow: [
+                  BoxShadow(
+                      color: Color.fromARGB(255, 100, 100, 100),
+                      blurRadius: setWidth(10),
+                      offset: Offset(setWidth(1), setHeight(2)))
+                ]),
+            child: Column(children: [
+              Container(
+                height: setHeight(100),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow()],
+                  color: Color.fromARGB(255, 229, 229, 229),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(setWidth(floatWindowRadios)),
+                      topRight: Radius.circular(setWidth(floatWindowRadios))),
+                ),
+                child: Text(
+                  "测验结果",
+                  style: TextStyle(
+                      fontSize: setSp(50),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: setHeight(30)),
+                height: setHeight(230),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    // SizedBox(height: setHeight(30)),
+                    Text(
+                        "正确数：" +
+                            correctNumber.toString() +
+                            "      ",
+                        style: resultTextStyle),
+                    // SizedBox(height: setHeight(15)),
+                    Text(
+                        "错误数：" + wrongNumber.toString() + "      ",
+                        style: resultTextStyle),
+                    // SizedBox(height: setHeight(15)),
+                    Text(
+                        "准确率：" + correctPercent.toString() + " %",
+                        style: resultTextStyle),
+                  ],
+                ),
+              ),
+            ]),
+          ),
+          SizedBox(height: setHeight(300)),
+        ],
+      ),
+    );
+  }
 
   //主界面布局
   @override
@@ -846,7 +808,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     return Stack(
       children: <Widget>[
         //第一个child被绘制在最底端，后面的依次在前一个child的上面
-        //主界面
+        // 主界面
         Column(
           children: <Widget>[
             buildTopWidget(),
@@ -875,10 +837,18 @@ class SymbolMainPageState extends State<SymbolMainPage> {
             ),
           ],
         ),
-        // Offstage(
-        //   offstage: showResult,
-        //   child: buildResultWidget(),
-        // ),
+        //结果界面
+        Offstage(
+          offstage: showResult,
+          child: buildResultWidget(),
+        ),
+        //医生形象
+        showResult==false?Positioned(
+          //设置距离四个边的距离
+            right:setWidth(400),
+            bottom: 0,
+            child: Image.asset("images/doctor_result.png", width: setWidth(480),)
+        ):Container(),
         // 正式界面
         Offstage(
           offstage: checkOperationHidden,
@@ -892,19 +862,6 @@ class SymbolMainPageState extends State<SymbolMainPage> {
       ],
     );
   }
-
-  // currentState == CurrentState.questionAllDone
-  // ? buildResultFloatWidget()
-  //     : Container(),
-  //       currentState == CurrentState.questionAllDone
-  // ? Positioned(
-  // right: setWidth(400),
-  // bottom: 0,
-  // child: Image.asset(
-  // "images/v2.0/doctor_result.png",
-  // width: setWidth(480),
-  // ))
-  //     : Container(),
 
 
   //解决显示黑黄屏的问题,Scaffold的问题导致的
