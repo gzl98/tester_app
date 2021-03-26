@@ -49,7 +49,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //记录正确率
   int correctPercent;
   //测试次数
-  int testTimes=2;
+  int testTimes=3;
 
   //记录总的测试点击次数
   int totalClickNumber=0;
@@ -65,7 +65,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //声明变量
   Timer _timer;
   //正式倒计时120s答题时间
-  int _currentTime = 20;
+  int _currentTime = 120;
 
   //倒计时操作
   void startCountdownTimer() {
@@ -436,6 +436,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
           onPressed: (showResult)?(){
             setState(() {
               answerList.add(num);
+              print("当前题目测试者选择数字："+num.toString());
             });
             bool temp=judgeRightOrWrong();
             //记录每道题的正误，进行√与×图片的展示
