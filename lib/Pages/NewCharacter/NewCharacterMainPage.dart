@@ -27,7 +27,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   }
 
   //初始化出题器
-  CharacterQuestion _symbolQuestion=new CharacterQuestion();
+  CharacterQuestion _characterQuestion=new CharacterQuestion();
   //熟悉操作界面是否隐去
   bool knowOperationHidden=false;
   //正式界面是否隐去
@@ -46,7 +46,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   int wrongNumber=0;
   //是否展示结果界面
   bool showResult=true;
-  //正确率取整
+  //记录正确率
   int correctPercent;
   //测试次数
   int testTimes=1;
@@ -176,14 +176,16 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   }
 
   //检索图片组件
-  Widget symbolWidget(int number){
+  Widget characterWidget(){
+    _characterQuestion.generateNumberRandom();
+    int number=_characterQuestion.getNewRandomNumber();
     return Expanded(
       flex: 1,
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/symbol/'+number.toString()+'.png'),
+              image: AssetImage('images/character/'+number.toString()+'.png'),
               fit: BoxFit.scaleDown,
               alignment: Alignment.center),
         ),
@@ -191,39 +193,23 @@ class CharacterMainPageState extends State<CharacterMainPage> {
     );
   }
 
-  //基础图片展示
-  Widget basicPictureWidget(){
-    List temp=_symbolQuestion.getBasicPictureNumber();
-    List<Widget>picture=[];  //存放部件
-    for(int i=0;i<temp.length;i++){
-      picture.add(symbolWidget(temp[i]));
-    }
-    Widget content=Row(
-      children: picture,
-    );
-    print("基础此时的列表："+_symbolQuestion.testBasicList.toString());
-    if(knowDelayedShow<2){
-      knowDelayedShow+=1;
-    }
-    return content;
-  }
+  // //基础图片展示
+  // Widget basicPictureWidget(){
+  //   List temp=_symbolQuestion.getBasicPictureNumber();
+  //   List<Widget>picture=[];  //存放部件
+  //   for(int i=0;i<temp.length;i++){
+  //     picture.add(symbolWidget(temp[i]));
+  //   }
+  //   Widget content=Row(
+  //     children: picture,
+  //   );
+  //   print("基础此时的列表："+_symbolQuestion.testBasicList.toString());
+  //   if(knowDelayedShow<2){
+  //     knowDelayedShow+=1;
+  //   }
+  //   return content;
+  // }
 
-  //对照图片展示
-  Widget contrastPictureWidget(){
-    List temp=_symbolQuestion.getContrastPictureNumber();
-    List<Widget>picture=[];  //存放部件
-    for(int i=0;i<temp.length;i++){
-      picture.add(symbolWidget(temp[i]));
-    }
-    Widget content=Row(
-      children: picture,
-    );
-    print("对照此时的列表："+_symbolQuestion.testContrastList.toString());
-    if(knowDelayedShow<2){
-      knowDelayedShow+=1;
-    }
-    return content;
-  }
 
   //计算正误次数
   countRightOrWrongNumbers(){
@@ -242,25 +228,25 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   }
 
   //判断对错,点击次数增加，具体对错记录在按键处实现
-  judgeRightOrWrong(){
-    bool testRightOrWrong=false;  //当前题目正误
-    for(int i=_symbolQuestion.testBasicCount;i<_symbolQuestion.testBasicCount+2;i++){
-      for(int j=_symbolQuestion.testContrastCount;j<_symbolQuestion.testContrastCount+5;j++){
-        if(_symbolQuestion.testBasicList[i]==_symbolQuestion.testContrastList[j]){
-          testRightOrWrong=true;
-        }
-      }
-    }
-    _symbolQuestion.testBasicCount+=2;
-    _symbolQuestion.testContrastCount+=5;
-    totalClickNumber++;
-    _symbolQuestion.generateBasicRandom();
-    _symbolQuestion.generateContrastRandom();
-    print("testBasicCount："+_symbolQuestion.testBasicCount.toString());
-    print("testContrastCount："+_symbolQuestion.testContrastCount.toString());
-    print("totalClickNumber："+totalClickNumber.toString());
-    return testRightOrWrong;
-  }
+  // judgeRightOrWrong(){
+  //   bool testRightOrWrong=false;  //当前题目正误
+  //   for(int i=_symbolQuestion.testBasicCount;i<_symbolQuestion.testBasicCount+2;i++){
+  //     for(int j=_symbolQuestion.testContrastCount;j<_symbolQuestion.testContrastCount+5;j++){
+  //       if(_symbolQuestion.testBasicList[i]==_symbolQuestion.testContrastList[j]){
+  //         testRightOrWrong=true;
+  //       }
+  //     }
+  //   }
+  //   _symbolQuestion.testBasicCount+=2;
+  //   _symbolQuestion.testContrastCount+=5;
+  //   totalClickNumber++;
+  //   _symbolQuestion.generateBasicRandom();
+  //   _symbolQuestion.generateContrastRandom();
+  //   print("testBasicCount："+_symbolQuestion.testBasicCount.toString());
+  //   print("testContrastCount："+_symbolQuestion.testContrastCount.toString());
+  //   print("totalClickNumber："+totalClickNumber.toString());
+  //   return testRightOrWrong;
+  // }
 
   //对错图片组件
   Widget rorwWidget(){
@@ -322,46 +308,21 @@ class CharacterMainPageState extends State<CharacterMainPage> {
     );
   }
 
-  //*图片区域*
+  //*编码图片区域*
   Widget buildMediumWidget() {
     return Expanded(
-      flex: 6,
+      flex: 9,
       child: Row(
         children: <Widget>[
           //共33
           //空白左
           Expanded(
-            flex: 6,
-            child: Text(""),
-          ),
-          //图片左
-          Expanded(
-              flex: 6,
-              child: Container(
-                width: 200.0,
-                height: 200.0,
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(20, 0, 0, 0),
-                    border: Border.all(color: Colors.blue, width: 3.0),
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: (knowDelayedShow>-2?
-                (knowDelayedShow<2?basicPictureWidget():
-                (totalDelayed[totalClickNumber-1]==true?
-                (totalClickNumber==testTimes?
-                (checkDelayedShow>-2? basicPictureWidget() :Text(""))
-                    :basicPictureWidget())
-                    :Text(""))
-                ) : Text("")),
-              )
-          ),
-          //空白中
-          Expanded(
             flex: 1,
             child: Text(""),
           ),
-          //图片+文字右
+          //图片
           Expanded(
-              flex: 15,
+              flex: 1,
               child: Container(
                 width: 200.0,
                 height: 200.0,
@@ -369,19 +330,20 @@ class CharacterMainPageState extends State<CharacterMainPage> {
                     color: Color.fromARGB(20, 0, 0, 0),
                     border: Border.all(color: Colors.indigo[100], width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: (knowDelayedShow>-2?(knowDelayedShow<2?contrastPictureWidget():
-                (totalCorrect[totalClickNumber-1]!=null?
-                (totalDelayed[totalClickNumber-1]==false?rorwWidget():
-                (totalClickNumber==testTimes?
-                (checkDelayedShow>-2? contrastPictureWidget() :prepare())
-                    :contrastPictureWidget())
-                ) : Text(""))
-                ):prepare()),
+                child: characterWidget(),
+                // (knowDelayedShow>-2?(knowDelayedShow<2?characterWidget():
+                // (totalCorrect[totalClickNumber-1]!=null?
+                // (totalDelayed[totalClickNumber-1]==false?rorwWidget():
+                // (totalClickNumber==testTimes?
+                // (checkDelayedShow>-2? characterWidget() :prepare())
+                //     :characterWidget())
+                // ) : Text(""))
+                // ):prepare()),
               )
           ),
           //空白右
           Expanded(
-            flex: 5,
+            flex: 1,
             child: Text(""),
           ),
         ],
@@ -389,20 +351,41 @@ class CharacterMainPageState extends State<CharacterMainPage> {
     );
   }
 
-  //*有无两个按键区域*
+  //*图片+数字竖直放置*
+  Widget pictureAndNumber(){
+    return Container(
+      width: 260.0,
+      height: 260.0,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 235, 235, 235),
+        border: Border.all(color: Colors.indigo[100], width: 2.0),
+        boxShadow: [
+          BoxShadow(
+              color: Color.fromARGB(150, 0, 0, 0),
+              offset: Offset(5.0, 5.0), //阴影x轴偏移量
+              blurRadius: 10, //阴影模糊程度
+              spreadRadius: 0 //阴影扩散程度
+          )
+        ],
+      ),
+      child: Text(""),
+    );
+  }
+
+  //*编码图片+九宫格按键*
   Widget buildBottomWidget() {
     return Expanded(
-      flex: 14,
+      flex: 11,
       child: Row(
         children: <Widget>[
           Expanded(
-            flex: 25,
+            flex: 24,
             child: Text(""),
           ),
           Expanded(
-              flex: 6,
+              flex: 7,
               child: Container(
-                width: 250.0,
+                width: 260.0,
                 height: 260.0,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 235, 235, 235),
@@ -416,142 +399,9 @@ class CharacterMainPageState extends State<CharacterMainPage> {
                     )
                   ],
                 ),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Text(""),
-                    ),
-                    Expanded(
-                      flex: 10,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 1,
-                            child: Text(""),
-                          ),
-                          Expanded(
-                              flex: 5,
-                              child: Container(
-                                //撑满组件维度
-                                height: double.infinity,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 235, 235, 235),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Color.fromARGB(150, 0, 0, 0),
-                                        offset: Offset(1.0, 1.0), //阴影x轴偏移量
-                                        blurRadius: 1, //阴影模糊程度
-                                        spreadRadius: 0 //阴影扩散程度
-                                    )
-                                  ],
-                                ),
-                                child: RaisedButton(
-                                  color: Colors.white,
-                                  splashColor: Colors.transparent,
-                                  disabledColor: Colors.white,
-                                  onPressed:(showResult)? () {
-                                    bool temp=judgeRightOrWrong();
-                                    //记录每道题的正误，进行√与×图片的展示
-                                    setState(() {
-                                      temp==true?totalCorrect.add(true):totalCorrect.add(false);
-                                      print("本题正误："+totalCorrect[totalClickNumber-1].toString());
-                                    });
-                                    //正误图片延时效果设置
-                                    Future.delayed(Duration(seconds: rorwDelayedTime), (){
-                                      setState(() {
-                                        totalDelayed[totalClickNumber-1]=true;
-                                      });
-                                    });
-                                    //跳转正式准备界面，加延迟匹配对错图片展示
-                                    if(totalClickNumber==testTimes){
-                                      Future.delayed(Duration(seconds: rorwDelayedTime), (){
-                                        setState(() {
-                                          checkOperationHidden=false;
-                                        });
-                                      });
-                                    }
-                                  }:null,
-                                  child: Text(
-                                    "有",
-                                    style: TextStyle(
-                                        fontSize: setSp(60),
-                                        fontWeight: FontWeight.w600,
-                                        color: Color.fromARGB(150, 0, 0, 0)),
-                                  ),
-                                ),
-                              )),
-                          Expanded(
-                            flex: 1,
-                            child: Text(""),
-                          ),
-                          Expanded(
-                              flex: 5,
-                              child: Container(
-                                //撑满组件维度
-                                height: double.infinity,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 235, 235, 235),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Color.fromARGB(150, 0, 0, 0),
-                                        offset: Offset(1.0, 1.0), //阴影x轴偏移量
-                                        blurRadius: 1, //阴影模糊程度
-                                        spreadRadius: 0 //阴影扩散程度
-                                    )
-                                  ],
-                                ),
-                                child: RaisedButton(
-                                  color: Colors.white,
-                                  disabledColor: Colors.white,
-                                  splashColor: Colors.transparent,
-                                  onPressed:(showResult)? () {
-                                    bool temp=judgeRightOrWrong();
-                                    //记录每道题的正误，进行√与×图片的展示
-                                    setState(() {
-                                      temp==false?totalCorrect.add(true):totalCorrect.add(false);
-                                      print("本题正误："+totalCorrect[totalClickNumber-1].toString());
-                                    });
-                                    //正误图片延时效果设置
-                                    Future.delayed(Duration(seconds: rorwDelayedTime), (){
-                                      setState(() {
-                                        totalDelayed[totalClickNumber-1]=true;
-                                      });
-                                    });
-                                    //跳转正式准备界面,加延迟匹配对错图片展示
-                                    if(totalClickNumber==testTimes){
-                                      Future.delayed(Duration(seconds: rorwDelayedTime), (){
-                                        setState(() {
-                                          checkOperationHidden=false;
-                                        });
-                                      });
-                                    }
-                                  }:null,
-                                  child: Text(
-                                    "无",
-                                    style: TextStyle(
-                                        fontSize: setSp(60),
-                                        fontWeight: FontWeight.w600,
-                                        color: Color.fromARGB(150, 0, 0, 0)),
-                                  ),
-                                ),
-                              )),
-                          Expanded(
-                            flex: 1,
-                            child: Text(""),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(""),
-                    ),
-                  ],
-                ),
-              )),
+                child: Text(""),
+              )
+          ),
           Expanded(
             flex: 1,
             child: Text(""),
@@ -629,8 +479,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
                   });
                 });
                 //初次要先产生一次
-                _symbolQuestion.generateBasicRandom();
-                _symbolQuestion.generateContrastRandom();
+                _characterQuestion.generateNumberRandom();
               },
               child: Text(
                 "开始",
@@ -811,6 +660,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
         // 主界面
         Column(
           children: <Widget>[
+            //上面4，下面29
             buildTopWidget(),
             //分界线
             Divider(
@@ -820,45 +670,47 @@ class CharacterMainPageState extends State<CharacterMainPage> {
             ),
             //上面空白间隔
             Expanded(
-              flex: 7,
+              flex: 3,
               child: Text(""),
             ),
+            //6
             buildMediumWidget(),
             //中间空白间隔
             Expanded(
-              flex: 1,
+              flex: 3,
               child: Text(""),
             ),
+            //14
             buildBottomWidget(),
             //下面空白间隔
             Expanded(
-              flex: 1,
+              flex: 3,
               child: Text(""),
             ),
           ],
         ),
-        //结果界面
-        Offstage(
-          offstage: showResult,
-          child: buildResultWidget(),
-        ),
-        //医生形象
-        showResult==false?Positioned(
-          //设置距离四个边的距离
-            right:setWidth(400),
-            bottom: 0,
-            child: Image.asset("images/doctor_result.png", width: setWidth(480),)
-        ):Container(),
-        // 正式界面
-        Offstage(
-          offstage: checkOperationHidden,
-          child: buildCheckWidget(),
-        ),
-        //熟悉界面
-        Offstage(
-          offstage: knowOperationHidden,
-          child: buildFloatWidget(),
-        ),
+        // //结果界面
+        // Offstage(
+        //   offstage: showResult,
+        //   child: buildResultWidget(),
+        // ),
+        // //医生形象
+        // showResult==false?Positioned(
+        //   //设置距离四个边的距离
+        //     right:setWidth(400),
+        //     bottom: 0,
+        //     child: Image.asset("images/doctor_result.png", width: setWidth(480),)
+        // ):Container(),
+        // // 正式界面
+        // Offstage(
+        //   offstage: checkOperationHidden,
+        //   child: buildCheckWidget(),
+        // ),
+        // //熟悉界面
+        // Offstage(
+        //   offstage: knowOperationHidden,
+        //   child: buildFloatWidget(),
+        // ),
       ],
     );
   }
