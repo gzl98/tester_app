@@ -190,24 +190,6 @@ class CharacterMainPageState extends State<CharacterMainPage> {
     );
   }
 
-  // //基础图片展示
-  // Widget basicPictureWidget(){
-  //   List temp=_symbolQuestion.getBasicPictureNumber();
-  //   List<Widget>picture=[];  //存放部件
-  //   for(int i=0;i<temp.length;i++){
-  //     picture.add(symbolWidget(temp[i]));
-  //   }
-  //   Widget content=Row(
-  //     children: picture,
-  //   );
-  //   print("基础此时的列表："+_symbolQuestion.testBasicList.toString());
-  //   if(knowDelayedShow<2){
-  //     knowDelayedShow+=1;
-  //   }
-  //   return content;
-  // }
-
-
   //计算正误次数
   countRightOrWrongNumbers(){
     for(int i=testTimes;i<totalCorrect.length;i++){
@@ -410,7 +392,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
           child:Container(
             alignment: Alignment.center,
             child: Text(number.toString(),
-              style: TextStyle(fontSize: setSp(88), fontWeight: FontWeight.w400, color: Colors.black,),
+              style: TextStyle(fontSize: setSp(88), fontWeight: FontWeight.w400, color: Colors.black87,),
             ),
           ),
         ),
@@ -437,6 +419,110 @@ class CharacterMainPageState extends State<CharacterMainPage> {
     );
   }
 
+  //一个键盘数字
+  Widget my_FlatButton(int num) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 245, 245, 245),
+        border: Border.all(color: Colors.indigo[100], width: 2.0),
+        boxShadow: [
+          BoxShadow(
+              color: Color.fromARGB(150, 0, 0, 0),
+              offset: Offset(2.0, 2.0), //阴影x轴偏移量
+              blurRadius: 1, //阴影模糊程度
+              spreadRadius: 0 //阴影扩散程度
+          )
+        ],
+      ),
+      child: FlatButton(
+          splashColor: Colors.transparent,
+          onPressed: (){
+
+          },
+          child: Text(
+            num.toString(),
+            style: TextStyle(
+                fontSize: setSp(60), fontWeight: FontWeight.w600, color: Colors.black87),
+          ),
+      ),
+    );
+  }
+
+  //整个keyboard
+  Widget keyboard(){
+    return Column(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: my_FlatButton(1),
+              ),
+              VerticalDivider(width: 5.0, color: Colors.transparent, thickness: 3.0,),
+              Expanded(
+                flex: 1,
+                child: my_FlatButton(2),
+              ),
+              VerticalDivider(width: 5.0, color: Colors.transparent, thickness: 3.0,),
+              Expanded(
+                flex: 1,
+                child: my_FlatButton(3),
+              ),
+            ],
+          ),
+        ),
+        Divider(height: 5.0, color: Colors.transparent, thickness: 3.0,),
+        Expanded(
+          flex: 1,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: my_FlatButton(4),
+              ),
+              VerticalDivider(width: 5.0, color: Colors.transparent, thickness: 3.0,),
+              Expanded(
+                flex: 1,
+                child: my_FlatButton(5),
+              ),
+              VerticalDivider(width: 5.0, color: Colors.transparent, thickness: 3.0,),
+              Expanded(
+                flex: 1,
+                child: my_FlatButton(6),
+              ),
+            ],
+          ),
+        ),
+        Divider(height: 5.0, color: Colors.transparent, thickness: 3.0,),
+        Expanded(
+          flex: 1,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: my_FlatButton(7),
+              ),
+              VerticalDivider(width: 5.0, color: Colors.transparent, thickness: 3.0,),
+              Expanded(
+                flex: 1,
+                child: my_FlatButton(8),
+              ),
+              VerticalDivider(width: 5.0, color: Colors.transparent, thickness: 3.0,),
+              Expanded(
+                flex: 1,
+                child: my_FlatButton(9),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   //*编码图片+九宫格按键*
   Widget buildBottomWidget() {
     return Expanded(
@@ -447,6 +533,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
             flex: 3,
             child: Text(""),
           ),
+          //左边图片数字集合
           Expanded(
             flex: 19,
             child: Column(
@@ -492,7 +579,37 @@ class CharacterMainPageState extends State<CharacterMainPage> {
                     )
                   ],
                 ),
-                child: Text(""),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Text(""),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(""),
+                          ),
+                          Expanded(
+                            flex: 6,
+                            child: keyboard(),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(""),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(""),
+                    ),
+                  ],
+                ),
               )
           ),
           Expanded(
