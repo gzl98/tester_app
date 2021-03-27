@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Pages/Symbol/SymbolTemp.dart';
@@ -98,7 +99,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     print("基本组符号："+basic_temp);
     print("对照组符号："+contrast_temp);
 
-    // setAnswer(2, 120-this._currentTime,score:correctNumber,answerText:answerMerge);
+    setAnswer(1,score:correctNumber,answerText:answerMerge);
   }
 
   //倒计时操作
@@ -909,9 +910,9 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                   backgroundColor:
                   MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                // Navigator.pushNamedAndRemoveUntil(
-                //     context, TestNavPage.routerName, (route) => false);
-                // sendData();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, TestNavPage.routerName, (route) => false);
+                sendData();
               },
               child: Text(
                 "结 束",
