@@ -84,20 +84,31 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     String basic_temp="";
     for(int m=testTimes;m<answerLength+testTimes;m++){
       for(int j=m*2;j<(m+1)*2;j++){
-        basic_temp+=_symbolQuestion.testBasicList[j].toString();
+        if(j==(m+1)*2-1 && m==answerLength+testTimes-1){
+          basic_temp+=_symbolQuestion.testBasicList[j].toString();
+        }else{
+          basic_temp+=_symbolQuestion.testBasicList[j].toString();
+          basic_temp+=",";
+        }
       }
     }
     String contrast_temp="";
     for(int n=testTimes;n<answerLength+testTimes;n++){
       for(int k=n*5;k<(n+1)*5;k++){
-        contrast_temp+=_symbolQuestion.testContrastList[k].toString();
+        if(k==(n+1)*5-1 && n==answerLength+testTimes-1){
+          contrast_temp+=_symbolQuestion.testContrastList[k].toString();
+        }else{
+          contrast_temp+=_symbolQuestion.testContrastList[k].toString();
+          contrast_temp+=",";
+        }
       }
     }
-    answerMerge=answerLength.toString()+"&"+correct_temp+"&"+basic_temp+"&"+contrast_temp;
+    answerMerge=correct_temp+"&"+basic_temp+"*"+contrast_temp;
     print("正式答题长度："+answerLength.toString());
     print("正误情况："+correct_temp);
     print("基本组符号："+basic_temp);
     print("对照组符号："+contrast_temp);
+    print("上传的字符串："+answerMerge);
 
     setAnswer(1,score:correctNumber,answerText:answerMerge);
   }

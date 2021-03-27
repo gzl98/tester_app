@@ -95,7 +95,6 @@ List testList = [
   QuestionInfo.fromMap(questionStroop),
   QuestionInfo.fromMap(questionSymbol),
   QuestionInfo.fromMap(questionCharacter),
-  QuestionInfo.fromMap(questionStroop),
   QuestionInfo.fromMap(questionStroopColorWord),
   QuestionInfo.fromMap(questionStroopWordColor),
 ];

@@ -53,7 +53,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //记录正确率
   int correctPercent;
   //测试次数
-  int testTimes=3;
+  int testTimes=1;
 
   //记录总的测试点击次数
   int totalClickNumber=0;
@@ -69,7 +69,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //声明变量
   Timer _timer;
   //正式倒计时120s答题时间
-  int _currentTime = 20;
+  int _currentTime = 5;
 
   //上传数据
   sendData(){
@@ -92,11 +92,12 @@ class CharacterMainPageState extends State<CharacterMainPage> {
       answer_temp+=answerList[m].toString();
     }
 
-    answerMerge=answerLength.toString()+"&"+correct_temp+"&"+character_temp+"&"+answer_temp;
+    answerMerge=correct_temp+"&"+character_temp+"*"+answer_temp;
     print("正式答题长度："+answerLength.toString());
     print("正误情况："+correct_temp);
     print("出题符号编号："+character_temp);
     print("答题情况："+answer_temp);
+    print("上传的字符串："+answerMerge);
 
     setAnswer(2,score:correctNumber,answerText:answerMerge);
   }

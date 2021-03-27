@@ -14,9 +14,11 @@ import 'package:tester_app/Pages/WMS/WMSPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Pages/STROOP/StroopWordPage.dart';
+import 'package:tester_app/Pages/Symbol/SymbolMainPage.dart';
+import 'package:tester_app/Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'Utils/Utils.dart';
 
-String bootPage = TestNavPage.routerName;
+String bootPage = CharacterMainPage.routerName;
 // String bootPage = QuestionFirstFragment.routerName;
 // String bootPage = "/login";
 // String bootPage = "/completeInfo";
@@ -46,6 +48,8 @@ class MyApp extends StatelessWidget {
         // "/BVMT": (context) => BMVTPage(),
         WMSPage.routerName: (context) => WMSPage(),
         StroopPage.routerName:(context) =>StroopPage(),
+        SymbolMainPage.routerName:(context) =>SymbolMainPage(),
+        CharacterMainPage.routerName:(context) =>CharacterMainPage(),
         "/TMTNew": (context) => TMTPage(),
         "/CharacterNew": (context) => CharacterNewPage(),
         "/MazeNew": (context) => MazePage(),
