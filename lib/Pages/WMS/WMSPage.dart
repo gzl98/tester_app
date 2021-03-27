@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
-import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
+import 'package:tester_app/pojo/QuestionInfo.dart';
 
 class WMSPage extends StatefulWidget {
   static const routerName = "/WMSPage";
@@ -19,8 +19,6 @@ class WMSPage extends StatefulWidget {
 }
 
 class WMSPageState extends State<WMSPage> {
-  bool reverse;
-
   @override
   void initState() {
     // 强制横屏
@@ -28,6 +26,12 @@ class WMSPageState extends State<WMSPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer.isActive) _timer.cancel();
   }
 
   List<double> buttonX = [
@@ -50,8 +54,8 @@ class WMSPageState extends State<WMSPage> {
   WMSQuestion _wmsQuestion = WMSQuestion(test: true); //初始化出题器
   final pointOneSec = const Duration(milliseconds: 100); //定义0.1秒的Duration
   CurrentState currentState = CurrentState.questionBegin; //初始化当前页面状态为Begin
-  bool success = true;
   bool test = true; //是否为test阶段的标志
+  bool reverse;
 
   //中间显示的文字
   Map showText = {
@@ -111,7 +115,7 @@ class WMSPageState extends State<WMSPage> {
     _wmsQuestion.generateRandomQuestionList();
     if (!test) {
       //记录当前题目
-      questionList.add(_wmsQuestion.getQuestionList());
+      questionList.add(_wmsQuestion.getQuestionList(reverse: reverse));
       answerList.add([]);
     }
     //启动计时器和callback函数
@@ -175,7 +179,6 @@ class WMSPageState extends State<WMSPage> {
         //如果当前index不等于题目的答案，则进行判错
         setState(() {
           //修改状态
-          success = false;
           currentState = CurrentState.questionWrong; //判错
           _wmsQuestion.questionWrong(); //判错
         });
@@ -203,7 +206,6 @@ class WMSPageState extends State<WMSPage> {
         if (_wmsQuestion.currentQuestionIsDone()) {
           //当前题目答完，则进行判对
           setState(() {
-            success = true;
             currentState = CurrentState.questionCorrect; //判对
             _wmsQuestion.questionCorrect();
           });
@@ -493,8 +495,9 @@ class WMSPageState extends State<WMSPage> {
 
   @override
   Widget build(BuildContext context) {
-    reverse = false;
-    // reverse = ModalRoute.of(context).settings.arguments;
+    QuestionInfo questionInfo =
+        Map.from(ModalRoute.of(context).settings.arguments)["questionInfo"];
+    reverse = questionInfo.reverse;
     return WillPopScope(
         onWillPop: () => showQuitDialog(context),
         child: Scaffold(

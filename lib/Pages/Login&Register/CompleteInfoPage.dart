@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import '../../Utils/Utils.dart';
 
 class CompleteInfoPage extends StatefulWidget {
+  static const routerName = "/CompleteInfoPage";
   @override
   State<StatefulWidget> createState() {
     return _CompleteInfoPageState();

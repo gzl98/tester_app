@@ -20,12 +20,12 @@ class TestNav extends State<TestNavPage> {
   String _username = "Yu";
   String _playImgPath = "images/v2.0/play.png";
   String _rightImgPath = "images/v2.0/right.png";
-  int _selectIndex = -1;
+  int _selectIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => showQuitDialog(context),
+      onWillPop: () => showExitDialog(context),
       child: Scaffold(
         body: buildPage(context),
       ),
@@ -147,7 +147,7 @@ class TestNav extends State<TestNavPage> {
       ),
       Expanded(
         child: new ListView.separated(
-          itemCount: 13,
+          itemCount: testList.length,
           itemBuilder: (BuildContext context, int position) {
             return getTestListItem(position);
           },
@@ -175,11 +175,13 @@ class TestNav extends State<TestNavPage> {
           : new BoxDecoration(color: Color(0xFFFFFFFF)),
       child: ListTile(
         title: Text(
-          "加工速度",
+          // "加工速度",
+          testList[index].questionAbility,
           style: titleStyle,
         ),
         subtitle: Text(
-          "顺序连线",
+          // "顺序连线",
+          testList[index].questionName,
           style: subStyle,
         ),
         isThreeLine: false,
@@ -251,11 +253,13 @@ class TestNav extends State<TestNavPage> {
           child: Row(
             children: [
               Text(
-                "顺序连线",
+                // "顺序连线",
+                testList[this._selectIndex].questionName,
                 style: subStyle,
               ),
               Text(
-                "加工速度",
+                // "加工速度",
+                testList[this._selectIndex].questionAbility,
                 style: titleStyle,
               ),
             ],
@@ -280,7 +284,7 @@ class TestNav extends State<TestNavPage> {
                     // width: setWidth(2000),
                     // height: setHeight(400),
                     child: Image.asset(
-                      "images/v2.0/testPicture.jpg",
+                      testList[this._selectIndex].questionImgPath,
                     ),
                   ),
                 ),
@@ -374,7 +378,7 @@ class TestNav extends State<TestNavPage> {
           ),
           onPressed: () {
             Navigator.pushNamed(context, QuestionFirstFragment.routerName,
-                arguments: QuestionInfo.fromMap(questionWMS));
+                arguments: testList[_selectIndex]);
           }),
     );
   }
@@ -429,15 +433,18 @@ class TestNav extends State<TestNavPage> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: buildTitleContext("测查内容", "判断右边是否出现与左边完全一致的图形"),
+                  child: buildTitleContext(
+                      "测查内容", testList[this._selectIndex].questionRules),
                 ),
                 Expanded(
                   flex: 1,
-                  child: buildTitleContext("测查目的", "主要评估大脑视觉加工速度"),
+                  child: buildTitleContext(
+                      "测查目的", testList[this._selectIndex].questionPurpose),
                 ),
                 Expanded(
                   flex: 1,
-                  child: buildTitleContext("受益举例", "评估后，治疗师会根据您的评估结果，实施个性化治疗。"),
+                  child: buildTitleContext(
+                      "受益举例", testList[this._selectIndex].benefitExample),
                 ),
                 Expanded(
                   flex: 1,
