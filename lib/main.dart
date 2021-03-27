@@ -14,7 +14,7 @@ import 'Utils/Utils.dart';
 
 // String bootPage = TestNavPage.routerName;
 // String bootPage = QuestionFirstFragment.routerName;
-String bootPage = CharacterMainPage.routerName;
+String bootPage = SymbolMainPage.routerName;
 // String bootPage = "/completeInfo";
 // String bootPage = "/showInfo";
 

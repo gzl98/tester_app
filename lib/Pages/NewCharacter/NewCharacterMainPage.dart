@@ -887,7 +887,6 @@ class CharacterMainPageState extends State<CharacterMainPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // SizedBox(height: setHeight(30)),
                     Row(
                       children: [
                         Expanded(
