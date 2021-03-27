@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 import 'package:tester_app/Pages/COT/COTQuestion.dart';
@@ -87,6 +89,13 @@ class COTPageState extends State<COTPage> {
       setState(() {
         currentState = 6;
       });
+      List<int> result = [];
+      result.add(_answerTimes);
+      result.add(_answerCorrectTimes);
+      result.add(_answerTime);
+      result.add(_answerCorrectTime);
+      String data = jsonEncode({'result': result});
+      setAnswer(3, 120, answerText: data);
     } else {
       _timer.cancel();
       Future.delayed(Duration(seconds: 1), () {
@@ -105,7 +114,7 @@ class COTPageState extends State<COTPage> {
 
   void callback(timer) {
     setState(() {
-      if (currentTime >= 120 * 1000) {
+      if (currentTime >= 20 * 1000) {
         _timer.cancel();
         questionOver();
       }
