@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Pages/Symbol/SymbolTemp.dart';
 
@@ -64,6 +65,39 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   Timer _timer;
   //正式倒计时120s答题时间
   int _currentTime = 20;
+
+  //上传数据
+  sendData(){
+    String answerMerge="";
+    int answerLength=totalCorrect.length-testTimes;
+    String correct_temp="";
+    for(int i=testTimes;i<answerLength+testTimes;i++){
+      if(totalCorrect[i]==true){
+        correct_temp+="1";
+      }else{
+        correct_temp+="0";
+      }
+    }
+    String basic_temp="";
+    for(int m=testTimes;m<answerLength+testTimes;m++){
+      for(int j=m*2;j<(m+1)*2;j++){
+        basic_temp+=_symbolQuestion.testBasicList[j].toString();
+      }
+    }
+    String contrast_temp="";
+    for(int n=testTimes;n<answerLength+testTimes;n++){
+      for(int k=n*5;k<(n+1)*5;k++){
+        contrast_temp+=_symbolQuestion.testContrastList[k].toString();
+      }
+    }
+    answerMerge=answerLength.toString()+"&"+correct_temp+"&"+basic_temp+"&"+contrast_temp;
+    print("正式答题长度："+answerLength.toString());
+    print("正误情况："+correct_temp);
+    print("基本组符号："+basic_temp);
+    print("对照组符号："+contrast_temp);
+
+    // setAnswer(1, 120-this._currentTime,score:correctNumber,score: correctNumber,answerText:answerMerge);
+  }
 
   //倒计时操作
   void startCountdownTimer() {
