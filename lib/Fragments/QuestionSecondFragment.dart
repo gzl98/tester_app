@@ -39,7 +39,7 @@ class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
         onPressed: () {
           if (currentPage == 2) {
             Navigator.pushNamed(context, questionInfo.nextPageRouter2,
-                arguments: {"questionInfo": questionInfo, "currentPage": 2});
+                arguments: {"questionInfo": questionInfo, "currentPage": 3});
           } else if (currentPage == 3) {
             Navigator.pushNamed(context, questionInfo.nextPageRouter3,
                 arguments: {"questionInfo": questionInfo});
@@ -83,7 +83,9 @@ class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
               child: Column(
                 children: [
                   Text(
-                    questionInfo.questionRules,
+                    currentPage == 2
+                        ? questionInfo.questionRules
+                        : questionInfo.questionRules2,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       height: setHeight(3.5),
@@ -91,9 +93,8 @@ class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
                       color: Color.fromARGB(255, 100, 100, 100),
                     ),
                   ),
-                  questionInfo.questionRuleNotes == null
-                      ? Container()
-                      : Text.rich(
+                  currentPage == 2 && questionInfo.questionRuleNotes != null
+                      ? Text.rich(
                           TextSpan(children: [
                             TextSpan(
                               text: "注意：",
@@ -106,7 +107,24 @@ class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
                             fontSize: setSp(40),
                             color: Color.fromARGB(255, 253, 121, 111),
                           ),
-                        ),
+                        )
+                      : Container(),
+                  currentPage == 3 && questionInfo.questionRuleNotes2 != null
+                      ? Text.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                              text: "注意：",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(text: questionInfo.questionRuleNotes2),
+                          ]),
+                          style: TextStyle(
+                            height: setHeight(3.5),
+                            fontSize: setSp(40),
+                            color: Color.fromARGB(255, 253, 121, 111),
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             ),

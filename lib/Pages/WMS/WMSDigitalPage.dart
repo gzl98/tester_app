@@ -9,16 +9,16 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
 
-class WMSPage extends StatefulWidget {
-  static const routerName = "/WMSPage";
+class WMSDigitalPage extends StatefulWidget {
+  static const routerName = "/WMSDigitalPage";
 
   @override
   State<StatefulWidget> createState() {
-    return WMSPageState();
+    return WMSDigitalPageState();
   }
 }
 
-class WMSPageState extends State<WMSPage> {
+class WMSDigitalPageState extends State<WMSDigitalPage> {
   @override
   void initState() {
     // 强制横屏

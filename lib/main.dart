@@ -5,7 +5,8 @@ import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopPage.dart';
-import 'package:tester_app/Pages/WMS/WMSPage.dart';
+import 'package:tester_app/Pages/WMS/WMSDigitalPage.dart';
+import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Utils/Utils.dart';
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
         // "/Character": (context) => CharacterPage(),
         // "/Maze": (context) => MazePage(),
         // "/BVMT": (context) => BMVTPage(),
-        WMSPage.routerName: (context) => WMSPage(),
+        WMSSpacePage.routerName: (context) => WMSSpacePage(),
+        WMSDigitalPage.routerName: (context) => WMSDigitalPage(),
         StroopPage.routerName: (context) => StroopPage(),
         // "/TMTNew": (context) => TMTPage(),
         // "/CharacterNew": (context) => CharacterNewPage(),
