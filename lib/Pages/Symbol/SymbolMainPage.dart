@@ -96,7 +96,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     print("基本组符号："+basic_temp);
     print("对照组符号："+contrast_temp);
 
-    // setAnswer(1, 120-this._currentTime,score:correctNumber,score: correctNumber,answerText:answerMerge);
+    setAnswer(2, 120-this._currentTime,score:correctNumber,answerText:answerMerge);
   }
 
   //倒计时操作
@@ -876,6 +876,43 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                       ],
                     ),
                   ],
+                ),
+              ),
+              SizedBox(height: setHeight(300)),
+              Container(
+                width: setWidth(500),
+                height: setHeight(120),
+                decoration: BoxDecoration(
+                  // border: Border.all(color: Colors.white,width: setWidth(1)),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color.fromARGB(255, 253, 160, 60),
+                      Color.fromARGB(255, 217, 127, 63)
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black54,
+                      offset: Offset(setWidth(1), setHeight(1)),
+                      blurRadius: setWidth(5),
+                    )
+                  ],
+                ),
+                child: TextButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                      MaterialStateProperty.all(Colors.transparent)),
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, TestNavPage.routerName, (route) => false);
+                    sendData();
+                  },
+                  child: Text(
+                    "结 束",
+                    style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+                  ),
                 ),
               ),
             ]),
