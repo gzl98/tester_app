@@ -48,6 +48,19 @@ class CreateStroopTest {
     int randSoundIndex = this._random.nextInt(this.wordList.length);
     return SingleStroopCard(wordList[randWordIndex], "黑", wordList[randSoundIndex]);
   }
+  //出带颜色的文字的测试题目，文字不为黑色
+  SingleStroopCard getSingleStroopColorWordTest(){
+    int randWordIndex = this._random.nextInt(this.wordList.length);
+    int randSoundIndex = this._random.nextInt(this.wordList.length);
+    return SingleStroopCard(wordList[randWordIndex], "蓝", wordList[randSoundIndex]);
+  }
+  //出色词测验的题目，文字颜色随机，字随机,语音随机
+  SingleStroopCard getSingleStroopWordColorTest(){
+    int randWordIndex = this._random.nextInt(this.wordList.length);
+    int randSoundIndex = this._random.nextInt(this.wordList.length);
+    int randColoeIndex =this._random.nextInt(this.wordList.length);
+    return SingleStroopCard(wordList[randWordIndex], wordList[randColoeIndex], wordList[randSoundIndex]);
+  }
   //获得文字测验的题目列表
   List<SingleStroopCard> getListStroopWordTest(int len){
     List<SingleStroopCard> tmpList= List();
@@ -56,13 +69,21 @@ class CreateStroopTest {
     }
     return tmpList;
   }
-
-  //出色词测验的题目，文字颜色随机，字随机,语音随机
-  SingleStroopCard getSingleStroopWordColorTest(){
-    int randWordIndex = this._random.nextInt(this.wordList.length);
-    int randSoundIndex = this._random.nextInt(this.wordList.length);
-    int randColoeIndex =this._random.nextInt(this.wordList.length);
-    return SingleStroopCard(wordList[randWordIndex], wordList[randColoeIndex], wordList[randSoundIndex]);
+  //获得色词测验列表
+  List<SingleStroopCard> getListStroopColorWordTest(int len){
+    List<SingleStroopCard> tmpList= List();
+    for(int i = 0; i<len;i++){
+      tmpList.add(getSingleStroopColorWordTest());
+    }
+    return tmpList;
+  }
+  //获得词色测验列表
+  List<SingleStroopCard> getListStroopWordColorTest(int len){
+    List<SingleStroopCard> tmpList= List();
+    for(int i = 0; i<len;i++){
+      tmpList.add(getSingleStroopWordColorTest());
+    }
+    return tmpList;
   }
 
 }
