@@ -1,12 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:tester_app/pojo/QuestionInfo.dart';
-import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Pages/WMS/WMSPage.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
-
-import 'Utils/Utils.dart';
 
 //WMS顺序
 final Map<String, String> questionWMS = {
@@ -48,6 +41,30 @@ final Map<String, String> questionStroop = {
   "questionRules2": null,
   "questionRuleNotes2": null,
 };
+//Symbol
+final Map<String, String> questionSymbol = {
+  "questionAbility": "加工速度",
+  "questionName": "符号检索",
+  "questionImgPath": "images/v2.0/testPicture.jpg",
+  "questionPurpose": "这项测验主要评估您的视觉搜索和反应速度，请在两分钟内尽可能多、尽可能正确地回答每个测试题。",
+  "questionNotes": null,
+  "questionRules": "屏幕中的符号图片会随机出现，请判断左边的两张图片是否存在于右边的五张图片中",
+  "questionRuleNotes": "请在正式开始后快速答题",
+  "questionRules2": null,
+  "questionRuleNotes2": null,
+};
+//Character
+final Map<String, String> questionCharacter = {
+  "questionAbility": "加工速度",
+  "questionName": "译码测验",
+  "questionImgPath": "images/v2.0/testPicture.jpg",
+  "questionPurpose": "这项测验主要评估您的视觉编码和反应速度，请在两分钟内尽可能多地写出每个符号对应的数字。",
+  "questionNotes": null,
+  "questionRules": "屏幕中的符号图片会随机出现，请判断每个符号对应的数字",
+  "questionRuleNotes": "请在正式开始后快速答题",
+  "questionRules2": null,
+  "questionRuleNotes2": null,
+};
 //Stroop色词
 final Map<String, String> questionStroopColorWord = {
   "questionAbility": "执行抑制",
@@ -75,6 +92,9 @@ final Map<String, String> questionStroopWordColor = {
 List testList = [
   QuestionInfo.fromMap(questionWMS),
   QuestionInfo.fromMap(questionWMSReverse),
+  QuestionInfo.fromMap(questionStroop),
+  QuestionInfo.fromMap(questionSymbol),
+  QuestionInfo.fromMap(questionCharacter),
   QuestionInfo.fromMap(questionStroop),
   QuestionInfo.fromMap(questionStroopColorWord),
   QuestionInfo.fromMap(questionStroopWordColor),
