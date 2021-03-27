@@ -34,7 +34,7 @@ Options getAuthorizationOptions(String token) {
 }
 
 setAnswer(int type,
-    {int answerTimeDelta,
+    {int answerTimeDelta = 0,
     int score: -1,
     String answerText,
     String imagePath,

@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 
 class QuestionInfo {
   //导航页面
-  String questionAbility;
-  String questionNavPurpose;
-  String benefitExample;
+  String questionAbility = "";
+  String questionNavPurpose = "";
+  String benefitExample = "";
   String questionImgPath;
 
   //第一个页面
@@ -26,22 +26,8 @@ class QuestionInfo {
   Widget questionRules2Widget; //规则展示Widget2
   String nextPageRouter3; //下一个页面的路由
 
-  QuestionInfo(
-    this.questionName,
-    this.questionAbility,
-    this.questionImgPath,
-    this.questionPurpose,
-    this.questionShowWidget,
-    this.questionRules,
-    this.questionRulesWidget, {
-    this.benefitExample,
-    this.questionNavPurpose,
-    this.questionNotes,
-    this.questionRuleNotes,
-    this.questionRules2,
-    this.questionRuleNotes2,
-    this.questionRules2Widget,
-  });
+  //WMS页面特殊变量
+  bool reverse;
 
   QuestionInfo.fromMap(Map<String, String> data)
       : questionAbility = data["questionAbility"],
@@ -57,5 +43,7 @@ class QuestionInfo {
         //第三个页面
         questionRules2 = data["questionRules2"],
         questionRuleNotes2 = data["questionRuleNotes2"],
-        nextPageRouter2 = data["nextPageRouter2"];
+        nextPageRouter2 = data["nextPageRouter2"],
+        //WMS页面特殊变量
+        reverse = data["reverse"] == "true";
 }
