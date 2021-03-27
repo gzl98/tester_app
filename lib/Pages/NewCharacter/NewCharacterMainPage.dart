@@ -67,6 +67,36 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //正式倒计时120s答题时间
   int _currentTime = 20;
 
+  //上传数据
+  sendData(){
+    String answerMerge="";
+    int answerLength=totalCorrect.length-testTimes;
+    String correct_temp="";
+    for(int i=testTimes;i<answerLength+testTimes;i++){
+      if(totalCorrect[i]==true){
+        correct_temp+="1";
+      }else{
+        correct_temp+="0";
+      }
+    }
+    String character_temp="";
+    for(int j=testTimes;j<answerLength+testTimes;j++){
+      character_temp+=_characterQuestion.characterList[testTimes].toString();
+    }
+    String answer_temp="";
+    for(int m=testTimes;m<testTimes+answerLength;m++){
+      answer_temp+=answerList[m].toString();
+    }
+
+    answerMerge=answerLength.toString()+"&"+correct_temp+"&"+character_temp+"&"+answer_temp;
+    print("正式答题长度："+answerLength.toString());
+    print("正误情况："+correct_temp);
+    print("出题符号编号："+character_temp);
+    print("答题情况："+answer_temp);
+
+    // setAnswer(1, 120-this._currentTime,score:correctNumber,score: correctNumber,answerText:answerMerge);
+  }
+
   //倒计时操作
   void startCountdownTimer() {
     const oneSec = const Duration(seconds: 1);
