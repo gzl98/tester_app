@@ -69,7 +69,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //声明变量
   Timer _timer;
   //正式倒计时120s答题时间
-  int _currentTime = 5;
+  int _currentTime = 6;
 
   //上传数据
   sendData(){
@@ -85,7 +85,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
     }
     String character_temp="";
     for(int j=testTimes;j<answerLength+testTimes;j++){
-      character_temp+=_characterQuestion.characterList[testTimes].toString();
+      character_temp+=_characterQuestion.characterList[j].toString();
     }
     String answer_temp="";
     for(int m=testTimes;m<testTimes+answerLength;m++){
