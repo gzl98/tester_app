@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Pages/NewCharacter/NewCharacterTemp.dart';
 
@@ -94,7 +95,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
     print("出题符号编号："+character_temp);
     print("答题情况："+answer_temp);
 
-    // setAnswer(1, 120-this._currentTime,score:correctNumber,score: correctNumber,answerText:answerMerge);
+    setAnswer(3, 120-this._currentTime,score:correctNumber,answerText:answerMerge);
   }
 
   //倒计时操作
@@ -956,6 +957,42 @@ class CharacterMainPageState extends State<CharacterMainPage> {
             ]),
           ),
           SizedBox(height: setHeight(300)),
+          Container(
+            width: setWidth(500),
+            height: setHeight(120),
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.white,width: setWidth(1)),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromARGB(255, 253, 160, 60),
+                  Color.fromARGB(255, 217, 127, 63)
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black54,
+                  offset: Offset(setWidth(1), setHeight(1)),
+                  blurRadius: setWidth(5),
+                )
+              ],
+            ),
+            child: TextButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                  MaterialStateProperty.all(Colors.transparent)),
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, TestNavPage.routerName, (route) => false);
+                sendData();
+              },
+              child: Text(
+                "结 束",
+                style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+              ),
+            ),
+          ),
         ],
       ),
     );
