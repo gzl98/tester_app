@@ -95,7 +95,7 @@ class COTPageState extends State<COTPage> {
       result.add(_answerTime);
       result.add(_answerCorrectTime);
       String data = jsonEncode({'result': result});
-      setAnswer(3, 120, answerText: data);
+      setAnswer(3, answerText: data);
     } else {
       _timer.cancel();
       Future.delayed(Duration(seconds: 1), () {
