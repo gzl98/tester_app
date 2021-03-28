@@ -41,11 +41,13 @@ class WMSQuestion {
     maxLength = _questionLengthListFormal[0];
   }
 
-  void generateRandomQuestionList() {
+  void generateRandomQuestionList({bool needZero: true}) {
     int len = _questionLengthList[_questionLengthIndex++];
     _questionIndex = len;
     _questionList.clear();
-    while (len-- > 0) _questionList.add(_random.nextInt(10));
+    while (len-- > 0)
+      _questionList
+          .add(needZero ? _random.nextInt(10) : _random.nextInt(9) + 1);
   }
 
   int getNextQuestion({bool reverse = false}) {

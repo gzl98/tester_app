@@ -4,7 +4,9 @@ import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
-import 'package:tester_app/Pages/STROOP/StroopPage.dart';
+import 'package:tester_app/Pages/NewCharacter/NewCharacterMainPage.dart';
+import 'package:tester_app/Pages/STROOP/StroopWordPage.dart';
+import 'package:tester_app/Pages/Symbol/SymbolMainPage.dart';
 import 'package:tester_app/Pages/WMS/WMSDigitalPage.dart';
 import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
@@ -13,9 +15,8 @@ import 'Utils/Utils.dart';
 
 // String bootPage = TestNavPage.routerName;
 // String bootPage = QuestionFirstFragment.routerName;
-String bootPage = LoginPage.routerName;
-// String bootPage = "/completeInfo";
-// String bootPage = "/showInfo";
+// String bootPage = LoginPage.routerName;
+String bootPage = WMSDigitalPage.routerName;
 
 void main() {
   runApp(MyApp());
@@ -30,23 +31,14 @@ class MyApp extends StatelessWidget {
       // home: LoginPage(),
       routes: {
         "/": (context) => BootPage(),
-        // "/login": (context) => LoginPage(),
         LoginPage.routerName: (context) => LoginPage(),
         RegisterPage.routerName: (context) => RegisterPage(),
         CompleteInfoPage.routerName: (context) => CompleteInfoPage(),
-        // "/showInfo": (context) => ShowInfoPage(),
-        // "/completePage": (context) => CompletePage(),
-        // "/TMT": (context) => TMTPage(),
-        // "/Character": (context) => CharacterPage(),
-        // "/Maze": (context) => MazePage(),
-        // "/BVMT": (context) => BMVTPage(),
         WMSSpacePage.routerName: (context) => WMSSpacePage(),
         WMSDigitalPage.routerName: (context) => WMSDigitalPage(),
         StroopPage.routerName: (context) => StroopPage(),
-        // "/TMTNew": (context) => TMTPage(),
-        // "/CharacterNew": (context) => CharacterNewPage(),
-        // "/MazeNew": (context) => MazePage(),
-        // "/BVMTNew": (context) => BVMTPage(),
+        SymbolMainPage.routerName: (context) => SymbolMainPage(),
+        CharacterMainPage.routerName: (context) => CharacterMainPage(),
         TestNavPage.routerName: (context) => TestNavPage(),
         QuestionFirstFragment.routerName: (context) => QuestionFirstFragment(),
         QuestionSecondFragment.routerName: (context) =>

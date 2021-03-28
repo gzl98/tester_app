@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/Utils.dart';
-import 'package:tester_app/pojo/QuestionInfo.dart';
 
 class WMSDigitalPage extends StatefulWidget {
   static const routerName = "/WMSDigitalPage";
@@ -26,6 +26,9 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
+
+    currentLen = 3;
+    textList = List.generate(currentLen, (index) => '1');
   }
 
   @override
@@ -34,78 +37,87 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
     if (_timer.isActive) _timer.cancel();
   }
 
-  int index; //高亮方形按钮的索引
+  int currentLen, currentIndex = 0; //输入字符的最大长度和当前索引的控制
+  bool isLight = false; //控制闪烁的变量
+  int digit; //当前播放的数字
   Timer _timer; //计时器
   int currentTime = 0; //辅助计时器你
   WMSQuestion _wmsQuestion = WMSQuestion(test: true); //初始化出题器
   final pointOneSec = const Duration(milliseconds: 100); //定义0.1秒的Duration
+  final oneSec = const Duration(milliseconds: 500); //定义0.5秒的Duration
   CurrentState currentState = CurrentState.questionBegin; //初始化当前页面状态为Begin
   bool test = true; //是否为test阶段的标志
   bool reverse;
 
-  //中间显示的文字
-  Map showText = {
-    CurrentState.questionPrepare: "准 备",
-    CurrentState.showingQuestion: "题 目 播 放 中...",
-    CurrentState.doingQuestion: "开 始 作 答",
-    CurrentState.questionCorrect: "开 始 作 答",
-    CurrentState.questionWrong: "开 始 作 答",
-  };
+  List textList;
 
-  //中间显示文字的颜色
-  Map showTextColor = {
-    CurrentState.questionPrepare: Colors.deepOrangeAccent,
-    CurrentState.showingQuestion: Colors.blue[400],
-    CurrentState.doingQuestion: Colors.blue[400],
-    CurrentState.questionCorrect: Colors.blue[400],
-    CurrentState.questionWrong: Colors.blue[400],
-  };
+  List questionList = [];
+  List answerList = [];
 
-  //定时器回调函数
-  void callback(timer) {
+  //展示题目界面定时器回调函数
+  void showingCallback(timer) {
     setState(() {
       if (currentTime == 0) {
         //判断是否有下一道题
         if (_wmsQuestion.hasNextIndex()) {
           //获取下一道题，并进行高亮
-          index = _wmsQuestion.getNextQuestion();
+          digit = _wmsQuestion.getNextQuestion();
         } else {
           //取消定时器
           _timer.cancel();
           //清除高亮状态
-          index = null;
+          digit = null;
           //改变当前状态为开始做题
           currentState = CurrentState.doingQuestion;
           //重置题目生成器的索引
-          _wmsQuestion.resetIndex();
+          // _wmsQuestion.resetIndex();
+          //开启闪烁计时器
+          currentTime = 5;
+          _timer = Timer.periodic(pointOneSec, doingCallback);
         }
-      } else if (currentTime == 8) {
+      } else if (currentTime == 5) {
         //清除高亮状态，构成闪烁效果
-        index = null;
+        digit = null;
       }
       //递增计时器
       currentTime = (currentTime + 1) % 10;
     });
   }
 
-  List questionList = [];
-  List answerList = [];
-
+  //开始展示题目
   void showQuestions() {
-    //开始展示题目
     setState(() {
       //设置当前状态为展示问题
       currentState = CurrentState.showingQuestion;
+      //生成新的题目
+      _wmsQuestion.generateRandomQuestionList(needZero: false);
+      //重置状态
+      currentIndex = 0;
+      currentLen = _wmsQuestion.getCurrentLength();
+      textList = List.generate(currentLen, (index) => '');
+      if (!test) {
+        //记录当前题目
+        questionList.add(_wmsQuestion.getQuestionList(reverse: reverse));
+        answerList.add([]);
+      }
+      //启动计时器和callback函数
+      currentTime = 8;
+      _timer = Timer.periodic(pointOneSec, showingCallback);
     });
-    //生成新的题目
-    _wmsQuestion.generateRandomQuestionList();
-    if (!test) {
-      //记录当前题目
-      questionList.add(_wmsQuestion.getQuestionList(reverse: reverse));
-      answerList.add([]);
-    }
-    //启动计时器和callback函数
-    _timer = Timer.periodic(pointOneSec, callback);
+  }
+
+  //展示题目界面定时器回调函数
+  void doingCallback(timer) {
+    setState(() {
+      if (currentTime == 0) {
+        isLight = true;
+      } else if (currentTime == 4) {
+        //清除高亮状态，构成闪烁效果
+        isLight = false;
+      }
+      //递增计时器
+      currentTime = (currentTime + 1) % 8;
+    });
   }
 
   void prepareShowQuestion() {
@@ -121,85 +133,154 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
     });
   }
 
-  List<Widget> buildClickedButtons() {
-    List<Widget> buttons = [];
-    for (int i = 0; i < 10; i++) {
-      ElevatedButton button = ElevatedButton(
-        onPressed: () => buttonClicked(i),
-        child: Container(),
-        // Text(
-        //   (i + 1).toString(),
-        //   style: TextStyle(fontSize: setSp(75), fontWeight: FontWeight.bold),
-        // ),
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-              i == index ? Colors.blue[700] : Color.fromARGB(255, 98, 78, 75)),
-          elevation: MaterialStateProperty.all(setWidth(10)),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(setWidth(20))),
-          )),
+  //构建小键盘
+  Widget buildSmallKeyBoard() {
+    ButtonStyle buttonStyle = ButtonStyle(
+      backgroundColor:
+          MaterialStateProperty.all(Color.fromARGB(255, 241, 241, 241)),
+      elevation: MaterialStateProperty.all(setWidth(6)),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          side: BorderSide(width: setWidth(1), color: Colors.grey),
+          borderRadius: BorderRadius.all(Radius.circular(setWidth(10))),
         ),
-      );
-      Positioned positioned = Positioned(
-        left: setWidth(buttonX[i]),
-        top: setHeight(buttonY[i]),
-        child: Container(
-          width: setWidth(200),
-          height: setHeight(200),
+      ),
+    );
+    TextStyle textStyle = TextStyle(
+        fontSize: setSp(50),
+        color: Colors.black54,
+        fontWeight: FontWeight.bold);
+    List<Widget> digitalList = [];
+    for (int i = 0; i < 3; ++i) {
+      List<Widget> childrenList = [];
+      for (int j = 0; j < 3; ++j) {
+        TextButton button = TextButton(
+          onPressed: () => buttonClicked(j * 3 + i + 1),
+          child: Text((j * 3 + i + 1).toString(),
+              style: TextStyle(
+                  fontSize: setSp(65),
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold)),
+          style: buttonStyle,
+        );
+        Widget container = Container(
+          margin: EdgeInsets.only(
+              right: setWidth(6),
+              left: setWidth(6),
+              top: setHeight(15),
+              bottom: setHeight(15)),
+          width: setWidth(150),
+          height: setHeight(150),
           child: button,
-        ),
+        );
+        childrenList.insert(0, container);
+      }
+      Widget childWidget = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: childrenList,
       );
-      buttons.add(positioned);
+      digitalList.add(childWidget);
     }
-    return buttons;
+    Widget functionKeys = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: setWidth(150),
+          height: setHeight(150),
+          margin: EdgeInsets.only(
+              right: setWidth(6),
+              left: setWidth(12),
+              top: setHeight(15),
+              bottom: setHeight(15)),
+          child: TextButton(
+            onPressed: currentIndex > 0 ? () => buttonClicked(-1) : null,
+            child: Text("清除", style: textStyle),
+            style: buttonStyle,
+          ),
+        ),
+        Container(
+          width: setWidth(150),
+          height: setHeight(330),
+          margin: EdgeInsets.only(
+              right: setWidth(6),
+              left: setWidth(12),
+              top: setHeight(15),
+              bottom: setHeight(15)),
+          child: TextButton(
+            onPressed:
+                currentIndex == currentLen ? () => buttonClicked(0) : null,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("确", style: textStyle),
+                SizedBox(height: setHeight(35)),
+                Text("认", style: textStyle),
+              ],
+            ),
+            style: buttonStyle,
+          ),
+        ),
+      ],
+    );
+    return Container(
+      width: setWidth(700),
+      height: setHeight(600),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: digitalList + [functionKeys],
+      ),
+      decoration: BoxDecoration(
+        gradient: RadialGradient(radius: setWidth(4), colors: [
+          Color.fromARGB(255, 238, 240, 242),
+          Color.fromARGB(255, 214, 216, 217),
+        ]),
+        border: Border.all(color: Colors.grey[300], width: setWidth(1)),
+        borderRadius: BorderRadius.all(Radius.circular(setWidth(10))),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black45,
+              offset: Offset(setWidth(10), setHeight(15)),
+              blurRadius: setWidth(10))
+        ],
+      ),
+    );
+  }
+
+  //判断对错
+  bool checkCorrect() {
+    var question = _wmsQuestion.getQuestionList();
+    for (int i = 0; i < question.length; ++i) {
+      if (question[i].toString() != textList[i]) return false;
+    }
+    return true;
   }
 
   void buttonClicked(index) {
-    //触发方形按钮点击事件，index为按钮的id值
-    if (currentState != CurrentState.doingQuestion)
-      return; //如果不是开始答题状态，点击按钮没有效果
-    if (_wmsQuestion.hasNextIndex()) {
-      //当前题目还没有答完
-      if (!test) answerList.last.add(index);
-      if (index != _wmsQuestion.getNextQuestion(reverse: reverse)) {
-        //如果当前index不等于题目的答案，则进行判错
+    switch (index) {
+      case -1:
+        //退格
         setState(() {
-          //修改状态
-          currentState = CurrentState.questionWrong; //判错
-          _wmsQuestion.questionWrong(); //判错
+          currentIndex--;
+          textList[currentIndex] = '';
         });
-        if (test) {
-          Future.delayed(pointOneSec, () {
-            Navigator.pushNamedAndRemoveUntil(
-                context, TestNavPage.routerName, (route) => false);
-          });
+        break;
+      case 0:
+        //提交
+        if (_timer.isActive) _timer.cancel();
+        if (!test) {
+          answerList.add(textList);
         }
-        if (_wmsQuestion.questionAllDone()) {
-          //如果所有题目都回答完毕，则延迟0.1秒将状态改为“全部答完”
-          Future.delayed(pointOneSec, () {
-            setState(() {
-              currentState = CurrentState.questionAllDone;
-            });
-          });
-        } else {
-          //否则延迟0.1秒继续进行下一道题
-          Future.delayed(pointOneSec, () {
-            prepareShowQuestion();
-          });
-        }
-      } else {
-        //答题正确
-        if (_wmsQuestion.currentQuestionIsDone()) {
+        //判断对错
+        if (checkCorrect()) {
           //当前题目答完，则进行判对
           setState(() {
             currentState = CurrentState.questionCorrect; //判对
-            _wmsQuestion.questionCorrect();
+            _wmsQuestion.questionCorrect(); //判对
           });
           if (_wmsQuestion.questionAllDone()) {
-            //题目全部达答完
             if (test) {
               //如果为test阶段，则进入正式测试
-              Future.delayed(pointOneSec, () {
+              Future.delayed(oneSec, () {
                 setState(() {
                   test = false; //更改test标志
                   _wmsQuestion = WMSQuestion(test: false); //重新创建测试题
@@ -207,9 +288,8 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
                 });
               });
             } else {
-              //正式测试阶段
-              //如果所有题目都回答完毕，则延迟0.1秒将状态改为“全部答完”
-              Future.delayed(pointOneSec, () {
+              //进行下一题
+              Future.delayed(oneSec, () {
                 setState(() {
                   currentState = CurrentState.questionAllDone;
                 });
@@ -217,12 +297,45 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
             }
           } else {
             //进行下一题
-            Future.delayed(pointOneSec, () {
+            Future.delayed(oneSec, () {
+              prepareShowQuestion();
+            });
+          }
+        } else {
+          //如果当前index不等于题目的答案，则进行判错
+          setState(() {
+            //修改状态
+            currentState = CurrentState.questionWrong; //判错
+            _wmsQuestion.questionWrong(); //判错
+          });
+          if (test) {
+            Future.delayed(oneSec, () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, TestNavPage.routerName, (route) => false);
+            });
+          }
+          if (_wmsQuestion.questionAllDone()) {
+            //如果所有题目都回答完毕，则延迟0.1秒将状态改为“全部答完”
+            Future.delayed(oneSec, () {
+              setState(() {
+                currentState = CurrentState.questionAllDone;
+              });
+            });
+          } else {
+            //否则延迟0.1秒继续进行下一道题
+            Future.delayed(oneSec, () {
               prepareShowQuestion();
             });
           }
         }
-      }
+        break;
+      default:
+        //输入数字
+        setState(() {
+          textList[currentIndex] = index.toString();
+          currentIndex++;
+        });
+        break;
     }
   }
 
@@ -240,21 +353,97 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
     );
   }
 
+  Widget buildEditText() {
+    double digitalWidth = 150;
+    List<Widget> editWidgets = [];
+    for (int i = 0; i < currentLen; i++) {
+      Widget digital = Column(
+        children: [
+          Text(
+            textList[i],
+            //   i.toString(),
+            style: TextStyle(
+              fontSize: setSp(180),
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 98, 78, 75),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(setWidth(2.5)),
+            width: setWidth(digitalWidth),
+            height: setHeight(15),
+            color: currentIndex == i && isLight
+                ? Color.fromARGB(255, 197, 250, 252)
+                : Colors.blue,
+          )
+        ],
+      );
+      editWidgets.add(digital);
+    }
+    return Container(
+        width: setWidth((digitalWidth + 5) * currentLen),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: editWidgets,
+            ),
+          ],
+        ));
+  }
+
   Widget buildMainWidget() {
     return Stack(
-      children: buildClickedButtons() +
-          [
+      children: () {
+        double marginBottom = 160;
+        if (currentState == CurrentState.showingQuestion) {
+          return [
             Center(
               child: Container(
-                margin: EdgeInsets.only(bottom: setHeight(80)),
-                width: setWidth(820),
-                height: setHeight(120),
+                margin: EdgeInsets.only(bottom: setHeight(marginBottom)),
+                child: Text(
+                  digit != null ? digit.toString() : '',
+                  style: TextStyle(
+                    fontSize: setSp(350),
+                    fontWeight: FontWeight.normal,
+                    color: Color.fromARGB(255, 98, 78, 75),
+                  ),
+                ),
+              ),
+            )
+          ];
+        }
+        if (currentState == CurrentState.doingQuestion ||
+            currentState == CurrentState.questionCorrect ||
+            currentState == CurrentState.questionWrong) {
+          return [
+            Center(
+              child: Container(
+                margin: EdgeInsets.only(bottom: setHeight(marginBottom * 2)),
+                child: buildEditText(),
+              ),
+            ),
+            Positioned(
+              right: setWidth(100),
+              bottom: setHeight(90),
+              child: buildSmallKeyBoard(),
+            ),
+          ];
+        }
+        if (currentState == CurrentState.questionPrepare) {
+          double height = 260, width = 1000;
+          return [
+            Center(
+              child: Container(
+                margin: EdgeInsets.only(bottom: setHeight(marginBottom)),
+                width: setWidth(width - 30),
+                height: setHeight(height),
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.35),
-                      blurRadius: setWidth(5),
-                      offset: Offset(setWidth(0), setHeight(3)),
+                      blurRadius: setWidth(10),
+                      offset: Offset(setWidth(0), setHeight(8)),
                     )
                   ],
                 ),
@@ -262,10 +451,10 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
             ),
             Center(
               child: Container(
-                margin: EdgeInsets.only(bottom: setHeight(80)),
+                margin: EdgeInsets.only(bottom: setHeight(marginBottom)),
                 alignment: Alignment.center,
-                width: setWidth(850),
-                height: setHeight(120),
+                width: setWidth(width),
+                height: setHeight(height),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
@@ -278,14 +467,17 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
                   ),
                 ),
                 child: Text(
-                  showText[currentState],
+                  "准 备",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: setSp(70), color: showTextColor[currentState]),
+                      fontSize: setSp(130), color: Colors.deepOrangeAccent),
                 ),
               ),
             ),
-          ],
+          ];
+        }
+        return [Container()];
+      }(),
     );
   }
 
@@ -481,9 +673,10 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
 
   @override
   Widget build(BuildContext context) {
-    QuestionInfo questionInfo =
-        Map.from(ModalRoute.of(context).settings.arguments)["questionInfo"];
-    reverse = questionInfo.reverse;
+    // QuestionInfo questionInfo =
+    //     Map.from(ModalRoute.of(context).settings.arguments)["questionInfo"];
+    // reverse = questionInfo.reverse;
+    reverse = false;
     return WillPopScope(
         onWillPop: () => showQuitDialog(context),
         child: Scaffold(
@@ -523,13 +716,12 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
                 currentState == CurrentState.questionCorrect
                     ? Center(
                         child: Container(
-                            // color: Color(0xff3f882b),
-                            margin: EdgeInsets.only(top: setHeight(100)),
+                            margin: EdgeInsets.only(bottom: setHeight(110)),
                             child: Opacity(
                               opacity: 0.85,
                               child: Image.asset(
                                 "images/v2.0/correct.png",
-                                width: setWidth(170),
+                                width: setWidth(370),
                               ),
                             )),
                       )
@@ -537,13 +729,12 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
                 currentState == CurrentState.questionWrong
                     ? Center(
                         child: Container(
-                            // color: Color(0xff3f882b),
-                            margin: EdgeInsets.only(top: setHeight(100)),
+                            margin: EdgeInsets.only(bottom: setHeight(110)),
                             child: Opacity(
                               opacity: 0.85,
                               child: Image.asset(
                                 "images/v2.0/wrong.png",
-                                width: setWidth(170),
+                                width: setWidth(370),
                               ),
                             )),
                       )
