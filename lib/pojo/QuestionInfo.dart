@@ -36,14 +36,15 @@ class QuestionInfo {
         questionName = data["questionName"],
         questionPurpose = data["questionPurpose"],
         questionNotes = data["questionNotes"],
+        nextPageRouter = data["nextPageRouter"],
         //第二个页面
         questionRules = data["questionRules"],
         questionRuleNotes = data["questionRuleNotes"],
-        nextPageRouter = data["nextPageRouter"],
+        nextPageRouter2 = data["nextPageRouter2"],
         //第三个页面
         questionRules2 = data["questionRules2"],
         questionRuleNotes2 = data["questionRuleNotes2"],
-        nextPageRouter2 = data["nextPageRouter2"],
+        nextPageRouter3 = data["nextPageRouter3"],
         //WMS页面特殊变量
         reverse = data["reverse"] == "true";
 }

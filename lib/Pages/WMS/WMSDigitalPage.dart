@@ -34,20 +34,6 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
     if (_timer.isActive) _timer.cancel();
   }
 
-  List<double> buttonX = [
-    400,
-    950,
-    1450,
-    2100,
-    2050,
-    250,
-    650,
-    1150,
-    1550,
-    1950
-  ];
-  List<double> buttonY = [330, 130, 330, 130, 530, 1130, 830, 1130, 830, 1080];
-
   int index; //高亮方形按钮的索引
   Timer _timer; //计时器
   int currentTime = 0; //辅助计时器你
