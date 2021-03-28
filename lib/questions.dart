@@ -1,3 +1,4 @@
+import 'package:tester_app/Pages/COT/COTPage.dart';
 import 'package:tester_app/Pages/WMS/WMSPage.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
 
@@ -28,6 +29,19 @@ final Map<String, String> questionWMSReverse = {
   "questionRuleNotes2": null,
   "nextPageRouter2": WMSPage.routerName,
   "reverse": "true",
+};
+//COT
+final Map<String, String> questionCOT = {
+  "questionAbility": "注意力检测",
+  "questionName": "持续操作测试",
+  "questionImgPath": "images/v2.0/testPicture.jpg",
+  "questionPurpose": "这是一项检测持续注意力的测验。屏幕上会先出现一个图形您要记住它，之后屏幕中央会连续出现一系列的图形，每当出现您记住的图形时，请尽可能地按下屏幕中的按钮。",
+  "questionNotes": "总共约2分钟，您需要尽快、准确地对每个图形做出判断。",
+  "questionRules": "2",
+  "questionRuleNotes": "",
+  "nextPageRouter": COTPage.routerName,
+  "questionRules2": null,
+  "questionRuleNotes2": null,
 };
 //Stroop词语
 final Map<String, String> questionStroop = {
@@ -92,6 +106,7 @@ final Map<String, String> questionStroopWordColor = {
 List testList = [
   QuestionInfo.fromMap(questionWMS),
   QuestionInfo.fromMap(questionWMSReverse),
+  QuestionInfo.fromMap(questionCOT),
   QuestionInfo.fromMap(questionStroop),
   QuestionInfo.fromMap(questionSymbol),
   QuestionInfo.fromMap(questionCharacter),
