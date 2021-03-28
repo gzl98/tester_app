@@ -154,7 +154,7 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
                         width: setWidth(800),
                         height: setHeight(600),
                         child: Image.asset(
-                          'images/test123.png',
+                          'images/v2.0/testPicture.jpg',
                           fit: BoxFit.fill,
                         ),
                         decoration: BoxDecoration(

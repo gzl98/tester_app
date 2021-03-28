@@ -4,21 +4,23 @@ class WMSQuestion {
   WMSQuestion({test: true}) {
     _questionLengthList =
         test ? _questionLengthListTest : _questionLengthListFormal;
+    for (var l in _questionLengthListFormal) result[l.toString()] = [];
   }
 
-  List _questionList = [];
+  List<int> _questionList = [];
   int _questionIndex;
   Random _random = Random();
-  List _questionLengthList;
-  List _questionLengthListTest = [3];
+  List<int> _questionLengthList;
+  List<int> _questionLengthListTest = [3];
 
-  // List _questionLengthListTest = [3, 3, 3];
-  List _questionLengthListFormal = [3, 3];
+  // List<int> _questionLengthListTest = [3, 3, 3];
+  List<int> _questionLengthListFormal = [3, 3];
   int maxLength = 0; //记录最大长度位数
   int correctCounts = 0; //记录正确数
   int wrongCounts = 0; //记录错误数
+  Map<String, List<int>> result = {};
 
-  // List _questionLengthListFormal = [
+  // List<int> _questionLengthListFormal = [
   //   3,
   //   3,
   //   4,
@@ -82,7 +84,16 @@ class WMSQuestion {
   void questionCorrect() {
     correctCounts++;
     maxLength = getCurrentLength();
+    result[getCurrentLength().toString()].add(1);
   }
 
-  void questionWrong() => wrongCounts++;
+  void questionWrong() {
+    wrongCounts++;
+    result[getCurrentLength().toString()].add(0);
+  }
+
+  //获取题目信息，由于出题时是倒序出题，所以此处进行翻转
+  List<int> getQuestionList({bool reverse = false}) {
+    return reverse ? _questionList.toList() : _questionList.reversed.toList();
+  }
 }

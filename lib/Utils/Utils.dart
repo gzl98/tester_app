@@ -9,6 +9,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 
 double maxHeight, maxWidth;
 
@@ -127,14 +128,17 @@ Future<bool> showQuitDialog(BuildContext context) {
       builder: (context) => AlertDialog(
             title: Text('题目还没有答完，确定退出吗?'),
             actions: [
+              // ignore: deprecated_member_use
               FlatButton(
                 child: Text('暂不'),
                 onPressed: () => Navigator.pop(context),
               ),
+              // ignore: deprecated_member_use
               FlatButton(
                 child: Text('确定'),
+                // onPressed: () => Navigator.pop(context, true),
                 onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                    context, "/showInfo", (router) => false),
+                    context, TestNavPage.routerName, (router) => false),
               ),
             ],
           ));
@@ -296,8 +300,7 @@ saveToPictures(pngBytes) async {
   PermissionHandler().requestPermissions(<PermissionGroup>[
     PermissionGroup.storage,
   ]);
-  final result =
-      await ImageGallerySaver.save(pngBytes.buffer.asUint8List());
+  final result = await ImageGallerySaver.save(pngBytes.buffer.asUint8List());
   print('保存图片');
   print(result);
   if (result) {
