@@ -55,6 +55,8 @@ flutter:
   assets:
     - images/
     - images/v2.0/
+    - images/character/
+    - images/symbol/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

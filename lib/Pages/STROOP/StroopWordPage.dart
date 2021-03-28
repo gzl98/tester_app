@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Pages/STROOP/StroopTestInfo.dart';
+import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/TTSUtil.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
@@ -24,7 +27,7 @@ class StroopPageState extends State<StroopPage> {
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
     CreateStroopTest createTest = new CreateStroopTest();
-    this.testList = createTest.getListStroopWordTest(32);
+    this.testList = createTest.getListStroopWordTest(10);
     //初始化语音播放器
   }
 
@@ -68,7 +71,7 @@ class StroopPageState extends State<StroopPage> {
       this.currentState = CurrentState.doingQuestionBegin;
       CreateStroopTest createTest = new CreateStroopTest();
       //重新生成测试题
-      this.testList = createTest.getListStroopWordTest(32);
+      this.testList = createTest.getListStroopWordTest(10);
       this._currentIndex = 1;
       this._rightFlag = false;
       this._wordflag = true;
@@ -105,12 +108,19 @@ class StroopPageState extends State<StroopPage> {
   void callbackTime(timer) {
     setState(() {
       if (currentTime == 20) {
-        if (this._currentIndex < 32) {
+        if (this._currentIndex < this.testList.length) {
           this._currentIndex++;
           this.initSingleTest();
         } else {
-          if(this.currentState == CurrentState.doingQuestion) initEndingAll();
           this._timer.cancel();
+          if(this.currentState == CurrentState.doingQuestion) initEndingAll();
+          //准备没有答对三个
+          if(this.currentState == CurrentState.preDoingQuestion){
+            //返回主页
+            Navigator.pushNamedAndRemoveUntil(
+                context, TestNavPage.routerName, (route) => false);
+          }
+
         }
       } else if (this.currentTime == 5) {
         //隐藏文字
@@ -154,7 +164,7 @@ class StroopPageState extends State<StroopPage> {
           this._rightFlag = false;
         }
         if(this.currentState==CurrentState.doingQuestion)
-          this._resultInfo.addSingleTimeResult(this.currentTime, this._rightFlag);
+          this._resultInfo.addSingleTimeResult(this.currentTime, this._rightFlag,this._currentIndex);
         this._pressAableFlag=false;
       }
     });
@@ -167,7 +177,7 @@ class StroopPageState extends State<StroopPage> {
       height: setHeight(200),
       color: Color.fromARGB(255, 48, 48, 48),
       child: Text(
-        "进度：" + this._currentIndex.toString() + "/32",
+        "进度：" + this._currentIndex.toString() + "/"+this.testList.length.toString(),
         style: TextStyle(color: Colors.white, fontSize: setSp(55)),
       ),
     );
@@ -426,7 +436,25 @@ class StroopPageState extends State<StroopPage> {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
-              onPressed: () {},
+              //调用接口向后端传参
+              onPressed: () {
+                Map map = {
+                  //题目
+                  "question": this.testList,
+                  //测试者反应的题目序号
+                  "pressIndex": this._resultInfo.rectIndexList,
+                  //测试者反应结果
+                  "pressResult": this._resultInfo.rectResult,
+                  //测试者反应的时间
+                  "pressTime": this._resultInfo.totalRectTime,
+                };
+                // map.addAll(_wmsQuestion.result);
+                String resultInfoStr = json.encode(map);
+                //print(resultInfoStr);
+                setAnswer(10, score:this._resultInfo.rightRect , answerText: resultInfoStr);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, TestNavPage.routerName, (route) => false);
+              },
               child: Text(
                 "结 束",
                 style: TextStyle(color: Colors.white, fontSize: setSp(60)),
