@@ -1,12 +1,6 @@
 import 'dart:math';
 
 class WMSQuestion {
-  WMSQuestion({test: true}) {
-    _questionLengthList =
-        test ? _questionLengthListTest : _questionLengthListFormal;
-    for (var l in _questionLengthListFormal) result[l.toString()] = [];
-  }
-
   List<int> _questionList = [];
   int _questionIndex;
   Random _random = Random();
@@ -40,11 +34,20 @@ class WMSQuestion {
   // ];
   int _questionLengthIndex = 0;
 
-  void generateRandomQuestionList() {
+  WMSQuestion({test: true}) {
+    _questionLengthList =
+        test ? _questionLengthListTest : _questionLengthListFormal;
+    for (var l in _questionLengthListFormal) result[l.toString()] = [];
+    maxLength = _questionLengthListFormal[0];
+  }
+
+  void generateRandomQuestionList({bool needZero: true}) {
     int len = _questionLengthList[_questionLengthIndex++];
     _questionIndex = len;
     _questionList.clear();
-    while (len-- > 0) _questionList.add(_random.nextInt(10));
+    while (len-- > 0)
+      _questionList
+          .add(needZero ? _random.nextInt(10) : _random.nextInt(9) + 1);
   }
 
   int getNextQuestion({bool reverse = false}) {

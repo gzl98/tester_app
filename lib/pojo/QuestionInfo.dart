@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 
 class QuestionInfo {
   //导航页面
-  String questionAbility = "";
-  String questionNavPurpose = "";
-  String benefitExample = "";
-  String questionImgPath;
+  String questionAbility = ""; //测查的能力
+  String questionTitle = ""; //题目名称
+  String questionNavContent = ""; //测查内容
+  String questionNavPurpose = ""; //测查目的
+  String benefitExample = ""; //收益举例
+  String questionImgPath; //中央显示图片
 
   //第一个页面
   String questionName; //题目名称
@@ -31,19 +33,24 @@ class QuestionInfo {
 
   QuestionInfo.fromMap(Map<String, String> data)
       : questionAbility = data["questionAbility"],
+        questionTitle = data["questionTitle"],
+        questionNavContent = data["questionNavContent"],
+        questionNavPurpose = data["questionNavPurpose"],
+        benefitExample = data["benefitExample"],
         questionImgPath = data["questionImgPath"],
         //第一个页面
         questionName = data["questionName"],
         questionPurpose = data["questionPurpose"],
         questionNotes = data["questionNotes"],
+        nextPageRouter = data["nextPageRouter"],
         //第二个页面
         questionRules = data["questionRules"],
         questionRuleNotes = data["questionRuleNotes"],
-        nextPageRouter = data["nextPageRouter"],
+        nextPageRouter2 = data["nextPageRouter2"],
         //第三个页面
         questionRules2 = data["questionRules2"],
         questionRuleNotes2 = data["questionRuleNotes2"],
-        nextPageRouter2 = data["nextPageRouter2"],
+        nextPageRouter3 = data["nextPageRouter3"],
         //WMS页面特殊变量
         reverse = data["reverse"] == "true";
 }
