@@ -53,7 +53,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   //正确率取整
   int correctPercent;
   //测试次数
-  int testTimes=1;
+  int testTimes=3;
 
   //记录总的测试点击次数
   int totalClickNumber=0;
@@ -67,7 +67,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
   //声明变量
   Timer _timer;
   //正式倒计时120s答题时间
-  int _currentTime = 5;
+  int _currentTime = 120;
 
   //上传数据
   sendData(){

@@ -53,7 +53,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //记录正确率
   int correctPercent;
   //测试次数
-  int testTimes=1;
+  int testTimes=3;
 
   //记录总的测试点击次数
   int totalClickNumber=0;
@@ -69,7 +69,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //声明变量
   Timer _timer;
   //正式倒计时120s答题时间
-  int _currentTime = 6;
+  int _currentTime = 120;
 
   //上传数据
   sendData(){

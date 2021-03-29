@@ -9,6 +9,9 @@ import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
 import 'package:tester_app/config/config.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
 
+import 'Pages/NewCharacter/NewCharacterMainPage.dart';
+import 'Pages/Symbol/SymbolMainPage.dart';
+
 //Symbol
 final Map<String, String> questionSymbol = {
   "questionAbility": "加工速度",
@@ -22,6 +25,8 @@ final Map<String, String> questionSymbol = {
   "questionNotes": null,
   "questionRules": "屏幕中的符号图片会随机出现，请判断左边的两张图片是否存在于右边的五张图片中",
   "questionRuleNotes": "请在正式开始后快速答题",
+  //第二个页面
+  "nextPageRouter2": SymbolMainPage.routerName,
   "questionRules2": null,
   "questionRuleNotes2": null,
 };
@@ -38,6 +43,8 @@ final Map<String, String> questionCharacter = {
   "questionNotes": null,
   "questionRules": "屏幕中的符号图片会随机出现，请判断每个符号对应的数字",
   "questionRuleNotes": "请在正式开始后快速答题",
+  //第二个页面
+  "nextPageRouter2": CharacterMainPage.routerName,
   "questionRules2": null,
   "questionRuleNotes2": null,
 };
@@ -205,8 +212,22 @@ List testList = [
 ];
 
 void initFragmentWidget() {
+  initSymbolCharacterWidget();
   initWMSWidget();
   initStroopWidget();
+}
+
+//初始化Symbol和Character界面的控件
+void initSymbolCharacterWidget(){
+  //Symbol
+  QuestionInfo questionSymbol = testList[questionIdSymbol-1];
+  questionSymbol.questionShowWidget = buildSymbolFirstFragmentShowWidget();
+  questionSymbol.questionRulesWidget = buildSymbolSecondFragmentShowWidget();
+
+  //Character
+  QuestionInfo questionCharacter=testList[questionIdNewCharacter-1];
+  questionCharacter.questionShowWidget = buildCharacterFirstFragmentShowWidget();
+  questionCharacter.questionRulesWidget = buildCharacterSecondFragmentShowWidget();
 }
 
 //初始化WMS页面的控件
