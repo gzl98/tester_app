@@ -7,7 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
+import 'package:tester_app/config/config.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
 
 class WMSDigitalPage extends StatefulWidget {
@@ -288,7 +290,18 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
                 });
               });
             } else {
-              //进行下一题
+              //如果所有题目都回答完毕，则提交结果，并延迟0.1秒将状态改为“全部答完”
+              Map map = {
+                "question": questionList,
+                "answer": answerList,
+                "result": _wmsQuestion.result,
+              };
+              String text = json.encode(map);
+              print(text);
+              setAnswer(
+                  reverse ? questionIdWMSDigitalReverse : questionIdWMSDigital,
+                  score: _wmsQuestion.correctCounts,
+                  answerText: text);
               Future.delayed(pointFiveSec, () {
                 setState(() {
                   currentState = CurrentState.questionAllDone;
@@ -315,7 +328,18 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
             });
           }
           if (_wmsQuestion.questionAllDone()) {
-            //如果所有题目都回答完毕，则延迟0.1秒将状态改为“全部答完”
+            //如果所有题目都回答完毕，则提交结果，并延迟0.1秒将状态改为“全部答完”
+            Map map = {
+              "question": questionList,
+              "answer": answerList,
+              "result": _wmsQuestion.result,
+            };
+            String text = json.encode(map);
+            print(text);
+            setAnswer(
+                reverse ? questionIdWMSDigitalReverse : questionIdWMSDigital,
+                score: _wmsQuestion.correctCounts,
+                answerText: text);
             Future.delayed(pointFiveSec, () {
               setState(() {
                 currentState = CurrentState.questionAllDone;
@@ -648,15 +672,6 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                Map map = {
-                  "question": questionList,
-                  "answer": answerList,
-                  "result": _wmsQuestion.result,
-                };
-                // map.addAll(_wmsQuestion.result);
-                String text = json.encode(map);
-                print(text);
-                // setAnswer(5, score: _wmsQuestion.correctCounts, answerText: "");
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
