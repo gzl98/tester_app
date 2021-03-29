@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:tester_app/Componets/Stroop.dart';
 import 'package:tester_app/Componets/WMS.dart';
 import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Pages/COT/COTPage.dart';
@@ -204,6 +206,7 @@ List testList = [
 
 void initFragmentWidget() {
   initWMSWidget();
+  initStroopWidget();
 }
 
 //初始化WMS页面的控件
@@ -240,4 +243,29 @@ void initWMSWidget() {
       buildWMSSpaceFirstFragmentShowWidget();
   questionWMSSpaceReverse.questionRulesWidget =
       buildWMSSpaceSecondFragmentShowWidget();
+}
+void initStroopWidget(){
+  //StroopWord
+  QuestionInfo questionStroopWord =
+  testList[stroopWordID - 1];
+  questionStroopWord.questionShowWidget =
+      buildWordCard("绿", Color(0xFF000000));
+  questionStroopWord.questionRulesWidget =
+      buildSecondWordCard("绿", Color(0xFF000000));
+
+  //StroopColorWord
+  QuestionInfo questionStroopColorWord =
+  testList[stroopColorWordID - 1];
+  questionStroopColorWord.questionShowWidget =
+      buildWordCard("绿", Color(0xFF007CFF));
+  questionStroopColorWord.questionRulesWidget =
+      buildSecondWordCard("绿", Color(0xFF007CFF));
+
+  //StroopWord
+  QuestionInfo questionStroopWordColor =
+  testList[stroopWordColorID - 1];
+  questionStroopWordColor.questionShowWidget =
+      buildWordCard("绿", Color(0xFFE30505));
+  questionStroopWordColor.questionRulesWidget =
+      buildSecondWordCard("绿", Color(0xFFE30707));
 }

@@ -9,3 +9,9 @@ const questionIdWMSDigital = 4;
 const questionIdWMSDigitalReverse = 5;
 const questionIdWMSSpace = 6;
 const questionIdWMSSpaceReverse = 7;
+
+
+//Stroop测试
+const stroopWordID = 8;
+const stroopColorWordID = 9;
+const stroopWordColorID = 10;
