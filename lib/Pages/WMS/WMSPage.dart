@@ -478,7 +478,7 @@ class WMSPageState extends State<WMSPage> {
                 // map.addAll(_wmsQuestion.result);
                 String text = json.encode(map);
                 print(text);
-                // setAnswer(5, score: _wmsQuestion.correctCounts, answerText: "");
+                //setAnswer(5, score: _wmsQuestion.correctCounts, answerText: "");
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },

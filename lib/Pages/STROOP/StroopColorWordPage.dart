@@ -438,6 +438,8 @@ class StroopColorWordPageState extends State<StroopColorWordPage> {
               //调用接口向后端传参
               onPressed: () {
                 Map map = {
+                  //题目名称
+                  "testName":"Stroop色词",
                   //题目
                   "question": this.testList,
                   //测试者反应的题目序号
@@ -446,6 +448,14 @@ class StroopColorWordPageState extends State<StroopColorWordPage> {
                   "pressResult": this._resultInfo.rectResult,
                   //测试者反应的时间
                   "pressTime": this._resultInfo.totalRectTime,
+                  //测试者的平均反应时间
+                  "meanRectTime":this._resultInfo.getMeanRectTime(),
+                  //测试者的总反应数
+                  "totalRect":this._resultInfo.totalRect,
+                  //测试者的正确反应数
+                  "rightRect":this._resultInfo.rightRect,
+                  //测试者的错误反应数
+                  "errorRect":this._resultInfo.getErrorRectCount(),
                 };
                 // map.addAll(_wmsQuestion.result);
                 String resultInfoStr = json.encode(map);
