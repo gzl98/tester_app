@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
+import 'package:tester_app/config/config.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
 
 class WMSSpacePage extends StatefulWidget {
@@ -191,7 +193,15 @@ class WMSSpacePageState extends State<WMSSpacePage> {
           });
         }
         if (_wmsQuestion.questionAllDone()) {
-          //如果所有题目都回答完毕，则延迟0.1秒将状态改为“全部答完”
+          //如果所有题目都回答完毕，则提交结果，并延迟0.1秒将状态改为“全部答完”
+          Map map = {
+            "question": questionList,
+            "answer": answerList,
+            "result": _wmsQuestion.result,
+          };
+          String text = json.encode(map);
+          print(text);
+          setAnswer(reverse ? questionIdWMSSpaceReverse : questionIdWMSSpace, score: _wmsQuestion.correctCounts, answerText: text);
           Future.delayed(pointOneSec, () {
             setState(() {
               currentState = CurrentState.questionAllDone;
@@ -224,7 +234,15 @@ class WMSSpacePageState extends State<WMSSpacePage> {
               });
             } else {
               //正式测试阶段
-              //如果所有题目都回答完毕，则延迟0.1秒将状态改为“全部答完”
+              //如果所有题目都回答完毕，则提交结果，并延迟0.1秒将状态改为“全部答完”
+              Map map = {
+                "question": questionList,
+                "answer": answerList,
+                "result": _wmsQuestion.result,
+              };
+              String text = json.encode(map);
+              print(text);
+              setAnswer(reverse ? questionIdWMSSpaceReverse : questionIdWMSSpace, score: _wmsQuestion.correctCounts, answerText: text);
               Future.delayed(pointOneSec, () {
                 setState(() {
                   currentState = CurrentState.questionAllDone;
@@ -474,14 +492,6 @@ class WMSSpacePageState extends State<WMSSpacePage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                Map map = {
-                  "question": questionList,
-                  "answer": answerList,
-                  "result": _wmsQuestion.result,
-                };
-                String text = json.encode(map);
-                print(text);
-                // setAnswer(reverse ? 7 : 6, score: _wmsQuestion.correctCounts, answerText: text);
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
