@@ -74,10 +74,10 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
             SizedBox(height: setHeight(300)),
             //上部布局
             Container(
-              // color: Colors.amber,
               width: maxWidth,
-              height: setHeight(800),
+              height: setHeight(1100),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //左侧颜色条
                   Column(
@@ -98,8 +98,8 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
                   SizedBox(width: setWidth(150)),
                   //题目文本内容
                   Container(
-                    width: setWidth(1100),
-                    height: setHeight(800),
+                    width: setWidth(1200),
+                    height: setHeight(1100),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -145,7 +145,7 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
                       ],
                     ),
                   ),
-                  SizedBox(width: setWidth(250)),
+                  SizedBox(width: setWidth(150)),
                   //右侧展示图片
                   Column(
                     children: [
@@ -167,7 +167,7 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
                 ],
               ),
             ),
-            SizedBox(height: setHeight(300)),
+            // SizedBox(height: setHeight(300)),
             //下一步按钮
             buildNextStepButton(context),
           ],

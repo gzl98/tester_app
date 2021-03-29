@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/Utils.dart';
+import 'package:tester_app/pojo/QuestionInfo.dart';
 
 class WMSDigitalPage extends StatefulWidget {
   static const routerName = "/WMSDigitalPage";
@@ -27,8 +28,8 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
 
-    currentLen = 3;
-    textList = List.generate(currentLen, (index) => '1');
+    // currentLen = 3;
+    // textList = List.generate(currentLen, (index) => '1');
   }
 
   @override
@@ -44,15 +45,15 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
   int currentTime = 0; //辅助计时器你
   WMSQuestion _wmsQuestion = WMSQuestion(test: true); //初始化出题器
   final pointOneSec = const Duration(milliseconds: 100); //定义0.1秒的Duration
-  final oneSec = const Duration(milliseconds: 500); //定义0.5秒的Duration
+  final pointFiveSec = const Duration(milliseconds: 500); //定义0.5秒的Duration
   CurrentState currentState = CurrentState.questionBegin; //初始化当前页面状态为Begin
   bool test = true; //是否为test阶段的标志
-  bool reverse;
+  bool reverse; //正序倒序的标志
 
-  List textList;
+  List textList; //当前输入
 
-  List questionList = [];
-  List answerList = [];
+  List questionList = []; //保存题目
+  List answerList = []; //保存答题结果
 
   //展示题目界面定时器回调函数
   void showingCallback(timer) {
@@ -98,7 +99,6 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
       if (!test) {
         //记录当前题目
         questionList.add(_wmsQuestion.getQuestionList(reverse: reverse));
-        answerList.add([]);
       }
       //启动计时器和callback函数
       currentTime = 8;
@@ -248,7 +248,7 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
 
   //判断对错
   bool checkCorrect() {
-    var question = _wmsQuestion.getQuestionList();
+    var question = _wmsQuestion.getQuestionList(reverse: reverse);
     for (int i = 0; i < question.length; ++i) {
       if (question[i].toString() != textList[i]) return false;
     }
@@ -280,7 +280,7 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
           if (_wmsQuestion.questionAllDone()) {
             if (test) {
               //如果为test阶段，则进入正式测试
-              Future.delayed(oneSec, () {
+              Future.delayed(pointFiveSec, () {
                 setState(() {
                   test = false; //更改test标志
                   _wmsQuestion = WMSQuestion(test: false); //重新创建测试题
@@ -289,7 +289,7 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
               });
             } else {
               //进行下一题
-              Future.delayed(oneSec, () {
+              Future.delayed(pointFiveSec, () {
                 setState(() {
                   currentState = CurrentState.questionAllDone;
                 });
@@ -297,7 +297,7 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
             }
           } else {
             //进行下一题
-            Future.delayed(oneSec, () {
+            Future.delayed(pointFiveSec, () {
               prepareShowQuestion();
             });
           }
@@ -309,21 +309,21 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
             _wmsQuestion.questionWrong(); //判错
           });
           if (test) {
-            Future.delayed(oneSec, () {
+            Future.delayed(pointFiveSec, () {
               Navigator.pushNamedAndRemoveUntil(
                   context, TestNavPage.routerName, (route) => false);
             });
           }
           if (_wmsQuestion.questionAllDone()) {
             //如果所有题目都回答完毕，则延迟0.1秒将状态改为“全部答完”
-            Future.delayed(oneSec, () {
+            Future.delayed(pointFiveSec, () {
               setState(() {
                 currentState = CurrentState.questionAllDone;
               });
             });
           } else {
             //否则延迟0.1秒继续进行下一道题
-            Future.delayed(oneSec, () {
+            Future.delayed(pointFiveSec, () {
               prepareShowQuestion();
             });
           }
@@ -673,10 +673,9 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
 
   @override
   Widget build(BuildContext context) {
-    // QuestionInfo questionInfo =
-    //     Map.from(ModalRoute.of(context).settings.arguments)["questionInfo"];
-    // reverse = questionInfo.reverse;
-    reverse = false;
+    QuestionInfo questionInfo =
+        Map.from(ModalRoute.of(context).settings.arguments)["questionInfo"];
+    reverse = questionInfo.reverse;
     return WillPopScope(
         onWillPop: () => showQuitDialog(context),
         child: Scaffold(

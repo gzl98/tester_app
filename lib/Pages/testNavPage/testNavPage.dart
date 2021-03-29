@@ -181,7 +181,7 @@ class TestNav extends State<TestNavPage> {
         ),
         subtitle: Text(
           // "顺序连线",
-          testList[index].questionName,
+          testList[index].questionTitle,
           style: subStyle,
         ),
         isThreeLine: false,
@@ -254,7 +254,7 @@ class TestNav extends State<TestNavPage> {
             children: [
               Text(
                 // "顺序连线",
-                testList[this._selectIndex].questionName,
+                testList[this._selectIndex].questionTitle,
                 style: subStyle,
               ),
               Text(
@@ -434,12 +434,12 @@ class TestNav extends State<TestNavPage> {
                 Expanded(
                   flex: 1,
                   child: buildTitleContext(
-                      "测查内容", testList[this._selectIndex].questionRules),
+                      "测查内容", testList[this._selectIndex].questionNavContent),
                 ),
                 Expanded(
                   flex: 1,
                   child: buildTitleContext(
-                      "测查目的", testList[this._selectIndex].questionPurpose),
+                      "测查目的", testList[this._selectIndex].questionNavPurpose),
                 ),
                 Expanded(
                   flex: 1,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tester_app/Fragments/QuestionFirstFragment.dart';
 import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
+import 'package:tester_app/Pages/COT/COTPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
@@ -13,10 +14,10 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Utils/Utils.dart';
 
-// String bootPage = TestNavPage.routerName;
+String bootPage = TestNavPage.routerName;
 // String bootPage = QuestionFirstFragment.routerName;
 // String bootPage = LoginPage.routerName;
-String bootPage = WMSDigitalPage.routerName;
+// String bootPage = LoginPage.routerName;
 
 void main() {
   runApp(MyApp());
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         StroopPage.routerName: (context) => StroopPage(),
         SymbolMainPage.routerName: (context) => SymbolMainPage(),
         CharacterMainPage.routerName: (context) => CharacterMainPage(),
+        COTPage.routerName: (context) => COTPage(),
         TestNavPage.routerName: (context) => TestNavPage(),
         QuestionFirstFragment.routerName: (context) => QuestionFirstFragment(),
         QuestionSecondFragment.routerName: (context) =>
