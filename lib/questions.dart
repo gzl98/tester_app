@@ -1,22 +1,12 @@
+import 'package:tester_app/Componets/WMS.dart';
 import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Pages/COT/COTPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopWordPage.dart';
 import 'package:tester_app/Pages/WMS/WMSDigitalPage.dart';
 import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
+import 'package:tester_app/config/config.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
 
-List testList = [
-  QuestionInfo.fromMap(questionSymbol),
-  QuestionInfo.fromMap(questionCharacter),
-  QuestionInfo.fromMap(questionCOT),
-  QuestionInfo.fromMap(questionWMSDigital),
-  QuestionInfo.fromMap(questionWMSDigitalReverse),
-  QuestionInfo.fromMap(questionWMSSpace),
-  QuestionInfo.fromMap(questionWMSSpaceReverse),
-  QuestionInfo.fromMap(questionStroop),
-  QuestionInfo.fromMap(questionStroopColorWord),
-  QuestionInfo.fromMap(questionStroopWordColor),
-];
 //Symbol
 final Map<String, String> questionSymbol = {
   "questionAbility": "加工速度",
@@ -198,3 +188,56 @@ final Map<String, String> questionStroopWordColor = {
   "questionRules2": null,
   "questionRuleNotes2": null,
 };
+
+List testList = [
+  QuestionInfo.fromMap(questionSymbol),
+  QuestionInfo.fromMap(questionCharacter),
+  QuestionInfo.fromMap(questionCOT),
+  QuestionInfo.fromMap(questionWMSDigital),
+  QuestionInfo.fromMap(questionWMSDigitalReverse),
+  QuestionInfo.fromMap(questionWMSSpace),
+  QuestionInfo.fromMap(questionWMSSpaceReverse),
+  QuestionInfo.fromMap(questionStroop),
+  QuestionInfo.fromMap(questionStroopColorWord),
+  QuestionInfo.fromMap(questionStroopWordColor),
+];
+
+void initFragmentWidget() {
+  initWMSWidget();
+}
+
+//初始化WMS页面的控件
+void initWMSWidget() {
+  //WMSDigital
+  QuestionInfo questionWMSDigital = testList[questionIdWMSDigital - 1];
+  questionWMSDigital.questionShowWidget =
+      buildWMSDigitalFirstFragmentShowWidget();
+  questionWMSDigital.questionRulesWidget =
+      buildWMSDigitalSecondFragmentShowWidget();
+  questionWMSDigital.questionRules2Widget =
+      buildWMSDigitalThirdFragmentShowWidget();
+
+  //WMSDigitalReverse
+  QuestionInfo questionWMSDigitalReverse =
+      testList[questionIdWMSDigitalReverse - 1];
+  questionWMSDigitalReverse.questionShowWidget =
+      buildWMSDigitalFirstFragmentShowWidget();
+  questionWMSDigitalReverse.questionRulesWidget =
+      buildWMSDigitalSecondFragmentShowWidget();
+  questionWMSDigitalReverse.questionRules2Widget =
+      buildWMSDigitalThirdFragmentShowWidget();
+
+  //WMSSpace
+  QuestionInfo questionWMSSpace = testList[questionIdWMSSpace - 1];
+  questionWMSSpace.questionShowWidget = buildWMSSpaceFirstFragmentShowWidget();
+  questionWMSSpace.questionRulesWidget =
+      buildWMSSpaceSecondFragmentShowWidget();
+
+  //WMSSpaceReverse
+  QuestionInfo questionWMSSpaceReverse =
+      testList[questionIdWMSSpaceReverse - 1];
+  questionWMSSpaceReverse.questionShowWidget =
+      buildWMSSpaceFirstFragmentShowWidget();
+  questionWMSSpaceReverse.questionRulesWidget =
+      buildWMSSpaceSecondFragmentShowWidget();
+}

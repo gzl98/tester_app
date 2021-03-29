@@ -6,8 +6,6 @@ import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
-import '../questions.dart';
-
 class QuestionFirstFragment extends StatefulWidget {
   static const routerName = "/QuestionFirst";
 
@@ -145,22 +143,27 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
                       ],
                     ),
                   ),
-                  SizedBox(width: setWidth(150)),
+                  SizedBox(width: setWidth(100)),
                   //右侧展示图片
                   Column(
                     children: [
                       Container(
+                        alignment: Alignment.center,
                         margin: EdgeInsets.only(top: setHeight(40)),
-                        width: setWidth(800),
+                        width: setWidth(900),
                         height: setHeight(600),
-                        child: Image.asset(
-                          'images/v2.0/testPicture.jpg',
-                          fit: BoxFit.fill,
-                        ),
+                        child: questionInfo.questionShowWidget == null
+                            ? Image.asset(
+                                'images/v2.0/testPicture.jpg',
+                                fit: BoxFit.fill,
+                              )
+                            : questionInfo.questionShowWidget,
                         decoration: BoxDecoration(
-                            // color: Colors.red,
+                            border: Border.all(
+                                color: Colors.grey[400], width: setWidth(1)),
+                            color: Color.fromARGB(255, 226, 229, 228),
                             borderRadius: BorderRadius.all(
-                                Radius.circular(setWidth(50)))),
+                                Radius.circular(setWidth(25)))),
                       ),
                     ],
                   ),

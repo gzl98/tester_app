@@ -31,7 +31,7 @@ class WMSSpacePageState extends State<WMSSpacePage> {
   @override
   void dispose() {
     super.dispose();
-    if (_timer.isActive) _timer.cancel();
+    if (_timer != null && _timer.isActive) _timer.cancel();
   }
 
   List<double> buttonX = [

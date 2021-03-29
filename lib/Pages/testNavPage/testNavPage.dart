@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Fragments/QuestionFirstFragment.dart';
+import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Utils/bubble_widget.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
@@ -24,6 +26,7 @@ class TestNav extends State<TestNavPage> {
 
   @override
   Widget build(BuildContext context) {
+    initFragmentWidget();
     return WillPopScope(
       onWillPop: () => showExitDialog(context),
       child: Scaffold(
@@ -377,6 +380,7 @@ class TestNav extends State<TestNavPage> {
             ],
           ),
           onPressed: () {
+            _start();
             Navigator.pushNamed(context, QuestionFirstFragment.routerName,
                 arguments: testList[_selectIndex]);
           }),
@@ -469,5 +473,40 @@ class TestNav extends State<TestNavPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
+  }
+
+  void _start() async {
+    String token = await StorageUtil.getStringItem("token");
+    Dio dio = Dio();
+    Response response;
+    try {
+      response = await dio.post(baseUrl + "addnewQN",
+          options: getAuthorizationOptions(token));
+      // print(response.data);
+      await StorageUtil.setIntItem("QNid", response.data["id"]);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _logout(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("确定退出登录?"),
+          actions: [
+            FlatButton(
+              child: Text('暂不'),
+              onPressed: () => Navigator.pop(context),
+            ),
+            FlatButton(
+                child: Text('确定'),
+                onPressed: () {
+                  StorageUtil.clear();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "/", (route) => false);
+                }),
+          ],
+        ));
   }
 }

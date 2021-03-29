@@ -35,7 +35,7 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
   @override
   void dispose() {
     super.dispose();
-    if (_timer.isActive) _timer.cancel();
+    if (_timer != null && _timer.isActive) _timer.cancel();
   }
 
   int currentLen, currentIndex = 0; //输入字符的最大长度和当前索引的控制
