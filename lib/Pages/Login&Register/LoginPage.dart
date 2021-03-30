@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
+import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
@@ -275,7 +276,7 @@ class _LoginPageState extends State<LoginPage> {
       if (mobile != null) {
         //  用户信息完整
         Navigator.pushNamedAndRemoveUntil(
-            context, TestNavPage.routerName, (route) => false);
+            context, ShowInfoPage.routerName, (route) => false);
       } else {
         Navigator.pushNamedAndRemoveUntil(
             context, CompleteInfoPage.routerName, (route) => false);

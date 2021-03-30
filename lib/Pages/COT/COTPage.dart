@@ -32,6 +32,12 @@ class COTPageState extends State<COTPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer != null && _timer.isActive) _timer.cancel();
+  }
+
   Timer _timer;
   int currentTime = 0; //ms
   int nextQuestionTime = 0; //ms
@@ -104,6 +110,7 @@ class COTPageState extends State<COTPage> {
             formal = true;
             currentState = 0;
             currentTime = 0;
+            nextQuestionTime = 0;
             _cotQuestion.setQuestionState(1);
             _cotQuestion.generateAnswer();
           });
@@ -152,7 +159,7 @@ class COTPageState extends State<COTPage> {
       color: Color.fromARGB(255, 48, 48, 48),
       child: formal
           ? Text(
-              "用时：" + (120 - currentTime ~/ 1000).toString() + 's',
+              "用时：" + (20 - currentTime ~/ 1000).toString() + 's',
               style: TextStyle(color: Colors.white, fontSize: setSp(55)),
             )
           : Text(
