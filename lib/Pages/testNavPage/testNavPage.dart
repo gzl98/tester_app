@@ -396,7 +396,7 @@ class TestNav extends State<TestNavPage> {
             ],
           ),
           onPressed: () {
-            _start();
+            // _start();
             Navigator.pushNamed(context, QuestionFirstFragment.routerName,
                 arguments: testList[_selectIndex]);
           }),
@@ -491,19 +491,19 @@ class TestNav extends State<TestNavPage> {
     super.initState();
   }
 
-  void _start() async {
-    String token = await StorageUtil.getStringItem("token");
-    Dio dio = Dio();
-    Response response;
-    try {
-      response = await dio.post(baseUrl + "addnewQN",
-          options: getAuthorizationOptions(token));
-      // print(response.data);
-      await StorageUtil.setIntItem("QNid", response.data["id"]);
-    } catch (e) {
-      print(e);
-    }
-  }
+  // void _start() async {
+  //   String token = await StorageUtil.getStringItem("token");
+  //   Dio dio = Dio();
+  //   Response response;
+  //   try {
+  //     response = await dio.post(baseUrl + "addnewQN",
+  //         options: getAuthorizationOptions(token));
+  //     // print(response.data);
+  //     await StorageUtil.setIntItem("QNid", response.data["id"]);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   void _logout(BuildContext context) {
     showDialog(
