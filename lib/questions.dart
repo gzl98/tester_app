@@ -3,6 +3,8 @@ import 'package:tester_app/Componets/Stroop.dart';
 import 'package:tester_app/Componets/WMS.dart';
 import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Pages/COT/COTPage.dart';
+import 'package:tester_app/Pages/STROOP/StroopColorWordPage.dart';
+import 'package:tester_app/Pages/STROOP/StroopWordColorPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopWordPage.dart';
 import 'package:tester_app/Pages/WMS/WMSDigitalPage.dart';
 import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
@@ -11,6 +13,7 @@ import 'package:tester_app/pojo/QuestionInfo.dart';
 
 import 'Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'Pages/Symbol/SymbolMainPage.dart';
+
 
 //Symbol
 final Map<String, String> questionSymbol = {
@@ -180,6 +183,7 @@ final Map<String, String> questionStroopColorWord = {
   "questionRuleNotes": "请在闪烁停止后再按照顺",
   "questionRules2": null,
   "questionRuleNotes2": null,
+  "nextPageRouter2": StroopColorWordPage.routerName,
 };
 //Stroop词色
 final Map<String, String> questionStroopWordColor = {
@@ -196,6 +200,7 @@ final Map<String, String> questionStroopWordColor = {
   "questionRuleNotes": "请在闪烁停止后再按照顺",
   "questionRules2": null,
   "questionRuleNotes2": null,
+  "nextPageRouter2": StroopWordColorPage.routerName,
 };
 
 List testList = [
@@ -210,7 +215,8 @@ List testList = [
   QuestionInfo.fromMap(questionStroopColorWord),
   QuestionInfo.fromMap(questionStroopWordColor),
 ];
-
+//创建每道题是否完成的列表
+List<bool> testFinishedList=[];
 void initFragmentWidget() {
   initSymbolCharacterWidget();
   initWMSWidget();

@@ -9,6 +9,8 @@ import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/TTSUtil.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
+import '../../questions.dart';
+
 class StroopPage extends StatefulWidget {
   static const routerName = "/StroopWordPage";
 
@@ -397,7 +399,7 @@ class StroopPageState extends State<StroopPage> {
               ),
               Container(
                 margin: EdgeInsets.only(top: setHeight(30)),
-                height: setHeight(250),
+                height: setHeight(300),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -462,6 +464,9 @@ class StroopPageState extends State<StroopPage> {
                 String resultInfoStr = json.encode(map);
                 print(resultInfoStr);
                 setAnswer(10, score:this._resultInfo.rightRect , answerText: resultInfoStr);
+                //加入该题目结束标志
+                testFinishedList[7]=true;
+                //创建
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },

@@ -7,7 +7,6 @@ import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Utils/bubble_widget.dart';
-import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'package:tester_app/questions.dart';
 
 class TestNavPage extends StatefulWidget {
@@ -22,9 +21,9 @@ class TestNavPage extends StatefulWidget {
 class TestNav extends State<TestNavPage> {
   String _username = "Yu";
   String _playImgPath = "images/v2.0/play.png";
-  String _rightImgPath = "images/v2.0/right.png";
+  String _correctPath = "images/v2.0/correct.png";
   int _selectIndex = 0;
-
+  List<bool> _testFinishList=[];
   @override
   Widget build(BuildContext context) {
     initFragmentWidget();
@@ -216,8 +215,10 @@ class TestNav extends State<TestNavPage> {
           });
         },
         leading: CircleAvatar(
-          backgroundColor: Colors.white,
-          backgroundImage: AssetImage(this._playImgPath),
+          backgroundColor: index==this._selectIndex?Color(0xFFDFE3E6):Color(0xFFFFFFFF),
+          backgroundImage: this._testFinishList[index]
+            ?AssetImage(this._correctPath)
+            :AssetImage(this._playImgPath)
         ),
       ),
     );
@@ -391,14 +392,15 @@ class TestNav extends State<TestNavPage> {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontSize: setSp(58)),
-              )
+                    fontSize: setSp(58)),)
             ],
           ),
           onPressed: () {
-            _start();
-            Navigator.pushNamed(context, QuestionFirstFragment.routerName,
-                arguments: testList[_selectIndex]);
+            //_start();
+            if(!this._testFinishList[this._selectIndex]){
+              Navigator.pushNamed(context, QuestionFirstFragment.routerName,
+                  arguments: testList[_selectIndex]);
+            }
           }),
     );
   }
@@ -488,9 +490,19 @@ class TestNav extends State<TestNavPage> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    getTestFinishList();
     super.initState();
+
   }
 
+  void getTestFinishList(){
+    setState(() {
+      for(int i=0;i<testList.length;i++){
+        this._testFinishList.add(false);
+      }
+      this._testFinishList=testFinishedList;
+    });
+  }
   void _start() async {
     String token = await StorageUtil.getStringItem("token");
     Dio dio = Dio();

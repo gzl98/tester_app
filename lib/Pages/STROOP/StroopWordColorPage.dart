@@ -8,6 +8,8 @@ import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/TTSUtil.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
+import '../../questions.dart';
+
 class StroopWordColorPage extends StatefulWidget {
   static const routerName = "/StroopWordColorPage";
 
@@ -396,7 +398,7 @@ class StroopWordColorPageState extends State<StroopWordColorPage> {
               ),
               Container(
                 margin: EdgeInsets.only(top: setHeight(30)),
-                height: setHeight(250),
+                height: setHeight(300),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -461,6 +463,8 @@ class StroopWordColorPageState extends State<StroopWordColorPage> {
                 String resultInfoStr = json.encode(map);
                 //print(resultInfoStr);
                 //setAnswer(12, score:this._resultInfo.rightRect , answerText: resultInfoStr);
+                //加入该题目结束标志
+                testFinishedList[9]=true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },

@@ -5,6 +5,8 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
+import '../../questions.dart';
+
 class ShowInfoPage extends StatefulWidget {
   static const routerName = "/ShowInfoPage";
 
@@ -109,6 +111,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                   Navigator.pushNamedAndRemoveUntil(
                       context, TestNavPage.routerName, (router) => false);
                   _start(context); //开始答题
+                  _initTestListFnished();
                 },
               ),
             ),
@@ -132,7 +135,13 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
       ),
     );
   }
-
+  void _initTestListFnished(){
+    List<bool> listFnished=[];
+    for(int i=0;i<testList.length;i++){
+      listFnished.add(false);
+    }
+    testFinishedList = listFnished;
+  }
   void _start(BuildContext context) async {
     String token = await StorageUtil.getStringItem("token");
     Dio dio = Dio();

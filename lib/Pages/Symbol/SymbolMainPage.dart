@@ -8,6 +8,7 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Pages/Symbol/SymbolTemp.dart';
+import 'package:tester_app/questions.dart';
 
 class SymbolMainPage extends StatefulWidget {
   static const routerName = "/SymbolMainPage";
@@ -924,6 +925,8 @@ class SymbolMainPageState extends State<SymbolMainPage> {
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
                 sendData();
+                //加入该题目结束标志
+                testFinishedList[0]=true;
               },
               child: Text(
                 "结 束",
