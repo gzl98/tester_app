@@ -40,7 +40,7 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
     if (_timer != null && _timer.isActive) _timer.cancel();
   }
 
-  int currentLen, currentIndex = 0; //输入字符的最大长度和当前索引的控制
+  int currentLen = 3, currentIndex = 0; //输入字符的最大长度和当前索引的控制
   bool isLight = false; //控制闪烁的变量
   int digit; //当前播放的数字
   Timer _timer; //计时器
@@ -371,7 +371,7 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
       height: setHeight(150),
       color: Color.fromARGB(255, 48, 48, 48),
       child: Text(
-        "长度：3位",
+        "长度：$currentLen位",
         style: TextStyle(color: Colors.white, fontSize: setSp(55)),
       ),
     );

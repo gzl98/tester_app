@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Fragments/QuestionFirstFragment.dart';
+import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Utils/bubble_widget.dart';
@@ -28,7 +29,22 @@ class TestNav extends State<TestNavPage> {
   Widget build(BuildContext context) {
     initFragmentWidget();
     return WillPopScope(
-      onWillPop: () => showExitDialog(context),
+      onWillPop: () => showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text('确定结束当前测试?'),
+                actions: [
+                  FlatButton(
+                    child: Text('暂不'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  FlatButton(
+                    child: Text('确定'),
+                    onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                        context, ShowInfoPage.routerName, (route) => false),
+                  ),
+                ],
+              )),
       child: Scaffold(
         body: buildPage(context),
       ),
@@ -493,20 +509,20 @@ class TestNav extends State<TestNavPage> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text("确定退出登录?"),
-          actions: [
-            FlatButton(
-              child: Text('暂不'),
-              onPressed: () => Navigator.pop(context),
-            ),
-            FlatButton(
-                child: Text('确定'),
-                onPressed: () {
-                  StorageUtil.clear();
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, "/", (route) => false);
-                }),
-          ],
-        ));
+              title: Text("确定退出登录?"),
+              actions: [
+                FlatButton(
+                  child: Text('暂不'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                FlatButton(
+                    child: Text('确定'),
+                    onPressed: () {
+                      StorageUtil.clear();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/", (route) => false);
+                    }),
+              ],
+            ));
   }
 }

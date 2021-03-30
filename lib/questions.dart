@@ -20,7 +20,7 @@ final Map<String, String> questionSymbol = {
   "questionNavPurpose": "主要评估大脑的视觉加工速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的视觉搜索和反应速度有显著提高。",
   "questionName": "符号检索",
-  "questionImgPath": "images/v2.0/testPicture.jpg",
+  "questionImgPath": "images/v2.0/symbolbackground.png",
   "questionPurpose": "这项测验主要评估您的视觉搜索和反应速度，请在两分钟内尽可能多、尽可能正确地回答每个测试题。",
   "questionNotes": null,
   "questionRules": "屏幕中的符号图片会随机出现，请判断左边的两张图片是否存在于右边的五张图片中",
@@ -38,7 +38,7 @@ final Map<String, String> questionCharacter = {
   "questionNavPurpose": "主要评估大脑的知觉加工速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的视觉编码和反应速度有显著提高。",
   "questionName": "译码测验",
-  "questionImgPath": "images/v2.0/testPicture.jpg",
+  "questionImgPath": "images/v2.0/characterbackground.png",
   "questionPurpose": "这项测验主要评估您的视觉编码和反应速度，请在两分钟内尽可能多地写出每个符号对应的数字。",
   "questionNotes": null,
   "questionRules": "屏幕中的符号图片会随机出现，请判断每个符号对应的数字",
@@ -56,7 +56,7 @@ final Map<String, String> questionCOT = {
   "questionNavPurpose": "主要评估反应速度和持续注意。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的反应速度和持续注意有显著提高。",
   "questionName": "持续操作测试",
-  "questionImgPath": "images/v2.0/testPicture.jpg",
+  "questionImgPath": "images/v2.0/COT/COT.png",
   "questionPurpose":
       "这是一项检测持续注意力的测验。屏幕上会先出现一个图形您要记住它，之后屏幕中央会连续出现一系列的图形，每当出现您记住的图形时，请尽可能快地按下屏幕中的按钮。",
   "questionNotes": "总共约2分钟，您需要尽快、准确地对每个图形做出判断。",
@@ -74,7 +74,7 @@ final Map<String, String> questionWMSDigital = {
   "questionNavContent": "按顺序记住屏幕中出现的一连串数字。",
   "questionNavPurpose": "主要评估短时言语记忆水平。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的短时记忆能力有显著提高。",
-  "questionImgPath": "images/v2.0/testPicture.jpg",
+  "questionImgPath": "images/v2.0/WMS/WMSDigital.png",
   //第一个页面
   "questionName": "数 字 正 背",
   "questionPurpose": "这项测验主要评估您的短时记忆能力，记住的数字越多，记忆力越好",
@@ -96,7 +96,7 @@ final Map<String, String> questionWMSDigitalReverse = {
   "questionNavContent": "按倒序记住屏幕中出现的一连串数字。",
   "questionNavPurpose": "主要评估短时言语工作记忆水平。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的工作记忆能力有显著提高。",
-  "questionImgPath": "images/v2.0/testPicture.jpg",
+  "questionImgPath": "images/v2.0/WMS/WMSDigitalReverse.png",
   //第一个页面
   "questionName": "数 字 倒 背",
   "questionPurpose": "这项测验主要评估您的工作记忆能力，记住的数字越多，记忆能力越强",
@@ -118,7 +118,7 @@ final Map<String, String> questionWMSSpace = {
   "questionNavContent": "记住方块闪烁的先后次序。",
   "questionNavPurpose": "主要评估短时空间记忆水平。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的短时空间记忆水平有显著提高。",
-  "questionImgPath": "images/v2.0/testPicture.jpg",
+  "questionImgPath": "images/v2.0/WMS/WMSSpace.png",
   //第一个页面
   "questionName": "空 间 广 度",
   "questionPurpose": "这项测验主要评估您的空间记忆能力，请记住方块闪烁的先后次序，记得越多，记忆力越好。",
@@ -137,7 +137,7 @@ final Map<String, String> questionWMSSpaceReverse = {
   "questionNavContent": "该评估包含熟悉操作，连续作对3次熟悉操作，才可以进入测查阶段。",
   "questionNavPurpose": "主要评估短时空间记忆水平。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的短时空间记忆水平有显著提高。",
-  "questionImgPath": "images/v2.0/testPicture.jpg",
+  "questionImgPath": "images/v2.0/WMS/WMSSpaceReverse.png",
   //第一个页面
   "questionName": "空 间 广 度 倒 背",
   "questionPurpose": "这项测验主要评估您的空间记忆能力，请记住方块闪烁的先后次序，记得越多，记忆力越好。",

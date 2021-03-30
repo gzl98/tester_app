@@ -5,6 +5,7 @@ import 'package:tester_app/Pages/COT/COTPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
+import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopWordPage.dart';
 import 'package:tester_app/Pages/Symbol/SymbolMainPage.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         "/": (context) => BootPage(),
         LoginPage.routerName: (context) => LoginPage(),
         RegisterPage.routerName: (context) => RegisterPage(),
+        ShowInfoPage.routerName: (context) => ShowInfoPage(),
         CompleteInfoPage.routerName: (context) => CompleteInfoPage(),
         WMSSpacePage.routerName: (context) => WMSSpacePage(),
         WMSDigitalPage.routerName: (context) => WMSDigitalPage(),
@@ -73,7 +75,7 @@ class _BootPageState extends State<BootPage> {
         if (mobile != null) {
           //  用户信息完整
           Navigator.pushNamedAndRemoveUntil(
-              context, TestNavPage.routerName, (route) => false);
+              context, ShowInfoPage.routerName, (route) => false);
         } else {
           Navigator.pushNamedAndRemoveUntil(
               context, CompleteInfoPage.routerName, (route) => false);

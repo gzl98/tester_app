@@ -50,7 +50,7 @@ class WMSSpacePageState extends State<WMSSpacePage> {
   ];
   List<double> buttonY = [330, 130, 330, 130, 530, 1130, 830, 1130, 830, 1080];
 
-  int index; //高亮方形按钮的索引
+  int index, currentLen = 3; //高亮方形按钮的索引
   Timer _timer; //计时器
   int currentTime = 0; //辅助计时器你
   WMSQuestion _wmsQuestion = WMSQuestion(test: true); //初始化出题器
@@ -115,6 +115,7 @@ class WMSSpacePageState extends State<WMSSpacePage> {
     });
     //生成新的题目
     _wmsQuestion.generateRandomQuestionList();
+    currentLen = _wmsQuestion.getCurrentLength();
     if (!test) {
       //记录当前题目
       questionList.add(_wmsQuestion.getQuestionList(reverse: reverse));
@@ -191,8 +192,7 @@ class WMSSpacePageState extends State<WMSSpacePage> {
             Navigator.pushNamedAndRemoveUntil(
                 context, TestNavPage.routerName, (route) => false);
           });
-        }
-        if (_wmsQuestion.questionAllDone()) {
+        } else if (_wmsQuestion.questionAllDone()) {
           //如果所有题目都回答完毕，则提交结果，并延迟0.1秒将状态改为“全部答完”
           Map map = {
             "question": questionList,
@@ -201,7 +201,8 @@ class WMSSpacePageState extends State<WMSSpacePage> {
           };
           String text = json.encode(map);
           print(text);
-          setAnswer(reverse ? questionIdWMSSpaceReverse : questionIdWMSSpace, score: _wmsQuestion.correctCounts, answerText: text);
+          setAnswer(reverse ? questionIdWMSSpaceReverse : questionIdWMSSpace,
+              score: _wmsQuestion.correctCounts, answerText: text);
           Future.delayed(pointOneSec, () {
             setState(() {
               currentState = CurrentState.questionAllDone;
@@ -242,7 +243,10 @@ class WMSSpacePageState extends State<WMSSpacePage> {
               };
               String text = json.encode(map);
               print(text);
-              setAnswer(reverse ? questionIdWMSSpaceReverse : questionIdWMSSpace, score: _wmsQuestion.correctCounts, answerText: text);
+              setAnswer(
+                  reverse ? questionIdWMSSpaceReverse : questionIdWMSSpace,
+                  score: _wmsQuestion.correctCounts,
+                  answerText: text);
               Future.delayed(pointOneSec, () {
                 setState(() {
                   currentState = CurrentState.questionAllDone;
@@ -268,7 +272,7 @@ class WMSSpacePageState extends State<WMSSpacePage> {
       height: setHeight(150),
       color: Color.fromARGB(255, 48, 48, 48),
       child: Text(
-        "长度：3位",
+        "长度：$currentLen位",
         style: TextStyle(color: Colors.white, fontSize: setSp(55)),
       ),
     );
