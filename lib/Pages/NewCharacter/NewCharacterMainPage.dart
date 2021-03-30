@@ -30,6 +30,13 @@ class CharacterMainPageState extends State<CharacterMainPage> {
     super.initState();
   }
 
+  //强制退出
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer != null && _timer.isActive) _timer.cancel();
+  }
+
   //初始化出题器
   CharacterQuestion _characterQuestion=new CharacterQuestion();
   //熟悉操作界面是否隐去
