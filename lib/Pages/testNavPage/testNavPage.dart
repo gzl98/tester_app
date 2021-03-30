@@ -7,6 +7,7 @@ import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Utils/bubble_widget.dart';
+import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'package:tester_app/questions.dart';
 
 class TestNavPage extends StatefulWidget {
@@ -392,7 +393,8 @@ class TestNav extends State<TestNavPage> {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontSize: setSp(58)),)
+                    fontSize: setSp(58)),
+              )
             ],
           ),
           onPressed: () {
@@ -492,7 +494,6 @@ class TestNav extends State<TestNavPage> {
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     getTestFinishList();
     super.initState();
-
   }
 
   void getTestFinishList(){

@@ -31,6 +31,13 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     super.initState();
   }
 
+  //强制退出
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer != null && _timer.isActive) _timer.cancel();
+  }
+
   //初始化出题器
   SymbolQuestion _symbolQuestion=new SymbolQuestion();
   //熟悉操作界面是否隐去
