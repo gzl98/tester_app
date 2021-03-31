@@ -8,6 +8,7 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/TTSUtil.dart';
 import 'package:tester_app/Utils/Utils.dart';
+import 'package:tester_app/config/config.dart';
 
 import '../../questions.dart';
 
@@ -32,7 +33,11 @@ class StroopPageState extends State<StroopPage> {
     this.testList = createTest.getListStroopWordTest(10);
     //初始化语音播放器
   }
-
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer != null && _timer.isActive) _timer.cancel();
+  }
   int _currentIndex = 1;
   Timer _timer;
   double currentTime = 0;
@@ -463,9 +468,9 @@ class StroopPageState extends State<StroopPage> {
                 // map.addAll(_wmsQuestion.result);
                 String resultInfoStr = json.encode(map);
                 print(resultInfoStr);
-                setAnswer(10, score:this._resultInfo.rightRect , answerText: resultInfoStr);
+                setAnswer(stroopWordID, score:this._resultInfo.rightRect , answerText: resultInfoStr);
                 //加入该题目结束标志
-                testFinishedList[7]=true;
+                testFinishedList[stroopWordID-1]=true;
                 //创建
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
