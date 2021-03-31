@@ -8,6 +8,9 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/Pages/NewCharacter/NewCharacterTemp.dart';
+import 'package:tester_app/config/config.dart';
+
+import '../../questions.dart';
 
 class CharacterMainPage extends StatefulWidget {
   static const routerName = "/CharacterMainPage";
@@ -996,6 +999,8 @@ class CharacterMainPageState extends State<CharacterMainPage> {
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
                 sendData();
+                //加入该题目结束标志
+                testFinishedList[questionIdNewCharacter-1]=true;
               },
               child: Text(
                 "结 束",
