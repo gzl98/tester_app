@@ -162,10 +162,10 @@ final Map<String, String> questionStroop = {
   "questionImgPath": "images/v2.0/STROOP/stroopWord.png",
   //第一个页面
   "questionName": "Stroop词语",
-  "questionPurpose": "这项测验主要评估您的空间记忆能力，请记住方块闪烁的先后次序。",
+  "questionPurpose": "这项测验主要评估您的言语反应能力和速度",
   //第二个页面
-  "questionRules": "屏幕中的方块会按照一定的顺序依次闪烁，停止后请按照刚才的顺序",
-  "questionRuleNotes": "请在闪烁停止后再按照顺",
+  "questionRules": "当听到的语音和文字意思一致时，请按下空格键",
+  "questionRuleNotes": "请在听到声音后立即按下空格键",
   "nextPageRouter2": StroopPage.routerName,
 };
 //Stroop色词
@@ -179,8 +179,8 @@ final Map<String, String> questionStroopColorWord = {
   "questionImgPath": "images/v2.0/STROOP/stroopColorWord.png",
   "questionPurpose": "这项测验主要评估您的空间记忆能力，请记住方块闪烁的先后次序。",
   "questionNotes": null,
-  "questionRules": "屏幕中的方块会按照一定的顺序依次闪烁，停止后请按照刚才的顺序",
-  "questionRuleNotes": "请在闪烁停止后再按照顺",
+  "questionRules": "当听到的语音和文字意思一致时，请按下空格键",
+  "questionRuleNotes": "请在听到声音后立即按下空格键",
   "questionRules2": null,
   "questionRuleNotes2": null,
   "nextPageRouter2": StroopColorWordPage.routerName,
@@ -196,8 +196,8 @@ final Map<String, String> questionStroopWordColor = {
   "questionImgPath": "images/v2.0/STROOP/stroopWordColor.png",
   "questionPurpose": "这项测验主要评估您的空间记忆能力，请记住方块闪烁的先后次序。",
   "questionNotes": null,
-  "questionRules": "屏幕中的方块会按照一定的顺序依次闪烁，停止后请按照刚才的顺序",
-  "questionRuleNotes": "请在闪烁停止后再按照顺",
+  "questionRules": "当听到的语音和文字颜色意思一致时，请按下空格键",
+  "questionRuleNotes": "请在听到声音后立即按下空格键",
   "questionRules2": null,
   "questionRuleNotes2": null,
   "nextPageRouter2": StroopWordColorPage.routerName,

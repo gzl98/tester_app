@@ -339,26 +339,27 @@ class TestNav extends State<TestNavPage> {
                       alignment: Alignment.topLeft,
                       child: Text.rich(TextSpan(children: [
                         TextSpan(
-                            text: "这项测验主要评估这项测验主要评估您的",
+                            text: testList[this._selectIndex].questionPurpose,
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: setSp(25),
                               fontWeight: FontWeight.w800,
                             )),
-                        TextSpan(
-                            text: "视觉搜索和反应速度",
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: setSp(25),
-                              fontWeight: FontWeight.w800,
-                            )),
-                        TextSpan(
-                            text: "注意仔细观察右侧框中",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: setSp(25),
-                              fontWeight: FontWeight.w800,
-                            )),
+                        // TextSpan(
+                        //     text: "视觉搜索和反应速度",
+                        //     style: TextStyle(
+                        //       color: Colors.red,
+                        //       fontSize: setSp(25),
+                        //       fontWeight: FontWeight.w800,
+                        //     )),
+                        // TextSpan(
+                        //     text: "注意仔细观察右侧框中",
+                        //     style: TextStyle(
+                        //       color: Colors.black,
+                        //       fontSize: setSp(25),
+                        //       fontWeight: FontWeight.w800,
+                        //     )
+                        // ),
                       ])),
                     ),
                   ),
