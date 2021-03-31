@@ -7,6 +7,8 @@ import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/NewCharacter/NewCharacterMainPage.dart';
+import 'package:tester_app/Pages/STROOP/StroopColorWordPage.dart';
+import 'package:tester_app/Pages/STROOP/StroopWordColorPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopWordPage.dart';
 import 'package:tester_app/Pages/Symbol/SymbolMainPage.dart';
 import 'package:tester_app/Pages/WMS/WMSDigitalPage.dart';
@@ -39,6 +41,8 @@ class MyApp extends StatelessWidget {
         WMSSpacePage.routerName: (context) => WMSSpacePage(),
         WMSDigitalPage.routerName: (context) => WMSDigitalPage(),
         StroopPage.routerName: (context) => StroopPage(),
+        StroopWordColorPage.routerName: (context) => StroopWordColorPage(),
+        StroopColorWordPage.routerName: (context) => StroopColorWordPage(),
         SymbolMainPage.routerName: (context) => SymbolMainPage(),
         CharacterMainPage.routerName: (context) => CharacterMainPage(),
         COTPage.routerName: (context) => COTPage(),
