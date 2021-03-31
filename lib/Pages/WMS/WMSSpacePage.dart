@@ -10,6 +10,7 @@ import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/config/config.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
+import 'package:tester_app/questions.dart';
 
 class WMSSpacePage extends StatefulWidget {
   static const routerName = "/WMSSpacePage";
@@ -496,6 +497,9 @@ class WMSSpacePageState extends State<WMSSpacePage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
+                testFinishedList[reverse
+                    ? questionIdWMSSpaceReverse
+                    : questionIdWMSSpace] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
