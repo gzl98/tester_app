@@ -8,6 +8,7 @@ import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 import 'package:tester_app/Pages/COT/COTQuestion.dart';
+import 'package:tester_app/questions.dart';
 
 //持续操作测试
 //这是一项检测持续注意力的测验。屏幕上会先出现一个图形您要记住它，之后屏幕中央会连续出现一系列的图形，每当出现您记住的图形时，请尽可能地按下屏幕中的按钮。
@@ -513,6 +514,7 @@ class COTPageState extends State<COTPage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
+                testFinishedList[3] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
