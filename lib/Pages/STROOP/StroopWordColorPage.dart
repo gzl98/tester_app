@@ -7,6 +7,7 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/TTSUtil.dart';
 import 'package:tester_app/Utils/Utils.dart';
+import 'package:tester_app/config/config.dart';
 
 import '../../questions.dart';
 
@@ -31,7 +32,11 @@ class StroopWordColorPageState extends State<StroopWordColorPage> {
     this.testList = createTest.getListStroopWordColorTest(10);
     //初始化语音播放器
   }
-
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer != null && _timer.isActive) _timer.cancel();
+  }
   int _currentIndex = 1;
   Timer _timer;
   double currentTime = 0;
@@ -462,9 +467,9 @@ class StroopWordColorPageState extends State<StroopWordColorPage> {
                 // map.addAll(_wmsQuestion.result);
                 String resultInfoStr = json.encode(map);
                 //print(resultInfoStr);
-                //setAnswer(12, score:this._resultInfo.rightRect , answerText: resultInfoStr);
+                setAnswer(stroopWordColorID, score:this._resultInfo.rightRect , answerText: resultInfoStr);
                 //加入该题目结束标志
-                testFinishedList[9]=true;
+                testFinishedList[stroopWordColorID-1]=true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
