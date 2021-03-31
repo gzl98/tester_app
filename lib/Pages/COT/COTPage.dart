@@ -8,6 +8,7 @@ import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 import 'package:tester_app/Pages/COT/COTQuestion.dart';
+import 'package:tester_app/config/config.dart';
 import 'package:tester_app/questions.dart';
 
 //持续操作测试
@@ -514,7 +515,7 @@ class COTPageState extends State<COTPage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                testFinishedList[2]=true;
+                testFinishedList[questionIdCOT - 1] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },

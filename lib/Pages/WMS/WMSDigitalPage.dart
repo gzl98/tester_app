@@ -672,9 +672,10 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                testFinishedList[reverse
-                    ? questionIdWMSDigitalReverse
-                    : questionIdWMSDigital] = true;
+                testFinishedList[(reverse
+                        ? questionIdWMSDigitalReverse
+                        : questionIdWMSDigital) -
+                    1] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
