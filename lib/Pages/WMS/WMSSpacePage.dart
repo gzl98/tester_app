@@ -497,9 +497,9 @@ class WMSSpacePageState extends State<WMSSpacePage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                testFinishedList[reverse
-                    ? questionIdWMSSpaceReverse
-                    : questionIdWMSSpace] = true;
+                testFinishedList[
+                    (reverse ? questionIdWMSSpaceReverse : questionIdWMSSpace) -
+                        1] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
