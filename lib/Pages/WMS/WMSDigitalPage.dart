@@ -327,8 +327,7 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
               Navigator.pushNamedAndRemoveUntil(
                   context, TestNavPage.routerName, (route) => false);
             });
-          }
-          if (_wmsQuestion.questionAllDone()) {
+          } else if (_wmsQuestion.questionAllDone()) {
             //如果所有题目都回答完毕，则提交结果，并延迟0.1秒将状态改为“全部答完”
             Map map = {
               "question": questionList,
@@ -673,7 +672,9 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                testFinishedList[reverse ? questionIdWMSDigitalReverse : questionIdWMSDigital] = true;
+                testFinishedList[reverse
+                    ? questionIdWMSDigitalReverse
+                    : questionIdWMSDigital] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
