@@ -674,8 +674,7 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
               onPressed: () {
                 testFinishedList[(reverse
                         ? questionIdWMSDigitalReverse
-                        : questionIdWMSDigital) -
-                    1] = true;
+                        : questionIdWMSDigital) ] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },

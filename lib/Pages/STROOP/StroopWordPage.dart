@@ -470,7 +470,7 @@ class StroopPageState extends State<StroopPage> {
                 print(resultInfoStr);
                 setAnswer(stroopWordID, score:this._resultInfo.rightRect , answerText: resultInfoStr);
                 //加入该题目结束标志
-                testFinishedList[stroopWordID-1]=true;
+                testFinishedList[stroopWordID]=true;
                 //创建
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);

@@ -4,6 +4,7 @@ const port = "8000";
 
 const protocol = "http";
 
+const questionIdTMT=0;
 //题目ID
 const questionIdSymbol = 1;
 const questionIdNewCharacter = 2;

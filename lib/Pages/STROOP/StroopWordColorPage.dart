@@ -469,7 +469,7 @@ class StroopWordColorPageState extends State<StroopWordColorPage> {
                 //print(resultInfoStr);
                 setAnswer(stroopWordColorID, score:this._resultInfo.rightRect , answerText: resultInfoStr);
                 //加入该题目结束标志
-                testFinishedList[stroopWordColorID-1]=true;
+                testFinishedList[stroopWordColorID]=true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },

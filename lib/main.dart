@@ -15,6 +15,7 @@ import 'package:tester_app/Pages/WMS/WMSDigitalPage.dart';
 import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
+import 'Pages/NewTMT/TMTSpacePage.dart';
 import 'Utils/Utils.dart';
 
 // String bootPage = TestNavPage.routerName;
@@ -50,6 +51,8 @@ class MyApp extends StatelessWidget {
         QuestionFirstFragment.routerName: (context) => QuestionFirstFragment(),
         QuestionSecondFragment.routerName: (context) =>
             QuestionSecondFragment(),
+        TMTSpacePage.routerName: (context) => TMTSpacePage(),
+
       },
     );
   }

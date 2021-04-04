@@ -1000,7 +1000,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
                     context, TestNavPage.routerName, (route) => false);
                 sendData();
                 //加入该题目结束标志
-                testFinishedList[questionIdNewCharacter-1]=true;
+                testFinishedList[questionIdNewCharacter]=true;
               },
               child: Text(
                 "结 束",

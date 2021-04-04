@@ -10,10 +10,30 @@ import 'package:tester_app/Pages/WMS/WMSDigitalPage.dart';
 import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
 import 'package:tester_app/config/config.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
-
 import 'Pages/NewCharacter/NewCharacterMainPage.dart';
+import 'Pages/NewTMT/TMTSpacePage.dart';
 import 'Pages/Symbol/SymbolMainPage.dart';
 
+
+//TMT
+final Map<String, String> questionTMTSpace = {
+  //导航页面
+  "questionAbility": "加工速度",
+  "questionTitle": "顺序连线",
+  "questionNavContent": "从小到大顺序找出25个数字。",
+  "questionNavPurpose": "主要评估大脑的加工速度。",
+  "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的反应速度有显著提高。",
+  "questionImgPath": "images/v2.0/TMTSpace.png",
+  //第一个页面
+  "questionName": "顺 序 连 线",
+  "questionPurpose": "这项测验主要评估您的反应速度，请按照从小到大的顺序尽可能快地点击屏幕上的25个数字。注意,请您尽可能快,尽可能准确地完成这个测验,您用时越短,成绩越好。",
+  //第二个页面
+  "questionRules": "请按照从小到大的顺序依次点击每个数字",
+  "questionRuleNotes": "请您尽可能快,尽可能准确地完成这个测验,您用时越短,成绩越好。",
+  "nextPageRouter2": TMTSpacePage.routerName,
+  //WMS页面特殊变量
+  "reverse": "false",
+};
 
 //Symbol
 final Map<String, String> questionSymbol = {
@@ -204,6 +224,7 @@ final Map<String, String> questionStroopWordColor = {
 };
 
 List testList = [
+  QuestionInfo.fromMap(questionTMTSpace),
   QuestionInfo.fromMap(questionSymbol),
   QuestionInfo.fromMap(questionCharacter),
   QuestionInfo.fromMap(questionCOT),
@@ -218,20 +239,30 @@ List testList = [
 //创建每道题是否完成的列表
 List<bool> testFinishedList=[];
 void initFragmentWidget() {
+  initTMTWidget();
   initSymbolCharacterWidget();
   initWMSWidget();
   initStroopWidget();
+
 }
 
+//初始化TMT页面的控件
+void initTMTWidget(){
+  //TMT
+  QuestionInfo questionTMT = testList[questionIdTMT];
+  questionTMT.questionShowWidget = buildTMTFirstFragmentShowWidget();
+  questionTMT.questionRulesWidget = buildTMTSecondFragmentShowWidget();
+
+}
 //初始化Symbol和Character界面的控件
 void initSymbolCharacterWidget(){
   //Symbol
-  QuestionInfo questionSymbol = testList[questionIdSymbol-1];
+  QuestionInfo questionSymbol = testList[questionIdSymbol];
   questionSymbol.questionShowWidget = buildSymbolFirstFragmentShowWidget();
   questionSymbol.questionRulesWidget = buildSymbolSecondFragmentShowWidget();
 
   //Character
-  QuestionInfo questionCharacter=testList[questionIdNewCharacter-1];
+  QuestionInfo questionCharacter=testList[questionIdNewCharacter];
   questionCharacter.questionShowWidget = buildCharacterFirstFragmentShowWidget();
   questionCharacter.questionRulesWidget = buildCharacterSecondFragmentShowWidget();
 }
@@ -239,7 +270,7 @@ void initSymbolCharacterWidget(){
 //初始化WMS页面的控件
 void initWMSWidget() {
   //WMSDigital
-  QuestionInfo questionWMSDigital = testList[questionIdWMSDigital - 1];
+  QuestionInfo questionWMSDigital = testList[questionIdWMSDigital ];
   questionWMSDigital.questionShowWidget =
       buildWMSDigitalFirstFragmentShowWidget();
   questionWMSDigital.questionRulesWidget =
@@ -249,7 +280,7 @@ void initWMSWidget() {
 
   //WMSDigitalReverse
   QuestionInfo questionWMSDigitalReverse =
-      testList[questionIdWMSDigitalReverse - 1];
+      testList[questionIdWMSDigitalReverse ];
   questionWMSDigitalReverse.questionShowWidget =
       buildWMSDigitalFirstFragmentShowWidget();
   questionWMSDigitalReverse.questionRulesWidget =
@@ -258,14 +289,14 @@ void initWMSWidget() {
       buildWMSDigitalThirdFragmentShowWidget();
 
   //WMSSpace
-  QuestionInfo questionWMSSpace = testList[questionIdWMSSpace - 1];
+  QuestionInfo questionWMSSpace = testList[questionIdWMSSpace ];
   questionWMSSpace.questionShowWidget = buildWMSSpaceFirstFragmentShowWidget();
   questionWMSSpace.questionRulesWidget =
       buildWMSSpaceSecondFragmentShowWidget();
 
   //WMSSpaceReverse
   QuestionInfo questionWMSSpaceReverse =
-      testList[questionIdWMSSpaceReverse - 1];
+      testList[questionIdWMSSpaceReverse ];
   questionWMSSpaceReverse.questionShowWidget =
       buildWMSSpaceFirstFragmentShowWidget();
   questionWMSSpaceReverse.questionRulesWidget =
@@ -274,7 +305,7 @@ void initWMSWidget() {
 void initStroopWidget(){
   //StroopWord
   QuestionInfo questionStroopWord =
-  testList[stroopWordID - 1];
+  testList[stroopWordID ];
   questionStroopWord.questionShowWidget =
       buildWordCard("绿", Color(0xFF000000));
   questionStroopWord.questionRulesWidget =
@@ -282,7 +313,7 @@ void initStroopWidget(){
 
   //StroopColorWord
   QuestionInfo questionStroopColorWord =
-  testList[stroopColorWordID - 1];
+  testList[stroopColorWordID ];
   questionStroopColorWord.questionShowWidget =
       buildWordCard("绿", Color(0xFF007CFF));
   questionStroopColorWord.questionRulesWidget =
@@ -290,7 +321,7 @@ void initStroopWidget(){
 
   //StroopWord
   QuestionInfo questionStroopWordColor =
-  testList[stroopWordColorID - 1];
+  testList[stroopWordColorID ];
   questionStroopWordColor.questionShowWidget =
       buildWordCard("绿", Color(0xFFE30505));
   questionStroopWordColor.questionRulesWidget =

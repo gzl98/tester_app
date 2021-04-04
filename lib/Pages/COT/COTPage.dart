@@ -515,7 +515,7 @@ class COTPageState extends State<COTPage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                testFinishedList[questionIdCOT - 1] = true;
+                testFinishedList[questionIdCOT ] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
