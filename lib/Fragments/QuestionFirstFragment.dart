@@ -29,8 +29,8 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
 
   Widget buildNextStepButton(context) {
     return Container(
-      width: setWidth(450),
-      height: setHeight(100),
+      width: setWidth(600),
+      height: setHeight(120),
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.transparent),

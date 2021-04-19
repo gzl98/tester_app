@@ -111,7 +111,7 @@ final Map<String, String> questionWMSDigital = {
   //WMS页面特殊变量
   "reverse": "false",
 };
-//WMS数字广度顺序
+//WMS数字广度倒序
 final Map<String, String> questionWMSDigitalReverse = {
   //导航页面
   "questionAbility": "言语工作记忆",

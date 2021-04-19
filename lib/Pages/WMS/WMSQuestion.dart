@@ -8,30 +8,30 @@ class WMSQuestion {
   List<int> _questionLengthListTest = [3];
 
   // List<int> _questionLengthListTest = [3, 3, 3];
-  // List<int> _questionLengthListFormal = [3, 3];
+  List<int> _questionLengthListFormal = [3, 3];
   int maxLength = 0; //记录最大长度位数
   int correctCounts = 0; //记录正确数
   int wrongCounts = 0; //记录错误数
   Map<String, List<int>> result = {};
 
-  List<int> _questionLengthListFormal = [
-    3,
-    3,
-    4,
-    4,
-    5,
-    5,
-    6,
-    6,
-    7,
-    7,
-    8,
-    8,
-    9,
-    9,
-    10,
-    10
-  ];
+  // List<int> _questionLengthListFormal = [
+  //   3,
+  //   3,
+  //   4,
+  //   4,
+  //   5,
+  //   5,
+  //   6,
+  //   6,
+  //   7,
+  //   7,
+  //   8,
+  //   8,
+  //   9,
+  //   9,
+  //   10,
+  //   10
+  // ];
   int _questionLengthIndex = 0;
 
   WMSQuestion({test: true}) {

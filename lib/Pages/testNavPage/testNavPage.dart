@@ -379,7 +379,7 @@ class TestNav extends State<TestNavPage> {
 
   Widget buildButtonNextQuestion() {
     return SizedBox(
-      width: setWidth(500),
+      width: setWidth(550),
       height: setHeight(50),
       child: RaisedButton(
           shape: RoundedRectangleBorder(
