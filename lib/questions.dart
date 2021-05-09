@@ -14,7 +14,6 @@ import 'Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'Pages/NewTMT/TMTSpacePage.dart';
 import 'Pages/Symbol/SymbolMainPage.dart';
 
-
 //TMT
 final Map<String, String> questionTMTSpace = {
   //导航页面
@@ -26,15 +25,18 @@ final Map<String, String> questionTMTSpace = {
   "questionImgPath": "images/v2.0/TMTSpace.png",
   //第一个页面
   "questionName": "顺 序 连 线",
-  "questionPurpose": "这项测验主要评估您的反应速度，请按照从小到大的顺序尽可能快地点击屏幕上的25个数字。注意,请您尽可能快,尽可能准确地完成这个测验,您用时越短,成绩越好。",
+  "questionPurpose":
+      "这项测验主要评估您的反应速度，请按照从小到大的顺序尽可能快地点击屏幕上的25个数字。",
+  "questionNotes": "请您尽可能快,尽可能准确地完成这个测验,您用时越短,成绩越好。",
+  "soundPath1": "sounds/TMTSpace1.wav",
   //第二个页面
   "questionRules": "请按照从小到大的顺序依次点击每个数字",
-  "questionRuleNotes": "请您尽可能快,尽可能准确地完成这个测验,您用时越短,成绩越好。",
+  "questionRuleNotes": null,
   "nextPageRouter2": TMTSpacePage.routerName,
+  "soundPath2": "sounds/TMTSpace2.wav",
   //WMS页面特殊变量
   "reverse": "false",
 };
-
 //Symbol
 final Map<String, String> questionSymbol = {
   "questionAbility": "加工速度",
@@ -48,10 +50,12 @@ final Map<String, String> questionSymbol = {
   "questionNotes": null,
   "questionRules": "屏幕中的符号图片会随机出现，请判断左边的两张图片是否存在于右边的五张图片中",
   "questionRuleNotes": "请在正式开始后快速答题",
+  "soundPath1": "sounds/Symbol1.wav",
   //第二个页面
   "nextPageRouter2": SymbolMainPage.routerName,
   "questionRules2": null,
   "questionRuleNotes2": null,
+  "soundPath2": "sounds/Symbol2.wav",
 };
 //Character
 final Map<String, String> questionCharacter = {
@@ -66,10 +70,12 @@ final Map<String, String> questionCharacter = {
   "questionNotes": null,
   "questionRules": "屏幕中的符号图片会随机出现，请判断每个符号对应的数字",
   "questionRuleNotes": "请在正式开始后快速答题",
+  "soundPath1": "sounds/Character1.wav",
   //第二个页面
   "nextPageRouter2": CharacterMainPage.routerName,
   "questionRules2": null,
   "questionRuleNotes2": null,
+  "soundPath2": "sounds/Character2.wav",
 };
 //COT
 final Map<String, String> questionCOT = {
@@ -86,6 +92,7 @@ final Map<String, String> questionCOT = {
   "questionRules": "2",
   "questionRuleNotes": "",
   "nextPageRouter": COTPage.routerName,
+  "soundPath1": "sounds/COT1.wav",
   "questionRules2": null,
   "questionRuleNotes2": null,
 };
@@ -101,13 +108,16 @@ final Map<String, String> questionWMSDigital = {
   //第一个页面
   "questionName": "数 字 正 背",
   "questionPurpose": "这项测验主要评估您的短时记忆能力，记住的数字越多，记忆力越好",
+  "soundPath1": "sounds/WMSDigital1.wav",
   //第二个页面
   "questionRules": "屏幕上会连续出现一串数字，但每次只出现一个\n请按顺序记住出现的每一个数字",
   "nextPageRouter2": QuestionSecondFragment.routerName,
+  "soundPath2": "sounds/WMSDigital2.wav",
   //第三个页面
   "questionRules2": "请点击右下角的小键盘写出您刚看到的数字",
   "questionRuleNotes2": "请您按照刚才的顺序依次点击数字键盘",
   "nextPageRouter3": WMSDigitalPage.routerName,
+  "soundPath3": "sounds/WMSDigital3.wav",
   //WMS页面特殊变量
   "reverse": "false",
 };
@@ -123,13 +133,16 @@ final Map<String, String> questionWMSDigitalReverse = {
   //第一个页面
   "questionName": "数 字 倒 背",
   "questionPurpose": "这项测验主要评估您的工作记忆能力，记住的数字越多，记忆能力越强",
+  "soundPath1": "sounds/WMSDigitalReverse1.wav",
   //第二个页面
   "questionRules": "屏幕上会连续出现一串数字，但每次只出现一个\n请按顺序记住出现的每一个数字",
   "nextPageRouter2": QuestionSecondFragment.routerName,
+  "soundPath2": "sounds/WMSDigitalReverse2.wav",
   //第三个页面
   "questionRules2": "请按照相反的顺序，点击右下角的小键盘写出您刚看到的数字",
   "questionRuleNotes2": "请您按照与数字出现的次序相反的顺序依次点击数字键盘",
   "nextPageRouter3": WMSDigitalPage.routerName,
+  "soundPath3": "sounds/WMSDigitalReverse3.wav",
   //WMS页面特殊变量
   "reverse": "true",
 };
@@ -145,10 +158,12 @@ final Map<String, String> questionWMSSpace = {
   //第一个页面
   "questionName": "空 间 广 度",
   "questionPurpose": "这项测验主要评估您的空间记忆能力，请记住方块闪烁的先后次序，记得越多，记忆力越好。",
+  "soundPath1": "sounds/WMSSpace1.wav",
   //第二个页面
   "questionRules": "屏幕中的方块会按照一定的顺序依次闪烁，停止后请按照刚才的顺序依次点击对应的方块",
   "questionRuleNotes": "请在闪烁停止后再按照顺序依次点击",
   "nextPageRouter2": WMSSpacePage.routerName,
+  "soundPath2": "sounds/WMSSpace2.wav",
   //WMS页面特殊变量
   "reverse": "false",
 };
@@ -164,10 +179,12 @@ final Map<String, String> questionWMSSpaceReverse = {
   //第一个页面
   "questionName": "空 间 广 度 倒 背",
   "questionPurpose": "这项测验主要评估您的空间记忆能力，请记住方块闪烁的先后次序，记得越多，记忆力越好。",
+  "soundPath1": "sounds/WMSSpaceReverse1.wav",
   //第二个页面
   "questionRules": "屏幕中的方块会按照一定的顺序依次闪烁，停止后请按照与刚才相反的顺序依次点击对应的方块",
   "questionRuleNotes": "请在闪烁停止后再按照相反的顺序依次点击",
   "nextPageRouter2": WMSSpacePage.routerName,
+  "soundPath2": "sounds/WMSSpaceReverse2.wav",
   //WMS页面特殊变量
   "reverse": "true",
 };
@@ -183,10 +200,12 @@ final Map<String, String> questionStroop = {
   //第一个页面
   "questionName": "Stroop词语",
   "questionPurpose": "这项测验主要评估您的言语反应能力和速度",
+  "soundPath1": "sounds/Stroop1.wav",
   //第二个页面
   "questionRules": "当听到的语音和文字意思一致时，请按下空格键",
   "questionRuleNotes": "请在听到声音后立即按下空格键",
   "nextPageRouter2": StroopPage.routerName,
+  "soundPath2": "sounds/Stroop2.wav",
 };
 //Stroop色词
 final Map<String, String> questionStroopColorWord = {
@@ -199,11 +218,13 @@ final Map<String, String> questionStroopColorWord = {
   "questionImgPath": "images/v2.0/STROOP/stroopColorWord.png",
   "questionPurpose": "这项测验主要评估您的空间记忆能力，请记住方块闪烁的先后次序。",
   "questionNotes": null,
+  "soundPath1": "sounds/StroopColorWord1.wav",
   "questionRules": "当听到的语音和文字意思一致时，请按下空格键",
   "questionRuleNotes": "请在听到声音后立即按下空格键",
   "questionRules2": null,
   "questionRuleNotes2": null,
   "nextPageRouter2": StroopColorWordPage.routerName,
+  "soundPath2": "sounds/StroopColorWord2.wav",
 };
 //Stroop词色
 final Map<String, String> questionStroopWordColor = {
@@ -216,11 +237,13 @@ final Map<String, String> questionStroopWordColor = {
   "questionImgPath": "images/v2.0/STROOP/stroopWordColor.png",
   "questionPurpose": "这项测验主要评估您的空间记忆能力，请记住方块闪烁的先后次序。",
   "questionNotes": null,
+  "soundPath1": "sounds/StroopWordColor1.wav",
   "questionRules": "当听到的语音和文字颜色意思一致时，请按下空格键",
   "questionRuleNotes": "请在听到声音后立即按下空格键",
   "questionRules2": null,
   "questionRuleNotes2": null,
   "nextPageRouter2": StroopWordColorPage.routerName,
+  "soundPath2": "sounds/StroopWordColor2.wav",
 };
 
 List testList = [
@@ -237,40 +260,42 @@ List testList = [
   QuestionInfo.fromMap(questionStroopWordColor),
 ];
 //创建每道题是否完成的列表
-List<bool> testFinishedList=[];
+List<bool> testFinishedList = [];
+
 void initFragmentWidget() {
   initTMTWidget();
   initSymbolCharacterWidget();
   initWMSWidget();
   initStroopWidget();
-
 }
 
 //初始化TMT页面的控件
-void initTMTWidget(){
+void initTMTWidget() {
   //TMT
   QuestionInfo questionTMT = testList[questionIdTMT];
   questionTMT.questionShowWidget = buildTMTFirstFragmentShowWidget();
   questionTMT.questionRulesWidget = buildTMTSecondFragmentShowWidget();
-
 }
+
 //初始化Symbol和Character界面的控件
-void initSymbolCharacterWidget(){
+void initSymbolCharacterWidget() {
   //Symbol
   QuestionInfo questionSymbol = testList[questionIdSymbol];
   questionSymbol.questionShowWidget = buildSymbolFirstFragmentShowWidget();
   questionSymbol.questionRulesWidget = buildSymbolSecondFragmentShowWidget();
 
   //Character
-  QuestionInfo questionCharacter=testList[questionIdNewCharacter];
-  questionCharacter.questionShowWidget = buildCharacterFirstFragmentShowWidget();
-  questionCharacter.questionRulesWidget = buildCharacterSecondFragmentShowWidget();
+  QuestionInfo questionCharacter = testList[questionIdNewCharacter];
+  questionCharacter.questionShowWidget =
+      buildCharacterFirstFragmentShowWidget();
+  questionCharacter.questionRulesWidget =
+      buildCharacterSecondFragmentShowWidget();
 }
 
 //初始化WMS页面的控件
 void initWMSWidget() {
   //WMSDigital
-  QuestionInfo questionWMSDigital = testList[questionIdWMSDigital ];
+  QuestionInfo questionWMSDigital = testList[questionIdWMSDigital];
   questionWMSDigital.questionShowWidget =
       buildWMSDigitalFirstFragmentShowWidget();
   questionWMSDigital.questionRulesWidget =
@@ -280,7 +305,7 @@ void initWMSWidget() {
 
   //WMSDigitalReverse
   QuestionInfo questionWMSDigitalReverse =
-      testList[questionIdWMSDigitalReverse ];
+      testList[questionIdWMSDigitalReverse];
   questionWMSDigitalReverse.questionShowWidget =
       buildWMSDigitalFirstFragmentShowWidget();
   questionWMSDigitalReverse.questionRulesWidget =
@@ -289,39 +314,35 @@ void initWMSWidget() {
       buildWMSDigitalThirdFragmentShowWidget();
 
   //WMSSpace
-  QuestionInfo questionWMSSpace = testList[questionIdWMSSpace ];
+  QuestionInfo questionWMSSpace = testList[questionIdWMSSpace];
   questionWMSSpace.questionShowWidget = buildWMSSpaceFirstFragmentShowWidget();
   questionWMSSpace.questionRulesWidget =
       buildWMSSpaceSecondFragmentShowWidget();
 
   //WMSSpaceReverse
-  QuestionInfo questionWMSSpaceReverse =
-      testList[questionIdWMSSpaceReverse ];
+  QuestionInfo questionWMSSpaceReverse = testList[questionIdWMSSpaceReverse];
   questionWMSSpaceReverse.questionShowWidget =
       buildWMSSpaceFirstFragmentShowWidget();
   questionWMSSpaceReverse.questionRulesWidget =
       buildWMSSpaceSecondFragmentShowWidget();
 }
-void initStroopWidget(){
+
+void initStroopWidget() {
   //StroopWord
-  QuestionInfo questionStroopWord =
-  testList[stroopWordID ];
-  questionStroopWord.questionShowWidget =
-      buildWordCard("绿", Color(0xFF000000));
+  QuestionInfo questionStroopWord = testList[stroopWordID];
+  questionStroopWord.questionShowWidget = buildWordCard("绿", Color(0xFF000000));
   questionStroopWord.questionRulesWidget =
       buildSecondWordCard("绿", Color(0xFF000000));
 
   //StroopColorWord
-  QuestionInfo questionStroopColorWord =
-  testList[stroopColorWordID ];
+  QuestionInfo questionStroopColorWord = testList[stroopColorWordID];
   questionStroopColorWord.questionShowWidget =
       buildWordCard("绿", Color(0xFF007CFF));
   questionStroopColorWord.questionRulesWidget =
       buildSecondWordCard("绿", Color(0xFF007CFF));
 
   //StroopWord
-  QuestionInfo questionStroopWordColor =
-  testList[stroopWordColorID ];
+  QuestionInfo questionStroopWordColor = testList[stroopWordColorID];
   questionStroopWordColor.questionShowWidget =
       buildWordCard("绿", Color(0xFFE30505));
   questionStroopWordColor.questionRulesWidget =

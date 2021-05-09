@@ -110,7 +110,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                 onPressed: () {
                   Navigator.pushNamedAndRemoveUntil(
                       context, TestNavPage.routerName, (router) => false);
-                  _start(context); //开始答题
+                  // _start(context); //开始答题
                   _initTestListFnished();
                 },
               ),

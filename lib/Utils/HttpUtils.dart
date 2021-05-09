@@ -41,6 +41,7 @@ setAnswer(int type,
     String imageName,
     File audio,
     File video}) async {
+  return;
   String token = await StorageUtil.getStringItem("token");
   int QNid = await StorageUtil.getIntItem("QNid");
   Dio dio = Dio();

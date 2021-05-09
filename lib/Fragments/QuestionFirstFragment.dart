@@ -1,3 +1,5 @@
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +19,8 @@ class QuestionFirstFragment extends StatefulWidget {
 
 class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
   QuestionInfo questionInfo;
+  AudioPlayer audioPlayer;
+  AudioCache player;
 
   @override
   void initState() {
@@ -24,7 +28,35 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    initAudioPlayer();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      play();
+    });
     super.initState();
+  }
+
+  void initAudioPlayer() {
+    audioPlayer = AudioPlayer();
+    player = AudioCache();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.release();
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  //播放音频文件
+  play() async {
+    //如果没有播放路径，则直接退出
+    if (questionInfo.soundPath1 == null) return;
+    audioPlayer = await player.play(questionInfo.soundPath1);
+  }
+
+  //停止播放
+  stop() async {
+    audioPlayer.stop();
   }
 
   Widget buildNextStepButton(context) {
@@ -38,8 +70,10 @@ class _QuestionFirstFragmentState extends State<QuestionFirstFragment> {
         ),
         onPressed: () {
           if (questionInfo.nextPageRouter != null) {
+            stop();
             Navigator.pushNamed(context, questionInfo.nextPageRouter);
           } else {
+            stop();
             Navigator.pushNamed(context, QuestionSecondFragment.routerName,
                 arguments: {"questionInfo": questionInfo, "currentPage": 2});
           }

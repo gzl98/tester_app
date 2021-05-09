@@ -1,3 +1,5 @@
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +18,8 @@ class QuestionSecondFragment extends StatefulWidget {
 
 class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
   QuestionInfo questionInfo;
+  AudioPlayer audioPlayer;
+  AudioCache player;
   int currentPage;
 
   @override
@@ -24,7 +28,41 @@ class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    initAudioPlayer();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      play();
+    });
     super.initState();
+  }
+
+  void initAudioPlayer() {
+    audioPlayer = AudioPlayer();
+    player = AudioCache();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.release();
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  //播放音频文件
+  play() async {
+    if (currentPage == 2) {
+      //如果没有播放路径，则直接退出
+      if (questionInfo.soundPath2 == null) return;
+      audioPlayer = await player.play(questionInfo.soundPath2);
+    } else if (currentPage == 3) {
+      //如果没有播放路径，则直接退出
+      if (questionInfo.soundPath3 == null) return;
+      audioPlayer = await player.play(questionInfo.soundPath3);
+    }
+  }
+
+  //停止播放
+  stop() async {
+    audioPlayer.stop();
   }
 
   Widget buildNextStepButton(context) {
@@ -38,9 +76,11 @@ class _QuestionSecondFragmentState extends State<QuestionSecondFragment> {
         ),
         onPressed: () {
           if (currentPage == 2) {
+            stop();
             Navigator.pushNamed(context, questionInfo.nextPageRouter2,
                 arguments: {"questionInfo": questionInfo, "currentPage": 3});
           } else if (currentPage == 3) {
+            stop();
             Navigator.pushNamed(context, questionInfo.nextPageRouter3,
                 arguments: {"questionInfo": questionInfo});
           }
