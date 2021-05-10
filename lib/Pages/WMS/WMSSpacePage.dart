@@ -463,7 +463,7 @@ class WMSSpacePageState extends State<WMSSpacePage> {
                             "    ",
                         style: resultTextStyle),
                     // SizedBox(height: setHeight(15)),
-                    Text("最大长度：" + _wmsQuestion.maxLength.toString() + "0位    ",
+                    Text("最大长度：" + _wmsQuestion.maxLength.toString() + "位    ",
                         style: resultTextStyle),
                   ],
                 ),
@@ -497,9 +497,9 @@ class WMSSpacePageState extends State<WMSSpacePage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                testFinishedList[
-                    (reverse ? questionIdWMSSpaceReverse : questionIdWMSSpace) -
-                        1] = true;
+                testFinishedList[(reverse
+                    ? questionIdWMSSpaceReverse
+                    : questionIdWMSSpace)] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
