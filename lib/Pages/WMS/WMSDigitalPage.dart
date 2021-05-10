@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,22 +25,33 @@ class WMSDigitalPage extends StatefulWidget {
 }
 
 class WMSDigitalPageState extends State<WMSDigitalPage> {
+  AudioPlayer audioPlayer;
+  AudioCache player;
+
   @override
   void initState() {
     // 强制横屏
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    initAudioPlayer();
     super.initState();
 
     // currentLen = 3;
     // textList = List.generate(currentLen, (index) => '1');
   }
 
+  void initAudioPlayer() {
+    audioPlayer = AudioPlayer();
+    player = AudioCache();
+  }
+
   @override
   void dispose() {
     super.dispose();
     if (_timer != null && _timer.isActive) _timer.cancel();
+    audioPlayer.release();
+    audioPlayer.dispose();
   }
 
   int currentLen = 3, currentIndex = 0; //输入字符的最大长度和当前索引的控制
@@ -249,12 +262,24 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
     );
   }
 
+  void playCorrectSound() async {
+    audioPlayer = await player.play('sounds/correct.wav');
+  }
+
+  void playWrongSound() async {
+    audioPlayer = await player.play('sounds/wrong.wav');
+  }
+
   //判断对错
   bool checkCorrect() {
     var question = _wmsQuestion.getQuestionList(reverse: reverse);
     for (int i = 0; i < question.length; ++i) {
-      if (question[i].toString() != textList[i]) return false;
+      if (question[i].toString() != textList[i]) {
+        playWrongSound();
+        return false;
+      }
     }
+    playCorrectSound();
     return true;
   }
 
@@ -673,8 +698,8 @@ class WMSDigitalPageState extends State<WMSDigitalPage> {
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
                 testFinishedList[(reverse
-                        ? questionIdWMSDigitalReverse
-                        : questionIdWMSDigital) ] = true;
+                    ? questionIdWMSDigitalReverse
+                    : questionIdWMSDigital)] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
