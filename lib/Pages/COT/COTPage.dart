@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
@@ -25,19 +27,41 @@ class COTPage extends StatefulWidget {
 }
 
 class COTPageState extends State<COTPage> {
+  AudioPlayer audioPlayer;
+  AudioCache player;
+
   @override
   void initState() {
     // 强制横屏
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    initAudioPlayer();
     super.initState();
+  }
+
+  void initAudioPlayer() {
+    audioPlayer = AudioPlayer();
+    player = AudioCache();
+  }
+
+  //播放音频文件
+  play() async {
+    //如果没有播放路径，则直接退出
+    audioPlayer = await player.play("sounds/COT2.wav");
+  }
+
+  //停止播放
+  stop() async {
+    audioPlayer.stop();
   }
 
   @override
   void dispose() {
     super.dispose();
     if (_timer != null && _timer.isActive) _timer.cancel();
+    audioPlayer.release();
+    audioPlayer.dispose();
   }
 
   Timer _timer;
@@ -405,6 +429,7 @@ class COTPageState extends State<COTPage> {
                   currentState = 1;
                 });
                 _cotQuestion.generateAnswer();
+                play();
               },
               child: Text(
                 "开始",
