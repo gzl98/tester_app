@@ -127,7 +127,7 @@ class COTPageState extends State<COTPage> {
       result.add(_answerTime);
       result.add(_answerCorrectTime);
       String data = jsonEncode({'result': result});
-      setAnswer(3, answerText: data);
+      setAnswer(3, answerText: data, score: _answerCorrectTimes);
     } else {
       _timer.cancel();
       Future.delayed(Duration(seconds: 1), () {
@@ -147,7 +147,7 @@ class COTPageState extends State<COTPage> {
 
   void callback(timer) {
     setState(() {
-      if (currentTime >= 20 * 1000) {
+      if (currentTime >= 120 * 1000) {
         _timer.cancel();
         questionOver();
       }
