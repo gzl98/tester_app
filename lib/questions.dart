@@ -218,7 +218,7 @@ final Map<String, String> questionStroopColorWord = {
   "questionName": "Stroop色词",
   "questionImgPath": "images/v2.0/STROOP/stroopColorWord.png",
   "questionPurpose": "这项测验主要评估您的言语反应速度,屏幕上会顺序出现一个个关于颜色的字,每个字出现时您都会同时听到一个声音，当出现的字的意思和听到的声音一致的时候,请尽快按下空格键。",
-  "questionNotes": "当听到的字的意思和看到的字一致时，您需要尽快按下空格键，如果不一致,请不要做任何反应，集中注意力等待下一个字的出现",
+  "questionNotes": "当听到的字的意思和看到的字一致时，您需要尽快按下空格键，如果不一致,请不要做任何反应，集中注意力等待下一个字的出现。",
   "soundPath1": "sounds/StroopColorWord1.wav",
   "questionRules": "当屏幕上出现的字的意思和您听到的字一致时请尽快按下空格。",
   "questionRuleNotes": "只有当看到的和听到的一致时，您才需要按键，不一致时无需做任何反应。",
