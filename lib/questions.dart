@@ -200,6 +200,7 @@ final Map<String, String> questionStroop = {
   //第一个页面
   "questionName": "Stroop词语",
   "questionPurpose": "这项测验主要评估您的言语反应速度,屏幕上会顺序出现一个个关于颜色的字,每个字出现时您都会同时听到一个声音，当出现的字和听到的声音一致的时候,请尽快按下空格键。",
+  "questionNotes": "当听到的字和看到的字一致时,您需要尽快按下空格键如果不一致,请不要做任何反应，集中注意力等待下一个字的出现。",
   "soundPath1": "sounds/Stroop1.wav",
   //第二个页面
   "questionRules": "当屏幕上出现的字和您听到的字一致时请尽快按下空格键",
