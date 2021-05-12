@@ -266,6 +266,7 @@ List<bool> testFinishedList = [];
 void initFragmentWidget() {
   initTMTWidget();
   initSymbolCharacterWidget();
+  initCotWidget();
   initWMSWidget();
   initStroopWidget();
 }
@@ -291,6 +292,13 @@ void initSymbolCharacterWidget() {
       buildCharacterFirstFragmentShowWidget();
   questionCharacter.questionRulesWidget =
       buildCharacterSecondFragmentShowWidget();
+}
+
+//初始化COT界面的控件
+void initCotWidget() {
+  //TMT
+  QuestionInfo questionCOT = testList[questionIdCOT];
+  questionCOT.questionShowWidget = buildCOTFirstFragmentShowWidget();
 }
 
 //初始化WMS页面的控件

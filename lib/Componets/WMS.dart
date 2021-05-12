@@ -125,6 +125,30 @@ Widget buildCharacterSecondFragmentShowWidget(){
   );
 }
 
+Widget buildCOTFirstFragmentShowWidget() {
+  return Container(
+    width: setWidth(900),
+    height: setHeight(600),
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+        color: Color.fromARGB(255, 229, 229, 229),
+        borderRadius:
+        BorderRadius.all(Radius.circular(setWidth(50))),
+        boxShadow: [
+          BoxShadow(
+              color: Color.fromARGB(255, 100, 100, 100),
+              blurRadius: setWidth(10),
+              offset: Offset(setWidth(1), setHeight(2)))
+        ]),
+    child: Center(
+      child: Image.asset(
+        "images/v2.0/COT/0.png",
+        width: setWidth(350),
+        fit: BoxFit.fill,
+      ),
+    ),
+  );
+}
 
 //pixel 900*600
 Widget buildWMSDigitalFirstFragmentShowWidget() {
