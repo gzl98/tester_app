@@ -33,19 +33,21 @@ Options getAuthorizationOptions(String token) {
   });
 }
 
-setAnswer(int type, int answerTimeDelta,
-    {int score: -1,
+setAnswer(int type,
+    {int answerTimeDelta = 0,
+    int score: -1,
     String answerText,
     String imagePath,
     String imageName,
     File audio,
     File video}) async {
+  // return;
   String token = await StorageUtil.getStringItem("token");
   int QNid = await StorageUtil.getIntItem("QNid");
   Dio dio = Dio();
   Response response;
   Map<String, dynamic> params = {
-    // "QNid": 157,
+    // "QNid": 353,
     "QNid": QNid,
     "type": type,
     "score": score,

@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Utils/EventBusType.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
+import 'package:tester_app/Utils/Utils.dart';
 
 //给出评分规则
 const String characterRules = "1.允许对照符号表填写\n2.禁止跳着填写，必须按顺序\n3.90s时间内完成，110分满分";
 
 //中间题目展示组件
 class CharacterPageMiddle extends StatefulWidget {
+  final bool stop;
+
+  const CharacterPageMiddle({Key key, this.stop}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -108,7 +113,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
     print(answerMerge.length);
     print(answerMerge.indexOf("&"));
     //上传数据到后台服务器
-    setAnswer(value, answerTime, score: mainScore, answerText: answerMerge);
+    setAnswer(value,answerTimeDelta: answerTime, score: mainScore, answerText: answerMerge);
   }
 
   //110道测试题答案评分函数
@@ -176,6 +181,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
   Widget My_FlatButton(int num) {
     return FlatButton(
       onPressed: () {
+        if (widget.stop) return;
         setState(() {
           if (indexNum < 9) {
             indexNum++;
@@ -194,7 +200,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
       child: Text(
         num.toString(),
         style: TextStyle(
-            fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.black87),
+            fontSize: setSp(50), fontWeight: FontWeight.w600, color: Colors.black87),
       ),
     );
   }
@@ -566,8 +572,8 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
         ),
         VerticalDivider(
           width: 3.0,
-          color: Colors.blueGrey,
-          thickness: 4.0,
+          color: Color.fromARGB(50, 0, 0, 0),
+          thickness: 2.0,
         ),
         //中间区域
         Expanded(
@@ -580,8 +586,8 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 child: Align(
                   child: Text(
                     "符号编码对照表",
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        fontSize: setSp(40), fontWeight: FontWeight.w600),
                   ),
                   alignment: Alignment.bottomCenter,
                 ),
@@ -615,15 +621,15 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 child: Align(
                   child: Text(
                     "符号编码测试",
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        fontSize: setSp(40), fontWeight: FontWeight.w600),
                   ),
                   alignment: Alignment.bottomCenter,
                 ),
               ),
               //符号编码测试图片
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -634,8 +640,14 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                 ),
               ),
               //测试答题框
+              Container(
+                height: setHeight(20),
+              ),
               My_Row(0, 10, 1),
-              Expanded(flex: 1, child: Text("")),
+              Container(
+                height: setHeight(10),
+              ),
+              // Expanded(flex: 1, child: Text("")),
               //测试结果分数
               Expanded(
                   flex: 1,
@@ -666,7 +678,8 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                             child: Text(
                               "测试分数：",
                               style: TextStyle(
-                                  fontSize: 20.0, fontWeight: FontWeight.w600),
+                                  fontSize: setSp(40),
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                           alignment: Alignment.bottomRight,
@@ -710,15 +723,12 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                       child: Text(
                         "~~~~~~~开始正式测试~~~~~~~",
                         style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.w600),
+                            fontSize: setSp(40), fontWeight: FontWeight.w600),
                       ),
                     ),
                     alignment: Alignment.bottomCenter,
                   )),
-              Expanded(
-                flex: 1,
-                child: Text(""),
-              ),
+              // Expanded(flex: 1, child: Text("")),
               //数字键盘
               Expanded(
                   flex: 6,
@@ -762,6 +772,7 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
                           My_FlatButton(0),
                           FlatButton(
                             onPressed: () {
+                              if (widget.stop) return;
                               setState(() {
                                 if (indexNum > -1 &&
                                     indexNum < 10 &&
@@ -800,102 +811,91 @@ class CharacterPageMiddleState extends State<CharacterPageMiddle> {
             ],
           ),
         ),
-        VerticalDivider(
-          width: 3.0,
-          color: Colors.blueGrey,
-          thickness: 4.0,
-        ),
-        //右边区域
-        Expanded(
-          flex: 2,
-          child: Container(
-            child: RightInfoColumn(),
-          ),
-        ),
       ],
     );
   }
 }
 
-//右边信息栏
-class RightInfoColumn extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() =>
-      _TesterInfoState("XXX", "100s", characterRules, "未完成");
-}
-
-class _TesterInfoState extends State<RightInfoColumn> {
-  var personName = "";
-  var testTime = "";
-  var scoreRules = "";
-  var isFinish = "未完成";
-  var _titleStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600);
-  var _subTitleStyle = TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
-  var _normalStyle = TextStyle(
-    fontSize: 20.0,
-  );
-
-  _TesterInfoState(
-      this.personName, this.testTime, this.scoreRules, this.isFinish) {
-    print(this.scoreRules);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    //每列宽度
-    var paddingEdage = EdgeInsets.all(6);
-    // TODO: implement build
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          color: Colors.black12,
-          child: Center(
-            child: Text("测试者信息", style: _titleStyle),
-          ),
-        ),
-        Divider(
-          height: 3.0,
-          color: Colors.blueGrey,
-          thickness: 1,
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Row(children: <Widget>[
-            Text("测试者姓名：", style: _subTitleStyle),
-            Text(
-              this.personName,
-              style: _normalStyle,
-            )
-          ]),
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Row(children: <Widget>[
-            Text("测试者是否完成：", style: _subTitleStyle),
-            Text(
-              this.isFinish,
-              style: _normalStyle,
-            )
-          ]),
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Row(children: <Widget>[
-            Text("测试者用时：", style: _subTitleStyle),
-            Text(this.testTime, style: _normalStyle)
-          ]),
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Text("评分规则", style: _subTitleStyle),
-        ),
-        Container(
-          padding: paddingEdage,
-          child: Text(this.scoreRules, style: _normalStyle),
-        ),
-      ],
-    );
-  }
-}
+// //右边信息栏
+// class RightInfoColumn extends StatefulWidget {
+//   @override
+//   State<StatefulWidget> createState() =>
+//       _TesterInfoState("XXX", "100s", characterRules, "未完成");
+// }
+//
+// class _TesterInfoState extends State<RightInfoColumn> {
+//   var personName = "";
+//   var testTime = "";
+//   var scoreRules = "";
+//   var isFinish = "未完成";
+//   var _titleStyle = TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600);
+//   var _subTitleStyle = TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600);
+//   var _normalStyle = TextStyle(
+//     fontSize: 20.0,
+//   );
+//
+//   _TesterInfoState(
+//       this.personName, this.testTime, this.scoreRules, this.isFinish) {
+//     print(this.scoreRules);
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     //每列宽度
+//     var paddingEdage = EdgeInsets.all(6);
+//     // TODO: implement build
+//     return Column(
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: <Widget>[
+//         Container(
+//           color: Colors.black12,
+//           child: Center(
+//             child: Text("测试者信息", style: _titleStyle),
+//           ),
+//         ),
+//         Divider(
+//           height: 3.0,
+//           color: Colors.blueGrey,
+//           thickness: 1,
+//         ),
+//         Container(
+//           padding: paddingEdage,
+//           child: Row(children: <Widget>[
+//             Text("测试者姓名：", style: _subTitleStyle),
+//             Text(
+//               this.personName,
+//               style: _normalStyle,
+//             )
+//           ]),
+//         ),
+//         Container(
+//           padding: paddingEdage,
+//           child: Row(children: <Widget>[
+//             Text("测试者是否完成：", style: _subTitleStyle),
+//             Text(
+//               this.isFinish,
+//               style: _normalStyle,
+//             )
+//           ]),
+//         ),
+//         Container(
+//           padding: paddingEdage,
+//           child: Row(children: <Widget>[
+//             Text("测试者用时：", style: _subTitleStyle),
+//             Text(this.testTime, style: _normalStyle)
+//           ]),
+//         ),
+//         Container(
+//           padding: paddingEdage,
+//           child: Text("评分规则", style: _subTitleStyle),
+//         ),
+//         Container(
+//           padding: paddingEdage,
+//           child: Text(this.scoreRules, style: _normalStyle),
+//         ),
+//       ],
+//     );
+//   }
+// }
+//

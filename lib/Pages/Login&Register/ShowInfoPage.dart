@@ -1,10 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
+import '../../questions.dart';
+
 class ShowInfoPage extends StatefulWidget {
+  static const routerName = "/ShowInfoPage";
+
   @override
   State<StatefulWidget> createState() {
     return _ShowInfoPageState();
@@ -61,6 +66,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: () => showExitDialog(context),
       child: Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -102,9 +108,10 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                   ),
                 ),
                 onPressed: () {
-                  _start(context); //开始答题
                   Navigator.pushNamedAndRemoveUntil(
-                      context, "/TMT", (router) => false);
+                      context, TestNavPage.routerName, (router) => false);
+                  // _start(context); //开始答题
+                  _initTestListFnished();
                 },
               ),
             ),
@@ -128,7 +135,13 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
       ),
     );
   }
-
+  void _initTestListFnished(){
+    List<bool> listFnished=[];
+    for(int i=0;i<testList.length;i++){
+      listFnished.add(false);
+    }
+    testFinishedList = listFnished;
+  }
   void _start(BuildContext context) async {
     String token = await StorageUtil.getStringItem("token");
     Dio dio = Dio();

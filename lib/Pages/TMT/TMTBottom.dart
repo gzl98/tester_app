@@ -99,11 +99,12 @@ class TMTPageBottomState extends State<TMTPageBottom> {
           ),
           onPressed: () {
             if (value == '下一题') {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, "/Character", (route) => false);
+              if (_timer.isActive) _timer.cancel();
               //触发下一题事件
               eventBus.fire(NextEvent(0, 300 - this._currentTime));
               print('触发下一题！');
+              Navigator.pushNamedAndRemoveUntil(
+                  context, "/CharacterNew", (route) => false);
             }
           }),
     );

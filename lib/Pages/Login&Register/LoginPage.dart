@@ -3,10 +3,16 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
+import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
+import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
+import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 class LoginPage extends StatefulWidget {
+  static const routerName = "/LoginPage";
+
   @override
   State<StatefulWidget> createState() {
     return _LoginPageState();
@@ -126,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
       child: SizedBox(
         height: setHeight(105),
         width: setWidth(800),
+        // ignore: deprecated_member_use
         child: RaisedButton(
           child: Text(
             _loginText,
@@ -157,6 +164,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget buildToRegister() {
     return Align(
       alignment: Alignment.centerRight,
+      // ignore: deprecated_member_use
       child: FlatButton(
         child: Text(
           '注册',
@@ -164,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         onPressed: () {
           // print("点击了空白区域");
-          Navigator.pushNamed(context, "/register");
+          Navigator.pushNamed(context, RegisterPage.routerName);
         },
       ),
     );
@@ -173,6 +181,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: () => showExitDialog(context),
       child: Scaffold(
         body: GestureDetector(
           onTap: () {
@@ -267,15 +276,16 @@ class _LoginPageState extends State<LoginPage> {
       if (mobile != null) {
         //  用户信息完整
         Navigator.pushNamedAndRemoveUntil(
-            context, "/showInfo", (route) => false);
+            context, ShowInfoPage.routerName, (route) => false);
       } else {
         Navigator.pushNamedAndRemoveUntil(
-            context, "/completeInfo", (route) => false);
+            context, CompleteInfoPage.routerName, (route) => false);
       }
     } catch (e) {
       print(e);
       StorageUtil.clear();
-      Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+          context, LoginPage.routerName, (route) => false);
     }
   }
 }

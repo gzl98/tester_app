@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import '../../Utils/Utils.dart';
 
 class RegisterPage extends StatefulWidget {
+  static const routerName = "/RegisterPage";
+
   @override
   State<StatefulWidget> createState() {
     return _RegisterPageState();
@@ -180,6 +182,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: SizedBox(
         height: setHeight(105),
         width: setWidth(800),
+        // ignore: deprecated_member_use
         child: RaisedButton(
           child: Text(
             _registerText,
@@ -212,6 +215,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget buildToLogin(context) {
     return Align(
       alignment: Alignment.centerRight,
+      // ignore: deprecated_member_use
       child: FlatButton(
         child: Text(
           '登录',
@@ -227,6 +231,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: () => showExitDialog(context),
       child: Scaffold(
         body: GestureDetector(
           onTap: () {
@@ -248,7 +253,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       image:
                           DecorationImage(image: AssetImage('images/logo.jpg')),
                       border: Border.all(color: Colors.black26),
-                      borderRadius: BorderRadius.all(Radius.circular(setWidth(150))),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(setWidth(150))),
                       boxShadow: [
                         BoxShadow(
                             color: Colors.black12,
