@@ -193,7 +193,7 @@ class TMTSpacePageState extends State<TMTSpacePage> {
               : null,
           child: Container(
             child:
-            Text(            (i + 1).toString(),
+            Text(  (i + 1).toString(),
               style: TextStyle(fontSize: setSp(62), fontWeight: FontWeight.bold),
             ),
           ),
