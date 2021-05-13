@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,15 +49,28 @@ class StarView extends CustomPainter {
     return oldDelegate != this;
   }
 }
+class rr{
+  Random _random = Random();
+  int _answer;
+  int generateAnswer() {
+    _answer =_random.nextInt(2); //这个nextInt就是随机生成一个整数好像是0到这个max
+    return _answer;
+  }
 
+}
 
 class TMTSpacePageState extends State<TMTSpacePage> {
+  int temp_a;
+  int temp_b;
   @override
   void initState() {
     // 强制横屏
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    rr ff=new rr();
+    temp_a = ff.generateAnswer();
+    temp_b = ff.generateAnswer();
     super.initState();
   }
 
@@ -67,36 +81,38 @@ class TMTSpacePageState extends State<TMTSpacePage> {
     if (_timer2 != null && _timer2.isActive) _timer2.cancel();
   }
 
-  List<double> buttonX = [
-    400,
-    700,
-    950,
-    1250,
-    1450,
-    1700,
-    2100,
-    2350,
-    2050,
-    2200,
-    2000,
-    2350,
-    2300,
-    1900,
-    1700,
-    1500,
-    1300,
-    1100,
-    900,
-    700,
-    500,
-    300,
-    700,
-    900,
-    1500
-  ];
-  List<double> buttonY = [
-    330,    100,    130,    200,    330,    130,    130,    330,    530,    700,    930,    900,    1250,    1130,    1200,    1100,    1000,    1200,    1200,    1200,    1000,    900,    700,    950,    800];
 
+  // List<double> buttonX1 = [
+  //   1600,    1800,    2000,    1100,    1150,    1250,    1300,    1700,    2000,    1550,    2250,    1850,    1250,    1350,    150,    700,    800,    300,    500,    600,    150,    1000,    2000,    1600,    2200  ];
+  // List<double> buttonY1 = [
+  //   330,   700,   200,    200,    750,    500,    800,    1000,    950,   850,    450,    1200,    1000,    1200,   1250,    1000,    550,    700,   150,   450,    50,    50,   50,   150,    600 ];
+  // List<double> buttonX2 = [
+  //   400,    1500,    2000,    1100,    1200,    1250,    300,    1700,    600,    1550,    2250,    1000,    1250,    1350,    1150,    700,    1800,    1300,    1500,    600,    1150,    1500,    2000,    1600,    2200  ];
+  // List<double> buttonY2 = [
+  //   630,   1700,   200,    200,    750,    900,    800,    1000,    950,   1850,    450,    1200,    1500,    1200,   1250,    1500,    550,    1700,   1150,   650,    1650,    550,   1150,   150,    1600 ];
+  // List<double> buttonX3 = [
+  //   1600,    1500,    2000,    1100,    1150,    150,    1300,    1700,    1500,    1550,    2250,    1550,    1250,    1350,    150,    1700,    800,    300,    1500,    600,    150,    1500,    2000,    1000,    2200  ];
+  // List<double> buttonY3 = [
+  //   330,   1700,   1200,    900,    750,    500,    800,    100,    950,   850,    1450,    1200,    1500,    1200,   1250,    1500,    550,    700,   150,   1450,    750,    50,   950,   1500,    600 ];
+  // List<double> buttonX4 = [
+  //   1600,    1800,    2000,    1100,    1550,    1250,    1300,    1700,    2000,    1050,   250,    1850,    1250,    1850,    150,    1700,    800,    300,    500,    1600,    150,    1000,    1000,    1600,    2000  ];
+  // List<double> buttonY4 = [
+  //   330,   1700,   1200,    200,    750,    1500,    800,    1500,    950,   1850,    450,    1200,    1000,    200,   1250,    1600,    550,    1700,   150,   450,    550,    50,   50,   150,    500 ];
+  // List<double> buttonX5 = [
+  //   1600,    1800,    2200,    1100,    1150,    1250,    2300,    1700,    2200,    1550,    2250,    850,    250,    1350,    150,    1700,    800,    1300,    500,    1600,    150,    1000,    1200,    1600,    2200  ];
+  // List<double> buttonY5 = [
+  //   330,   700,   200,    1200,    750,    1500,    800,    1000,    950,   850,    1450,    1200,    1500,   200,   1250,    1000,    1550,    700,   1150,   450,    1500,    50,   50,   1150,    600 ];
+
+  List<List<double>>Bx=[
+  [  1600,    1750,    2000,    1400,    1350,    250,    800,    1700,    2000,    1550,    2250,    1850,    250,    1350,    150,    700,    1800,    0,    1000,    600,    150,    1000,    300,    1600,    2200  ],
+  [  400,    1500,    200,    2400,    200,    1250,    300,    1700,    600,    1850,    1250,    0,    750,    1350,    950,    2200,    1800,    1300,    1500,    200,    1150,    1500,    2000,    1600,    2200  ],
+  [  100,    1800,    2400,    800,    150,    850,    2300,    1700,    2400,    1550,    650,    850,    250,    1350,    150,    1700,    1200,    300,    500,    1600,    950,    500,    1200,    1800,    2200  ]
+  ];
+  List<List<double>>By=[
+  [  600,   700,   200,    200,    750,    900,    1200,    1200,    950,   850,    450,    1200,    1000,    1200,   1250,    1000,    550,    700,   500,   450,    550,    50,   50,   150,    600 ],
+  [  230,   1300,   200,    200,    750,    1000,    1200,    800,    750,   600,    1150,    0,    600,    600,   120,    1000,    350,    300,   500,   450,    850,    50,   50,   350,    800 ],
+  [  0,   700,   200,    1200,    750,    1000,    1250,    1200,    950,  600,    150,    600,    500,   400,   300,    1000,    950,    700,   1150,   450,    1200,    50,   750,   350,    600 ]
+  ];
   List<double> buttonXtest = [
     800,
     1500,
@@ -112,7 +128,7 @@ class TMTSpacePageState extends State<TMTSpacePage> {
   ];
 
       int index;
-  Timer _timer; //计时器
+  Timer _timer; //计时器000
   Timer _timer2; //计时器
   int currentTime1 = 0; //辅助计时器你
   TMTQuestion _tmtQuestion = TMTQuestion(test: true); //初始化出题器
@@ -165,6 +181,10 @@ class TMTSpacePageState extends State<TMTSpacePage> {
   List<Widget> buildClickedButtons() {
     if(test==false){
       List<Widget> buttons = [];
+      int a = temp_a;
+      int b = temp_b;
+      var buttonX=Bx[a];
+      var buttonY=By[b];
       for (int i = 0; i < 25; i++) {
         ElevatedButton button = ElevatedButton(
           onPressed: currentState == CurrentState.doingQuestion
@@ -241,6 +261,10 @@ class TMTSpacePageState extends State<TMTSpacePage> {
   }
   void buttonClicked2(index) {
     if(test==false){
+      int a = temp_a;
+      int b = temp_b;
+      var buttonX=Bx[a];
+      var buttonY=By[b];
       if(index==ListAnsX.length){
         zhengque=zhengque+1;
         ListAnsX.add(buttonX[ListAnsX.length]);
@@ -291,7 +315,10 @@ class TMTSpacePageState extends State<TMTSpacePage> {
 
   void buttonClicked1(index) {
     if(currentState == CurrentState.doingQuestion&&test==false){
-
+      int a = temp_a;
+      int b = temp_b;
+      var buttonX=Bx[a];
+      var buttonY=By[b];
       var callback = (timer) => {
         setState(() {
           currentTime1++;

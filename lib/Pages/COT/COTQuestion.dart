@@ -13,7 +13,7 @@ class COTQuestion {
   }
 
   int generateAnswer() {
-    _answer = _random.nextInt(_max);
+    _answer = _random.nextInt(_max); //这个nextInt就是随机生成一个整数好像是0到这个max
     return _answer;
   }
 
