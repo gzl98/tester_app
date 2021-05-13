@@ -278,6 +278,7 @@ class COTPageState extends State<COTPage> {
                           setState(() {
                             currentState = 2;
                           });
+                          stop();
                           prepareShow();
                         },
                         child: Text(
