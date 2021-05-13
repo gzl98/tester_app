@@ -279,6 +279,8 @@ class TMTSpacePageState extends State<TMTSpacePage> {
           "用时": zongTime1,
         };
         String text = json.encode(map);
+        setAnswer(questionIdTMT,
+            score: _tmtQuestion.correctCounts, answerText: text);
         Future.delayed(Duration(seconds: 2), () {
           //延时2秒后开始展示题目
           setState(() {
@@ -334,6 +336,8 @@ class TMTSpacePageState extends State<TMTSpacePage> {
               "用时": zongTime1,
             };
             String text = json.encode(map);
+            setAnswer(questionIdTMT,
+                score: _tmtQuestion.correctCounts, answerText: text);
             Future.delayed(Duration(seconds: 2), () {
               //延时2秒后开始展示题目
               setState(() {
@@ -379,6 +383,8 @@ class TMTSpacePageState extends State<TMTSpacePage> {
             "用时": zongTime1,
           };
           String text = json.encode(map);
+          setAnswer(questionIdTMT,
+              score: _tmtQuestion.correctCounts, answerText: text);
           Future.delayed(Duration(seconds: 2), () {
             //延时2秒后开始展示题目
             setState(() {
