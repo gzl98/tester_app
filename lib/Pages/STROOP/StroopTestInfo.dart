@@ -52,14 +52,15 @@ class CreateStroopTest {
   SingleStroopCard getSingleStroopColorWordTest(){
     int randWordIndex = this._random.nextInt(this.wordList.length);
     int randSoundIndex = this._random.nextInt(this.wordList.length);
-    return SingleStroopCard(wordList[randWordIndex], "蓝", wordList[randSoundIndex]);
+    int randColorIndex =this._random.nextInt(this.wordList.length);
+    return SingleStroopCard(wordList[randWordIndex], wordList[randColorIndex], wordList[randSoundIndex]);
   }
   //出色词测验的题目，文字颜色随机，字随机,语音随机
   SingleStroopCard getSingleStroopWordColorTest(){
     int randWordIndex = this._random.nextInt(this.wordList.length);
     int randSoundIndex = this._random.nextInt(this.wordList.length);
-    int randColoeIndex =this._random.nextInt(this.wordList.length);
-    return SingleStroopCard(wordList[randWordIndex], wordList[randColoeIndex], wordList[randSoundIndex]);
+    int randColorIndex =this._random.nextInt(this.wordList.length);
+    return SingleStroopCard(wordList[randWordIndex], wordList[randColorIndex], wordList[randSoundIndex]);
   }
   //获得文字测验的题目列表
   List<SingleStroopCard> getListStroopWordTest(int len){
