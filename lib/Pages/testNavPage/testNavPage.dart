@@ -25,6 +25,17 @@ class TestNav extends State<TestNavPage> {
   String _correctPath = "images/v2.0/correct.png";
   int _selectIndex = 0;
   List<bool> _testFinishList=[];
+
+  void initUserInfo() async {
+    String username = await StorageUtil.getStringItem("username");
+    int sexCode = await StorageUtil.getIntItem("sex");
+    setState(() {
+      _username = username;
+      if (sexCode == 0)
+        _username += "先生";
+      else if (sexCode == 1) _username += "女士";
+    });
+  }
   @override
   Widget build(BuildContext context) {
     initFragmentWidget();
@@ -495,6 +506,7 @@ class TestNav extends State<TestNavPage> {
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     getTestFinishList();
     super.initState();
+    this.initUserInfo();
   }
 
   void getTestFinishList(){

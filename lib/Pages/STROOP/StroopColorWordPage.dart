@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Pages/STROOP/StroopTestInfo.dart';
@@ -31,11 +33,14 @@ class StroopColorWordPageState extends State<StroopColorWordPage> {
     CreateStroopTest createTest = new CreateStroopTest();
     this.testList = createTest.getListStroopColorWordTest(10);
     //初始化语音播放器
+    this.initAudioPlayer();
   }
   @override
   void dispose() {
     super.dispose();
     if (_timer != null && _timer.isActive) _timer.cancel();
+    audioPlayer.release();
+    audioPlayer.dispose();
   }
   int _currentIndex = 1;
   Timer _timer;
@@ -57,7 +62,33 @@ class StroopColorWordPageState extends State<StroopColorWordPage> {
   //正式题目列表
   List<SingleStroopCard> testList;
   //语音工具类
-  TTSUtil tts = new TTSUtil();
+  //语音工具类
+  AudioPlayer audioPlayer;
+  AudioCache player;
+  //TTSUtil tts = new TTSUtil();
+  void initAudioPlayer() {
+    audioPlayer = AudioPlayer();
+    player = AudioCache();
+  }
+  //播放音频文件
+  play(String sound) async {
+    var soundPath="";
+    if(sound == "红"){
+      soundPath="sounds/red.mp3";
+    }
+    else if(sound == "绿"){
+      soundPath="sounds/green.mp3";
+    }
+    else if(sound == "蓝"){
+      soundPath="sounds/blue.mp3";
+    }
+    audioPlayer = await player.play(soundPath);
+  }
+
+  //停止播放
+  stop() async {
+    audioPlayer.stop();
+  }
 
   //中间显示的文字
   Map showText = {
@@ -91,7 +122,8 @@ class StroopColorWordPageState extends State<StroopColorWordPage> {
       this._rightFlag = false;
       //每题开始按钮可以用
       this._pressAableFlag = true;
-      this.tts.speak(this.testList[this._currentIndex - 1].sound);
+      //this.tts.speak(this.testList[this._currentIndex - 1].sound);
+      this.play(this.testList[this._currentIndex - 1].sound);
     });
   }
   //初始化结束状态
@@ -539,8 +571,8 @@ class StroopColorWordPageState extends State<StroopColorWordPage> {
                 Positioned(
                     left: setWidth(1900),
                     width: setWidth(500),
-                    top: setHeight(1400),
-                    height: setHeight(150),
+                    top: setHeight(1200),
+                    height: setHeight(350),
                     child: buildButtonRect()),
                 currentState == CurrentState.questionBegin
                     ? buildFloatWidget("熟悉操作")

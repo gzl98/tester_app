@@ -20,7 +20,8 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
   String _username;
   String _sex;
   int _testCount;
-
+  //防止多次生成问卷
+  bool createFlag=true;
   @override
   void initState() {
     // 强制横屏
@@ -110,8 +111,13 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                 onPressed: () {
                   Navigator.pushNamedAndRemoveUntil(
                       context, TestNavPage.routerName, (router) => false);
-                  _start(context); //开始答题
-                  _initTestListFnished();
+                  if(this.createFlag){
+                    _start(context); //开始答题
+                    _initTestListFnished();
+                  }
+                  setState(() {
+                    this.createFlag=false;
+                  });
                 },
               ),
             ),
@@ -149,7 +155,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
     try {
       response = await dio.post(baseUrl + "addnewQN",
           options: getAuthorizationOptions(token));
-      // print(response.data);
+      print("问卷号："+response.data["id"].toString());
       await StorageUtil.setIntItem("QNid", response.data["id"]);
     } catch (e) {
       print(e);
