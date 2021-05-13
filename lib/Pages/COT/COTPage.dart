@@ -185,7 +185,7 @@ class COTPageState extends State<COTPage> {
       color: Color.fromARGB(255, 48, 48, 48),
       child: formal
           ? Text(
-              "用时：" + (20 - currentTime ~/ 1000).toString() + 's',
+              "用时：" + (120 - currentTime ~/ 1000).toString() + 's',
               style: TextStyle(color: Colors.white, fontSize: setSp(55)),
             )
           : Text(
@@ -501,12 +501,12 @@ class COTPageState extends State<COTPage> {
                     Text("正确反应数：" + _answerCorrectTimes.toString() + "次",
                         style: resultTextStyle),
                     // SizedBox(height: setHeight(15)),
-                    Text("反应时间：" + (_answerTime / 1000).toString() + "s",
+                    Text("平均反应时间：" + (_answerTime / _answerTimes).toStringAsFixed(3) + "ms",
                         style: resultTextStyle),
                     Text(
                         "平均正确反应时间：" +
-                            (_answerCorrectTime / 1000).toString() +
-                            "s",
+                            (_answerCorrectTime / _answerCorrectTimes).toStringAsFixed(3) +
+                            "ms",
                         style: resultTextStyle),
                   ],
                 ),
