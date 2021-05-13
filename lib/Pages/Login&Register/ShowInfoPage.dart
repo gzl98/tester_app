@@ -20,8 +20,10 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
   String _username;
   String _sex;
   int _testCount;
+
   //防止多次生成问卷
-  bool createFlag=true;
+  bool createFlag = true;
+
   @override
   void initState() {
     // 强制横屏
@@ -109,15 +111,15 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, TestNavPage.routerName, (router) => false);
-                  if(this.createFlag){
+                  if (this.createFlag) {
                     _start(context); //开始答题
                     _initTestListFnished();
                   }
                   setState(() {
-                    this.createFlag=false;
+                    this.createFlag = false;
                   });
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, TestNavPage.routerName, (router) => false);
                 },
               ),
             ),
@@ -141,13 +143,15 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
       ),
     );
   }
-  void _initTestListFnished(){
-    List<bool> listFnished=[];
-    for(int i=0;i<testList.length;i++){
+
+  void _initTestListFnished() {
+    List<bool> listFnished = [];
+    for (int i = 0; i < testList.length; i++) {
       listFnished.add(false);
     }
     testFinishedList = listFnished;
   }
+
   void _start(BuildContext context) async {
     String token = await StorageUtil.getStringItem("token");
     Dio dio = Dio();
@@ -155,7 +159,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
     try {
       response = await dio.post(baseUrl + "addnewQN",
           options: getAuthorizationOptions(token));
-      print("问卷号："+response.data["id"].toString());
+      print("问卷号：" + response.data["id"].toString());
       await StorageUtil.setIntItem("QNid", response.data["id"]);
     } catch (e) {
       print(e);
