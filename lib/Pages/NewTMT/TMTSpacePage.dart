@@ -141,6 +141,7 @@ class TMTSpacePageState extends State<TMTSpacePage> {
   int zongTime1=0;
   int zongTime2=0;
   int temp=0;
+  int lasttime=0;
 
   //中间显示的文字
   Map showText = {
@@ -269,6 +270,7 @@ class TMTSpacePageState extends State<TMTSpacePage> {
         zhengque=zhengque+1;
         ListAnsX.add(buttonX[ListAnsX.length]);
         ListAnsY.add(buttonY[ListAnsY.length]);
+        lasttime=currentTime1;
       }else{
         cuowu=cuowu+1;
       }
@@ -278,9 +280,9 @@ class TMTSpacePageState extends State<TMTSpacePage> {
           "错误数": cuowu,
           "用时": zongTime1,
         };
-        String text = json.encode(map);
-        setAnswer(questionIdTMT,
-            score: _tmtQuestion.correctCounts, answerText: text);
+        // String text = json.encode(map);
+        // setAnswer(questionIdTMT,
+        //     score: zhengque+1, answerText: text);
         Future.delayed(Duration(seconds: 2), () {
           //延时2秒后开始展示题目
           setState(() {
@@ -296,6 +298,7 @@ class TMTSpacePageState extends State<TMTSpacePage> {
       if(index==ListAnsXtest.length){
         ListAnsXtest.add(buttonXtest[ListAnsXtest.length]);
         ListAnsYtest.add(buttonYtest[ListAnsYtest.length]);
+        lasttime=currentTime1;
         print(ListAnsXtest.length);
 
       }
@@ -324,10 +327,11 @@ class TMTSpacePageState extends State<TMTSpacePage> {
       var callback = (timer) => {
         setState(() {
           currentTime1++;
-          if (currentTime1 % 10 == 0) {
+          if ((currentTime1-lasttime) % 10 == 0) {
             cuowu=cuowu+1;
             ListAnsX.add(buttonX[ListAnsX.length]);
             ListAnsY.add(buttonY[ListAnsY.length]);
+            lasttime=currentTime1;
           }
           if(ListAnsX.length==25||zongTime1==300) {
             Map map = {
@@ -335,9 +339,9 @@ class TMTSpacePageState extends State<TMTSpacePage> {
               "错误数": cuowu,
               "用时": zongTime1,
             };
-            String text = json.encode(map);
-            setAnswer(questionIdTMT,
-                score: _tmtQuestion.correctCounts, answerText: text);
+            // String text = json.encode(map);
+            // setAnswer(questionIdTMT,
+            //     score: zhengque, answerText: text);
             Future.delayed(Duration(seconds: 2), () {
               //延时2秒后开始展示题目
               setState(() {
@@ -373,6 +377,7 @@ class TMTSpacePageState extends State<TMTSpacePage> {
           zhengque=zhengque+1;
           ListAnsX.add(buttonX[ListAnsX.length]);
           ListAnsY.add(buttonY[ListAnsY.length]);
+          lasttime=currentTime1;
         }else{
           cuowu=cuowu+1;
         }
@@ -384,7 +389,7 @@ class TMTSpacePageState extends State<TMTSpacePage> {
           };
           String text = json.encode(map);
           setAnswer(questionIdTMT,
-              score: _tmtQuestion.correctCounts, answerText: text);
+              score: zhengque, answerText: text);
           Future.delayed(Duration(seconds: 2), () {
             //延时2秒后开始展示题目
             setState(() {
@@ -400,6 +405,7 @@ class TMTSpacePageState extends State<TMTSpacePage> {
         if(index==ListAnsXtest.length){
           ListAnsXtest.add(buttonXtest[ListAnsXtest.length]);
           ListAnsYtest.add(buttonYtest[ListAnsYtest.length]);
+          lasttime=currentTime1;
           print(ListAnsXtest.length);
 
         }
