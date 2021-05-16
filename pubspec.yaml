@@ -56,6 +56,7 @@ flutter:
   assets:
     - images/
     - images/v2.0/
+    - images/v3.0/
     - images/character/
     - images/symbol/
     - images/v2.0/COT/
