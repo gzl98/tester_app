@@ -40,6 +40,9 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
   List choiceList;
   int questionIndex; //指示当前缺省的数字索引
 
+  int chooseNum = -1;
+  int score = 0;
+
   @override
   void initState() {
     // 强制横屏
@@ -126,8 +129,8 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
   }
 
   List<Widget> buildChoiceButtons() {
-    SizedBox sizedBox = SizedBox(width: setWidth(200));
-    List<Widget> buttons = [sizedBox];
+    SizedBox sizedBox = SizedBox(width: setWidth(150));
+    List<Widget> buttons = [SizedBox(width: setWidth(80)), sizedBox];
     for (int num in choiceList) {
       TextButton button = TextButton(
         onPressed: () {
@@ -148,11 +151,25 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
           )),
         ),
       );
-      buttons.add(Container(
-        width: setWidth(200),
-        height: setHeight(200),
-        child: button,
-      ));
+      buttons.add(Stack(children: [
+        Container(
+          width: setWidth(200),
+          height: setHeight(200),
+          child: button,
+        ),
+        Container(
+          margin: EdgeInsets.only(top: setHeight(60), left: setWidth(100)),
+          child: Opacity(
+            opacity: chooseNum == num ? 0.7 : 0,
+            child: Image.asset(
+              num == numberReasoningQuestion.currentAnswer
+                  ? "images/v2.0/correct.png"
+                  : "images/v2.0/wrong.png",
+              width: setWidth(170),
+            ),
+          ),
+        ),
+      ]));
       buttons.add(sizedBox);
     }
     return buttons;
@@ -161,17 +178,23 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
   void buttonClicked(value) {
     if (value == numberReasoningQuestion.currentAnswer) {
       //回答正确
-
+      score++;
     } else {
       //回答错误
     }
     setState(() {
       answerList.add(value);
+      chooseNum = value;
     });
-    getNextQuestion();
-    if (numberReasoningQuestion.isEnd()) {
-      //提交跳转
-    }
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        chooseNum = -1;
+      });
+      getNextQuestion();
+      if (numberReasoningQuestion.isEnd()) {
+        //提交跳转
+      }
+    });
   }
 
   Widget buildMainWidget() {
@@ -211,9 +234,9 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
               height: setHeight(5),
               color: Colors.white,
             ),
-            SizedBox(height: setHeight(110)),
+            SizedBox(height: setHeight(150)),
             Row(children: buildChoiceButtons()),
-            SizedBox(height: setHeight(300)),
+            SizedBox(height: setHeight(250)),
           ],
         ),
         SizedBox(width: setWidth(100)),
