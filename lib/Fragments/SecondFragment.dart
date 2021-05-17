@@ -113,7 +113,7 @@ class _SecondFragmentState extends State<SecondFragment> {
             height: setHeight(190),
             child: TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, NumberReasoningPage.routerName,
+                Navigator.pushNamed(context, questionInfo.nextPageRouter,
                     arguments: questionInfo);
               },
               child: Text(

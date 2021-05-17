@@ -377,7 +377,11 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
             width: setWidth(400),
             height: setHeight(150),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                testFinishedList[questionIdNumberReasoning] = true;
+                Navigator.pushNamedAndRemoveUntil(
+                    context, TestNavPage.routerName, (route) => false);
+              },
               child: Text(
                 "继 续",
                 style: TextStyle(

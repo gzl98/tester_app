@@ -18,3 +18,7 @@ const questionIdWMSSpaceReverse = 7;
 const stroopWordID = 8;
 const stroopColorWordID = 9;
 const stroopWordColorID = 10;
+
+//v3.0
+const questionIdMemoryMatrix = 0;
+const questionIdNumberReasoning = 1;

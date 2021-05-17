@@ -118,7 +118,7 @@ class _FirstFragmentState extends State<FirstFragment> {
             height: setHeight(buttonHeight),
             child: TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, NumberReasoningPage.routerName,
+                Navigator.pushNamed(context, questionInfo.nextPageRouter,
                     arguments: questionInfo);
               },
               child: Text(
@@ -143,8 +143,8 @@ class _FirstFragmentState extends State<FirstFragment> {
 
   @override
   Widget build(BuildContext context) {
-    // questionInfo = ModalRoute.of(context).settings.arguments;
-    questionInfo = QuestionInfo.fromMap(questionNumberReasoning);
+    questionInfo = ModalRoute.of(context).settings.arguments;
+    // questionInfo = QuestionInfo.fromMap(questionNumberReasoning);
     return Scaffold(
       body: Container(
         width: maxWidth,

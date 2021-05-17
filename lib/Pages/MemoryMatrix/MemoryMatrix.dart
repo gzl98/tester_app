@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Pages/MemoryMatrix/MemoryMatrixQuestion.dart';
+import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/Utils.dart';
+import 'package:tester_app/config/config.dart';
+
+import '../../questions.dart';
 
 class MemoryMatrixPage extends StatefulWidget {
   static const routerName = '/memoryMatrixPage';
@@ -36,7 +40,10 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
     memoryMatrixQuestion = MemoryMatrixQuestion();
     correctNumber = 0;
     maxCorrectNumber = 0;
-    question = [[0,0],[0,0]];
+    question = [
+      [0, 0],
+      [0, 0]
+    ];
     questionSize = 2;
     startGame();
   }
@@ -78,16 +85,20 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
       } else {
         currentState = 0;
         question[i][j] = 1;
-        if(questionNum < 5) startGame();
-        else finishedTest = true;
+        if (questionNum < 5)
+          startGame();
+        else
+          finishedTest = true;
       }
       if (currentAnswerNum == questionNum + 1) {
         correctNumber++;
         currentState = 0;
         question[i][j] = 1;
         maxCorrectNumber = questionNum;
-        if(questionNum < 5) startGame();
-        else finishedTest = true;
+        if (questionNum < 5)
+          startGame();
+        else
+          finishedTest = true;
       }
     });
   }
@@ -242,10 +253,7 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
                               height: setHeight(70),
                             ),
                             Text(
-                              '目标：' +
-                                  (questionNum + 1)
-                                      .toString() +
-                                  '个',
+                              '目标：' + (questionNum + 1).toString() + '个',
                               style: TextStyle(
                                   color: Colors.blue,
                                   fontSize: setSp(70),
@@ -284,8 +292,8 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
                   width: setWidth(1000),
                   height: setHeight(500),
                   decoration: new BoxDecoration(
-                    border: new Border.all(
-                        color: Colors.blue, width: 5), // 边色与边宽度
+                    border:
+                        new Border.all(color: Colors.blue, width: 5), // 边色与边宽度
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -293,21 +301,57 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("最多记忆个数:", style: TextStyle(fontSize: setSp(68), fontWeight: FontWeight.bold,),),
-                          Text((maxCorrectNumber+1).toString() + "个", style: TextStyle(color: Colors.blue, fontSize: setSp(72), fontWeight: FontWeight.bold,),),
+                          Text(
+                            "最多记忆个数:",
+                            style: TextStyle(
+                              fontSize: setSp(68),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            (maxCorrectNumber + 1).toString() + "个",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: setSp(72),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("                正确率:", style: TextStyle(fontSize: setSp(68), fontWeight: FontWeight.bold,),),
-                          Text((correctNumber/(questionNum + 1)*100).toStringAsFixed(2) + "%", style: TextStyle(color: Colors.blue, fontSize: setSp(72), fontWeight: FontWeight.bold,),),
+                          Text(
+                            "                正确率:",
+                            style: TextStyle(
+                              fontSize: setSp(68),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            (correctNumber / (questionNum + 1) * 100)
+                                    .toStringAsFixed(2) +
+                                "%",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: setSp(72),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text((correctNumber*100~/(questionNum + 1)).toString(), style: TextStyle(color: Colors.brown, fontSize: setSp(100), fontWeight: FontWeight.bold,),),
+                          Text(
+                            (correctNumber * 100 ~/ (questionNum + 1))
+                                .toString(),
+                            style: TextStyle(
+                              color: Colors.brown,
+                              fontSize: setSp(100),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -336,16 +380,18 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all(Colors.transparent)),
+                            MaterialStateProperty.all(Colors.transparent)),
                     onPressed: () {
-                      setState(() {
-
-                      });
+                      testFinishedList[questionIdMemoryMatrix] = true;
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, TestNavPage.routerName, (route) => false);
+                      setState(() {});
                       print(1);
                     },
                     child: Text(
                       "继续",
-                      style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+                      style:
+                          TextStyle(color: Colors.white, fontSize: setSp(60)),
                     ),
                   ),
                 ),

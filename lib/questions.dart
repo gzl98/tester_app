@@ -25,6 +25,8 @@ final Map<String, String> questionMemoryMatrix = {
   "questionNavPurpose": "提高推理、计算等抽象思维能力。",
   "benefitExample": "经过训练您的推理能力会改善，如在打扑克时能更好地根据各方的出牌，推测对家或对手的持牌情况。",
   "questionImgPath": "images/v2.0/TMTSpace.png",
+  "questionPurpose":
+  "通过找出屏幕中问号处的缺失数字，您可以发现这些数字的变化规律，从而提高您的逻辑思维能力，这样您就能更好、更多地发现生活中存在的各种规律，从而找到解决问题的方法.",
   //第一个页面
   "backgroundImagePath1": "images/v3.0/background1.png",
   //第二个页面
