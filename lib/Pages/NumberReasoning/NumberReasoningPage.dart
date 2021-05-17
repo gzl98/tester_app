@@ -81,6 +81,7 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
       if (currentTime == 0) {
         _timer.cancel();
         //  答题结束
+        finishedTest = true;
       }
     });
   }
@@ -134,9 +135,7 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
     List<Widget> buttons = [SizedBox(width: setWidth(120)), sizedBox];
     for (int num in choiceList) {
       TextButton button = TextButton(
-        onPressed: () {
-          buttonClicked(num);
-        },
+        onPressed: chooseNum == -1 ? () => buttonClicked(num) : null,
         child: Text(
           num.toString(),
           style: TextStyle(
@@ -275,7 +274,7 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
               // color: Colors.white,
               margin: EdgeInsets.only(top: setHeight(550)),
               child: Image.asset(
-                "images/v3.0/alarm.png",
+                "images/v3.0/NumberReasoning/alarm.png",
                 height: setHeight(140),
               ),
             ),
@@ -288,7 +287,7 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
   Widget buildBackgroundWidget() {
     return Positioned(
       child: Image.asset(
-        "images/v3.0/blackBoard2.jpg",
+        "images/v3.0/NumberReasoning/blackBoard.jpg",
         fit: BoxFit.fill,
         width: maxWidth,
       ),
@@ -302,7 +301,7 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
           width: maxWidth,
           height: maxHeight,
           child: Image.asset(
-            "images/v3.0/result.png",
+            "images/v3.0/NumberReasoning/result.png",
             fit: BoxFit.fill,
           ),
         ),
