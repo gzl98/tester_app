@@ -38,7 +38,6 @@ class TestNav extends State<TestNavPage> {
   }
   @override
   Widget build(BuildContext context) {
-    initFragmentWidget();
     return WillPopScope(
       onWillPop: () => showDialog(
           context: context,

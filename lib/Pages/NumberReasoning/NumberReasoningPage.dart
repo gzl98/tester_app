@@ -26,6 +26,7 @@ class NumberReasoningPage extends StatefulWidget {
 }
 
 class NumberReasoningPageState extends State<NumberReasoningPage> {
+  bool finishedTest = false;
   Timer _timer; //计时器
   double currentTime = 2000, totalTime = 2000; //总时间20秒
   NumberReasoningQuestion numberReasoningQuestion =
@@ -197,15 +198,21 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
       chooseNum = value;
     });
     if (numberReasoningQuestion.isEnd()) {
-      //提交跳转
-    }
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        chooseNum = -1;
+      _timer.cancel();
+      Future.delayed(Duration(seconds: 1), () {
+        //提交跳转
+        setState(() {
+          finishedTest = true;
+        });
       });
-      getNextQuestion();
-
-    });
+    } else {
+      Future.delayed(Duration(seconds: 1), () {
+        setState(() {
+          chooseNum = -1;
+        });
+        getNextQuestion();
+      });
+    }
   }
 
   Widget buildMainWidget() {
@@ -288,23 +295,131 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
     );
   }
 
+  Widget buildResultWidget() {
+    return Stack(
+      children: [
+        Container(
+          width: maxWidth,
+          height: maxHeight,
+          child: Image.asset(
+            "images/v3.0/result.png",
+            fit: BoxFit.fill,
+          ),
+        ),
+        Center(
+          child: Container(
+              // color: Colors.red,
+              width: setWidth(1000),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: setHeight(160)),
+                  Row(
+                    children: [
+                      Text(
+                        "                    正确数 : ",
+                        style: TextStyle(
+                          fontSize: setSp(60),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        score.toString() + "个",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: setSp(64),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: setHeight(20)),
+                  Row(
+                    children: [
+                      Text(
+                        "                    正确率 : ",
+                        style: TextStyle(
+                          fontSize: setSp(60),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        (100 * score ~/ answerList.length).toString() + "% ",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: setSp(64),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: setHeight(40)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        ((totalTime - currentTime) ~/ 100).toString() + "s",
+                        style: TextStyle(
+                          color: Colors.brown,
+                          fontSize: setSp(100),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )),
+        ),
+        Positioned(
+          bottom: setHeight(100),
+          left: (maxWidth - setWidth(400)) / 2,
+          child: Container(
+            width: setWidth(400),
+            height: setHeight(150),
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                "继 续",
+                style: TextStyle(
+                    fontSize: setSp(80),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+            ),
+            decoration: BoxDecoration(
+              boxShadow: [BoxShadow(blurRadius: setWidth(5))],
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xff97cc42), Color(0xff5e9a01)],
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(setWidth(20))),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () => showQuitDialog(context),
         child: Scaffold(
-          body: Container(
-            // 主要背景
-            color: Colors.grey[100],
-            width: maxWidth,
-            height: maxHeight,
-            child: Stack(
-              children: [
-                buildBackgroundWidget(),
-                buildMainWidget(),
-              ],
-            ),
-          ),
+          body: finishedTest
+              ? buildResultWidget()
+              : Container(
+                  // 主要背景
+                  color: Colors.grey[100],
+                  width: maxWidth,
+                  height: maxHeight,
+                  child: Stack(
+                    children: [
+                      buildBackgroundWidget(),
+                      buildMainWidget(),
+                    ],
+                  ),
+                ),
         ));
   }
 }

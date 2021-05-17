@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Utils/Utils.dart';
@@ -18,7 +19,7 @@ class SecondFragment extends StatefulWidget {
 }
 
 class _SecondFragmentState extends State<SecondFragment> {
-  // QuestionInfo questionInfo;
+  QuestionInfo questionInfo;
   AudioPlayer audioPlayer;
   AudioCache player;
 
@@ -60,13 +61,20 @@ class _SecondFragmentState extends State<SecondFragment> {
   }
 
   Widget buildMainWidget(context) {
-    return Container();
+    return Container(
+      width: maxWidth,
+      height: maxHeight,
+      child: Image.asset(
+        questionInfo.backgroundImagePath2,
+        fit: BoxFit.fill,
+      ),
+    );
   }
 
   Widget buildTitle() {
     return Positioned(
       top: setHeight(130),
-      left: setWidth(180),
+      left: setWidth(130),
       child: Text(
         "训练说明:",
         style: TextStyle(
@@ -79,14 +87,17 @@ class _SecondFragmentState extends State<SecondFragment> {
 
   Widget buildQuestionDescription() {
     return Positioned(
-      top: setHeight(450),
-      right: setWidth(80),
+      top: setHeight(400),
+      right: setWidth(70),
       width: setWidth(1000),
-      child: Text("观察几个数字，推理出它们之间的变化规律，找出缺失位置的数字。",
+      child: Text(
+        questionInfo.questionRules,
         style: TextStyle(
-            color: Colors.black,
+            height: setHeight(4),
+            color: Colors.white70,
             fontSize: setSp(66),
-            fontWeight: FontWeight.bold),),
+            fontWeight: FontWeight.normal),
+      ),
     );
   }
 
@@ -101,7 +112,10 @@ class _SecondFragmentState extends State<SecondFragment> {
             width: setWidth(500),
             height: setHeight(190),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, NumberReasoningPage.routerName,
+                    arguments: questionInfo);
+              },
               child: Text(
                 "开 始",
                 style: TextStyle(
@@ -111,7 +125,12 @@ class _SecondFragmentState extends State<SecondFragment> {
               ),
             ),
             decoration: BoxDecoration(
-              boxShadow: [BoxShadow(blurRadius: setWidth(5))],
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black54,
+                    blurRadius: setWidth(4),
+                    offset: Offset(setWidth(1), setHeight(1)))
+              ],
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -127,7 +146,7 @@ class _SecondFragmentState extends State<SecondFragment> {
 
   @override
   Widget build(BuildContext context) {
-    // questionInfo = ModalRoute.of(context).settings.arguments;
+    questionInfo = ModalRoute.of(context).settings.arguments;
     // questionInfo = QuestionInfo.fromMap(questionWMS);
     return Scaffold(
       body: Container(

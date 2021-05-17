@@ -16,6 +16,8 @@ class QuestionInfo {
   String questionNotes; //注意事项
   String nextPageRouter; //下一个页面的路由
   String soundPath1; //播放音频文件的路径
+  //V3.0
+  String backgroundImagePath1; //背景图片1
 
   //第二个页面
   String questionRules; //题目规则
@@ -23,6 +25,8 @@ class QuestionInfo {
   Widget questionRulesWidget; //规则展示Widget
   String nextPageRouter2; //下一个页面的路由
   String soundPath2; //播放音频文件的路径
+  //V3.0
+  String backgroundImagePath2; //背景图片2
 
   //第三个页面
   String questionRules2; //题目规则2
@@ -47,11 +51,13 @@ class QuestionInfo {
         questionNotes = data["questionNotes"],
         nextPageRouter = data["nextPageRouter"],
         soundPath1 = data["soundPath1"],
+        backgroundImagePath1 = data["backgroundImagePath1"],
         //第二个页面
         questionRules = data["questionRules"],
         questionRuleNotes = data["questionRuleNotes"],
         nextPageRouter2 = data["nextPageRouter2"],
         soundPath2 = data["soundPath2"],
+        backgroundImagePath2 = data["backgroundImagePath2"],
         //第三个页面
         questionRules2 = data["questionRules2"],
         questionRuleNotes2 = data["questionRuleNotes2"],

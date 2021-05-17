@@ -56,10 +56,10 @@ class MyApp extends StatelessWidget {
         QuestionSecondFragment.routerName: (context) =>
             QuestionSecondFragment(),
         TMTSpacePage.routerName: (context) => TMTSpacePage(),
-        MemoryMatrixPage.routerName: (context) => MemoryMatrixPage(),
         FirstFragment.routerName: (context) => FirstFragment(),
         SecondFragment.routerName: (context) => SecondFragment(),
         NumberReasoningPage.routerName: (context) => NumberReasoningPage(),
+        MemoryMatrixPage.routerName: (context) => MemoryMatrixPage(),
       },
     );
   }

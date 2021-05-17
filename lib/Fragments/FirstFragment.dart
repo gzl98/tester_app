@@ -10,6 +10,8 @@ import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
+import '../questions.dart';
+
 class FirstFragment extends StatefulWidget {
   static const routerName = "/FirstFragment";
 
@@ -20,7 +22,7 @@ class FirstFragment extends StatefulWidget {
 }
 
 class _FirstFragmentState extends State<FirstFragment> {
-  // QuestionInfo questionInfo;
+  QuestionInfo questionInfo;
   AudioPlayer audioPlayer;
   AudioCache player;
 
@@ -61,8 +63,15 @@ class _FirstFragmentState extends State<FirstFragment> {
     audioPlayer.stop();
   }
 
-  Widget buildMainWidget(context) {
-    return Container();
+  Widget buildMainWidget() {
+    return Container(
+      width: maxWidth,
+      height: maxHeight,
+      child: Image.asset(
+        questionInfo.backgroundImagePath1,
+        fit: BoxFit.fill,
+      ),
+    );
   }
 
   Widget buildBottomButtons(context) {
@@ -74,7 +83,7 @@ class _FirstFragmentState extends State<FirstFragment> {
     BoxShadow boxShadow = BoxShadow(blurRadius: setWidth(5));
     return Positioned(
       width: maxWidth,
-      bottom: setHeight(200),
+      bottom: setHeight(300),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -83,7 +92,8 @@ class _FirstFragmentState extends State<FirstFragment> {
             height: setHeight(buttonHeight),
             child: TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, SecondFragment.routerName);
+                Navigator.pushNamed(context, SecondFragment.routerName,
+                    arguments: questionInfo);
               },
               child: Text(
                 "说 明",
@@ -108,7 +118,8 @@ class _FirstFragmentState extends State<FirstFragment> {
             height: setHeight(buttonHeight),
             child: TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, NumberReasoningPage.routerName);
+                Navigator.pushNamed(context, NumberReasoningPage.routerName,
+                    arguments: questionInfo);
               },
               child: Text(
                 "开 始",
@@ -133,7 +144,7 @@ class _FirstFragmentState extends State<FirstFragment> {
   @override
   Widget build(BuildContext context) {
     // questionInfo = ModalRoute.of(context).settings.arguments;
-    // questionInfo = QuestionInfo.fromMap(questionWMS);
+    questionInfo = QuestionInfo.fromMap(questionNumberReasoning);
     return Scaffold(
       body: Container(
         width: maxWidth,
@@ -141,7 +152,7 @@ class _FirstFragmentState extends State<FirstFragment> {
         color: Color.fromARGB(255, 239, 239, 239),
         child: Stack(
           children: [
-            buildMainWidget(context),
+            buildMainWidget(),
             buildBottomButtons(context),
           ],
         ),

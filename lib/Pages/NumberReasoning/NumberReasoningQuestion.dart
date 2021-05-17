@@ -1,6 +1,6 @@
 import 'dart:math';
 
-bool debug = false; //是否处于调试阶段
+bool debug = true; //是否处于调试阶段
 
 class NumberReasoningQuestion {
   Random _random = Random();
@@ -46,6 +46,8 @@ class NumberReasoningQuestion {
   bool isEnd() {
     return _totalQuestionCount <= 0;
   }
+
+  int get totalQuestionCount => _totalQuestionCount;
 
   int get questionIndex => _questionIndex;
 
