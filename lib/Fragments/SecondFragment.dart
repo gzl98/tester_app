@@ -71,20 +71,6 @@ class _SecondFragmentState extends State<SecondFragment> {
     );
   }
 
-  Widget buildTitle() {
-    return Positioned(
-      top: setHeight(130),
-      left: setWidth(130),
-      child: Text(
-        "训练说明:",
-        style: TextStyle(
-            color: Colors.red,
-            fontSize: setSp(90),
-            fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
   Widget buildQuestionDescription() {
     return Positioned(
       top: setHeight(400),
@@ -156,7 +142,6 @@ class _SecondFragmentState extends State<SecondFragment> {
         child: Stack(
           children: [
             buildMainWidget(context),
-            buildTitle(),
             buildQuestionDescription(),
             buildBottomButtons(context),
           ],
