@@ -7,6 +7,7 @@ import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
+import 'package:tester_app/Pages/MemoryMatrix/MemoryMatrix.dart';
 import 'package:tester_app/Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopColorWordPage.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         QuestionSecondFragment.routerName: (context) =>
             QuestionSecondFragment(),
         TMTSpacePage.routerName: (context) => TMTSpacePage(),
+        MemoryMatrixPage.routerName: (context) => MemoryMatrixPage(),
         FirstFragment.routerName: (context) => FirstFragment(),
         SecondFragment.routerName: (context) => SecondFragment(),
         NumberReasoningPage.routerName: (context) => NumberReasoningPage(),
