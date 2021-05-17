@@ -144,7 +144,6 @@ class _FirstFragmentState extends State<FirstFragment> {
   @override
   Widget build(BuildContext context) {
     questionInfo = ModalRoute.of(context).settings.arguments;
-    print(questionInfo.questionTitle);
     // questionInfo = QuestionInfo.fromMap(questionNumberReasoning);
     return Scaffold(
       body: Container(
