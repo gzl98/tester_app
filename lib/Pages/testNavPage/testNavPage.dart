@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Fragments/FirstFragment.dart';
 import 'package:tester_app/Fragments/QuestionFirstFragment.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
@@ -335,7 +336,7 @@ class TestNav extends State<TestNavPage> {
                 Positioned(
                   top: setHeight(200),
                   left: setWidth(800),
-                  width: setWidth(400),
+                  width: setWidth(510),
                   height: setHeight(400),
                   child: BubbleWidget(
                     setWidth(500),
@@ -411,7 +412,7 @@ class TestNav extends State<TestNavPage> {
           onPressed: () {
             //_start();
             if(!this._testFinishList[this._selectIndex]){
-              Navigator.pushNamed(context, QuestionFirstFragment.routerName,
+              Navigator.pushNamed(context, FirstFragment.routerName,
                   arguments: testList[_selectIndex]);
             }
           }),

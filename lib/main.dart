@@ -23,8 +23,8 @@ import 'Pages/NewTMT/TMTSpacePage.dart';
 import 'Utils/Utils.dart';
 
 // String bootPage = TestNavPage.routerName;
-String bootPage = FirstFragment.routerName;
-// String bootPage = LoginPage.routerName;
+// String bootPage = FirstFragment.routerName;
+String bootPage = LoginPage.routerName;
 
 void main() {
   runApp(MyApp());
