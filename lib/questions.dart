@@ -27,11 +27,11 @@ final Map<String, String> questionMemoryMatrix = {
   "questionPurpose": "通过对方格中有色方块位置进行记忆，可以提高我们的空间和视觉记忆能力，如对物品的摆放位置的记忆比以前更准确，这将有助于我们在短的时间内找到需要的东西。",
   "questionImgPath": "images/v3.0/MemoryMatrix.png",
   //第一个页面
-  "backgroundImagePath1": "images/v3.0/MemoryMatrix/background1.png",
+  "backgroundImagePath1": "images/v3.0/MemoryMatrix/MMbackground1.png",
   //第二个页面
   "questionRules": "屏幕上会出现一个图案，快速记住方块出现的位置，然后一个一个地找出它们。",
   "nextPageRouter": MemoryMatrixPage.routerName,
-  "backgroundImagePath2": "images/v3.0/MemoryMatrix/background2.png",
+  "backgroundImagePath2": "images/v3.0/MemoryMatrix/MMbackground2.png",
 };
 //数字推理
 final Map<String, String> questionNumberReasoning = {

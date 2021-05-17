@@ -89,7 +89,7 @@ class _SecondFragmentState extends State<SecondFragment> {
 
   Widget buildBottomButtons(context) {
     return Positioned(
-      right: setWidth(200),
+      right: setWidth(150),
       bottom: setHeight(120),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

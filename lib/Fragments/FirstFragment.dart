@@ -81,9 +81,13 @@ class _FirstFragmentState extends State<FirstFragment> {
         fontSize: setSp(68), fontWeight: FontWeight.bold, color: Colors.white);
     BorderRadius borderRadius = BorderRadius.all(Radius.circular(setWidth(20)));
     BoxShadow boxShadow = BoxShadow(blurRadius: setWidth(5));
+    double bottomHeight = 250;
+    if (questionInfo.questionTitle == "记忆矩阵") {
+      bottomHeight = 100;
+    }
     return Positioned(
       width: maxWidth,
-      bottom: setHeight(300),
+      bottom: setHeight(bottomHeight),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
