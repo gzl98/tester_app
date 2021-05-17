@@ -129,8 +129,8 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
   }
 
   List<Widget> buildChoiceButtons() {
-    SizedBox sizedBox = SizedBox(width: setWidth(150));
-    List<Widget> buttons = [SizedBox(width: setWidth(80)), sizedBox];
+    SizedBox sizedBox = SizedBox(width: setWidth(100));
+    List<Widget> buttons = [SizedBox(width: setWidth(120)), sizedBox];
     for (int num in choiceList) {
       TextButton button = TextButton(
         onPressed: () {
@@ -151,25 +151,35 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
           )),
         ),
       );
-      buttons.add(Stack(children: [
+      buttons.add(
         Container(
-          width: setWidth(200),
-          height: setHeight(200),
-          child: button,
-        ),
-        Container(
-          margin: EdgeInsets.only(top: setHeight(60), left: setWidth(100)),
-          child: Opacity(
-            opacity: chooseNum == num ? 0.7 : 0,
-            child: Image.asset(
-              num == numberReasoningQuestion.currentAnswer
-                  ? "images/v2.0/correct.png"
-                  : "images/v2.0/wrong.png",
-              width: setWidth(170),
+          // color: Colors.red,
+          width: setWidth(300),
+          height: setHeight(220),
+          child: Stack(children: [
+            Container(
+              width: setWidth(200),
+              height: setHeight(200),
+              child: button,
             ),
-          ),
+            chooseNum == num
+                ? Container(
+                    margin: EdgeInsets.only(
+                        top: setHeight(60), left: setWidth(100)),
+                    child: Opacity(
+                      opacity: 0.7,
+                      child: Image.asset(
+                        num == numberReasoningQuestion.currentAnswer
+                            ? "images/v2.0/correct.png"
+                            : "images/v2.0/wrong.png",
+                        width: setWidth(170),
+                      ),
+                    ),
+                  )
+                : Container(),
+          ]),
         ),
-      ]));
+      );
       buttons.add(sizedBox);
     }
     return buttons;
@@ -186,14 +196,15 @@ class NumberReasoningPageState extends State<NumberReasoningPage> {
       answerList.add(value);
       chooseNum = value;
     });
+    if (numberReasoningQuestion.isEnd()) {
+      //提交跳转
+    }
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
         chooseNum = -1;
       });
       getNextQuestion();
-      if (numberReasoningQuestion.isEnd()) {
-        //提交跳转
-      }
+
     });
   }
 
