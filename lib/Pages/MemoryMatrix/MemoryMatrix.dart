@@ -271,85 +271,89 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
   }
 
   Widget buildResultWidget() {
-    return Container(
-      child: Column(
-        children: [
-          SizedBox(
-            height: setHeight(500),
-          ),
-          Center(
-            child: Container(
-              width: setWidth(1000),
-              height: setHeight(500),
-              decoration: new BoxDecoration(
-                border: new Border.all(
-                    color: Colors.blue, width: 5), // 边色与边宽度
+    return Stack(
+      children: [
+        Container(
+          child: Column(
+            children: [
+              SizedBox(
+                height: setHeight(500),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
+              Center(
+                child: Container(
+                  width: setWidth(1000),
+                  height: setHeight(500),
+                  decoration: new BoxDecoration(
+                    border: new Border.all(
+                        color: Colors.blue, width: 5), // 边色与边宽度
+                  ),
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("最多记忆个数:", style: TextStyle(fontSize: setSp(68), fontWeight: FontWeight.bold,),),
-                      Text((maxCorrectNumber+1).toString() + "个", style: TextStyle(color: Colors.blue, fontSize: setSp(72), fontWeight: FontWeight.bold,),),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("最多记忆个数:", style: TextStyle(fontSize: setSp(68), fontWeight: FontWeight.bold,),),
+                          Text((maxCorrectNumber+1).toString() + "个", style: TextStyle(color: Colors.blue, fontSize: setSp(72), fontWeight: FontWeight.bold,),),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("                正确率:", style: TextStyle(fontSize: setSp(68), fontWeight: FontWeight.bold,),),
+                          Text((correctNumber/(questionNum + 1)*100).toStringAsFixed(2) + "%", style: TextStyle(color: Colors.blue, fontSize: setSp(72), fontWeight: FontWeight.bold,),),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text((correctNumber*100~/(questionNum + 1)).toString(), style: TextStyle(color: Colors.brown, fontSize: setSp(100), fontWeight: FontWeight.bold,),),
+                        ],
+                      ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("                正确率:", style: TextStyle(fontSize: setSp(68), fontWeight: FontWeight.bold,),),
-                      Text((correctNumber/(questionNum + 1)*100).toStringAsFixed(2) + "%", style: TextStyle(color: Colors.blue, fontSize: setSp(72), fontWeight: FontWeight.bold,),),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text((correctNumber*100~/(questionNum + 1)).toString(), style: TextStyle(color: Colors.brown, fontSize: setSp(100), fontWeight: FontWeight.bold,),),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: setHeight(350),
-          ),
-          Center(
-            child: Container(
-              width: setWidth(400),
-              height: setHeight(150),
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.green, Colors.green],
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(setWidth(1), setHeight(1)),
-                      blurRadius: setWidth(5),
-                    )
-                  ]),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.transparent)),
-                onPressed: () {
-                  setState(() {
-
-                  });
-                  print(1);
-                },
-                child: Text(
-                  "继续",
-                  style: TextStyle(color: Colors.white, fontSize: setSp(60)),
                 ),
               ),
-            ),
-          )
-        ],
-      ),
+              SizedBox(
+                height: setHeight(350),
+              ),
+              Center(
+                child: Container(
+                  width: setWidth(400),
+                  height: setHeight(150),
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.green, Colors.green],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(setWidth(1), setHeight(1)),
+                          blurRadius: setWidth(5),
+                        )
+                      ]),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all(Colors.transparent)),
+                    onPressed: () {
+                      setState(() {
+
+                      });
+                      print(1);
+                    },
+                    child: Text(
+                      "继续",
+                      style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 
