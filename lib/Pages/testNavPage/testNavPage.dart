@@ -113,7 +113,7 @@ class TestNav extends State<TestNavPage> {
           Expanded(
             flex: 1,
             child: Text(
-              "欢迎使用心理测评系统",
+              "欢迎使用CCRT系统",
               textAlign: TextAlign.right,
               style: gradienctColorStyle,
             ),
@@ -169,7 +169,7 @@ class TestNav extends State<TestNavPage> {
     return Column(children: <Widget>[
       ListTile(
         title: Text(
-          "测 试 内 容",
+          "今 日 训 练 内 容",
           textAlign: TextAlign.center,
           style: listTitleStyle,
         ),
