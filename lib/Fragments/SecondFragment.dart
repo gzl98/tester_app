@@ -80,7 +80,7 @@ class _SecondFragmentState extends State<SecondFragment> {
         questionInfo.questionRules,
         style: TextStyle(
             height: setHeight(4),
-            color: Colors.white70,
+            color: questionInfo.questionTitle == "数字推理" ? Colors.white70 : Colors.black,
             fontSize: setSp(66),
             fontWeight: FontWeight.normal),
       ),

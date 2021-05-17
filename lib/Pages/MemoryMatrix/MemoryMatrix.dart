@@ -282,19 +282,23 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
     return Stack(
       children: [
         Container(
+          width: maxWidth,
+          height: maxHeight,
+          child: Image.asset(
+            "images/v3.0/MemoryMatrix/result.png",
+            fit: BoxFit.fill,
+          ),
+        ),
+        Container(
           child: Column(
             children: [
               SizedBox(
-                height: setHeight(500),
+                height: setHeight(600),
               ),
               Center(
                 child: Container(
                   width: setWidth(1000),
                   height: setHeight(500),
-                  decoration: new BoxDecoration(
-                    border:
-                        new Border.all(color: Colors.blue, width: 5), // 边色与边宽度
-                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -322,7 +326,7 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "                正确率:",
+                            "正确率:",
                             style: TextStyle(
                               fontSize: setSp(68),
                               fontWeight: FontWeight.bold,
@@ -359,7 +363,7 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
                 ),
               ),
               SizedBox(
-                height: setHeight(350),
+                height: setHeight(250),
               ),
               Center(
                 child: Container(
@@ -386,7 +390,6 @@ class MemoryMatrixPageState extends State<MemoryMatrixPage> {
                       Navigator.pushNamedAndRemoveUntil(
                           context, TestNavPage.routerName, (route) => false);
                       setState(() {});
-                      print(1);
                     },
                     child: Text(
                       "继续",
