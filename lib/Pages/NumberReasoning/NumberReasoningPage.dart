@@ -1,17 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningQuestion.dart';
-import 'package:tester_app/Pages/WMS/WMSQuestion.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
-import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/config/config.dart';
-import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'package:tester_app/questions.dart';
 
 import 'CountDownView.dart';
