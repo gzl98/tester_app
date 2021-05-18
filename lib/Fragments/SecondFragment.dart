@@ -4,9 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
-import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
 class SecondFragment extends StatefulWidget {

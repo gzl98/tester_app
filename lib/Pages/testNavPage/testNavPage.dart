@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tester_app/Fragments/FirstFragment.dart';
-import 'package:tester_app/Fragments/QuestionFirstFragment.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
@@ -43,7 +42,7 @@ class TestNav extends State<TestNavPage> {
       onWillPop: () => showDialog(
           context: context,
           builder: (context) => AlertDialog(
-                title: Text('确定结束当前测试?'),
+                title: Text('确定结束当前训练?'),
                 actions: [
                   FlatButton(
                     child: Text('暂不'),

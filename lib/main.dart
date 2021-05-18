@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tester_app/Fragments/FirstFragment.dart';
-import 'package:tester_app/Fragments/QuestionFirstFragment.dart';
-import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
@@ -35,9 +33,6 @@ class MyApp extends StatelessWidget {
         ShowInfoPage.routerName: (context) => ShowInfoPage(),
         CompleteInfoPage.routerName: (context) => CompleteInfoPage(),
         TestNavPage.routerName: (context) => TestNavPage(),
-        QuestionFirstFragment.routerName: (context) => QuestionFirstFragment(),
-        QuestionSecondFragment.routerName: (context) =>
-            QuestionSecondFragment(),
         FirstFragment.routerName: (context) => FirstFragment(),
         SecondFragment.routerName: (context) => SecondFragment(),
         NumberReasoningPage.routerName: (context) => NumberReasoningPage(),
