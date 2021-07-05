@@ -6,6 +6,7 @@ import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/MemoryMatrix/MemoryMatrix.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
+import 'package:tester_app/Pages/PairAssoLearning/PairAssoLearningMainPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Fragments/SecondFragment.dart';
@@ -13,7 +14,7 @@ import 'Utils/Utils.dart';
 
 // String bootPage = TestNavPage.routerName;
 // String bootPage = FirstFragment.routerName;
-String bootPage = LoginPage.routerName;
+String bootPage = PairALMainPage.routerName;
 
 void main() {
   runApp(MyApp());
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         SecondFragment.routerName: (context) => SecondFragment(),
         NumberReasoningPage.routerName: (context) => NumberReasoningPage(),
         MemoryMatrixPage.routerName: (context) => MemoryMatrixPage(),
+        PairALMainPage.routerName: (context) => PairALMainPage(),
       },
     );
   }
