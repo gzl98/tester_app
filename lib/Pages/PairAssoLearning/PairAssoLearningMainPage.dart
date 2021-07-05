@@ -43,6 +43,12 @@ class PairALMainPageState extends State<PairALMainPage> {
 
   //出题器
   PairALQuestion pairALQuestion;
+  //初始化页面状态为题目闪烁
+  CurrentState currentState = CurrentState.questionPrepare;
+  //答题数目统计
+  int questionSize;
+  //每次的答案矩阵，先4再6
+  List question;
 
   //橘色框
   Widget squareYellowBox(){
@@ -461,4 +467,11 @@ class PairALMainPageState extends State<PairALMainPage> {
       ),
     );
   }
+}
+
+//多个状态
+enum CurrentState {
+  questionPrepare, //题目闪烁
+  doingQuestion, //答题时间
+  questionDone, //答题完毕
 }

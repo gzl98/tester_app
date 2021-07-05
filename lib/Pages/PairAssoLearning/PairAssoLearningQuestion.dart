@@ -5,12 +5,16 @@ class PairALQuestion {
   //问题真值列表
   List questions = [];
   Random _random = Random();
+  //题目数量
   int questionNum;
+  //答题数目统计
+  int questionSize;
 
-  //设置题目数量
-  setQuestionNum(int n){
-    questionNum=n;
+  PairALQuestion(){
+    questionNum=2;
+    questionSize=0;
   }
+
 
   //产生随机的图片位置以及图片选择，将之对应为矩阵，第一维度：□，○，△，十字对应0-3；第二维度：六个位置从上到下分别为0-5
   List getQuestion(){
