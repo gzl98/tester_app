@@ -57,6 +57,8 @@ flutter:
     - images/
     - images/v2.0/
     - images/v3.0/
+    - images/v4.0/
+    - images/v4.0/PairAL/
     - images/v3.0/NumberReasoning/
     - images/v3.0/MemoryMatrix/
     - assets/sounds/

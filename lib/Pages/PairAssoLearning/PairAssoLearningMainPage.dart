@@ -1,4 +1,5 @@
 import 'dart:async';
+// import 'dart:html';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -40,71 +41,233 @@ class PairALMainPageState extends State<PairALMainPage> {
     // if (_timer != null && _timer.isActive) _timer.cancel();
   }
 
-  //初始化出题器
-  PairALQuestion _pairALQuestion=new PairALQuestion();
+  //出题器
+  PairALQuestion pairALQuestion;
 
-
-
-
-  //*图片竖直放置*
-  Widget singlePicture(int number){
+  //橘色框
+  Widget squareYellowBox(){
     return Expanded(
-        flex: 12,
+        flex: 1,
         child:Align(
           child: Container(
-            width: setWidth(200),
-            height: setHeight(200),
+            width: setWidth(270),
+            height: setHeight(270),
             decoration: BoxDecoration(
-                color: Color.fromARGB(20, 0, 0, 0),
-                border: Border.all(color: Colors.indigo[100], width: 2.0),
-                borderRadius: BorderRadius.only(topLeft:Radius.circular(20.0),topRight:Radius.circular(20.0))
+                color: Color.fromARGB(255, 255, 242, 204),
+                border: Border.all(color: Colors.orangeAccent, width: 2.0),
             ),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('images/character/'+number.toString()+'.png'),
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.center),
-              ),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Text(""),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('images/v4.0/PairAL/'+"circular"+'.png'),
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.center,
+                                )
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(""),
+                        ),
+                      ],
+                    )
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                )
+              ],
             ),
           ),
           alignment: Alignment.bottomCenter,
         )
-
     );
   }
 
-  //*九连图片*
-  Widget ninePictureUnion(){
-    List<Widget> temp = [];
-    for(int i=0;i<8;i++){
-      temp.add(singlePicture(i+1));
-      temp.add(Expanded(
+  //绿色框
+  Widget squareGreenBox(String temp){
+    return Expanded(
         flex: 1,
-        child: Text(""),
-      ));
-    }
-    temp.add(singlePicture(9));
-
-    return Row(
-      children: temp,
+        child:Align(
+          child: Container(
+            width: maxWidth,
+            height: maxHeight,
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 213, 232, 212),
+              border: Border.all(color: Colors.teal, width: 2.0),
+            ),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                    flex: 1,
+                    child: Text(""),
+                ),
+                Expanded(
+                    flex: 3,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Text(""),
+                        ),
+                        Expanded(
+                            flex: 3,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage('images/v4.0/PairAL/'+temp+'.png'),
+                                    fit: BoxFit.scaleDown,
+                                    alignment: Alignment.center,
+                                  )
+                              ),
+                            ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(""),
+                        ),
+                      ],
+                    )
+                ),
+                Expanded(
+                    flex: 1,
+                    child: Text(""),
+                )
+              ],
+            )
+          ),
+          alignment: Alignment.bottomCenter,
+        )
     );
   }
 
+  //上面的六个框
+  Widget buildTopWidget(){
+    return Expanded(
+        flex: 4,
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                  flex: 1,
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 4,
+                          child: Text(""),
+                      ),
+                      squareYellowBox(),
+                      Expanded(
+                        flex: 4,
+                        child: Text(""),
+                      ),
+                    ],
+                  )
+              ),
+              Expanded(
+                  flex: 1,
+                  child:Row(
+                    children: <Widget>[
+                      squareYellowBox(),
+                      Expanded(
+                          flex: 7,
+                          child: Text("")
+                      ),
+                      squareYellowBox(),
+                    ],
+                  )
+              ),
+              Expanded(
+                  flex: 1,
+                  child:Row(
+                    children: <Widget>[
+                      squareYellowBox(),
+                      Expanded(
+                          flex: 7,
+                          child: Text("")
+                      ),
+                      squareYellowBox(),
+                    ],
+                  )
+              ),
+              Expanded(
+                  flex: 1,
+                  child:Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Text(""),
+                      ),
+                      squareYellowBox(),
+                      Expanded(
+                        flex: 4,
+                        child: Text(""),
+                      ),
+                    ],
+                  )
+              ),
+            ],
+          ),
+        )
+    );
+  }
 
+  //下面的四个图案
+  Widget buildBottomWidget(){
+    return Expanded(
+        flex: 1,
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                  flex: 1,
+                  child: Text(""),
+              ),
+              Expanded(
+                  flex: 1,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 7,
+                        child: Text(""),
+                      ),
+                      squareGreenBox('square'),
+                      squareGreenBox('circular'),
+                      squareGreenBox('triangle'),
+                      squareGreenBox('cross'),
+                      Expanded(
+                        flex: 7,
+                        child: Text(""),
+                      ),
+                    ],
+                  )
+              ),
+            ],
+          ),
+        )
+    );
+  }
 
-
-
-
-
-
-
-
-
-  double floatWindowRadios = 30;
-  TextStyle resultTextStyle = TextStyle(
-      fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blueGrey);
+  // double floatWindowRadios = 30;
+  // TextStyle resultTextStyle = TextStyle(
+  //     fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blueGrey);
 
   //显示结果部件
   // Widget buildResultWidget() {
@@ -274,7 +437,16 @@ class PairALMainPageState extends State<PairALMainPage> {
   Widget buildPage(BuildContext context) {
     // TODO: implement build
     return Container(
-      child: Text(""),
+      color: Color.fromARGB(255, 218, 232, 252),
+      width: maxWidth,
+      height: maxHeight,
+      child: Column(
+        children: <Widget>[
+          buildTopWidget(),
+          Divider(height: 3.0, color: Color.fromARGB(120, 255, 0, 0), thickness: 3.0,),
+          buildBottomWidget(),
+        ],
+      ),
     );
   }
 
