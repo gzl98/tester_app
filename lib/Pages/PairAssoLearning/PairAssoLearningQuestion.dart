@@ -2,27 +2,42 @@ import 'dart:math';
 
 //出题器
 class PairALQuestion {
-  //数字序号列表
-  List<int> characterList = [];
+  //问题真值列表
+  List questions = [];
   Random _random = Random();
-  //记录测试的基本组评判序号
-  int  characterCount=0;
+  int questionNum;
 
-
-  //产生随机的数字
-  generateNumberRandom() {
-    int tempNum = _random.nextInt(9) + 1;
-    characterList.add(tempNum);
+  //设置题目数量
+  setQuestionNum(int n){
+    questionNum=n;
   }
 
-  int getListLength() {
-    return characterList.length;
+  //产生随机的图片位置以及图片选择，将之对应为矩阵，第一维度：□，○，△，十字对应0-3；第二维度：六个位置从上到下分别为0-5
+  List getQuestion(){
+    List tempQuestion=[];
+    for (int i = 0; i < 4; i++) {
+      List temp = [];
+      for (int j = 0; j < 6; j++) {
+        temp.add(0);
+      }
+      tempQuestion.add(temp);
+    }
+    for(int m=0;m<questionNum;m++){
+      int x=_random.nextInt(4);
+      int y=_random.nextInt(6);
+      //避免重复
+      if(tempQuestion[x][y]==0){
+        tempQuestion[x][y]=1;
+      }else{
+        m-=1;
+      }
+    }
+    questions.add(tempQuestion);
+    return tempQuestion;
   }
 
-  //返回最新一个数字
-  getNewRandomNumber(){
-    int long=getListLength();
-    return characterList[long-1];
+  //获取答案，便于比较
+  List getAnswer() {
+    return questions[questionNum - 1];
   }
-
 }
