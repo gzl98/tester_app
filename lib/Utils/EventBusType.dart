@@ -12,7 +12,11 @@ class TimeCutDown {
   int value;
   TimeCutDown(this.value);
 }
-
+//跨组件 ——画板切换背景事件
+class NextPicture{
+  String imgPath;
+  NextPicture(this.imgPath);
+}
 //跨组件事件
 class ChractStartEvent {
   int value;
