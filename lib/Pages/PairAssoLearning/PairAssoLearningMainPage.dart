@@ -25,6 +25,23 @@ class PairALMainPage extends StatefulWidget {
 
 class PairALMainPageState extends State<PairALMainPage> {
 
+  //出题器
+  PairALQuestion pairALQuestion;
+  //初始化页面状态为题目闪烁
+  CurrentState currentState;
+  //应答题数目/出题数目
+  int questionSize;
+  //答题数目统计
+  int questionNum;
+  //目前按键数目
+  int currentAnswerNum;
+  //每次的答案矩阵，先4再6
+  List question;
+  //当前状态
+  CurrentState state;
+  //当前关卡数
+  int checkpoint;
+
   @override
   void initState() {
     // 强制横屏
@@ -32,6 +49,7 @@ class PairALMainPageState extends State<PairALMainPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
+    startGame();
   }
 
   //强制退出
@@ -41,14 +59,15 @@ class PairALMainPageState extends State<PairALMainPage> {
     // if (_timer != null && _timer.isActive) _timer.cancel();
   }
 
-  //出题器
-  PairALQuestion pairALQuestion;
-  //初始化页面状态为题目闪烁
-  CurrentState currentState = CurrentState.questionPrepare;
-  //答题数目统计
-  int questionSize;
-  //每次的答案矩阵，先4再6
-  List question;
+  //初始化参数
+  void startGame(){
+    setState(() {
+      checkpoint=1;
+      questionSize=2;
+      currentAnswerNum=0;
+      currentState = CurrentState.questionPrepare;
+    });
+  }
 
   //橘色框
   Widget squareYellowBox(){
@@ -176,7 +195,30 @@ class PairALMainPageState extends State<PairALMainPage> {
                   child: Row(
                     children: [
                       Expanded(
-                          flex: 4,
+                          flex: 2,
+                          child: Align(
+                            child: Container(
+                              width: maxWidth,
+                              height: setHeight(160),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Colors.black, width: 3.0),
+                              ),
+                              child: Align(
+                                child: Text('第'+checkpoint.toString()+'关',
+                                  style: TextStyle(
+                                    fontSize: setSp(60),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                alignment: Alignment.center,
+                              ),
+                            ),
+                            alignment: Alignment.topCenter,
+                          )
+                      ),
+                      Expanded(
+                          flex: 2,
                           child: Text(""),
                       ),
                       squareYellowBox(),

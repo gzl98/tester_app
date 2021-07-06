@@ -5,14 +5,14 @@ class PairALQuestion {
   //问题真值列表
   List questions = [];
   Random _random = Random();
-  //题目数量
-  int questionNum;
   //答题数目统计
+  int questionNum;
+  //题目数量
   int questionSize;
 
   PairALQuestion(){
-    questionNum=2;
-    questionSize=0;
+    questionSize=2;
+    questionNum=0;
   }
 
 
@@ -26,7 +26,7 @@ class PairALQuestion {
       }
       tempQuestion.add(temp);
     }
-    for(int m=0;m<questionNum;m++){
+    for(int m=0;m<questionSize;m++){
       int x=_random.nextInt(4);
       int y=_random.nextInt(6);
       //避免重复
@@ -42,6 +42,6 @@ class PairALQuestion {
 
   //获取答案，便于比较
   List getAnswer() {
-    return questions[questionNum - 1];
+    return questions[questionSize - 1];
   }
 }
