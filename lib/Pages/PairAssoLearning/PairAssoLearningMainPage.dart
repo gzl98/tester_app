@@ -27,20 +27,16 @@ class PairALMainPageState extends State<PairALMainPage> {
 
   //出题器
   PairALQuestion pairALQuestion;
-  //当前状态
-  CurrentState currentState;
-  //应答题数目/出题数目
-  int questionSize;
-  //答题数目统计
-  int questionNum;
-  //当前关卡错误次数
-  int currentWrongNum=0;
+  //当前状态（初始为等待）
+  CurrentState currentState=CurrentState.waiting;
+  //当前关卡正确次数(正确两次进入下一关)
+  int currentCorrectNum=0;
   //总关卡错误次数
   int totalWrongNum=0;
   //每次的答案矩阵，先4再6
   List question;
   //当前关卡数
-  int checkpoint;
+  int checkpoint=1;
   //bool判断每张图片是否应该展示
   List showPicture = new List<bool>.generate(6, (int i) {
     return false;
@@ -51,8 +47,8 @@ class PairALMainPageState extends State<PairALMainPage> {
   });
   //序号对应图片名称
   List<String> numToPicture=['square','circular','triangle','cross'];
-  //当前关数延迟秒数
-  List<int> checkpointDelayedSec=[2,3,4,6];
+  //当前关数延迟秒数/过关图片数(用同一个)
+  List<int> checkpointDelayed=[2,3,4,6];
   //临时数字，记录初始要展示的图片编号
   int tempNum;
   //记录当前轮次用户选择的图片
@@ -65,6 +61,8 @@ class PairALMainPageState extends State<PairALMainPage> {
   });
   //临时记录用户选择的图片编号
   int tempPic;
+  //测试失败次数
+  int defaultNum=3;
 
 
   @override
@@ -86,20 +84,22 @@ class PairALMainPageState extends State<PairALMainPage> {
 
   //初始化参数
   void startGame(){
+    //循环初始化
     setState(() {
-      checkpoint=1;
-      questionSize=2;
-      currentState = CurrentState.waiting;
+      tempUserList=[-1,-1,-1,-1,-1,-1];
+      tempAnswerList=[-1,-1,-1,-1,-1,-1];
+      showPicture=[false,false,false,false,false,false];
+      answerPicture=[false,false,false,false,false,false];
     });
     //延迟一秒后开始显示题目
     Future.delayed(Duration(seconds:1),(){
       setState(() {
         currentState=CurrentState.questionPrepare;
-        pairALQuestion=new PairALQuestion(questionSize);
+        pairALQuestion=new PairALQuestion(checkpointDelayed[checkpoint-1]);
         question=pairALQuestion.getQuestion();
         print(question);
         //展示相应秒数后再次隐去
-        Future.delayed(Duration(seconds: checkpointDelayedSec[checkpoint]),(){
+        Future.delayed(Duration(seconds: checkpointDelayed[checkpoint-1]),(){
           setState(() {
             currentState=CurrentState.doingQuestion;
           });
@@ -107,6 +107,17 @@ class PairALMainPageState extends State<PairALMainPage> {
       });
     }
     );
+  }
+
+  bool judgeList(List a,List b){
+    int templength=a.length;
+    bool tempcorrect=true;
+    for(int i=0;i<templength;i++){
+      if(a[i]!=b[i]){
+        tempcorrect=false;
+      }
+    }
+    return tempcorrect;
   }
 
   //判断并记录标准答案
@@ -122,6 +133,17 @@ class PairALMainPageState extends State<PairALMainPage> {
         }
       }
     }
+  }
+
+  //获取用户当前图片选择数量
+  int getNum(List a){
+    int temp=0;
+    for(int i=0;i<6;i++){
+      if(a[i]!=-1){
+        temp++;
+      }
+    }
+    return temp;
   }
 
   //橘色框
@@ -229,6 +251,35 @@ class PairALMainPageState extends State<PairALMainPage> {
                   tempUserList[position]=tempPic;
                   answerPicture[position]=true;
                   print("用户本轮选择："+tempUserList.toString());
+                  int temp=getNum(tempUserList);
+                  //达到最多图片选择，进行判断
+                  if(temp==checkpointDelayed[checkpoint-1]){
+                    if(judgeList(tempAnswerList, tempUserList)){
+                      if(currentCorrectNum<1){
+                        currentCorrectNum++;
+                        print("当前关卡正确数："+currentCorrectNum.toString());
+                        currentState=CurrentState.waiting;
+                        startGame();
+                      }else{
+                        currentCorrectNum=0;
+                        checkpoint++;
+                        print("当前关卡数："+checkpoint.toString());
+                        currentState=CurrentState.waiting;
+                        startGame();
+                        if(checkpoint==5){
+                          print("挑战成功，游戏结束");
+                        }
+                      }
+                    }else{
+                      totalWrongNum++;
+                      print("当前错误次数："+totalWrongNum.toString());
+                      if(totalWrongNum==defaultNum){
+                        print("游戏结束");
+                      }
+                      currentState=CurrentState.waiting;
+                      startGame();
+                    }
+                  }
                 });
               },
             ) :null,
@@ -614,7 +665,6 @@ class PairALMainPageState extends State<PairALMainPage> {
       child: Column(
         children: <Widget>[
           buildTopWidget(),
-          Divider(height: 3.0, color: Color.fromARGB(120, 255, 0, 0), thickness: 3.0,),
           buildBottomWidget(),
         ],
       ),
