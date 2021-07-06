@@ -33,10 +33,6 @@ class PairALMainPageState extends State<PairALMainPage> {
   int questionSize;
   //答题数目统计
   int questionNum;
-  //当前关卡按键总数
-  int currentKeyNum=0;
-  //总的关卡按键总数
-  int totalKeyNum=0;
   //当前关卡错误次数
   int currentWrongNum=0;
   //总关卡错误次数
@@ -59,18 +55,16 @@ class PairALMainPageState extends State<PairALMainPage> {
   List<int> checkpointDelayedSec=[2,3,4,6];
   //临时数字，记录初始要展示的图片编号
   int tempNum;
-  //记录所按的图片
-  List pictureList=new List<int>.generate(120, (int i) {
+  //记录当前轮次用户选择的图片
+  List tempUserList=new List<int>.generate(6, (int i) {
     return -1;
   });
-  //记录所按的位置
-  List positionList=new List<int>.generate(120, (int i) {
+  //记录答案数组，只有六个位置
+  List tempAnswerList=new List<int>.generate(6, (int i) {
     return -1;
   });
-  //记录答案所按图片
-  List answerPictureList=[];
-  //记录答案所按位置
-  List answerPositionList=[];
+  //临时记录用户选择的图片编号
+  int tempPic;
 
 
   @override
@@ -123,8 +117,7 @@ class PairALMainPageState extends State<PairALMainPage> {
           if(j==position){
             tempNum=i;
             showPicture[position]=true;
-            answerPictureList.add(i);
-            answerPositionList.add(j);
+            tempAnswerList[j]=i;
           }
         }
       }
@@ -209,7 +202,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                           child: Container(
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: AssetImage('images/v4.0/PairAL/'+numToPicture[pictureList[currentKeyNum]].toString()+'.png'),
+                                  image: AssetImage('images/v4.0/PairAL/'+numToPicture[tempUserList[position]].toString()+'.png'),
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.center,
                                 )
@@ -233,28 +226,9 @@ class PairALMainPageState extends State<PairALMainPage> {
               onPressed: (){
                 setState(() {
                   print("位置"+position.toString());
-                  positionList[currentKeyNum]=position;
-                  //避免先按了位置按钮
-                  int temp1=0;
-                  int temp2=0;
-                  for(int i=0;i<120;i++){
-                    if(pictureList[i]!=-1){
-                      temp1++;
-                    }
-                    if(positionList[i]!=-1){
-                      temp2++;
-                    }
-                  }
-                  if(temp1==temp2){
-                    currentKeyNum++;
-                    int remainder=(currentKeyNum-totalKeyNum)%questionSize;
-                    answerPicture[position]=true;
-                    print(currentKeyNum);
-                    print("图片列表："+pictureList.toString());
-                    print("位置列表："+positionList.toString());
-                  }else{
-                    positionList[currentKeyNum]=-1;
-                  }
+                  tempUserList[position]=tempPic;
+                  answerPicture[position]=true;
+                  print("用户本轮选择："+tempUserList.toString());
                 });
               },
             ) :null,
@@ -305,7 +279,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                                 onPressed: currentState==CurrentState.doingQuestion?(){
                                   setState(() {
                                     print("图片"+pictureNum.toString());
-                                    pictureList[currentKeyNum]=pictureNum;
+                                    tempPic=pictureNum;
                                   });
                                 }:null,
                               ),

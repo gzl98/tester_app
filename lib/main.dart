@@ -15,7 +15,7 @@ import 'Utils/Utils.dart';
 
 // String bootPage = TestNavPage.routerName;
 // String bootPage = FirstFragment.routerName;
-String bootPage = ClockDrawPage.routerName;
+String bootPage = PairALMainPage.routerName;
 
 void main() {
   runApp(MyApp());
