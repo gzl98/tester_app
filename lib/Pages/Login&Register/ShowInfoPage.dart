@@ -112,7 +112,7 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                 ),
                 onPressed: () {
                   if (this.createFlag) {
-                    _start(context); //开始答题
+                    // _start(context); //开始答题
                     _initTestListFnished();
                   }
                   setState(() {
