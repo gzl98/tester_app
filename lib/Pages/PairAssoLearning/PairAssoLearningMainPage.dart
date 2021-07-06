@@ -27,20 +27,33 @@ class PairALMainPageState extends State<PairALMainPage> {
 
   //出题器
   PairALQuestion pairALQuestion;
-  //初始化页面状态为题目闪烁
+  //当前状态
   CurrentState currentState;
   //应答题数目/出题数目
   int questionSize;
   //答题数目统计
   int questionNum;
-  //目前按键数目
-  int currentAnswerNum;
+  //目前按键
+  int currentKeyNum=0;
+  //当前关卡答对
+  int correctNum=0;
+  //当前关卡错误次数
+  int wrongNum=0;
   //每次的答案矩阵，先4再6
   List question;
-  //当前状态
-  CurrentState state;
   //当前关卡数
   int checkpoint;
+  //bool判断每张图片是否应该展示
+  List showPicture = new List<bool>.generate(6, (int i) {
+    return false;
+  });
+  //序号对应图片名称
+  List<String> numToPicture=['square','circular','triangle','cross'];
+  //当前关数延迟秒数
+  List<int> checkpointDelayedSec=[2,3,4,6];
+  //临时数字，记录要展示的图片编号
+  int tempNum;
+
 
   @override
   void initState() {
@@ -64,13 +77,42 @@ class PairALMainPageState extends State<PairALMainPage> {
     setState(() {
       checkpoint=1;
       questionSize=2;
-      currentAnswerNum=0;
-      currentState = CurrentState.questionPrepare;
+      currentState = CurrentState.waiting;
     });
+    //延迟一秒后开始显示题目
+    Future.delayed(Duration(seconds:1),(){
+      setState(() {
+        currentState=CurrentState.questionPrepare;
+        pairALQuestion=new PairALQuestion(questionSize);
+        question=pairALQuestion.getQuestion();
+        print(question);
+        //展示相应秒数后再次隐去
+        Future.delayed(Duration(seconds: checkpointDelayedSec[checkpoint]),(){
+          setState(() {
+            currentState=CurrentState.doingQuestion;
+          });
+        });
+      });
+    }
+    );
+  }
+
+  //判断
+  void checkAnswer(int position){
+    for(int i=0;i<4;i++){
+      for(int j=0;j<6;j++){
+        if(question[i][j]==1){
+          if(j==position){
+            tempNum=i;
+            showPicture[position]=true;
+          }
+        }
+      }
+    }
   }
 
   //橘色框
-  Widget squareYellowBox(){
+  Widget squareYellowBox(int position){
     return Expanded(
         flex: 1,
         child:Align(
@@ -81,45 +123,51 @@ class PairALMainPageState extends State<PairALMainPage> {
                 color: Color.fromARGB(255, 255, 242, 204),
                 border: Border.all(color: Colors.orangeAccent, width: 2.0),
             ),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Text(""),
-                ),
-                Expanded(
-                    flex: 1,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Text(""),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('images/v4.0/PairAL/'+"circular"+'.png'),
-                                  fit: BoxFit.scaleDown,
-                                  alignment: Alignment.center,
-                                )
+            child: currentState==CurrentState.waiting||currentState==CurrentState.doingQuestion?null:
+            currentState==CurrentState.questionPrepare?(){
+              checkAnswer(position);
+              if(showPicture[position]){
+                return Column(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Text(""),
+                    ),
+                    Expanded(
+                        flex: 1,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: Text(""),
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(""),
-                        ),
-                      ],
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage('images/v4.0/PairAL/'+numToPicture[tempNum].toString()+'.png'),
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.center,
+                                    )
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Text(""),
+                            ),
+                          ],
+                        )
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(""),
                     )
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Text(""),
-                )
-              ],
-            ),
+                  ],
+                );
+              }
+            }():null,
           ),
           alignment: Alignment.bottomCenter,
         )
@@ -221,7 +269,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                           flex: 2,
                           child: Text(""),
                       ),
-                      squareYellowBox(),
+                      squareYellowBox(0),
                       Expanded(
                         flex: 4,
                         child: Text(""),
@@ -233,12 +281,12 @@ class PairALMainPageState extends State<PairALMainPage> {
                   flex: 1,
                   child:Row(
                     children: <Widget>[
-                      squareYellowBox(),
+                      squareYellowBox(1),
                       Expanded(
                           flex: 7,
                           child: Text("")
                       ),
-                      squareYellowBox(),
+                      squareYellowBox(2),
                     ],
                   )
               ),
@@ -246,12 +294,12 @@ class PairALMainPageState extends State<PairALMainPage> {
                   flex: 1,
                   child:Row(
                     children: <Widget>[
-                      squareYellowBox(),
+                      squareYellowBox(3),
                       Expanded(
                           flex: 7,
                           child: Text("")
                       ),
-                      squareYellowBox(),
+                      squareYellowBox(4),
                     ],
                   )
               ),
@@ -263,7 +311,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                         flex: 4,
                         child: Text(""),
                       ),
-                      squareYellowBox(),
+                      squareYellowBox(5),
                       Expanded(
                         flex: 4,
                         child: Text(""),
@@ -282,6 +330,8 @@ class PairALMainPageState extends State<PairALMainPage> {
     return Expanded(
         flex: 1,
         child: Container(
+          width: maxWidth,
+          height: maxHeight,
           child: Column(
             children: <Widget>[
               Expanded(
@@ -513,6 +563,7 @@ class PairALMainPageState extends State<PairALMainPage> {
 
 //多个状态
 enum CurrentState {
+  waiting, //刚进入界面等待
   questionPrepare, //题目闪烁
   doingQuestion, //答题时间
   questionDone, //答题完毕
