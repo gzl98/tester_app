@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tester_app/Fragments/FirstFragment.dart';
 import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
+import 'package:tester_app/Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
@@ -15,6 +16,7 @@ import 'Utils/Utils.dart';
 
 // String bootPage = TestNavPage.routerName;
 // String bootPage = FirstFragment.routerName;
+// String bootPage = GooseFlyingSouthPage.routerName;
 String bootPage = LoginPage.routerName;
 
 void main() {
@@ -39,8 +41,6 @@ class MyApp extends StatelessWidget {
         SecondFragment.routerName: (context) => SecondFragment(),
         NumberReasoningPage.routerName: (context) => NumberReasoningPage(),
         MemoryMatrixPage.routerName: (context) => MemoryMatrixPage(),
-        PairALMainPage.routerName: (context) => PairALMainPage(),
-        FlashLightPage.routerName: (context) => FlashLightPage(),
       },
     );
   }
