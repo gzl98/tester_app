@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 // import 'dart:html';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class PairALMainPage extends StatefulWidget {
 class PairALMainPageState extends State<PairALMainPage> {
 
   //当前关卡数
-  int checkpoint=4;
+  int checkpoint=1;
   //测试失败次数
   int defaultNum=3;
   //序号对应图片名称
@@ -684,10 +685,18 @@ class PairALMainPageState extends State<PairALMainPage> {
                   backgroundColor:
                   MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
+                //上传数据
+                Map map = {
+                  "正确数": successful,
+                  "错误数": totalWrongNum,
+                };
+                String text = json.encode(map);
+                setAnswer(questionIdPairAssoLearning,
+                    score: successful, answerText: text);
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
                 //加入该题目结束标志
-                testFinishedList[questionIdNewCharacter]=true;
+                testFinishedList[questionIdPairAssoLearning]=true;
               },
               child: Text(
                 "结 束",
