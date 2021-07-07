@@ -26,7 +26,7 @@ class PairALMainPage extends StatefulWidget {
 class PairALMainPageState extends State<PairALMainPage> {
 
   //当前关卡数
-  int checkpoint=1;
+  int checkpoint=4;
   //测试失败次数
   int defaultNum=3;
   //序号对应图片名称
@@ -296,7 +296,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                             currentState=CurrentState.waiting;
                             startGame();
                           }else{
-                            if(checkpoint==5){
+                            if(checkpoint==4){
                               successful=1;
                               currentState=CurrentState.questionDone;
                               print("挑战成功，游戏结束");
@@ -727,7 +727,7 @@ class PairALMainPageState extends State<PairALMainPage> {
           right: setWidth(1035),
           child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
         ):Container(),
-        // currentCorrectNum==CurrentState.questionDone?buildResultWidget():Container(),
+        currentState==CurrentState.questionDone?buildResultWidget():Container(),
       ],
     );
   }
