@@ -63,7 +63,10 @@ class PairALMainPageState extends State<PairALMainPage> {
   int tempPic;
   //测试失败次数
   int defaultNum=3;
-
+  //对号图片隐藏
+  bool showRightPic=true;
+  //错号图片隐藏
+  bool showWrongPic=true;
 
   @override
   void initState() {
@@ -94,6 +97,8 @@ class PairALMainPageState extends State<PairALMainPage> {
     //延迟一秒后开始显示题目
     Future.delayed(Duration(seconds:1),(){
       setState(() {
+        showRightPic=true;
+        showWrongPic=true;
         currentState=CurrentState.questionPrepare;
         pairALQuestion=new PairALQuestion(checkpointDelayed[checkpoint-1]);
         question=pairALQuestion.getQuestion();
@@ -105,8 +110,7 @@ class PairALMainPageState extends State<PairALMainPage> {
           });
         });
       });
-    }
-    );
+    });
   }
 
   bool judgeList(List a,List b){
@@ -254,31 +258,41 @@ class PairALMainPageState extends State<PairALMainPage> {
                   int temp=getNum(tempUserList);
                   //达到最多图片选择，进行判断
                   if(temp==checkpointDelayed[checkpoint-1]){
-                    if(judgeList(tempAnswerList, tempUserList)){
-                      if(currentCorrectNum<1){
-                        currentCorrectNum++;
-                        print("当前关卡正确数："+currentCorrectNum.toString());
-                        currentState=CurrentState.waiting;
-                        startGame();
-                      }else{
-                        currentCorrectNum=0;
-                        checkpoint++;
-                        print("当前关卡数："+checkpoint.toString());
-                        currentState=CurrentState.waiting;
-                        startGame();
-                        if(checkpoint==5){
-                          print("挑战成功，游戏结束");
+                    //让结果图片同时显示1s在进行判断
+                    Future.delayed(Duration(seconds:1),(){
+                      setState(() {
+                        if(judgeList(tempAnswerList, tempUserList)){
+                          if(currentCorrectNum<1){
+                            currentCorrectNum++;
+                            showRightPic=false;
+                            print("当前关卡正确数："+currentCorrectNum.toString());
+                            currentState=CurrentState.waiting;
+                            startGame();
+                          }else{
+                            currentCorrectNum=0;
+                            checkpoint++;
+                            showRightPic=false;
+                            print("当前关卡数："+checkpoint.toString());
+                            currentState=CurrentState.waiting;
+                            startGame();
+                            if(checkpoint==5){
+                              print("挑战成功，游戏结束");
+                            }
+                          }
+                        }else{
+                          totalWrongNum++;
+                          print("累计错误次数："+totalWrongNum.toString());
+                          if(totalWrongNum==defaultNum){
+                            print("游戏结束");
+                          }else{
+                            showWrongPic=false;
+                            currentState=CurrentState.waiting;
+                            startGame();
+                          }
+
                         }
-                      }
-                    }else{
-                      totalWrongNum++;
-                      print("当前错误次数："+totalWrongNum.toString());
-                      if(totalWrongNum==defaultNum){
-                        print("游戏结束");
-                      }
-                      currentState=CurrentState.waiting;
-                      startGame();
-                    }
+                      });
+                    });
                   }
                 });
               },
@@ -658,16 +672,30 @@ class PairALMainPageState extends State<PairALMainPage> {
   @override
   Widget buildPage(BuildContext context) {
     // TODO: implement build
-    return Container(
-      color: Color.fromARGB(255, 218, 232, 252),
-      width: maxWidth,
-      height: maxHeight,
-      child: Column(
-        children: <Widget>[
-          buildTopWidget(),
-          buildBottomWidget(),
-        ],
-      ),
+    return Stack(
+      children: <Widget>[
+        Container(
+          color: Color.fromARGB(255, 218, 232, 252),
+          width: maxWidth,
+          height: maxHeight,
+          child: Column(
+            children: <Widget>[
+              buildTopWidget(),
+              buildBottomWidget(),
+            ],
+          ),
+        ),
+        showRightPic==false?Positioned(
+          top: setHeight(450),
+          right: setWidth(1020),
+          child: Image.asset("images/v2.0/correct.png", width: setWidth(480)),
+        ):Container(),
+        showWrongPic==false?Positioned(
+          top: setHeight(450),
+          right: setWidth(1035),
+          child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
+        ):Container(),
+      ],
     );
   }
 
