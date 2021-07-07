@@ -23,7 +23,7 @@ class testPairALMainPage extends StatefulWidget {
 
 class testPairALMainPageState extends State<testPairALMainPage> {
   //当前关卡数
-  int checkpoint = 4;
+  int checkpoint = 1;
 
   //测试失败次数
   int defaultNum = 3;

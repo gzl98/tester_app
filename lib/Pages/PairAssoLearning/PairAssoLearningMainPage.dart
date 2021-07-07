@@ -40,10 +40,12 @@ class PairALMainPageState extends State<PairALMainPage> {
   CurrentState currentState=CurrentState.waiting;
   //当前关卡正确次数(正确两次进入下一关)
   int currentCorrectNum=0;
+  //总答对次数
+  int totalCorrectNum=0;
   //总关卡错误次数
   int totalWrongNum=0;
-  //是否闯关成功
-  int successful=0;
+  //当前关卡错误次数
+  int currentWrongNum=0;
   //每次的答案矩阵，先4再6
   List question;
   //bool判断每张图片是否应该展示
@@ -258,18 +260,24 @@ class PairALMainPageState extends State<PairALMainPage> {
                       Future.delayed(Duration(seconds:1),(){
                         setState(() {
                           if(judgeList(question, tempUserList)){
-                            if(currentCorrectNum<1){
-                              currentCorrectNum++;
+                            currentCorrectNum++;
+                            if(currentCorrectNum<2){
                               showRightPic=false;
                               print("当前关卡正确数："+currentCorrectNum.toString());
                               currentState=CurrentState.waiting;
                               startGame();
                             }else{
                               if(checkpoint==4){
-                                successful=1;
+                                totalCorrectNum+=currentCorrectNum;
+                                totalWrongNum+=currentWrongNum;
                                 currentState=CurrentState.questionDone;
                                 print("挑战成功，游戏结束");
+                                print("总正确数"+totalCorrectNum.toString());
+                                print("总错误数"+totalWrongNum.toString());
                               }else{
+                                totalCorrectNum+=currentCorrectNum;
+                                totalWrongNum+=currentWrongNum;
+                                currentWrongNum=0;
                                 currentCorrectNum=0;
                                 showRightPic=false;
                                 //保证关卡数字同步更新
@@ -282,11 +290,15 @@ class PairALMainPageState extends State<PairALMainPage> {
                               }
                             }
                           }else{
-                            totalWrongNum++;
-                            print("累计错误次数："+totalWrongNum.toString());
-                            if(totalWrongNum==defaultNum){
+                            currentWrongNum++;
+                            print("当前关卡错误次数："+currentWrongNum.toString());
+                            if(currentWrongNum==defaultNum){
+                              totalCorrectNum+=currentCorrectNum;
+                              totalWrongNum+=currentWrongNum;
                               currentState=CurrentState.questionDone;
                               print("挑战失败，游戏结束");
+                              print("总正确数"+totalCorrectNum.toString());
+                              print("总错误数"+totalWrongNum.toString());
                             }else{
                               showWrongPic=false;
                               currentState=CurrentState.waiting;
@@ -611,7 +623,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                           child: Align(
                             child:Text(
                                 "正确数：" +
-                                    successful.toString() +
+                                    totalCorrectNum.toString() +
                                     "      ",
                                 style: resultTextStyle),
                             alignment: Alignment.centerLeft,
@@ -654,7 +666,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                             flex: 5,
                             child:Align(
                               child:Text(
-                                  "成功率：" + ((successful*100)/(successful+totalWrongNum)).truncate().toString() + " %",
+                                  "错误率：" + ((totalWrongNum*100)/(totalCorrectNum+totalWrongNum)).truncate().toString() + " %",
                                   style: resultTextStyle),
                               alignment: Alignment.centerLeft,
                             )
@@ -699,12 +711,12 @@ class PairALMainPageState extends State<PairALMainPage> {
               onPressed: () {
                 //上传数据
                 Map map = {
-                  "正确数": successful,
+                  "正确数": totalCorrectNum,
                   "错误数": totalWrongNum,
                 };
                 String text = json.encode(map);
                 setAnswer(questionIdPairAssoLearning,
-                    score: successful, answerText: text);
+                    score: totalCorrectNum, answerText: text);
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
                 //加入该题目结束标志
