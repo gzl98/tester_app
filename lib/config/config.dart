@@ -24,3 +24,5 @@ const questionIdMemoryMatrix = 0;
 const questionIdNumberReasoning = 1;
 const questionIdFlashLight = 2;
 const questionIdPairAssoLearning=3;
+const questionIdDrawClock=4;
+

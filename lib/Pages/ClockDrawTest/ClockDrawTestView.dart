@@ -141,6 +141,9 @@ class ClockDrawPageState extends State<ClockDrawPage> {
               }
               else{
                 //进入下一关
+                testFinishedList[questionIdDrawClock] = true;
+                Navigator.pushNamedAndRemoveUntil(
+                    context, TestNavPage.routerName, (route) => false);
               }
               print("**************:"+this._imgPaths[this._currentCheckpoint]);
             }

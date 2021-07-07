@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tester_app/Fragments/FirstFragment.dart';
+import 'package:tester_app/Pages/ClockDrawTest/ClockDrawTestView.dart';
 import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         MemoryMatrixPage.routerName: (context) => MemoryMatrixPage(),
         PairALMainPage.routerName: (context) => PairALMainPage(),
         FlashLightPage.routerName: (context) => FlashLightPage(),
+        ClockDrawPage.routerName:(context) => ClockDrawPage(),
       },
     );
   }

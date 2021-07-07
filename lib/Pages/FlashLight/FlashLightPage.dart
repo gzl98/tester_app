@@ -515,7 +515,7 @@ class FlashLightPageState extends State<FlashLightPage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                testFinishedList[questionIdFlashLight] = false;
+                testFinishedList[questionIdFlashLight] = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
