@@ -41,6 +41,8 @@ class PairALMainPageState extends State<PairALMainPage> {
   int currentCorrectNum=0;
   //总关卡错误次数
   int totalWrongNum=0;
+  //是否闯关成功
+  int successful=0;
   //每次的答案矩阵，先4再6
   List question;
   //bool判断每张图片是否应该展示
@@ -63,11 +65,12 @@ class PairALMainPageState extends State<PairALMainPage> {
   });
   //临时记录用户选择的图片编号
   int tempPic;
-
   //对号图片隐藏
   bool showRightPic=true;
   //错号图片隐藏
   bool showWrongPic=true;
+  //是否结束测试
+  bool finishedTest=false;
 
   @override
   void initState() {
@@ -103,7 +106,31 @@ class PairALMainPageState extends State<PairALMainPage> {
         currentState=CurrentState.questionPrepare;
         pairALQuestion=new PairALQuestion(checkpointDelayed[checkpoint-1]);
         question=pairALQuestion.getQuestion();
-        print(question);
+        print("question列表："+question.toString());
+        //展示相应秒数后再次隐去
+        Future.delayed(Duration(seconds: checkpointDelayed[checkpoint-1]),(){
+          setState(() {
+            currentState=CurrentState.doingQuestion;
+          });
+        });
+      });
+    });
+  }
+
+  //错误时重启游戏
+  void restartGame(){
+    //循环初始化
+    setState(() {
+      tempUserList=[-1,-1,-1,-1,-1,-1];
+      answerPicture=[false,false,false,false,false,false];
+    });
+    //延迟一秒后开始显示题目
+    Future.delayed(Duration(seconds:1),(){
+      setState(() {
+        showRightPic=true;
+        showWrongPic=true;
+        currentState=CurrentState.questionPrepare;
+        print("question列表："+question.toString());
         //展示相应秒数后再次隐去
         Future.delayed(Duration(seconds: checkpointDelayed[checkpoint-1]),(){
           setState(() {
@@ -277,6 +304,8 @@ class PairALMainPageState extends State<PairALMainPage> {
                             currentState=CurrentState.waiting;
                             startGame();
                             if(checkpoint==5){
+                              successful=1;
+                              finishedTest=true;
                               print("挑战成功，游戏结束");
                             }
                           }
@@ -284,13 +313,13 @@ class PairALMainPageState extends State<PairALMainPage> {
                           totalWrongNum++;
                           print("累计错误次数："+totalWrongNum.toString());
                           if(totalWrongNum==defaultNum){
-                            print("游戏结束");
+                            finishedTest=true;
+                            print("挑战失败，游戏结束");
                           }else{
                             showWrongPic=false;
                             currentState=CurrentState.waiting;
-                            startGame();
+                            restartGame();
                           }
-
                         }
                       });
                     });
@@ -505,8 +534,8 @@ class PairALMainPageState extends State<PairALMainPage> {
   // double floatWindowRadios = 30;
   // TextStyle resultTextStyle = TextStyle(
   //     fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blueGrey);
-
-  //显示结果部件
+  //
+  // //显示结果部件
   // Widget buildResultWidget() {
   //   return Container(
   //     width: maxWidth,
@@ -696,6 +725,7 @@ class PairALMainPageState extends State<PairALMainPage> {
           right: setWidth(1035),
           child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
         ):Container(),
+        // finishedTest?buildResultWidget():Container(),
       ],
     );
   }
