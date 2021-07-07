@@ -25,6 +25,14 @@ class PairALMainPage extends StatefulWidget {
 
 class PairALMainPageState extends State<PairALMainPage> {
 
+  //当前关卡数
+  int checkpoint=1;
+  //测试失败次数
+  int defaultNum=3;
+  //序号对应图片名称
+  List<String> numToPicture=['square','circular','triangle','cross'];
+  //当前关数延迟秒数/过关图片数(用同一个)
+  List<int> checkpointDelayed=[2,3,4,6];
   //出题器
   PairALQuestion pairALQuestion;
   //当前状态（初始为等待）
@@ -35,8 +43,6 @@ class PairALMainPageState extends State<PairALMainPage> {
   int totalWrongNum=0;
   //每次的答案矩阵，先4再6
   List question;
-  //当前关卡数
-  int checkpoint=1;
   //bool判断每张图片是否应该展示
   List showPicture = new List<bool>.generate(6, (int i) {
     return false;
@@ -45,10 +51,6 @@ class PairALMainPageState extends State<PairALMainPage> {
   List answerPicture = new List<bool>.generate(6, (int i) {
     return false;
   });
-  //序号对应图片名称
-  List<String> numToPicture=['square','circular','triangle','cross'];
-  //当前关数延迟秒数/过关图片数(用同一个)
-  List<int> checkpointDelayed=[2,3,4,6];
   //临时数字，记录初始要展示的图片编号
   int tempNum;
   //记录当前轮次用户选择的图片
@@ -61,8 +63,7 @@ class PairALMainPageState extends State<PairALMainPage> {
   });
   //临时记录用户选择的图片编号
   int tempPic;
-  //测试失败次数
-  int defaultNum=3;
+
   //对号图片隐藏
   bool showRightPic=true;
   //错号图片隐藏
@@ -124,7 +125,7 @@ class PairALMainPageState extends State<PairALMainPage> {
     return tempcorrect;
   }
 
-  //判断并记录标准答案
+  //判断并记录标准答案,将question二维矩阵转换为一维矩阵
   void checkAnswer(int position){
     for(int i=0;i<4;i++){
       for(int j=0;j<6;j++){
