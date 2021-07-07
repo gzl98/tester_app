@@ -60,10 +60,6 @@ class PairALMainPageState extends State<PairALMainPage> {
   List tempUserList=new List<int>.generate(6, (int i) {
     return -1;
   });
-  //记录答案数组，只有六个位置
-  List tempAnswerList=new List<int>.generate(6, (int i) {
-    return -1;
-  });
   //临时记录用户选择的图片编号
   int tempPic=-1;
   //对号图片隐藏
@@ -95,7 +91,6 @@ class PairALMainPageState extends State<PairALMainPage> {
     //循环初始化
     setState(() {
       tempUserList=[-1,-1,-1,-1,-1,-1];
-      tempAnswerList=[-1,-1,-1,-1,-1,-1];
       showPicture=[false,false,false,false,false,false];
       answerPicture=[false,false,false,false,false,false];
       disabledButton=false;
@@ -155,19 +150,23 @@ class PairALMainPageState extends State<PairALMainPage> {
     return tempcorrect;
   }
 
-  //判断并记录标准答案,将question二维矩阵转换为一维矩阵
+  //判断是否展示图片，并记录当前按下的数字
   void checkAnswer(int position){
-    for(int i=0;i<4;i++){
-      for(int j=0;j<6;j++){
-        if(question[i][j]==1){
-          if(j==position){
-            tempNum=i;
-            showPicture[position]=true;
-            tempAnswerList[j]=i;
-          }
-        }
-      }
+    if(question[position]!=-1){
+      tempNum=question[position];
+      showPicture[position]=true;
     }
+    // for(int i=0;i<4;i++){
+    //   for(int j=0;j<6;j++){
+    //     if(question[i][j]==1){
+    //       if(j==position){
+    //         tempNum=i;
+    //         showPicture[position]=true;
+    //         tempAnswerList[j]=i;
+    //       }
+    //     }
+    //   }
+    // }
   }
 
   //获取用户当前图片选择数量
@@ -258,7 +257,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                       //让结果图片同时显示1s在进行判断
                       Future.delayed(Duration(seconds:1),(){
                         setState(() {
-                          if(judgeList(tempAnswerList, tempUserList)){
+                          if(judgeList(question, tempUserList)){
                             if(currentCorrectNum<1){
                               currentCorrectNum++;
                               showRightPic=false;
