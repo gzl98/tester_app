@@ -70,6 +70,8 @@ class PairALMainPageState extends State<PairALMainPage> {
   bool showRightPic=true;
   //错号图片隐藏
   bool showWrongPic=true;
+  //到达上限数目，禁用点击
+  bool disabledButton=false;
 
   @override
   void initState() {
@@ -96,6 +98,7 @@ class PairALMainPageState extends State<PairALMainPage> {
       tempAnswerList=[-1,-1,-1,-1,-1,-1];
       showPicture=[false,false,false,false,false,false];
       answerPicture=[false,false,false,false,false,false];
+      disabledButton=false;
     });
     //延迟一秒后开始显示题目
     Future.delayed(Duration(seconds:1),(){
@@ -122,6 +125,7 @@ class PairALMainPageState extends State<PairALMainPage> {
     setState(() {
       tempUserList=[-1,-1,-1,-1,-1,-1];
       answerPicture=[false,false,false,false,false,false];
+      disabledButton=false;
     });
     //延迟一秒后开始显示题目
     Future.delayed(Duration(seconds:1),(){
@@ -237,7 +241,7 @@ class PairALMainPageState extends State<PairALMainPage> {
             currentState==CurrentState.doingQuestion?
             FlatButton(
               color:Colors.transparent,
-              onPressed: (){
+              onPressed: disabledButton?(){}:(){
                 setState(() {
                   //排除空点橘色方框的问题
                   if(tempPic==-1){
@@ -250,6 +254,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                     int temp=getNum(tempUserList);
                     //达到最多图片选择，进行判断
                     if(temp==checkpointDelayed[checkpoint-1]){
+                      disabledButton=true;
                       //让结果图片同时显示1s在进行判断
                       Future.delayed(Duration(seconds:1),(){
                         setState(() {
