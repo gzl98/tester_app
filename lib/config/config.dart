@@ -22,3 +22,4 @@ const stroopWordColorID = 10;
 //v3.0
 const questionIdMemoryMatrix = 0;
 const questionIdNumberReasoning = 1;
+const questionIdFlashLight = 2;
