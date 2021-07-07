@@ -2,6 +2,7 @@ import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 
 import 'package:tester_app/pojo/QuestionInfo.dart';
+import 'Pages/ClockDrawTest/ClockDrawTestView.dart';
 import 'Pages/MemoryMatrix/MemoryMatrix.dart';
 import 'Pages/PairAssoLearning/PairAssoLearningMainPage.dart';
 
@@ -83,12 +84,32 @@ final Map<String, String> questionPairAssoLearning = {
   "backgroundImagePath2":
   "images/v4.0/PairAL/PairAL.png",
 };
-
+//钟表测试
+final Map<String, String> drawClockTest = {
+  //导航页面
+  "questionAbility": "认知功能",
+  "questionTitle": "时钟绘图测试",
+  "questionNavContent": "画出时钟轮廓。",
+  "questionNavPurpose": "认知问题的临床筛查和认知功能的监测 。",
+  "benefitExample": "经过训练您的认知能力能力会得到提升。",
+  "questionImgPath": "images/v4.0/ClockDraw/drawClock.png",
+  "nextPageRouter": ClockDrawPage.routerName,
+  "questionPurpose":
+  "这项测验主要评估您的认知能力，请您清晰地画出钟表轮廓，以及分针时针位置等。",
+  //第一个页面
+  "backgroundImagePath1":
+  "images/v4.0/ClockDraw/drawClock.png",
+  //第二个页面
+  "questionRules": "本实验分为三关，第一关画出指定时间的分支和时针，第二关画出表针和数字，第三关画出全部的时钟。",
+  "backgroundImagePath2":
+  "images/v4.0/ClockDraw/drawClock.png",
+};
 List testList = [
   QuestionInfo.fromMap(questionMemoryMatrix),
   QuestionInfo.fromMap(questionNumberReasoning),
   QuestionInfo.fromMap(questionFlashLight),
   QuestionInfo.fromMap(questionPairAssoLearning),
+  QuestionInfo.fromMap(drawClockTest),
 ];
 
 //创建每道题是否完成的列表
