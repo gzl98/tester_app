@@ -235,46 +235,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                 }
               }():
             currentState==CurrentState.doingQuestion?
-            answerPicture[position]?
-            Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Text(""),
-                ),
-                Expanded(
-                    flex: 1,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Text(""),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('images/v4.0/PairAL/'+numToPicture[tempUserList[position]].toString()+'.png'),
-                                  fit: BoxFit.scaleDown,
-                                  alignment: Alignment.center,
-                                )
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(""),
-                        ),
-                      ],
-                    )
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Text(""),
-                )
-              ],
-            ): FlatButton(
+            FlatButton(
               color:Colors.transparent,
               onPressed: (){
                 setState(() {
@@ -334,6 +295,49 @@ class PairALMainPageState extends State<PairALMainPage> {
                   }
                 });
               },
+              child: answerPicture[position]?Container(
+                width: maxWidth,
+                height: maxHeight,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Text(""),
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: Text(""),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage('images/v4.0/PairAL/'+numToPicture[tempUserList[position]].toString()+'.png'),
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.center,
+                                    )
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Text(""),
+                            ),
+                          ],
+                        )
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(""),
+                    )
+                  ],
+                ),
+              ):Container(),
             ) :null,
           ),
           alignment: Alignment.bottomCenter,
