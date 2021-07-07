@@ -26,7 +26,7 @@ class PairALMainPage extends StatefulWidget {
 class PairALMainPageState extends State<PairALMainPage> {
 
   //当前关卡数
-  int checkpoint=4;
+  int checkpoint=1;
   //测试失败次数
   int defaultNum=3;
   //序号对应图片名称
