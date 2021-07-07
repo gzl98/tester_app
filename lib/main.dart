@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tester_app/Fragments/FirstFragment.dart';
-import 'package:tester_app/Pages/ClockDrawTest/ClockDrawTestView.dart';
+import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
@@ -15,7 +15,7 @@ import 'Utils/Utils.dart';
 
 // String bootPage = TestNavPage.routerName;
 // String bootPage = FirstFragment.routerName;
-String bootPage = PairALMainPage.routerName;
+String bootPage = LoginPage.routerName;
 
 void main() {
   runApp(MyApp());
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         NumberReasoningPage.routerName: (context) => NumberReasoningPage(),
         MemoryMatrixPage.routerName: (context) => MemoryMatrixPage(),
         PairALMainPage.routerName: (context) => PairALMainPage(),
-        ClockDrawPage.routerName:(context) => ClockDrawPage(),
+        FlashLightPage.routerName: (context) => FlashLightPage(),
       },
     );
   }
