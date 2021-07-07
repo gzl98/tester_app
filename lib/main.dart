@@ -12,6 +12,7 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Fragments/SecondFragment.dart';
 import 'Utils/Utils.dart';
+import 'package:tester_app/Pages/testPairAL/testPairALMainPage.dart';
 
 // String bootPage = TestNavPage.routerName;
 // String bootPage = FirstFragment.routerName;
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         MemoryMatrixPage.routerName: (context) => MemoryMatrixPage(),
         PairALMainPage.routerName: (context) => PairALMainPage(),
         FlashLightPage.routerName: (context) => FlashLightPage(),
+        testPairALMainPage.routerName: (context) => testPairALMainPage(),
       },
     );
   }
