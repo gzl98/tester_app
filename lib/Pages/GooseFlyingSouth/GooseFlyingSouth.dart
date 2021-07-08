@@ -51,9 +51,11 @@ class GooseFlyingSouthPageState extends State<GooseFlyingSouthPage> {
       images.add(imageFrame);
     }
     setState(() {
-      itemList.add(Item(-100, 50, -100, 100, 2000, 100, 0.01, 200, () {}, images, 1));
-      itemList.add(Item(-300, 300, -300, 500, 2000, 500, 0.01, 200, () {}, images, 1));
-      itemList.add(Item(-750, 180, -750, 500, 2000, 500, 0.01, 200, () {}, images, 1));
+      itemList.add(Item(-100, 50, -100, 50, 1000, 50, 0.03, 200, () {}, images, 1));
+      itemList.add(Item(-300, 300, -300, 300, 1000, 300, 0.03, 200, () {}, images, 1));
+      itemList.add(Item(-750, 180, -750, 180, 1000, 180, 0.03, 200, () {}, images, 1));
+      itemList.add(Item(-1300, 350, -1300, 350, 1000, 350, 0.03, 200, () {}, images, 1));
+      itemList.add(Item(-1300, 80, -1300, 80, 1000, 80, 0.03, 200, () {}, images, 1));
     });
   }
 
@@ -124,9 +126,11 @@ class GooseFlyingSouthPageState extends State<GooseFlyingSouthPage> {
                               }
                               setState(() {
                                 itemList.clear();
-                                itemList.add(Item(-100, 50, -100, 100, 2000, 100, 0.01, 200, () {}, images, 1));
-                                itemList.add(Item(-300, 300, -300, 500, 2000, 500, 0.01, 200, () {}, images, 1));
-                                itemList.add(Item(-750, 180, -750, 500, 2000, 500, 0.01, 200, () {}, images, 1));
+                                itemList.add(Item(-100, 50, -100, 50, 1000, 50, 0.03, 200, () {}, images, 1));
+                                itemList.add(Item(-300, 300, -300, 300, 1000, 300, 0.03, 200, () {}, images, 1));
+                                itemList.add(Item(-750, 180, -750, 180, 1000, 180, 0.03, 200, () {}, images, 1));
+                                itemList.add(Item(-1300, 350, -1300, 350, 1000, 350, 0.03, 200, () {}, images, 1));
+                                itemList.add(Item(-1300, 80, -1300, 80, 1000, 80, 0.03, 200, () {}, images, 1));
                                 start = true;
                                 status = 0;
                               });

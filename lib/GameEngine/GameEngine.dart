@@ -98,14 +98,23 @@ class GameEngine extends StatefulWidget {
 }
 
 class GameEngineState extends State<GameEngine> {
+  Timer _timer;
+
   @override
   void initState() {
     super.initState();
     startGame();
   }
 
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
+  }
+
   void startGame() {
-    Timer.periodic(Duration(microseconds: 10), (timer) {
+    _timer = Timer.periodic(Duration(microseconds: 10), (timer) {
       if (widget.start) {
         setState(() {
           int result = 0;
