@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -40,14 +41,17 @@ class testPairALMainPageState extends State<testPairALMainPage> {
   //当前状态（初始为等待）
   CurrentState currentState = CurrentState.waiting;
 
+  //测试总正确次数
+  int totalCorrectNum = 0;
+
   //当前关卡正确次数(正确两次进入下一关)
   int currentCorrectNum = 0;
 
   //总关卡错误次数
   int totalWrongNum = 0;
 
-  //是否闯关成功
-  int successful = 0;
+  //当前关卡错误次数
+  int currentWrongNum = 0;
 
   //每次的答案矩阵，先4再6
   List answerQuestion;
@@ -340,213 +344,300 @@ class testPairALMainPageState extends State<testPairALMainPage> {
         ));
   }
 
-  double floatWindowRadios = 30;
-  TextStyle resultTextStyle = TextStyle(
-      fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blueGrey);
-
-  //显示结果部件
-  Widget buildResultWidget() {
-    return Container(
-      width: maxWidth,
-      height: maxHeight,
-      color: Color.fromARGB(220, 45, 45, 45),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: setHeight(200)),
-          Container(
-            width: setWidth(800),
-            height: setHeight(450),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Color.fromARGB(255, 229, 229, 229),
-                borderRadius: BorderRadius.all(
-                    Radius.circular(setWidth(floatWindowRadios))),
-                boxShadow: [
-                  BoxShadow(
-                      color: Color.fromARGB(255, 100, 100, 100),
-                      blurRadius: setWidth(10),
-                      offset: Offset(setWidth(1), setHeight(2)))
-                ]),
-            child: Column(children: [
-              Container(
-                height: setHeight(100),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  boxShadow: [BoxShadow()],
-                  color: Color.fromARGB(255, 229, 229, 229),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(setWidth(floatWindowRadios)),
-                      topRight: Radius.circular(setWidth(floatWindowRadios))),
-                ),
-                child: Text(
-                  "测验结果",
-                  style: TextStyle(
-                      fontSize: setSp(50),
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: setHeight(30)),
-                height: setHeight(230),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: Align(
-                            child: Text(
-                                "正确数：" + successful.toString() + "      ",
-                                style: resultTextStyle),
-                            alignment: Alignment.centerLeft,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: Align(
-                            child: Text(
-                                "错误数：" + totalWrongNum.toString() + "      ",
-                                style: resultTextStyle),
-                            alignment: Alignment.centerLeft,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                        Expanded(
-                            flex: 5,
-                            child: Align(
-                              child: Text(
-                                  "成功率：" +
-                                      ((successful * 100) /
-                                              (successful + totalWrongNum))
-                                          .truncate()
-                                          .toString() +
-                                      " %",
-                                  style: resultTextStyle),
-                              alignment: Alignment.centerLeft,
-                            )),
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ]),
-          ),
-          SizedBox(height: setHeight(300)),
-          Container(
-            width: setWidth(500),
-            height: setHeight(120),
-            decoration: BoxDecoration(
-              // border: Border.all(color: Colors.white,width: setWidth(1)),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color.fromARGB(255, 253, 160, 60),
-                  Color.fromARGB(255, 217, 127, 63)
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black54,
-                  offset: Offset(setWidth(1), setHeight(1)),
-                  blurRadius: setWidth(5),
-                )
-              ],
-            ),
-            child: TextButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.transparent)),
-              onPressed: () {
-                // //上传数据
-                // Map map = {
-                //   "正确数": successful,
-                //   "错误数": totalWrongNum,
-                // };
-                // String text = json.encode(map);
-                // setAnswer(questionIdPairAssoLearning,
-                //     score: successful, answerText: text);
-                Navigator.pushNamedAndRemoveUntil(
-                    context, TestNavPage.routerName, (route) => false);
-                //加入该题目结束标志
-                testFinishedList[questionIdPairAssoLearning] = true;
-              },
-              child: Text(
-                "结 束",
-                style: TextStyle(color: Colors.white, fontSize: setSp(60)),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // double floatWindowRadios = 30;
+  // TextStyle resultTextStyle = TextStyle(
+  //     fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blueGrey);
+  //
+  // //显示结果部件
+  // Widget buildResultWidget() {
+  //   return Container(
+  //     width: maxWidth,
+  //     height: maxHeight,
+  //     color: Color.fromARGB(220, 45, 45, 45),
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         SizedBox(height: setHeight(200)),
+  //         Container(
+  //           width: setWidth(800),
+  //           height: setHeight(450),
+  //           alignment: Alignment.center,
+  //           decoration: BoxDecoration(
+  //               color: Color.fromARGB(255, 229, 229, 229),
+  //               borderRadius: BorderRadius.all(
+  //                   Radius.circular(setWidth(floatWindowRadios))),
+  //               boxShadow: [
+  //                 BoxShadow(
+  //                     color: Color.fromARGB(255, 100, 100, 100),
+  //                     blurRadius: setWidth(10),
+  //                     offset: Offset(setWidth(1), setHeight(2)))
+  //               ]),
+  //           child: Column(children: [
+  //             Container(
+  //               height: setHeight(100),
+  //               alignment: Alignment.center,
+  //               decoration: BoxDecoration(
+  //                 boxShadow: [BoxShadow()],
+  //                 color: Color.fromARGB(255, 229, 229, 229),
+  //                 borderRadius: BorderRadius.only(
+  //                     topLeft: Radius.circular(setWidth(floatWindowRadios)),
+  //                     topRight: Radius.circular(setWidth(floatWindowRadios))),
+  //               ),
+  //               child: Text(
+  //                 "测验结果",
+  //                 style: TextStyle(
+  //                     fontSize: setSp(50),
+  //                     fontWeight: FontWeight.bold,
+  //                     color: Colors.blue),
+  //               ),
+  //             ),
+  //             Container(
+  //               margin: EdgeInsets.only(top: setHeight(30)),
+  //               height: setHeight(230),
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //                 children: [
+  //                   Row(
+  //                     children: [
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                       Expanded(
+  //                         flex: 5,
+  //                         child: Align(
+  //                           child: Text(
+  //                               "正确数：" + successful.toString() + "      ",
+  //                               style: resultTextStyle),
+  //                           alignment: Alignment.centerLeft,
+  //                         ),
+  //                       ),
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   Row(
+  //                     children: [
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                       Expanded(
+  //                         flex: 5,
+  //                         child: Align(
+  //                           child: Text(
+  //                               "错误数：" + totalWrongNum.toString() + "      ",
+  //                               style: resultTextStyle),
+  //                           alignment: Alignment.centerLeft,
+  //                         ),
+  //                       ),
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   Row(
+  //                     children: [
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                       Expanded(
+  //                           flex: 5,
+  //                           child: Align(
+  //                             child: Text(
+  //                                 "错误率：" +
+  //                                     ((successful * 100) /
+  //                                             (successful + totalWrongNum))
+  //                                         .truncate()
+  //                                         .toString() +
+  //                                     " %",
+  //                                 style: resultTextStyle),
+  //                             alignment: Alignment.centerLeft,
+  //                           )),
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ]),
+  //         ),
+  //         SizedBox(height: setHeight(300)),
+  //         Container(
+  //           width: setWidth(500),
+  //           height: setHeight(120),
+  //           decoration: BoxDecoration(
+  //             // border: Border.all(color: Colors.white,width: setWidth(1)),
+  //             gradient: LinearGradient(
+  //               begin: Alignment.topCenter,
+  //               end: Alignment.bottomCenter,
+  //               colors: [
+  //                 Color.fromARGB(255, 253, 160, 60),
+  //                 Color.fromARGB(255, 217, 127, 63)
+  //               ],
+  //             ),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.black54,
+  //                 offset: Offset(setWidth(1), setHeight(1)),
+  //                 blurRadius: setWidth(5),
+  //               )
+  //             ],
+  //           ),
+  //           child: TextButton(
+  //             style: ButtonStyle(
+  //                 backgroundColor:
+  //                     MaterialStateProperty.all(Colors.transparent)),
+  //             onPressed: () {
+  //               // //上传数据
+  //               // Map map = {
+  //               //   "正确数": successful,
+  //               //   "错误数": totalWrongNum,
+  //               // };
+  //               // String text = json.encode(map);
+  //               // setAnswer(questionIdPairAssoLearning,
+  //               //     score: successful, answerText: text);
+  //               Navigator.pushNamedAndRemoveUntil(
+  //                   context, TestNavPage.routerName, (route) => false);
+  //               //加入该题目结束标志
+  //               testFinishedList[questionIdPairAssoLearning] = true;
+  //             },
+  //             child: Text(
+  //               "结 束",
+  //               style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   //主界面布局
+
+  double _top = 0.0; //距顶部的偏移
+  double _left = 0.0;//距左边的偏移
+
+
+  //静止状态下的offset
+  Offset idleOffset=Offset(, 0);
+  //本次移动的offset
+  Offset moveOffset=Offset(0, 0);
+  //最后一次down事件的offset
+  Offset lastStartOffset=Offset(0, 0);
+
   @override
   Widget buildPage(BuildContext context) {
     // TODO: implement build
-    return Stack(
-      children: <Widget>[
-        Container(
-          color: Color.fromARGB(255, 218, 232, 252),
-          width: maxWidth,
-          height: maxHeight,
-          child: Column(
-            children: <Widget>[
-              buildTopWidget(),
-              buildBottomWidget(),
-            ],
+
+    return Transform.translate(
+        offset: moveOffset,
+        child: Container(
+          height: 50,
+          width: 50,
+          child: GestureDetector(
+            //开始按下时效果
+            onPanStart: (detail) {
+              setState(() {
+                lastStartOffset=detail.globalPosition;
+                print("PanStart的offset："+lastStartOffset.toString());
+              });
+            },
+            //手指滑动时会触发此回调
+            onPanUpdate: (detail){
+              setState(() {
+                moveOffset=detail.globalPosition-lastStartOffset+idleOffset;
+                moveOffset=Offset(max(0, moveOffset.dx), max(0, moveOffset.dy));
+              });
+            },
+            //结束时
+            onPanEnd: (detail) {
+              setState(() {
+                idleOffset=moveOffset*1;
+                print("PanEnd的offset："+idleOffset.toString());
+                print(idleOffset.dy);
+              });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.teal, width: 2.0),
+                  image: DecorationImage(
+                    image: AssetImage('images/v4.0/PairAL/cross.png'),
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.center,
+                  ),
+              ),
+            ),
           ),
-        ),
-        // showRightPic==false?Positioned(
-        //   top: setHeight(450),
-        //   right: setWidth(1020),
-        //   child: Image.asset("images/v2.0/correct.png", width: setWidth(480)),
-        // ):Container(),
-        // showWrongPic==false?Positioned(
-        //   top: setHeight(450),
-        //   right: setWidth(1035),
-        //   child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
-        // ):Container(),
-        // currentState==CurrentState.questionDone?buildResultWidget():Container(),
-      ],
+        )
     );
+
+    // return Stack(
+    //   children: <Widget>[
+    //     Positioned(
+    //       top: _top,
+    //       left: _left,
+    //       child: GestureDetector(
+    //         child: Image.asset('images/v4.0/PairAL/circular.png'),
+    //         //手指按下时会触发此回调
+    //         onPanDown: (DragDownDetails e) {
+    //           //打印手指按下的位置(相对于屏幕)
+    //           print("用户手指按下：${e.globalPosition}");
+    //         },
+    //         //手指滑动时会触发此回调
+    //         onPanUpdate: (DragUpdateDetails e) {
+    //           //用户手指滑动时，更新偏移，重新构建
+    //           setState(() {
+    //             _left += e.delta.dx;
+    //             _top += e.delta.dy;
+    //           });
+    //         },
+    //         onPanEnd: (DragEndDetails e){
+    //           //打印滑动结束时在x、y轴上的速度
+    //           print(e.velocity);
+    //         },
+    //       ),
+    //     )
+    //   ],
+    // );
+
+
   }
+
+    // return Stack(
+    //   children: <Widget>[
+    //     Container(
+    //       color: Color.fromARGB(255, 218, 232, 252),
+    //       width: maxWidth,
+    //       height: maxHeight,
+    //       child: Column(
+    //         children: <Widget>[
+    //           buildTopWidget(),
+    //           buildBottomWidget(),
+    //         ],
+    //       ),
+    //     ),
+    //     // showRightPic==false?Positioned(
+    //     //   top: setHeight(450),
+    //     //   right: setWidth(1020),
+    //     //   child: Image.asset("images/v2.0/correct.png", width: setWidth(480)),
+    //     // ):Container(),
+    //     // showWrongPic==false?Positioned(
+    //     //   top: setHeight(450),
+    //     //   right: setWidth(1035),
+    //     //   child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
+    //     // ):Container(),
+    //     // currentState==CurrentState.questionDone?buildResultWidget():Container(),
+    //   ],
+    // );
+
 
   //解决显示黑黄屏的问题,Scaffold的问题导致的
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tester_app/Fragments/FirstFragment.dart';
 import 'package:tester_app/Pages/ClockDrawTest/ClockDrawTestView.dart';
 import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
+import 'package:tester_app/Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
@@ -13,7 +14,6 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Fragments/SecondFragment.dart';
 import 'Utils/Utils.dart';
-import 'package:tester_app/Pages/testPairAL/testPairALMainPage.dart';
 
 // String bootPage = TestNavPage.routerName;
 // String bootPage = FirstFragment.routerName;
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         PairALMainPage.routerName: (context) => PairALMainPage(),
         FlashLightPage.routerName: (context) => FlashLightPage(),
         ClockDrawPage.routerName:(context) => ClockDrawPage(),
-        testPairALMainPage.routerName:(context) => testPairALMainPage(),
+        GooseFlyingSouthPage.routerName:(context) => GooseFlyingSouthPage(),
       },
     );
   }
