@@ -1,4 +1,5 @@
 import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
+import 'package:tester_app/Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 
 import 'package:tester_app/pojo/QuestionInfo.dart';
@@ -104,12 +105,32 @@ final Map<String, String> drawClockTest = {
   "backgroundImagePath2":
   "images/v4.0/ClockDraw/drawClock.png",
 };
+//雁南飞demo
+final Map<String, String> gooseFlyingSouth = {
+  //导航页面
+  "questionAbility": "工作记忆",
+  "questionTitle": "雁南飞demo",
+  "questionNavContent": "对两种不同颜色的大雁进行分别计数。",
+  "questionNavPurpose": "提高工作记忆能力和持续注意力水平 。",
+  "benefitExample": "训练后您的记忆力、注意力会提高，如在与人交流时会更容易集中精力，能同时记住两个人或多个人的谈话。",
+  "questionImgPath": "images/Goose/GooseFlySouth.png",
+  "nextPageRouter": GooseFlyingSouthPage.routerName,
+  "questionPurpose": "这项练习通过对两种不同颜色的大雁进行分别计数，可以不断提高您的工作记忆能力，使您在实际生活中能够更轻松地应对一些事情吗，如在打电话的同时记录下主要谈话内容。",
+  //第一个页面
+  "backgroundImagePath1":
+  "images/Goose/GooseFlySouth.png",
+  //第二个页面
+  "questionRules": "全部飞过后，请选择两种大雁分别有多少只。注意不要被其它的大雁干扰。",
+  "backgroundImagePath2":
+  "images/Goose/GooseFlySouth.png",
+};
 List testList = [
   QuestionInfo.fromMap(questionMemoryMatrix),
   QuestionInfo.fromMap(questionNumberReasoning),
   QuestionInfo.fromMap(questionFlashLight),
   QuestionInfo.fromMap(questionPairAssoLearning),
   QuestionInfo.fromMap(drawClockTest),
+  QuestionInfo.fromMap(gooseFlyingSouth),
 ];
 
 //创建每道题是否完成的列表

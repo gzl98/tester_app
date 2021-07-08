@@ -12,11 +12,11 @@ import 'package:tester_app/Pages/PairAssoLearning/PairAssoLearningMainPage.dart'
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Fragments/SecondFragment.dart';
+import 'Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
 import 'Utils/Utils.dart';
 import 'package:tester_app/Pages/testPairAL/testPairALMainPage.dart';
 
-// String bootPage = TestNavPage.routerName;
-// String bootPage = FirstFragment.routerName;
+// String bootPage = GooseFlyingSouthPage.routerName;
 String bootPage = LoginPage.routerName;
 
 void main() {
@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
         FlashLightPage.routerName: (context) => FlashLightPage(),
         ClockDrawPage.routerName:(context) => ClockDrawPage(),
         testPairALMainPage.routerName:(context) => testPairALMainPage(),
+        GooseFlyingSouthPage.routerName: (context) => GooseFlyingSouthPage(),
       },
     );
   }

@@ -20,6 +20,7 @@ class GooseFlyingSouthPage extends StatefulWidget {
 class GooseFlyingSouthPageState extends State<GooseFlyingSouthPage> {
   List<Item> itemList = [];
   bool start = false;
+  int status = 0;
 
   Future<ui.Image> getAssetImage(String asset,{width,height}) async {
     ByteData data = await rootBundle.load(asset);
@@ -34,19 +35,15 @@ class GooseFlyingSouthPageState extends State<GooseFlyingSouthPage> {
     gamePre();
     setState(() {
       start = true;
+      status = 0;
     });
-    // Future.delayed(Duration(seconds: 10), () {
-    //   setState(() {
-    //     start = false;
-    //   });
-    // });
   }
 
   void gamePre() async {
     List<String> pictures = [
-      'images/Goose/11.png', 'images/Goose/12.png', 'images/Goose/13.png',
-      'images/Goose/14.png', 'images/Goose/15.png', 'images/Goose/16.png',
-      'images/Goose/17.png', 'images/Goose/18.png', 'images/Goose/19.png',
+      'images/Goose/0.png', 'images/Goose/1.png', 'images/Goose/2.png',
+      'images/Goose/3.png', 'images/Goose/4.png', 'images/Goose/5.png',
+      'images/Goose/6.png', 'images/Goose/7.png',
     ];
     List<ui.Image> images = [];
     for (String picture in pictures) {
@@ -54,14 +51,96 @@ class GooseFlyingSouthPageState extends State<GooseFlyingSouthPage> {
       images.add(imageFrame);
     }
     setState(() {
-      itemList.add(Item(-100, 100, -100, 100, 2000, 100, 0.1, 190, () {}, images, 1));
-      itemList.add(Item(-300, 500, -300, 500, 2000, 500, 0.1, 190, () {}, images, 1));
-      itemList.add(Item(-750, 300, -750, 500, 2000, 500, 0.1, 190, () {}, images, 1));
+      itemList.add(Item(-100, 50, -100, 100, 2000, 100, 0.01, 200, () {}, images, 1));
+      itemList.add(Item(-300, 300, -300, 500, 2000, 500, 0.01, 200, () {}, images, 1));
+      itemList.add(Item(-750, 180, -750, 500, 2000, 500, 0.01, 200, () {}, images, 1));
     });
   }
 
   void gameEndCallback() {
+    setState(() {
+      start = false;
+      status = 1;
+    });
+  }
 
+  Widget buildFloatWidget() {
+    return Stack(
+      children: [
+        Container(
+          width: maxWidth,
+          height: maxHeight,
+          color: Color.fromARGB(220, 150, 150, 150),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: setHeight(100),
+              ),
+              Center(
+                child: Container(
+                    width: setWidth(600),
+                    height: setHeight(400),
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black12,
+                              offset: Offset(0.0, 15.0), //阴影xy轴偏移量
+                              blurRadius: 15.0, //阴影模糊程度
+                              spreadRadius: 1.0 //阴影扩散程度
+                          )
+                        ]),
+                    child: Center(
+                      child: Container(
+                        width: setWidth(550),
+                        height: setHeight(350),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: setHeight(70),
+                            ),
+                            Text(
+                              'demo end',
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: setSp(70),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            ElevatedButton(onPressed: () async {
+                              List<String> pictures = [
+                                'images/Goose/0.png', 'images/Goose/1.png', 'images/Goose/2.png',
+                                'images/Goose/3.png', 'images/Goose/4.png', 'images/Goose/5.png',
+                                'images/Goose/6.png', 'images/Goose/7.png',
+                              ];
+                              List<ui.Image> images = [];
+                              for (String picture in pictures) {
+                                ui.Image imageFrame = await getAssetImage(picture, width: 200, height: 200);
+                                images.add(imageFrame);
+                              }
+                              setState(() {
+                                itemList.clear();
+                                itemList.add(Item(-100, 50, -100, 100, 2000, 100, 0.01, 200, () {}, images, 1));
+                                itemList.add(Item(-300, 300, -300, 500, 2000, 500, 0.01, 200, () {}, images, 1));
+                                itemList.add(Item(-750, 180, -750, 500, 2000, 500, 0.01, 200, () {}, images, 1));
+                                start = true;
+                                status = 0;
+                              });
+                            }, child: Text('重新开始'))
+                          ],
+                        ),
+                      ),
+                    )),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -69,7 +148,12 @@ class GooseFlyingSouthPageState extends State<GooseFlyingSouthPage> {
     return WillPopScope(
       onWillPop: () => showQuitDialog(context),
       child: Scaffold(
-        body: GameEngine(itemList: itemList, start: start,),
+        body: Stack(
+          children: [
+            GameEngine(itemList: itemList, start: start, gameEndCallback: gameEndCallback,),
+            status == 1 ? buildFloatWidget() : Container(),
+          ],
+        )
       ),
     );
   }
