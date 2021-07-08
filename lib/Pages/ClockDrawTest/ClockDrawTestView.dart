@@ -59,6 +59,7 @@ class ClockDrawPageState extends State<ClockDrawPage> {
                       height: setHeight(5),
                       color: Colors.red,
                     ),
+
                     Container(
                       width: maxWidth,
                       height: maxHeight - setHeight(155),
@@ -94,12 +95,21 @@ class ClockDrawPageState extends State<ClockDrawPage> {
       alignment: Alignment.center,
       children: [
         Positioned(
+            top: setHeight(150),
+            left: setWidth(800),
+            child: Text(
+              "要求—请下面画出时间11:10",
+              style: TextStyle(color: Colors.blueAccent, fontSize: setSp(55)),
+            ),
+        ),
+        Positioned(
           // top: setHeight(150),
           // left: setWidth(500),
           width: setWidth(1500),
           height: setHeight(1000),
           child: MyPainterPage(imgPath:this._imgPaths[this._currentCheckpoint])
         ),
+
         Positioned(
           bottom: setHeight(50),
           left: setWidth(1100),

@@ -34,19 +34,24 @@ class Item {
   void move() {
     double xx = endX - startX;
     double yy = endY - startY;
+    int xb = 0;
+    int yb = 0;
     if (xx < 0 && x < endX) {
-      return;
+      xb = 1;
     }
     if (xx > 0 && x > endX) {
-      return;
+      xb = 1;
     }
     if (yy < 0 && y < endY) {
-      return;
+      yb = 1;
     }
     if (yy > 0 && y > endY) {
-      return;
+      yb = 1;
     }
-    if (x == endX && y == endY) {
+    if (xx == 0) xb = 1;
+    if (yy == 0) yb = 1;
+    if (xb == 1 && yb == 1) {
+      status = 0;
       return;
     }
     if (status == 1) {
@@ -82,8 +87,9 @@ class Item {
 class GameEngine extends StatefulWidget {
   final List<Item> itemList;
   final bool start;
+  final VoidCallback gameEndCallback;
 
-  GameEngine({Key key, this.itemList, this.start}):super(key:key);
+  GameEngine({Key key, this.itemList, this.start, this.gameEndCallback}):super(key:key);
 
   @override
   State<StatefulWidget> createState() {
@@ -92,7 +98,7 @@ class GameEngine extends StatefulWidget {
 }
 
 class GameEngineState extends State<GameEngine> {
-  bool start = false;
+  Timer _timer;
 
   @override
   void initState() {
@@ -100,12 +106,27 @@ class GameEngineState extends State<GameEngine> {
     startGame();
   }
 
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
+  }
+
   void startGame() {
-    Timer.periodic(Duration(microseconds: 10), (timer) {
+    _timer = Timer.periodic(Duration(microseconds: 10), (timer) {
       if (widget.start) {
         setState(() {
+          int result = 0;
           for (Item item in widget.itemList) {
-            item.move();
+            if (item.status == 1) result = 1;
+          }
+          if (widget.itemList.length > 0 && result == 0) {
+            widget.gameEndCallback();
+          } else {
+            for (Item item in widget.itemList) {
+              item.move();
+            }
           }
         });
       }
