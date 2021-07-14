@@ -37,7 +37,7 @@ class PairALMainPageState extends State<PairALMainPage> {
   //出题器
   PairALQuestion pairALQuestion;
   //当前状态（初始为等待）
-  CurrentState currentState=CurrentState.firstwait;
+  CurrentState currentState=CurrentState.waiting;
   //当前关卡正确次数(正确两次进入下一关)
   int currentCorrectNum=0;
   //总答对次数
@@ -78,10 +78,7 @@ class PairALMainPageState extends State<PairALMainPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
-    Future.delayed(Duration(seconds: 2),(){
-      currentState=CurrentState.waiting;
-      startGame();
-    });
+    startGame();
   }
 
   //强制退出
@@ -161,17 +158,6 @@ class PairALMainPageState extends State<PairALMainPage> {
       tempNum=question[position];
       showPicture[position]=true;
     }
-    // for(int i=0;i<4;i++){
-    //   for(int j=0;j<6;j++){
-    //     if(question[i][j]==1){
-    //       if(j==position){
-    //         tempNum=i;
-    //         showPicture[position]=true;
-    //         tempAnswerList[j]=i;
-    //       }
-    //     }
-    //   }
-    // }
   }
 
   //获取用户当前图片选择数量
@@ -267,8 +253,11 @@ class PairALMainPageState extends State<PairALMainPage> {
                             if(currentCorrectNum<2){
                               showRightPic=false;
                               print("当前关卡正确数："+currentCorrectNum.toString());
-                              currentState=CurrentState.waiting;
-                              startGame();
+                              Future.delayed(Duration(seconds: 1),(){
+                                showRightPic=true;
+                                currentState=CurrentState.waiting;
+                                startGame();
+                              });
                             }else{
                               if(checkpoint==4){
                                 totalCorrectNum+=currentCorrectNum;
@@ -286,9 +275,10 @@ class PairALMainPageState extends State<PairALMainPage> {
                                 //保证关卡数字同步更新
                                 Future.delayed(Duration(seconds:1),(){
                                   checkpoint++;
+                                  showRightPic=true;
+                                  currentState=CurrentState.waiting;
                                 });
                                 print("当前关卡数："+checkpoint.toString());
-                                currentState=CurrentState.waiting;
                                 startGame();
                               }
                             }
@@ -304,8 +294,11 @@ class PairALMainPageState extends State<PairALMainPage> {
                               print("总错误数"+totalWrongNum.toString());
                             }else{
                               showWrongPic=false;
-                              currentState=CurrentState.waiting;
-                              restartGame();
+                              Future.delayed(Duration(seconds: 1),(){
+                                showWrongPic=true;
+                                currentState=CurrentState.waiting;
+                                restartGame();
+                              });
                             }
                           }
                         });
@@ -818,8 +811,8 @@ class PairALMainPageState extends State<PairALMainPage> {
           right: setWidth(1035),
           child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
         ):Container(),
-        currentState==CurrentState.firstwait?showPrepareBackground():Container(),
-        currentState==CurrentState.firstwait?showPrepare():Container(),
+        currentState==CurrentState.waiting?showPrepareBackground():Container(),
+        currentState==CurrentState.waiting?showPrepare():Container(),
         currentState==CurrentState.questionDone?buildResultWidget():Container(),
       ],
     );
@@ -839,7 +832,6 @@ class PairALMainPageState extends State<PairALMainPage> {
 
 //多个状态
 enum CurrentState {
-  firstwait, //刚进入题目
   waiting, //刚进入界面等待
   questionPrepare, //题目闪烁
   doingQuestion, //答题时间
