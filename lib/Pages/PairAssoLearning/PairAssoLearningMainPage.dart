@@ -160,200 +160,184 @@ class PairALMainPageState extends State<PairALMainPage> {
     }
   }
 
-  //获取用户当前图片选择数量
-  int getNum(List a){
-    int temp=0;
-    for(int i=0;i<6;i++){
-      if(a[i]!=-1){
-        temp++;
-      }
-    }
-    return temp;
-  }
-
   //橘色框
   Widget squareYellowBox(int position){
-    return Expanded(
-        flex: 1,
-        child:Align(
-          child: Container(
-            width: setWidth(270),
-            height: setHeight(270),
-            decoration: BoxDecoration(
-                color: Color.fromARGB(255, 255, 242, 204),
-                border: Border.all(color: Colors.orangeAccent, width: 2.0),
-            ),
-            child: currentState==CurrentState.waiting?null:
-              currentState==CurrentState.questionPrepare?(){
-                checkAnswer(position);
-                if(showPicture[position]){
-                  return Column(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Text(""),
-                      ),
-                      Expanded(
-                          flex: 1,
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 1,
-                                child: Text(""),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('images/v4.0/PairAL/'+numToPicture[tempNum].toString()+'.png'),
-                                        fit: BoxFit.scaleDown,
-                                        alignment: Alignment.center,
-                                      )
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text(""),
-                              ),
-                            ],
-                          )
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(""),
-                      )
-                    ],
-                  );
-                }
-              }():
-            currentState==CurrentState.doingQuestion?
-            FlatButton(
-              color:Colors.transparent,
-              onPressed: disabledButton?(){}:(){
-                setState(() {
-                  //排除空点橘色方框的问题
-                  if(tempPic==-1){
-                    print("未选择图片，请重新选择~");
-                  }else{
-                    print("位置"+position.toString());
-                    tempUserList[position]=tempPic;
-                    answerPicture[position]=true;
-                    print("用户本轮选择："+tempUserList.toString());
-                    int temp=getNum(tempUserList);
-                    //达到最多图片选择，进行判断
-                    if(temp==checkpointDelayed[checkpoint-1]){
-                      disabledButton=true;
-                      //让结果图片同时显示1s在进行判断
-                      Future.delayed(Duration(seconds:1),(){
-                        setState(() {
-                          if(judgeList(question, tempUserList)){
-                            currentCorrectNum++;
-                            if(currentCorrectNum<2){
-                              showRightPic=false;
-                              print("当前关卡正确数："+currentCorrectNum.toString());
-                              Future.delayed(Duration(seconds: 1),(){
-                                showRightPic=true;
-                                currentState=CurrentState.waiting;
-                                startGame();
-                              });
-                            }else{
-                              if(checkpoint==4){
-                                totalCorrectNum+=currentCorrectNum;
-                                totalWrongNum+=currentWrongNum;
-                                currentState=CurrentState.questionDone;
-                                print("挑战成功，游戏结束");
-                                print("总正确数"+totalCorrectNum.toString());
-                                print("总错误数"+totalWrongNum.toString());
-                              }else{
-                                totalCorrectNum+=currentCorrectNum;
-                                totalWrongNum+=currentWrongNum;
-                                currentWrongNum=0;
-                                currentCorrectNum=0;
-                                showRightPic=false;
-                                //保证关卡数字同步更新
-                                Future.delayed(Duration(seconds:1),(){
-                                  checkpoint++;
-                                  showRightPic=true;
-                                  currentState=CurrentState.waiting;
-                                });
-                                print("当前关卡数："+checkpoint.toString());
-                                startGame();
-                              }
-                            }
-                          }else{
-                            currentWrongNum++;
-                            print("当前关卡错误次数："+currentWrongNum.toString());
-                            if(currentWrongNum==defaultNum){
-                              totalCorrectNum+=currentCorrectNum;
-                              totalWrongNum+=currentWrongNum;
-                              currentState=CurrentState.questionDone;
-                              print("挑战失败，游戏结束");
-                              print("总正确数"+totalCorrectNum.toString());
-                              print("总错误数"+totalWrongNum.toString());
-                            }else{
-                              showWrongPic=false;
-                              Future.delayed(Duration(seconds: 1),(){
-                                showWrongPic=true;
-                                currentState=CurrentState.waiting;
-                                restartGame();
-                              });
-                            }
-                          }
-                        });
-                      });
-                    }
-                  }
-                });
-              },
-              child: answerPicture[position]?Container(
-                width: maxWidth,
-                height: maxHeight,
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Text(""),
-                    ),
-                    Expanded(
-                        flex: 2,
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              flex: 1,
-                              child: Text(""),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage('images/v4.0/PairAL/'+numToPicture[tempUserList[position]].toString()+'.png'),
-                                      fit: BoxFit.scaleDown,
-                                      alignment: Alignment.center,
-                                    )
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(""),
-                            ),
-                          ],
-                        )
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(""),
-                    )
-                  ],
+    return Align(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 255, 242, 204),
+          border: Border.all(color: Colors.orangeAccent, width: 2.0),
+        ),
+        child: currentState==CurrentState.waiting?null:
+        currentState==CurrentState.questionPrepare?(){
+          checkAnswer(position);
+          if(showPicture[position]){
+            return Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
                 ),
-              ):Container(),
-            ) :null,
-          ),
-          alignment: Alignment.bottomCenter,
-        )
+                Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Text(""),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('images/v4.0/PairAL/'+numToPicture[tempNum].toString()+'.png'),
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.center,
+                                )
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(""),
+                        ),
+                      ],
+                    )
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                )
+              ],
+            );
+          }
+        }():
+        currentState==CurrentState.doingQuestion?
+        FlatButton(
+          color:Colors.transparent,
+          onPressed: disabledButton?(){}:(){
+            setState(() {
+              //排除空点橘色方框的问题
+              if(tempPic==-1){
+                print("未选择图片，请重新选择~");
+              }else{
+                print("位置"+position.toString());
+                tempUserList[position]=tempPic;
+                answerPicture[position]=true;
+                print("用户本轮选择："+tempUserList.toString());
+              }
+            });
+          },
+          child: answerPicture[position]?Container(
+            width: maxWidth,
+            height: maxHeight,
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                ),
+                Expanded(
+                    flex: 2,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Text(""),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('images/v4.0/PairAL/'+numToPicture[tempUserList[position]].toString()+'.png'),
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.center,
+                                )
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(""),
+                        ),
+                      ],
+                    )
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                )
+              ],
+            ),
+          ):Container(),
+        ) :null,
+      ),
+      alignment: Alignment.bottomCenter,
+    );
+  }
+
+  //加删除按钮的橘色框
+  Widget deleteYellowBox(int position){
+    return Expanded(
+      flex:1,
+      child:Container(
+        width: setWidth(300),
+        height: setHeight(300),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              flex:2,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 9,
+                    child: Text(""),
+                  ),
+                  Expanded(
+                    flex:2,
+                    child: Container(
+                      height: maxHeight,
+                      width: maxWidth,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        color: Color.fromARGB(255, 213, 232, 212),
+                        onPressed: (){
+                          if(currentState==CurrentState.doingQuestion){
+                            setState(() {
+                              tempUserList[position]=-1;
+                              answerPicture[position]=false;
+                              print("用户本轮选择："+tempUserList.toString());
+                            });
+                          }else{
+                            print("还未进入答题状态，无效删除");
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              flex:9,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 9,
+                    child: squareYellowBox(position),
+                  ),
+                  Expanded(
+                    flex:2,
+                    child: Text(""),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -423,6 +407,84 @@ class PairALMainPageState extends State<PairALMainPage> {
     );
   }
 
+  //确认本轮答案提交按钮
+  Widget confirmButton(){
+    return Expanded(
+        flex: 2,
+        child: Container(
+          width: maxWidth,
+          height: maxHeight,
+          child: RaisedButton(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            color: Color.fromARGB(255, 213, 232, 212),
+            onPressed: (){
+              if(currentState==CurrentState.doingQuestion){
+                setState(() {
+                  disabledButton=true;
+                  if(judgeList(question, tempUserList)){
+                    currentCorrectNum++;
+                    if(currentCorrectNum<2){
+                      showRightPic=false;
+                      print("当前关卡正确数："+currentCorrectNum.toString());
+                      Future.delayed(Duration(seconds: 1),(){
+                        showRightPic=true;
+                        currentState=CurrentState.waiting;
+                        startGame();
+                      });
+                    }else{
+                      if(checkpoint==4){
+                        totalCorrectNum+=currentCorrectNum;
+                        totalWrongNum+=currentWrongNum;
+                        currentState=CurrentState.questionDone;
+                        print("挑战成功，游戏结束");
+                        print("总正确数"+totalCorrectNum.toString());
+                        print("总错误数"+totalWrongNum.toString());
+                      }else{
+                        totalCorrectNum+=currentCorrectNum;
+                        totalWrongNum+=currentWrongNum;
+                        currentWrongNum=0;
+                        currentCorrectNum=0;
+                        showRightPic=false;
+                        //保证关卡数字同步更新
+                        Future.delayed(Duration(seconds:1),(){
+                          checkpoint++;
+                          showRightPic=true;
+                          currentState=CurrentState.waiting;
+                        });
+                        print("当前关卡数："+checkpoint.toString());
+                        startGame();
+                      }
+                    }
+                  }else{
+                    currentWrongNum++;
+                    print("当前关卡错误次数："+currentWrongNum.toString());
+                    if(currentWrongNum==defaultNum){
+                      totalCorrectNum+=currentCorrectNum;
+                      totalWrongNum+=currentWrongNum;
+                      currentState=CurrentState.questionDone;
+                      print("挑战失败，游戏结束");
+                      print("总正确数"+totalCorrectNum.toString());
+                      print("总错误数"+totalWrongNum.toString());
+                    }else{
+                      showWrongPic=false;
+                      Future.delayed(Duration(seconds: 1),(){
+                        showWrongPic=true;
+                        currentState=CurrentState.waiting;
+                        restartGame();
+                      });
+                    }
+                  }
+                });
+              }else{
+                print("还未进入答题状态，无效确认");
+              }
+            },
+            child: Text("确认",style: TextStyle(fontSize: setSp(70), fontWeight: FontWeight.bold, color: Colors.blueGrey),),
+          ),
+        )
+    );
+  }
+
   //上面的六个框
   Widget buildTopWidget(){
     return Expanded(
@@ -461,7 +523,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                           flex: 2,
                           child: Text(""),
                       ),
-                      squareYellowBox(0),
+                      deleteYellowBox(0),
                       Expanded(
                         flex: 4,
                         child: Text(""),
@@ -473,12 +535,12 @@ class PairALMainPageState extends State<PairALMainPage> {
                   flex: 1,
                   child:Row(
                     children: <Widget>[
-                      squareYellowBox(1),
+                      deleteYellowBox(1),
                       Expanded(
                           flex: 7,
                           child: Text("")
                       ),
-                      squareYellowBox(2),
+                      deleteYellowBox(2),
                     ],
                   )
               ),
@@ -486,12 +548,12 @@ class PairALMainPageState extends State<PairALMainPage> {
                   flex: 1,
                   child:Row(
                     children: <Widget>[
-                      squareYellowBox(3),
+                      deleteYellowBox(3),
                       Expanded(
                           flex: 7,
                           child: Text("")
                       ),
-                      squareYellowBox(4),
+                      deleteYellowBox(4),
                     ],
                   )
               ),
@@ -503,7 +565,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                         flex: 4,
                         child: Text(""),
                       ),
-                      squareYellowBox(5),
+                      deleteYellowBox(5),
                       Expanded(
                         flex: 4,
                         child: Text(""),
@@ -543,7 +605,12 @@ class PairALMainPageState extends State<PairALMainPage> {
                       squareGreenBox(2),
                       squareGreenBox(3),
                       Expanded(
-                        flex: 7,
+                        flex: 2,
+                        child: Text(""),
+                      ),
+                      confirmButton(),
+                      Expanded(
+                        flex: 3,
                         child: Text(""),
                       ),
                     ],
