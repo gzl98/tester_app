@@ -522,12 +522,12 @@ class testPairALMainPageState extends State<testPairALMainPage> {
 
   //主界面布局
 
-  double _top = 0.0; //距顶部的偏移
-  double _left = 0.0;//距左边的偏移
+  // double top = 0.0; //距顶部的偏移
+  // double left = 0.0;//距左边的偏移
 
 
   //静止状态下的offset
-  Offset idleOffset=Offset(, 0);
+  Offset idleOffset=Offset(0, 0);
   //本次移动的offset
   Offset moveOffset=Offset(0, 0);
   //最后一次down事件的offset

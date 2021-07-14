@@ -73,17 +73,17 @@ final Map<String, String> questionPairAssoLearning = {
   "questionNavContent": "记住不同图案的出现位置。",
   "questionNavPurpose": "主要评估短时间的记忆能力。。",
   "benefitExample": "经过训练您的短期记忆力可以得到评估与提升。",
-  "questionImgPath": "images/v4.0/PairAL/PairAL.png",
+  "questionImgPath": "images/v4.0/PairAL/newPairAL.png",
   "nextPageRouter": PairALMainPage.routerName,
   "questionPurpose":
   "这项测验主要评估您的短期记忆能力，请记住不同图案出现的位置，需要以最少的错误次数完成四关测试。",
   //第一个页面
   "backgroundImagePath1":
-  "images/v4.0/PairAL/PairAL.png",
+  "images/v4.0/PairAL/newPairAL.png",
   //第二个页面
   "questionRules": "屏幕中的灯光会按照一定的顺序依次闪烁，停止后请按照刚才的顺序依次点击对应的按钮。",
   "backgroundImagePath2":
-  "images/v4.0/PairAL/PairAL.png",
+  "images/v4.0/PairAL/newPairAL.png",
 };
 //钟表测试
 final Map<String, String> drawClockTest = {
