@@ -37,7 +37,7 @@ class PairALMainPageState extends State<PairALMainPage> {
   //出题器
   PairALQuestion pairALQuestion;
   //当前状态（初始为等待）
-  CurrentState currentState=CurrentState.waiting;
+  CurrentState currentState=CurrentState.firstwait;
   //当前关卡正确次数(正确两次进入下一关)
   int currentCorrectNum=0;
   //总答对次数
@@ -78,7 +78,10 @@ class PairALMainPageState extends State<PairALMainPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
-    startGame();
+    Future.delayed(Duration(seconds: 2),(){
+      currentState=CurrentState.waiting;
+      startGame();
+    });
   }
 
   //强制退出
@@ -559,6 +562,61 @@ class PairALMainPageState extends State<PairALMainPage> {
     );
   }
 
+  //准备开始背景
+  Widget showPrepareBackground(){
+    return Positioned(
+      top: setHeight(630),
+      right: setWidth(860),
+      child: Container(
+        margin: EdgeInsets.only(bottom: setHeight(80)),
+        width: setWidth(820),
+        height: setHeight(120),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.35),
+              blurRadius: setWidth(5),
+              offset: Offset(setWidth(0), setHeight(3)),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  //准备开始颜色
+  Widget showPrepare(){
+    return Positioned(
+      top: setHeight(630),
+      right: setWidth(860),
+      child: Container(
+        margin: EdgeInsets.only(bottom: setHeight(80)),
+        alignment: Alignment.center,
+        width: setWidth(850),
+        height: setHeight(120),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color.fromARGB(255, 236, 239, 238),
+              Color.fromARGB(255, 250, 250, 250),
+              Color.fromARGB(255, 236, 239, 238),
+            ],
+          ),
+        ),
+        child: Text(
+          "准 备 开 始",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: setSp(70), color: Colors.deepOrangeAccent),
+        ),
+      ),
+    );
+  }
+
+
+
   double floatWindowRadios = 30;
   TextStyle resultTextStyle = TextStyle(
       fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blueGrey);
@@ -760,6 +818,8 @@ class PairALMainPageState extends State<PairALMainPage> {
           right: setWidth(1035),
           child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
         ):Container(),
+        currentState==CurrentState.firstwait?showPrepareBackground():Container(),
+        currentState==CurrentState.firstwait?showPrepare():Container(),
         currentState==CurrentState.questionDone?buildResultWidget():Container(),
       ],
     );
@@ -779,6 +839,7 @@ class PairALMainPageState extends State<PairALMainPage> {
 
 //多个状态
 enum CurrentState {
+  firstwait, //刚进入题目
   waiting, //刚进入界面等待
   questionPrepare, //题目闪烁
   doingQuestion, //答题时间
