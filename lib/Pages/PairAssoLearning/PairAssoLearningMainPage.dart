@@ -46,7 +46,15 @@ class PairALMainPageState extends State<PairALMainPage> {
   int totalWrongNum=0;
   //当前关卡错误次数
   int currentWrongNum=0;
-  //每次的答案矩阵，先4再6
+  //记录每一关正确数
+  List levelCorrectNum = new List<int>.generate(4, (int i) {
+    return -1;
+  });
+  //记录每一关错误数
+  List levelWrongNum = new List<int>.generate(4, (int i) {
+    return -1;
+  });
+  //每次的答案矩阵，6个数组位置对应四张图片
   List question;
   //bool判断每张图片是否应该展示
   List showPicture = new List<bool>.generate(6, (int i) {
@@ -435,6 +443,10 @@ class PairALMainPageState extends State<PairALMainPage> {
                       if(checkpoint==4){
                         totalCorrectNum+=currentCorrectNum;
                         totalWrongNum+=currentWrongNum;
+                        levelCorrectNum[checkpoint-1]=currentCorrectNum;
+                        levelWrongNum[checkpoint-1]=currentWrongNum;
+                        print("关卡"+checkpoint.toString()+"错题数为："+levelWrongNum[checkpoint-1].toString()+
+                            "，答题数为："+(levelCorrectNum[checkpoint-1]+levelWrongNum[checkpoint-1]).toString());
                         currentState=CurrentState.questionDone;
                         print("挑战成功，游戏结束");
                         print("总正确数"+totalCorrectNum.toString());
@@ -442,6 +454,10 @@ class PairALMainPageState extends State<PairALMainPage> {
                       }else{
                         totalCorrectNum+=currentCorrectNum;
                         totalWrongNum+=currentWrongNum;
+                        levelCorrectNum[checkpoint-1]=currentCorrectNum;
+                        levelWrongNum[checkpoint-1]=currentWrongNum;
+                        print("关卡"+checkpoint.toString()+"错题数为："+levelWrongNum[checkpoint-1].toString()+
+                            "，答题数为："+(levelCorrectNum[checkpoint-1]+levelWrongNum[checkpoint-1]).toString());
                         currentWrongNum=0;
                         currentCorrectNum=0;
                         showRightPic=false;
@@ -461,6 +477,10 @@ class PairALMainPageState extends State<PairALMainPage> {
                     if(currentWrongNum==defaultNum){
                       totalCorrectNum+=currentCorrectNum;
                       totalWrongNum+=currentWrongNum;
+                      levelCorrectNum[checkpoint-1]=currentCorrectNum;
+                      levelWrongNum[checkpoint-1]=currentWrongNum;
+                      print("关卡"+checkpoint.toString()+"错题数为："+levelWrongNum[checkpoint-1].toString()+
+                          "，答题数为："+(levelCorrectNum[checkpoint-1]+levelWrongNum[checkpoint-1]).toString());
                       currentState=CurrentState.questionDone;
                       print("挑战失败，游戏结束");
                       print("总正确数"+totalCorrectNum.toString());
@@ -674,8 +694,6 @@ class PairALMainPageState extends State<PairALMainPage> {
       ),
     );
   }
-
-
 
   double floatWindowRadios = 30;
   TextStyle resultTextStyle = TextStyle(
