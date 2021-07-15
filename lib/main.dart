@@ -17,7 +17,7 @@ import 'Utils/Utils.dart';
 import 'package:tester_app/Pages/testPairAL/testPairALMainPage.dart';
 
 // String bootPage = GooseFlyingSouthPage.routerName;
-String bootPage = PairALMainPage.routerName;
+String bootPage = LoginPage.routerName;
 
 void main() {
   runApp(MyApp());

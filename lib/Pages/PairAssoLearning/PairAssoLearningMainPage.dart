@@ -48,11 +48,11 @@ class PairALMainPageState extends State<PairALMainPage> {
   int currentWrongNum=0;
   //记录每一关正确数
   List levelCorrectNum = new List<int>.generate(4, (int i) {
-    return -1;
+    return 0;
   });
   //记录每一关错误数
   List levelWrongNum = new List<int>.generate(4, (int i) {
-    return -1;
+    return 0;
   });
   //每次的答案矩阵，6个数组位置对应四张图片
   List question;
@@ -301,7 +301,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                 children: <Widget>[
                   Expanded(
                     flex: 9,
-                    child: Text(""),
+                    child: Container(),
                   ),
                   Expanded(
                     flex:2,
@@ -309,6 +309,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                       height: maxHeight,
                       width: maxWidth,
                       child: RaisedButton(
+                        padding: EdgeInsets.only(left: setWidth(0)),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         color: Color.fromARGB(255, 213, 232, 212),
                         onPressed: (){
@@ -322,6 +323,7 @@ class PairALMainPageState extends State<PairALMainPage> {
                             print("还未进入答题状态，无效删除");
                           }
                         },
+                        child: Text("X",style: TextStyle(fontSize: setSp(40)),),
                       ),
                     ),
                   ),
@@ -695,6 +697,57 @@ class PairALMainPageState extends State<PairALMainPage> {
     );
   }
 
+  //构建结果列表列表
+  Widget buildListWidget() {
+    TextStyle titleStyle = TextStyle(fontSize: setSp(45), fontWeight: FontWeight.w900, color: Colors.white);
+    TextStyle contentStyle = TextStyle(fontSize: setSp(40), fontWeight: FontWeight.bold);
+    List<TableRow> table = [
+      TableRow(
+          decoration: BoxDecoration(color: Colors.black54),
+          children: [
+            Container(
+                alignment: Alignment.center,
+                height: setHeight(120),
+                child: Text("关卡数", textAlign: TextAlign.center, style: titleStyle)
+            ),
+            Text("错误率", textAlign: TextAlign.center, style: titleStyle),
+          ]
+      )
+    ];
+
+    for(int i=0;i<5;i++){
+      List<Widget> tableRow = [];
+      tableRow.add(Container(
+        alignment: Alignment.center,
+        height: setHeight(100),
+        child: Text(i==4?"总错误率":(i+1).toString(),
+            textAlign: TextAlign.center, style: contentStyle),
+      ));
+      tableRow.add(Container(
+        alignment: Alignment.center,
+        height: setHeight(100),
+        child: Text(i==4?(totalWrongNum*100/(totalWrongNum+totalCorrectNum)).truncate().toString()+"%"
+            :((levelCorrectNum[i]+levelWrongNum[i]==0)?"本关卡未测试":(levelWrongNum[i]*100/(levelCorrectNum[i]+levelWrongNum[i])).truncate().toString()+"%"),
+            textAlign: TextAlign.center, style: contentStyle),
+      ));
+      table.add(TableRow(
+          decoration: BoxDecoration(
+              color: i % 2 == 0 ? Colors.white : Colors.grey[100],
+              border: Border(
+                  bottom: BorderSide(color: Color.fromARGB(255, 50, 50, 50)))),
+          children: tableRow));
+    }
+
+    return Container(
+      child: Table(
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: table,
+      ),
+    );
+  }
+
+
+
   double floatWindowRadios = 30;
   TextStyle resultTextStyle = TextStyle(
       fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blueGrey);
@@ -708,10 +761,10 @@ class PairALMainPageState extends State<PairALMainPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: setHeight(200)),
+          SizedBox(height: setHeight(100)),
           Container(
             width: setWidth(800),
-            height: setHeight(450),
+            height: setHeight(800),
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: Color.fromARGB(255, 229, 229, 229),
@@ -742,83 +795,10 @@ class PairALMainPageState extends State<PairALMainPage> {
                       color: Colors.blue),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: setHeight(30)),
-                height: setHeight(230),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: Align(
-                            child:Text(
-                                "正确数：" +
-                                    totalCorrectNum.toString() +
-                                    "      ",
-                                style: resultTextStyle),
-                            alignment: Alignment.centerLeft,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child:Align(
-                            child:Text(
-                                "错误数：" + totalWrongNum.toString() + "      ",
-                                style: resultTextStyle),
-                            alignment: Alignment.centerLeft,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                        Expanded(
-                            flex: 5,
-                            child:Align(
-                              child:Text(
-                                  "错误率：" + ((totalWrongNum*100)/(totalCorrectNum+totalWrongNum)).truncate().toString() + " %",
-                                  style: resultTextStyle),
-                              alignment: Alignment.centerLeft,
-                            )
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Text(""),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              buildListWidget(),
             ]),
           ),
-          SizedBox(height: setHeight(300)),
+          SizedBox(height: setHeight(200)),
           Container(
             width: setWidth(500),
             height: setHeight(120),
@@ -872,7 +852,7 @@ class PairALMainPageState extends State<PairALMainPage> {
   //主界面布局
   @override
   Widget buildPage(BuildContext context) {
-    // TODO: implement build
+    //TODO: 定义主体布局，长宽分别为1960*1350像素
     return Stack(
       children: <Widget>[
         Container(
