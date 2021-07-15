@@ -827,8 +827,8 @@ class PairALMainPageState extends State<PairALMainPage> {
               onPressed: () {
                 //上传数据
                 Map map = {
-                  "正确数": totalCorrectNum,
-                  "错误数": totalWrongNum,
+                  "关卡正确数": levelCorrectNum,
+                  "关卡错误数": levelWrongNum,
                 };
                 String text = json.encode(map);
                 setAnswer(questionIdPairAssoLearning,
