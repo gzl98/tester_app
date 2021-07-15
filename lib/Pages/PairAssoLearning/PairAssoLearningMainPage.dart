@@ -826,13 +826,13 @@ class PairALMainPageState extends State<PairALMainPage> {
                   MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
                 //上传数据
-                Map map = {
-                  "关卡正确数": levelCorrectNum,
-                  "关卡错误数": levelWrongNum,
-                };
-                String text = json.encode(map);
-                setAnswer(questionIdPairAssoLearning,
-                    score: totalCorrectNum, answerText: text);
+                // Map map = {
+                //   "关卡正确数": levelCorrectNum,
+                //   "关卡错误数": levelWrongNum,
+                // };
+                // String text = json.encode(map);
+                // setAnswer(questionIdPairAssoLearning,
+                //     score: totalCorrectNum, answerText: text);
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
                 //加入该题目结束标志
