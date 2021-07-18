@@ -63,6 +63,7 @@ flutter:
     - images/v4.0/ClockDraw/
     - images/v3.0/NumberReasoning/
     - images/v3.0/MemoryMatrix/
+    - images/v4.0/shortMemTest/
     - images/Goose/
     - assets/sounds/
   #   - images/a_dot_burr.jpeg

@@ -9,6 +9,7 @@ import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/MemoryMatrix/MemoryMatrix.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 import 'package:tester_app/Pages/PairAssoLearning/PairAssoLearningMainPage.dart';
+import 'package:tester_app/Pages/ShortTermMemoryTest/ShortTermMemoryPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Fragments/SecondFragment.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         ClockDrawPage.routerName:(context) => ClockDrawPage(),
         testPairALMainPage.routerName:(context) => testPairALMainPage(),
         GooseFlyingSouthPage.routerName: (context) => GooseFlyingSouthPage(),
+        ShortItemMemoryTestPage.routerName:(context) => ShortItemMemoryTestPage(),
       },
     );
   }

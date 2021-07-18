@@ -1,6 +1,7 @@
 import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
 import 'package:tester_app/Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
+import 'package:tester_app/Pages/ShortTermMemoryTest/ShortTermMemoryPage.dart';
 
 import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'Pages/ClockDrawTest/ClockDrawTestView.dart';
@@ -124,6 +125,25 @@ final Map<String, String> gooseFlyingSouth = {
   "backgroundImagePath2":
   "images/Goose/GooseFlySouth.png",
 };
+//雁南飞demo
+final Map<String, String> shortTermMemoryTest = {
+  //导航页面
+  "questionAbility": "短期记忆",
+  "questionTitle": "短期记忆测试",
+  "questionNavContent": "被试需要记住网格上图案的形状，然后从记忆中选出图案以及其相对的位置",
+  "questionNavPurpose": "提高保存在记忆中，并且立即以相同的顺序再回忆出信息的能力",
+  "benefitExample": "训练后您的记忆力、注意力会提高，如在与人交流时会更容易集中精力",
+  "questionImgPath": "images/v4.0/shortMemTest/testPic.jpg",
+  "nextPageRouter": ShortItemMemoryTestPage.routerName,
+  "questionPurpose": "记忆跨度是“编码”，以及将其保存在记忆中，并且立即以相同的顺序再回忆出信息的能力。",
+  //第一个页面
+  "backgroundImagePath1":
+  "images/v4.0/shortMemTest/testPic.jpg",
+  //第二个页面
+  "questionRules": "被试需要记住网格上图案的形状，然后从记忆中选出图案以及其相对的位置。随着测试的进行，难度会越来越大。整个测试有21组，共 63 分。",
+  "backgroundImagePath2":
+  "images/v4.0/shortMemTest/shortMemTestNote.png",
+};
 List testList = [
   QuestionInfo.fromMap(questionMemoryMatrix),
   QuestionInfo.fromMap(questionNumberReasoning),
@@ -131,6 +151,7 @@ List testList = [
   QuestionInfo.fromMap(questionPairAssoLearning),
   QuestionInfo.fromMap(drawClockTest),
   QuestionInfo.fromMap(gooseFlyingSouth),
+  QuestionInfo.fromMap(shortTermMemoryTest),
 ];
 
 //创建每道题是否完成的列表
