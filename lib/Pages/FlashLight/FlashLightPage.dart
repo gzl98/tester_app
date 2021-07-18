@@ -488,7 +488,7 @@ class FlashLightPageState extends State<FlashLightPage> {
                                     100 /
                                     (_wmsQuestion.correctCounts +
                                         _wmsQuestion.wrongCounts))
-                                .toString() +
+                                .toStringAsFixed(2) +
                             "%    ",
                         style: resultTextStyle),
                   ],

@@ -35,9 +35,10 @@ class FlashLightQuestion {
     bool isSame = false;
     while (len-- > 0) {
       int num = _random.nextInt(max);
-      if (isSame) num = (num + _random.nextInt(max - 1) + 1) % max;
+      bool b = num == _questionList[_questionList.length - 1];
+      if (isSame && b) num = (num + _random.nextInt(max - 1) + 1) % max;
       _questionList.add(num);
-      isSame = num == _questionList[_questionList.length - 2];
+      isSame = b;
     }
   }
 
