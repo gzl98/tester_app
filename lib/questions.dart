@@ -51,7 +51,7 @@ final Map<String, String> questionFlashLight = {
   "questionAbility": "空间记忆能力",
   "questionTitle": "闪灯测试",
   "questionNavContent": "记住灯光闪烁的先后顺序。",
-  "questionNavPurpose": "主要评估短时空间记忆水平。。",
+  "questionNavPurpose": "主要评估短时空间记忆水平。",
   "benefitExample": "经过训练您的短时空间记忆能力会得到提升。",
   "questionImgPath": "images/v4.0/FlashLight/FlashLight.png",
   "nextPageRouter": FlashLightPage.routerName,
@@ -59,11 +59,11 @@ final Map<String, String> questionFlashLight = {
   "这项测验主要评估您的短时空间记忆能力，请记住灯光闪烁的先后次序，记得越多，记忆力越好。",
   //第一个页面
   "backgroundImagePath1":
-      "images/v4.0/FlashLight/FlashLight.png",
+      "images/v4.0/FlashLight/FlashLight1.jpg",
   //第二个页面
   "questionRules": "屏幕中的六个橙色方框回同时闪烁绿色框中的四种图片一段时间，消失后请按照刚才的位置，选择四张图片出现的位置。",
   "backgroundImagePath2":
-      "images/v4.0/FlashLight/FlashLight.png",
+      "images/v4.0/FlashLight/FlashLight2.jpg",
 };
 //配对学习测试
 final Map<String, String> questionPairAssoLearning = {

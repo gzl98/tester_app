@@ -505,7 +505,7 @@ class TestNav extends State<TestNavPage> {
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     getTestFinishList();
     super.initState();
-    this.initUserInfo();
+    // this.initUserInfo();
   }
 
   void getTestFinishList(){

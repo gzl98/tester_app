@@ -142,8 +142,23 @@ class FlashLightPageState extends State<FlashLightPage> {
   }
 
   List<Widget> buildClickedButtons() {
-    List<double> buttonX = [1280, 660, 1900, 1280];
-    List<double> buttonY = [270, 700, 700, 1090];
+    double centerX = 2560 / 2;
+    double centerY = 1600 / 2 - 115;
+    double spaceX = 650;
+    double spaceY = 420;
+    List<double> buttonX = [
+      centerX,
+      centerX - spaceX,
+      centerX + spaceX,
+      centerX
+    ];
+    List<double> buttonY = [
+      centerY - spaceY,
+      centerY,
+      centerY,
+      centerY + spaceY
+    ];
+    double buttonRadio = 300;
     List<Color> buttonColors = [
       Color.fromARGB(255, 130, 0, 0),
       Color.fromARGB(255, 0, 130, 0),
@@ -156,7 +171,6 @@ class FlashLightPageState extends State<FlashLightPage> {
       Color.fromARGB(255, 0, 123, 255),
       Color.fromARGB(255, 230, 230, 0),
     ];
-    double buttonRadio = 240;
     List<Widget> buttons = [];
     for (int i = 0; i < buttonX.length; i++) {
       ElevatedButton button = ElevatedButton(
@@ -165,6 +179,8 @@ class FlashLightPageState extends State<FlashLightPage> {
             : null,
         child: Container(),
         style: ButtonStyle(
+          animationDuration: Duration(milliseconds: 10),
+          overlayColor: MaterialStateProperty.all(buttonLightColors[i]),
           backgroundColor: MaterialStateProperty.all(
               i == index ? buttonLightColors[i] : buttonColors[i]),
           elevation: MaterialStateProperty.all(setWidth(10)),
@@ -192,14 +208,6 @@ class FlashLightPageState extends State<FlashLightPage> {
     //触发方形按钮点击事件，index为按钮的id值
     if (currentState != CurrentState.doingQuestion)
       return; //如果不是开始答题状态，点击按钮没有效果
-    // setState(() {
-    //   this.index = index;
-    //   Future.delayed(Duration(milliseconds: 250), () {
-    //     setState(() {
-    //       this.index = null;
-    //     });
-    //   });
-    // });
     if (!_wmsQuestion.currentQuestionIsDone()) {
       //当前题目还没有答完
       answerList.last.add(index);
@@ -515,7 +523,7 @@ class FlashLightPageState extends State<FlashLightPage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                testFinishedList[questionIdFlashLight] = true;
+                testFinishedList[questionIdFlashLight] = false;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },

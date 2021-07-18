@@ -17,7 +17,8 @@ import 'Utils/Utils.dart';
 import 'package:tester_app/Pages/testPairAL/testPairALMainPage.dart';
 
 // String bootPage = GooseFlyingSouthPage.routerName;
-String bootPage = LoginPage.routerName;
+// String bootPage = LoginPage.routerName;
+String bootPage = ShowInfoPage.routerName;
 
 void main() {
   runApp(MyApp());
@@ -43,8 +44,8 @@ class MyApp extends StatelessWidget {
         MemoryMatrixPage.routerName: (context) => MemoryMatrixPage(),
         PairALMainPage.routerName: (context) => PairALMainPage(),
         FlashLightPage.routerName: (context) => FlashLightPage(),
-        ClockDrawPage.routerName:(context) => ClockDrawPage(),
-        testPairALMainPage.routerName:(context) => testPairALMainPage(),
+        ClockDrawPage.routerName: (context) => ClockDrawPage(),
+        testPairALMainPage.routerName: (context) => testPairALMainPage(),
         GooseFlyingSouthPage.routerName: (context) => GooseFlyingSouthPage(),
       },
     );
