@@ -84,7 +84,7 @@ final Map<String, String> questionPairAssoLearning = {
   //第二个页面
   "questionRules": "屏幕中的灯光会按照一定的顺序依次闪烁，停止后请按照刚才的顺序依次点击对应的按钮。",
   "backgroundImagePath2":
-  "images/v4.0/PairAL/newPairAL.png",
+  "images/v4.0/PairAL/newPairALNote.png",
 };
 //钟表测试
 final Map<String, String> drawClockTest = {
