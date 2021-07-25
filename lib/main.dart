@@ -9,6 +9,7 @@ import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/MemoryMatrix/MemoryMatrix.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 import 'package:tester_app/Pages/PairAssoLearning/PairAssoLearningMainPage.dart';
+import 'package:tester_app/Pages/PictureSequenceMemoryTest/PictureSequenceMemoryTestPage.dart';
 import 'package:tester_app/Pages/ShortTermMemoryTest/ShortTermMemoryPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
@@ -19,7 +20,7 @@ import 'package:tester_app/Pages/testPairAL/testPairALMainPage.dart';
 
 // String bootPage = GooseFlyingSouthPage.routerName;
 // String bootPage = LoginPage.routerName;
-String bootPage = ShowInfoPage.routerName;
+String bootPage = PictureSequenceMemoryTestPage.routerName;
 
 void main() {
   runApp(MyApp());
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         testPairALMainPage.routerName: (context) => testPairALMainPage(),
         GooseFlyingSouthPage.routerName: (context) => GooseFlyingSouthPage(),
         ShortItemMemoryTestPage.routerName:(context) => ShortItemMemoryTestPage(),
+        PictureSequenceMemoryTestPage.routerName: (context) => PictureSequenceMemoryTestPage(),
       },
     );
   }
