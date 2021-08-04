@@ -26,4 +26,5 @@ const questionIdFlashLight = 2;
 const questionIdPairAssoLearning=3;
 const questionIdDrawClock=4;
 const questionIdShortMemTest =6;
+const questionIdPictureSequenceMemoryTest = 7;
 

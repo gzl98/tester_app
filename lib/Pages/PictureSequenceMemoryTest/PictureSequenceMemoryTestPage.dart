@@ -6,7 +6,11 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/Utils.dart';
+import 'package:tester_app/config/config.dart';
+
+import '../../questions.dart';
 
 final int imageWidth = 100;
 final int imageHeight = 60;
@@ -151,9 +155,16 @@ class PictureSequenceMemoryTestPageState
   int ms = 0;
   int score = -1;
   int questionStatus = 0;
+  String imagePath = "supermarket";
   Timer _timer;
   Timer _imageTimer;
   Timer _setToTimer;
+  var pictureNames = [
+    [1, 7, 8, 10, 11, 14],
+    [1, 3, 4, 7, 8, 9, 10, 11, 14],
+    [1, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  ];
 
   Future<ui.Image> getAssetImage(String asset, {width, height}) async {
     ByteData data = await rootBundle.load(asset);
@@ -174,11 +185,12 @@ class PictureSequenceMemoryTestPageState
       number = n;
       selectPictureItemIndex = -1;
       for (int i = 0; i < 15; i++) {
-        originalOffset.add(Offset(160 + (i % 5) * 140.0, 100 + (i ~/ 5) * 130.0));
+        originalOffset
+            .add(Offset(160 + (i % 5) * 140.0, 100 + (i ~/ 5) * 130.0));
       }
       score = -1;
     });
-    _imageTimer = Timer.periodic(Duration(seconds: 4), (timer) {
+    _imageTimer = Timer.periodic(Duration(seconds: 5), (timer) {
       selectPictureItemIndex++;
       if (selectPictureItemIndex < 3 * number) {
         isExist.add(false);
@@ -202,18 +214,22 @@ class PictureSequenceMemoryTestPageState
   }
 
   void start() async {
-    print("start: $selectPictureItemIndex");
+    // print("start: $selectPictureItemIndex");
     List<ui.Image> pictures = [
       await getAssetImage(
-          'images/v4.0/PictureSequenceMemoryTest/数字' +
-              (selectPictureItemIndex + 1).toString() +
-              '.png',
+          'images/v4.0/PictureSequenceMemoryTest/' +
+              imagePath +
+              '/' +
+              (pictureNames[number - 2][selectPictureItemIndex]).toString() +
+              '.jpg',
           width: imageWidth * 3,
           height: imageHeight * 3),
       await getAssetImage(
-          'images/v4.0/PictureSequenceMemoryTest/数字' +
-              (selectPictureItemIndex + 1).toString() +
-              '.png',
+          'images/v4.0/PictureSequenceMemoryTest/' +
+              imagePath +
+              '/' +
+              (pictureNames[number - 2][selectPictureItemIndex]).toString() +
+              '.jpg',
           width: imageWidth * 2,
           height: imageHeight * 2)
     ];
@@ -254,9 +270,11 @@ class PictureSequenceMemoryTestPageState
           _timer.cancel();
         }
         pictureItems[selectPictureItemIndex].pictures[0] = await getAssetImage(
-            'images/v4.0/PictureSequenceMemoryTest/数字' +
-                (selectPictureItemIndex + 1).toString() +
-                '.png',
+            'images/v4.0/PictureSequenceMemoryTest/' +
+                imagePath +
+                '/' +
+                (pictureNames[number - 2][selectPictureItemIndex]).toString() +
+                '.jpg',
             width: (3 * imageWidth - 2 * imageWidth * (ms / 1500)).floor(),
             height: (3 * imageHeight - 2 * imageHeight * (ms / 1500)).floor());
         setState(() {
@@ -273,24 +291,28 @@ class PictureSequenceMemoryTestPageState
   }
 
   void finishCheck() {
-    print(isExist);
-    for (int i = 0; i < 3 * number; i++) {
-      print("$i, ${pictureItems[i].position}");
-    }
+    // print(isExist);
+    // for (int i = 0; i < 3 * number; i++) {
+    //   print("$i, ${pictureItems[i].position}");
+    // }
     bool finish = true;
     for (bool r in isExist) {
       finish = finish && r;
     }
     if (finish) {
-      for (int i = 0; i < 3 * number; i++) {
-        print("$i, ${pictureItems[i].position}");
-        if (i == pictureItems[i].position) {
-          score++;
-        } else {
-          print(score);
-          break;
+      setState(() {
+        startGame = false;
+        score = 0;
+        for (int i = 0; i < 3 * number; i++) {
+          // print("$i, ${pictureItems[i].position}");
+          if (i == pictureItems[i].position) {
+            score++;
+          } else {
+            break;
+          }
         }
-      }
+        questionStatus = 2;
+      });
     }
   }
 
@@ -409,7 +431,7 @@ class PictureSequenceMemoryTestPageState
       },
       onPanUpdate: (DragUpdateDetails details) {
         if (startGame) {
-          print(details.globalPosition);
+          // print(details.globalPosition);
           setState(() {
             if (selectPictureItemIndex != -1) {
               Offset offset = Offset(
@@ -441,11 +463,28 @@ class PictureSequenceMemoryTestPageState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("难度选择", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
-            ElevatedButton(onPressed: () { questionStart(2); }, child: Text("3-4", style: TextStyle(fontSize: 30.0))),
-            ElevatedButton(onPressed: () { questionStart(3); }, child: Text("5-6", style: TextStyle(fontSize: 30.0))),
-            ElevatedButton(onPressed: () { questionStart(4); }, child: Text("7-8", style: TextStyle(fontSize: 30.0))),
-            ElevatedButton(onPressed: () { questionStart(5); }, child: Text("9+ ", style: TextStyle(fontSize: 30.0))),
+            Text("难度选择",
+                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+            ElevatedButton(
+                onPressed: () {
+                  questionStart(2);
+                },
+                child: Text("3-4", style: TextStyle(fontSize: 30.0))),
+            ElevatedButton(
+                onPressed: () {
+                  questionStart(3);
+                },
+                child: Text("5-6", style: TextStyle(fontSize: 30.0))),
+            ElevatedButton(
+                onPressed: () {
+                  questionStart(4);
+                },
+                child: Text("7-8", style: TextStyle(fontSize: 30.0))),
+            ElevatedButton(
+                onPressed: () {
+                  questionStart(5);
+                },
+                child: Text("9+ ", style: TextStyle(fontSize: 30.0))),
           ],
         ),
       ),
@@ -453,14 +492,81 @@ class PictureSequenceMemoryTestPageState
   }
 
   Widget showResult() {
-    return Container();
+    TextStyle titleStyle = TextStyle(
+        fontSize: setSp(45), fontWeight: FontWeight.w900, color: Colors.white);
+    TextStyle contentStyle =
+        TextStyle(fontSize: setSp(40), fontWeight: FontWeight.bold);
+    List<TableRow> table = [
+      TableRow(decoration: BoxDecoration(color: Colors.black54), children: [
+        Container(
+            alignment: Alignment.center,
+            height: setHeight(120),
+            child: Text("主题", textAlign: TextAlign.center, style: titleStyle)),
+        Text("得分", textAlign: TextAlign.center, style: titleStyle),
+      ])
+    ];
+    List<Widget> tableRow = [];
+    tableRow.add(Container(
+      alignment: Alignment.center,
+      height: setHeight(100),
+      child: Text("去超市", textAlign: TextAlign.center, style: contentStyle),
+    ));
+    tableRow.add(Container(
+      alignment: Alignment.center,
+      height: setHeight(100),
+      child: Text(score.toString(),
+          textAlign: TextAlign.center, style: contentStyle),
+    ));
+    table.add(TableRow(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+                bottom: BorderSide(color: Color.fromARGB(255, 50, 50, 50)))),
+        children: tableRow));
+    return Center(
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("测试结果",
+                style: TextStyle(
+                    fontSize: setSp(70),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87)),
+            SizedBox(height: setHeight(80)),
+            Container(
+              width: setWidth(1000),
+              child: Table(
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: table,
+              ),
+            ),
+            SizedBox(height: setHeight(180)),
+            ElevatedButton(
+              onPressed: () {
+                testFinishedList[questionIdPictureSequenceMemoryTest] = false;
+                Navigator.pushNamedAndRemoveUntil(
+                    context, TestNavPage.routerName, (route) => false);
+              },
+              child: Text(
+                "结 束",
+                style: TextStyle(color: Colors.black, fontSize: setSp(60)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget showPage() {
-    switch(questionStatus) {
-      case 0: return showSelect();
-      case 1: return showQuestion();
-      case 2: return showResult();
+    switch (questionStatus) {
+      case 0:
+        return showSelect();
+      case 1:
+        return showQuestion();
+      case 2:
+        return showResult();
     }
     return Container();
   }
@@ -469,7 +575,7 @@ class PictureSequenceMemoryTestPageState
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
-          body: questionStatus == 0 ? showSelect() : showQuestion(),
+          body: showPage(),
         ),
         onWillPop: () => showQuitDialog(context));
   }

@@ -19,8 +19,8 @@ import 'Utils/Utils.dart';
 import 'package:tester_app/Pages/testPairAL/testPairALMainPage.dart';
 
 // String bootPage = GooseFlyingSouthPage.routerName;
-// String bootPage = LoginPage.routerName;
-String bootPage = PictureSequenceMemoryTestPage.routerName;
+String bootPage = LoginPage.routerName;
+// String bootPage = PictureSequenceMemoryTestPage.routerName;
 
 void main() {
   runApp(MyApp());
