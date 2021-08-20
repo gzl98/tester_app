@@ -11,12 +11,12 @@ import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 import 'package:tester_app/Pages/PairAssoLearning/PairAssoLearningMainPage.dart';
 import 'package:tester_app/Pages/PictureSequenceMemoryTest/PictureSequenceMemoryTestPage.dart';
 import 'package:tester_app/Pages/ShortTermMemoryTest/ShortTermMemoryPage.dart';
+import 'package:tester_app/Pages/FlankerTest/FlankerTestMainPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Fragments/SecondFragment.dart';
 import 'Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
 import 'Utils/Utils.dart';
-import 'package:tester_app/Pages/testPairAL/testPairALMainPage.dart';
 
 // String bootPage = GooseFlyingSouthPage.routerName;
 String bootPage = LoginPage.routerName;
@@ -47,10 +47,10 @@ class MyApp extends StatelessWidget {
         PairALMainPage.routerName: (context) => PairALMainPage(),
         FlashLightPage.routerName: (context) => FlashLightPage(),
         ClockDrawPage.routerName: (context) => ClockDrawPage(),
-        testPairALMainPage.routerName: (context) => testPairALMainPage(),
         GooseFlyingSouthPage.routerName: (context) => GooseFlyingSouthPage(),
         ShortItemMemoryTestPage.routerName:(context) => ShortItemMemoryTestPage(),
         PictureSequenceMemoryTestPage.routerName: (context) => PictureSequenceMemoryTestPage(),
+        FlankerTestMainPage.routerName:(context) => FlankerTestMainPage(),
       },
     );
   }
