@@ -1,6 +1,7 @@
 import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
 import 'package:tester_app/Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
+import 'package:tester_app/Pages/PictureSequenceMemoryTest/PictureSequenceMemoryTestPage.dart';
 import 'package:tester_app/Pages/ShortTermMemoryTest/ShortTermMemoryPage.dart';
 
 import 'package:tester_app/pojo/QuestionInfo.dart';
@@ -144,6 +145,25 @@ final Map<String, String> shortTermMemoryTest = {
   "backgroundImagePath2":
   "images/v4.0/shortMemTest/shortMemTestNote.png",
 };
+//图片故事记忆
+final Map<String, String> pictureSequenceMemoryTest = {
+  //导航页面
+  "questionAbility": "情景记忆",
+  "questionTitle": "图片故事记忆",
+  "questionNavContent": "被测试者需要记住图片的位置，并将中间的图片拖入正确的框中。",
+  "questionNavPurpose": "训练被测试者的情景记忆能力。",
+  "benefitExample": "当所有图片依次出现后，所有图片回归出图区域随机位置，不能覆盖重叠，测试者需要将图片从出图区域正确的拖至选择区域。",
+  "questionImgPath": "images/v4.0/PictureSequenceMemoryTest/pictureSequenceMemoryTest.jpg",
+  "nextPageRouter": PictureSequenceMemoryTestPage.routerName,
+  "questionPurpose": "训练情景记忆能力。",
+  //第一个页面
+  "backgroundImagePath1":
+  "images/v4.0/PictureSequenceMemoryTest/pictureSequenceMemoryTest.jpg",
+  //第二个页面
+  "questionRules": "选择难度页面，需测试组选择难度，难度不同意味着需要记忆的图片数量不同。本测试有3个主题（医院，超市，游乐园），每次测试按随机顺序出现。",
+  "backgroundImagePath2":
+  "images/v4.0/PictureSequenceMemoryTest/pictureSequenceMemoryTest.jpg",
+};
 List testList = [
   QuestionInfo.fromMap(questionMemoryMatrix),
   QuestionInfo.fromMap(questionNumberReasoning),
@@ -152,6 +172,7 @@ List testList = [
   QuestionInfo.fromMap(drawClockTest),
   QuestionInfo.fromMap(gooseFlyingSouth),
   QuestionInfo.fromMap(shortTermMemoryTest),
+  QuestionInfo.fromMap(pictureSequenceMemoryTest),
 ];
 
 //创建每道题是否完成的列表
