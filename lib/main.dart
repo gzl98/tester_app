@@ -19,7 +19,7 @@ import 'Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
 import 'Utils/Utils.dart';
 
 // String bootPage = GooseFlyingSouthPage.routerName;
-String bootPage = LoginPage.routerName;
+String bootPage = FlankerTestMainPage.routerName;
 // String bootPage = PictureSequenceMemoryTestPage.routerName;
 
 void main() {
