@@ -26,8 +26,10 @@ class FlankerTestMainPage extends StatefulWidget {
 
 class FlankerTestMainPageState extends State<FlankerTestMainPage> {
 
-  //图片序号与名称对应，0左箭头，1右箭头
+  //图片序号与名称对应，0长左箭头，1长右箭头
   List<String> numToPicture=['long_left_arrow','long_right_arrow'];
+  //按钮与名称对应，0左箭头，1右箭头
+  List<String> numtoButton=['left_arrow','right_arrow'];
 
 
 
@@ -146,7 +148,6 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
 
   //单个出题图片
   Widget arrowPicture(arrowNum){
-    List temp=[];
     return Expanded(
       flex: 1,
       child: Container(
@@ -170,7 +171,7 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     }
     Widget content;
     content = Expanded(
-      flex: 4,
+      flex: 2,
       child: Row(
         children: temp,
       )
@@ -222,12 +223,12 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
                     child: Row(
                       children: <Widget>[
                         Expanded(
-                          flex: 2,
+                          flex: 1,
                           child: Text(""),
                         ),
                         arrow_line([1,0,1,0,1]),
                         Expanded(
-                          flex: 2,
+                          flex: 1,
                           child: Text(""),
                         ),
                       ],
@@ -246,6 +247,68 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     );
   }
 
+  //箭头按钮组件
+  Widget arrowButton(buttonNum){
+    return Expanded(
+      flex: 1,
+      child: FlatButton(
+          color:Colors.transparent,
+          onPressed: (){
+            setState(() {
+
+            });
+          },
+          child: Container(
+            width: maxWidth,
+            height: maxHeight,
+            decoration: BoxDecoration(
+              border:buttonNum==0?Border.all(width: 10.0, color: Color.fromARGB(255, 116, 137, 163)):Border.all(width: 10.0, color: Color.fromARGB(255, 140, 157, 143)),
+              color: buttonNum==0?Color.fromARGB(100, 204, 201, 203):Color.fromARGB(100, 206, 205, 197),
+            ),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(""),
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('images/v4.0/Flanker/'+numtoButton[buttonNum]+'.png'),
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(""),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                ),
+              ],
+            ),
+          )
+      ),
+    );
+  }
+
   //按钮位置布局
   Widget buildBottomWidget() {
     return Expanded(
@@ -257,7 +320,24 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
           children: <Widget>[
             Expanded(
               flex: 1,
-              child: Text(""),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Text(""),
+                  ),
+                  arrowButton(0),
+                  Expanded(
+                    flex: 1,
+                    child: Text(""),
+                  ),
+                  arrowButton(1),
+                  Expanded(
+                    flex: 2,
+                    child: Text(""),
+                  ),
+                ],
+              ),
             )
           ],
         ),
@@ -426,13 +506,15 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     return Stack(
       children: <Widget>[
         Container(
-          color: Color.fromARGB(255, 218, 232, 252),
+          color: Colors.white,
           width: maxWidth,
           height: maxHeight,
           child: Column(
             children: <Widget>[
               buildTopWidget(),
+              Divider(height: 2.0, color: Colors.red,),
               buildBottomWidget(),
+              Divider(height: 20.0, color: Colors.white,),
             ],
           ),
         ),
