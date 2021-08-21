@@ -35,8 +35,8 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
 
   //出题器
   FlankerTestQuestion flankerTestQuestion;
-  //当前状态（初始为等待）
-  CurrentState currentState=CurrentState.waiting;
+  //当前状态（初始为测试题目）
+  CurrentState currentState=CurrentState.testQuestionPrepare;
   //总答对次数
   int totalCorrectNum=0;
   //总错误次数
@@ -80,7 +80,7 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
       setState(() {
         showRightPic=true;
         showWrongPic=true;
-        currentState=CurrentState.questionPrepare;
+        currentState=CurrentState.testQuestionPrepare;
         question=flankerTestQuestion.getQuestion();
         print("question列表："+question.toString());
         //展示相应秒数后再次隐去
@@ -93,14 +93,15 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     });
   }
 
-  //准备开始背景
+  //2560*1600
+  //文字层次感背景
   Widget showPrepareBackground(){
     return Positioned(
       top: setHeight(630),
-      right: setWidth(860),
+      right: setWidth(630),
       child: Container(
         margin: EdgeInsets.only(bottom: setHeight(80)),
-        width: setWidth(820),
+        width: setWidth(1300),
         height: setHeight(120),
         decoration: BoxDecoration(
           boxShadow: [
@@ -115,15 +116,22 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     );
   }
 
-  //准备开始颜色
-  Widget showPrepare(){
+  //中间显示的文字
+  Map stateText = {
+    CurrentState.testQuestionPrepare: "模 拟 测 试 开 始",
+    CurrentState.mainQuestionPrepare: "正 式 测 试 开 始",
+    CurrentState.nextQuestion: "下 一 题",
+  };
+
+  //文字颜色
+  Widget showText(){
     return Positioned(
       top: setHeight(630),
-      right: setWidth(860),
+      right: setWidth(630),
       child: Container(
         margin: EdgeInsets.only(bottom: setHeight(80)),
         alignment: Alignment.center,
-        width: setWidth(850),
+        width: setWidth(1300),
         height: setHeight(120),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -137,7 +145,7 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
           ),
         ),
         child: Text(
-          "准 备 开 始",
+          stateText[currentState],
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: setSp(70), color: Colors.deepOrangeAccent),
@@ -345,8 +353,6 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     );
   }
 
-
-
   // //构建结果列表列表
   // Widget buildListWidget() {
   //   TextStyle titleStyle = TextStyle(fontSize: setSp(45), fontWeight: FontWeight.w900, color: Colors.white);
@@ -528,9 +534,9 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
         //   right: setWidth(1035),
         //   child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
         // ):Container(),
-        // currentState==CurrentState.waiting?showPrepareBackground():Container(),
-        // currentState==CurrentState.waiting?showPrepare():Container(),
         // currentState==CurrentState.questionDone?buildResultWidget():Container(),
+        (currentState==CurrentState.testQuestionPrepare)||(currentState==CurrentState.mainQuestionPrepare)?showPrepareBackground():Container(),
+        (currentState==CurrentState.testQuestionPrepare)||(currentState==CurrentState.mainQuestionPrepare)?showText():Container(),
       ],
     );
   }
@@ -549,8 +555,9 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
 
 //多个状态
 enum CurrentState {
-  waiting, //刚进入界面等待
-  questionPrepare, //题目闪烁
+  testQuestionPrepare, //模拟测试
+  mainQuestionPrepare, //题目闪烁
   doingQuestion, //答题时间
-  questionDone, //答题完毕
+  nextQuestion, //下一题图标
+  questionDone, //所有答题完毕
 }
