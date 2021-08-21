@@ -30,7 +30,7 @@ class FlankerTestQuestion {
       if(temp<2){
         _test_consistent++;
       }else{
-        _test_consistent++;
+        _test_inconsistent++;
       }
       //测试时一致或者不一致达到限定数量
       if(_test_consistent>2){
@@ -66,8 +66,8 @@ class FlankerTestQuestion {
         _questions=_candidateList[temp];
         _answerNum++;
       }
-      return _questions;
     }
-  }
 
+    return _questions;
+  }
 }
