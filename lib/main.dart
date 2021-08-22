@@ -16,11 +16,13 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Fragments/SecondFragment.dart';
 import 'Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
+import 'Pages/ProcessSpeed/ProcessSpeedPage.dart';
 import 'Utils/Utils.dart';
 
 // String bootPage = GooseFlyingSouthPage.routerName;
-String bootPage = FlankerTestMainPage.routerName;
-// String bootPage = PictureSequenceMemoryTestPage.routerName;
+// String bootPage = FlankerTestMainPage.routerName;
+String bootPage = ProcessSpeedPage.routerName;
+// String bootPage = ShowInfoPage.routerName;
 
 void main() {
   runApp(MyApp());
@@ -51,6 +53,7 @@ class MyApp extends StatelessWidget {
         ShortItemMemoryTestPage.routerName:(context) => ShortItemMemoryTestPage(),
         PictureSequenceMemoryTestPage.routerName: (context) => PictureSequenceMemoryTestPage(),
         FlankerTestMainPage.routerName:(context) => FlankerTestMainPage(),
+        ProcessSpeedPage.routerName:(context) => ProcessSpeedPage(),
       },
     );
   }

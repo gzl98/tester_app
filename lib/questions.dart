@@ -164,6 +164,25 @@ final Map<String, String> pictureSequenceMemoryTest = {
   "backgroundImagePath2":
   "images/v4.0/PictureSequenceMemoryTest/pictureSequenceMemoryTest.jpg",
 };
+//加工速度测试
+final Map<String, String> questionProcessSpeed = {
+  //导航页面
+  "questionAbility": "感知速度",
+  "questionTitle": "加工速度测试",
+  "questionNavContent": "被测试者需要快速搜索和比较同时出现的图像。",
+  "questionNavPurpose": "训练被测试者的快速感知图像的能力。",
+  "benefitExample": "训练后您的信息处理速度会得到提升。",
+  "questionImgPath": "images/v4.0/PictureSequenceMemoryTest/pictureSequenceMemoryTest.jpg",
+  "nextPageRouter": PictureSequenceMemoryTestPage.routerName,
+  "questionPurpose": "训练情景记忆能力。",
+  //第一个页面
+  "backgroundImagePath1":
+  "images/v4.0/PictureSequenceMemoryTest/pictureSequenceMemoryTest.jpg",
+  //第二个页面
+  "questionRules": "选择难度页面，需测试组选择难度，难度不同意味着需要记忆的图片数量不同。本测试有3个主题（医院，超市，游乐园），每次测试按随机顺序出现。",
+  "backgroundImagePath2":
+  "images/v4.0/PictureSequenceMemoryTest/pictureSequenceMemoryTest.jpg",
+};
 List testList = [
   QuestionInfo.fromMap(questionMemoryMatrix),
   QuestionInfo.fromMap(questionNumberReasoning),

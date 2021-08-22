@@ -4,7 +4,7 @@ const port = "8000";
 
 const protocol = "http";
 
-const questionIdTMT=0;
+const questionIdTMT = 0;
 //题目ID
 const questionIdSymbol = 1;
 const questionIdNewCharacter = 2;
@@ -23,8 +23,8 @@ const stroopWordColorID = 10;
 const questionIdMemoryMatrix = 0;
 const questionIdNumberReasoning = 1;
 const questionIdFlashLight = 2;
-const questionIdPairAssoLearning=3;
-const questionIdDrawClock=4;
-const questionIdShortMemTest =6;
+const questionIdPairAssoLearning = 3;
+const questionIdDrawClock = 4;
+const questionIdShortMemTest = 6;
 const questionIdPictureSequenceMemoryTest = 7;
-
+const questionIdProcessSpeed = 8;
