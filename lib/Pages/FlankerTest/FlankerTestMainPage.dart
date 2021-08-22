@@ -48,6 +48,8 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
   bool showWrongPic=true;
   //总答对次数
   int totalCorrectNum=0;
+  //处理显示bug
+  Timer _timer;
 
   @override
   void initState() {
@@ -63,7 +65,7 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
   @override
   void dispose() {
     super.dispose();
-    // if (_timer != null && _timer.isActive) _timer.cancel();
+    if (_timer != null && _timer.isActive) _timer.cancel();
   }
 
   //初始化参数
@@ -94,24 +96,30 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
 
   //处理按钮未点击事件
   checkButtonUnpressed(){
-    Future.delayed(Duration(seconds: 2),(){
-      setState(() {
+    _timer=Timer.periodic(Duration(seconds: 2), (callback){
+      //2s时进行判断
+      setState((){
         if(arrow==-1){
           print("未点击按钮");
           currentState=CurrentState.showAnswer;
           showWrongPic=false;
           Future.delayed(Duration(seconds: 1),(){
             totalAnswerNum++;
+            print("正式测试总共正确数为："+totalCorrectNum.toString());
             if(totalAnswerNum==24){
-              currentState=CurrentState.questionDone;
+              setState(() {
+                showRightPic=true;
+                showWrongPic=true;
+                currentState=CurrentState.questionDone;
+              });
             }else{
               startGame();
             }
           });
         }
+        _timer.cancel();
       });
     });
-
   }
 
   //2560*1600
@@ -288,8 +296,11 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
           onPressed: currentState!=CurrentState.doingQuestion?null:(){
             setState(() {
               arrow=buttonNum;
-              //如果点击了按钮
               if(arrow!=-1){
+                // 关闭另一个计时器
+                if(_timer != null && _timer.isActive){
+                  _timer.cancel();
+                }
                 if(arrow==question[2]){
                   print("correct");
                   currentState=CurrentState.showAnswer;
@@ -312,7 +323,10 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
                   showWrongPic=false;
                   Future.delayed(Duration(seconds: 1),(){
                     totalAnswerNum++;
+                    print("正式测试总共正确数为："+totalCorrectNum.toString());
                     if(totalAnswerNum==24){
+                      showRightPic=true;
+                      showWrongPic=true;
                       currentState=CurrentState.questionDone;
                     }else{
                       startGame();

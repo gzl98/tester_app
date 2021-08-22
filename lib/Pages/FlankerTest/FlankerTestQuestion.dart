@@ -34,10 +34,10 @@ class FlankerTestQuestion {
       }
       //测试时一致或者不一致达到限定数量
       if(_test_consistent>2){
-        temp+=2;
+        temp=_random.nextInt(2)+2;
       }
       if(_test_inconsistent>2){
-        temp-=2;
+        temp=_random.nextInt(2);
       }
       _questions=_candidateList[temp];
       _answerNum++;
@@ -58,10 +58,11 @@ class FlankerTestQuestion {
         }
         //正式时一致或者不一致达到限定数量
         if(_main_consistent>8){
-          temp+=2;
+          temp=_random.nextInt(2)+2;
         }
+        //注意考虑要是连续11个不一致，第12个一致，就会出现Not in inclusive range 0..3: -2，不能temp-=2
         if(_main_inconsistent>10){
-          temp-=2;
+          temp=_random.nextInt(2);
         }
         _questions=_candidateList[temp];
         _answerNum++;
