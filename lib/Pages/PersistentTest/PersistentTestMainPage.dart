@@ -88,39 +88,11 @@ class PersistentTestMainPageState extends State<PersistentTestMainPage> {
       Future.delayed(Duration(milliseconds: 1500),(){
         setState(() {
           currentState=CurrentState.doingQuestion;
-          checkButtonUnpressed();
         });
       });
     });
   }
 
-  //处理按钮未点击事件
-  checkButtonUnpressed(){
-    _timer=Timer.periodic(Duration(seconds: 2), (callback){
-      //2s时进行判断
-      setState((){
-        if(arrow==-1){
-          print("未点击按钮");
-          currentState=CurrentState.showAnswer;
-          showWrongPic=false;
-          Future.delayed(Duration(seconds: 1),(){
-            totalAnswerNum++;
-            print("正式测试总共正确数为："+totalCorrectNum.toString());
-            if(totalAnswerNum==24){
-              setState(() {
-                showRightPic=true;
-                showWrongPic=true;
-                currentState=CurrentState.questionDone;
-              });
-            }else{
-              startGame();
-            }
-          });
-        }
-        _timer.cancel();
-      });
-    });
-  }
 
   //2560*1600
   //文字层次感背景
@@ -183,245 +155,94 @@ class PersistentTestMainPageState extends State<PersistentTestMainPage> {
     );
   }
 
-  //单个出题图片
-  Widget arrowPicture(arrowNum){
+  //圆形按钮组件
+  Widget circleButton(){
     return Expanded(
-      flex: 1,
-      child: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('images/v4.0/Flanker/'+numToPicture[arrowNum]+'.png'),
-              fit: BoxFit.scaleDown,
-              alignment: Alignment.center,
-            )
-        ),
-      ),
-    );
-  }
-
-  //一行五个出题页面
-  //避免报错type 'List<dynamic>' is not a subtype of type 'List<Widget>'，要加一个content的widget
-  Widget arrow_line(List index) {
-    List<Widget> temp = [];
-    for(int i=0;i<index.length;i++){
-      temp.add(arrowPicture(index[i]));
-    }
-    Widget content;
-    content = Expanded(
-        flex: 2,
-        child: Row(
-          children: temp,
-        )
-    );
-    return content;
-  }
-
-  //图片位置布局
-  Widget buildTopWidget() {
-    return Expanded(
-      flex: 4,
+      flex: 2,
       child: Container(
         width: maxWidth,
         height: maxHeight,
-        child: Column(
-          children: <Widget>[
-            //文字区域
-            Expanded(
-              flex: 1,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Text(""),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Text("If the MIDDLE arrow is pointing this way,choose this button.",
-                      style:TextStyle(fontSize: setSp(65),color: Colors.black ) ,textAlign: TextAlign.center,),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Text(""),
-                  ),
-                ],
-              ),
-            ),
-            //图片区域
-            Expanded(
-              flex: 3,
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Text(""),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Text(""),
-                        ),
-                        showQuestionPicture==false?Expanded(
-                          flex: 2,
-                          child: Text(""),
-                        ):arrow_line(question),
-                        Expanded(
-                          flex: 1,
-                          child: Text(""),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Text(""),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        child:  RaisedButton(
+          color:Color.fromARGB(255, 238, 72, 99),
+          onPressed: currentState!=CurrentState.doingQuestion?null:(){
+            setState(() {
+
+            });
+          },
+          shape: CircleBorder(side: BorderSide(color: Colors.white)),
+          splashColor: Color.fromARGB(255, 209, 26, 45),
         ),
-      ),
+      )
     );
   }
 
-  //箭头按钮组件
-  Widget arrowButton(buttonNum){
-    return Expanded(
-      flex: 1,
-      child: FlatButton(
-          color:Colors.transparent,
-          onPressed: currentState!=CurrentState.doingQuestion?null:(){
-            setState(() {
-              arrow=buttonNum;
-              if(arrow!=-1){
-                // 关闭另一个计时器
-                if(_timer != null && _timer.isActive){
-                  _timer.cancel();
-                }
-                if(arrow==question[2]){
-                  print("correct");
-                  currentState=CurrentState.showAnswer;
-                  showRightPic=false;
-                  if(totalAnswerNum>=4){
-                    totalCorrectNum++;
-                    print("正式测试总共正确数为："+totalCorrectNum.toString());
-                  }
-                  Future.delayed(Duration(seconds: 1),(){
-                    totalAnswerNum++;
-                    if(totalAnswerNum==24){
-                      currentState=CurrentState.questionDone;
-                    }else{
-                      startGame();
-                    }
-                  });
-                }else{
-                  print("wrong");
-                  currentState=CurrentState.showAnswer;
-                  showWrongPic=false;
-                  Future.delayed(Duration(seconds: 1),(){
-                    totalAnswerNum++;
-                    print("正式测试总共正确数为："+totalCorrectNum.toString());
-                    if(totalAnswerNum==24){
-                      showRightPic=true;
-                      showWrongPic=true;
-                      currentState=CurrentState.questionDone;
-                    }else{
-                      startGame();
-                    }
-                  });
-                }
-              }
-            });
-          },
-          child: Container(
-            width: maxWidth,
-            height: maxHeight,
-            decoration: BoxDecoration(
-              border:buttonNum==0?Border.all(width: 10.0, color: Color.fromARGB(255, 116, 137, 163)):Border.all(width: 10.0, color: Color.fromARGB(255, 140, 157, 143)),
-              color: buttonNum==0?Color.fromARGB(100, 204, 201, 203):Color.fromARGB(100, 206, 205, 197),
-            ),
-            child: Column(
+
+  Widget buildCirclePosition(){
+    return Container(
+      height: maxHeight,
+      width: maxWidth,
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: Text(""),
+          ),
+          Expanded(
+            flex: 2,
+            child: Row(
               children: <Widget>[
+                Expanded(
+                  flex: 3,
+                  child: Text(""),
+                ),
+                circleButton(),
                 Expanded(
                   flex: 1,
                   child: Text(""),
                 ),
+                circleButton(),
                 Expanded(
-                  flex: 5,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text(""),
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('images/v4.0/Flanker/'+numtoButton[buttonNum]+'.png'),
-                              fit: BoxFit.scaleDown,
-                              alignment: Alignment.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(""),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
+                  flex: 3,
                   child: Text(""),
                 ),
               ],
             ),
-          )
+          ),
+          Expanded(
+            flex: 1,
+            child: Text(""),
+          ),
+          Expanded(
+            flex: 2,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 3,
+                  child: Text(""),
+                ),
+                circleButton(),
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                ),
+                circleButton(),
+                Expanded(
+                  flex: 3,
+                  child: Text(""),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(""),
+          ),
+        ],
       ),
     );
   }
 
-  //按钮位置布局
-  Widget buildBottomWidget() {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        width: maxWidth,
-        height: maxHeight,
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Text(""),
-                  ),
-                  arrowButton(0),
-                  Expanded(
-                    flex: 1,
-                    child: Text(""),
-                  ),
-                  arrowButton(1),
-                  Expanded(
-                    flex: 2,
-                    child: Text(""),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+
 
   double floatWindowRadios = 30;
   TextStyle resultTextStyle = TextStyle(
@@ -547,31 +368,29 @@ class PersistentTestMainPageState extends State<PersistentTestMainPage> {
     return Stack(
       children: <Widget>[
         Container(
-          color: Colors.white,
+          color: Color.fromARGB(255, 218, 232, 252),
           width: maxWidth,
           height: maxHeight,
           child: Column(
             children: <Widget>[
-              currentState==CurrentState.showAnswer?Expanded(flex: 4,child: Text(""),):buildTopWidget(),
-              buildBottomWidget(),
-              Divider(height: 20.0, color: Colors.white,),
+              buildCirclePosition(),
             ],
           ),
         ),
-        showRightPic==false?Positioned(
-          top: setHeight(450),
-          right: setWidth(1020),
-          child: Image.asset("images/v2.0/correct.png", width: setWidth(480)),
-        ):Container(),
-        showWrongPic==false?Positioned(
-          top: setHeight(450),
-          right: setWidth(1035),
-          child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
-        ):Container(),
-        (currentState==CurrentState.testQuestionPrepare)||(currentState==CurrentState.mainQuestionPrepare)
-            ||(currentState==CurrentState.nextQuestion)?showTextBackground():Container(),
-        (currentState==CurrentState.testQuestionPrepare)||(currentState==CurrentState.mainQuestionPrepare)
-            ||(currentState==CurrentState.nextQuestion)?showText():Container(),
+        // showRightPic==false?Positioned(
+        //   top: setHeight(450),
+        //   right: setWidth(1020),
+        //   child: Image.asset("images/v2.0/correct.png", width: setWidth(480)),
+        // ):Container(),
+        // showWrongPic==false?Positioned(
+        //   top: setHeight(450),
+        //   right: setWidth(1035),
+        //   child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
+        // ):Container(),
+        // (currentState==CurrentState.testQuestionPrepare)||(currentState==CurrentState.mainQuestionPrepare)
+        //     ||(currentState==CurrentState.nextQuestion)?showTextBackground():Container(),
+        // (currentState==CurrentState.testQuestionPrepare)||(currentState==CurrentState.mainQuestionPrepare)
+        //     ||(currentState==CurrentState.nextQuestion)?showText():Container(),
         //currentState==CurrentState.questionDone?buildResultWidget():Container(),
       ],
     );
@@ -592,7 +411,7 @@ class PersistentTestMainPageState extends State<PersistentTestMainPage> {
 //多个状态
 enum CurrentState {
   testQuestionPrepare, //模拟测试
-  mainQuestionPrepare, //正式闪烁
+  mainQuestionPrepare, //正式测试
   doingQuestion, //答题时间
   showAnswer, //展示正误图片
   nextQuestion, //下一题图标
