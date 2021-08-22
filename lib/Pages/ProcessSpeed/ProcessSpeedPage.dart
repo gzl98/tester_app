@@ -58,8 +58,11 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
   ProcessSpeedQuestion processSpeedQuestion =
       ProcessSpeedQuestion(); //初始化出题器，闪烁按钮个数为4
   final millisecond = const Duration(milliseconds: 1); //定义1毫秒的Duration
-  final pointOneSec = const Duration(milliseconds: 100); //定义0.1秒的Duration
   CurrentState currentState = CurrentState.questionBegin; //初始化当前页面状态为Begin
+  List answerTimeList = []; //使用时间列表
+  List questionList = []; //问题列表
+  List answerList = []; //答案列表
+  List<bool> answerCorrect = [];
 
   //保存五个图片的View List
   List<double> alignmentList = [-1.0, -0.5, 0.0005, 0.5, 1.005];
@@ -84,24 +87,21 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
     });
   }
 
-  List questionList = [];
-  List answerList = [];
-
   void showQuestions() {
     //开始展示题目
     setState(() {
       //设置当前状态为展示问题
       currentState = CurrentState.doingQuestion;
     });
-    //获取新的题目
-    imagesIndex = processSpeedQuestion.getNextQuestion();
-    //记录当前题目
-    questionList.add(imagesIndex);
     //启动计时器和callback函数
     _timer = Timer.periodic(millisecond, callback);
   }
 
   void prepareShowQuestion() {
+    //获取新的题目
+    imagesIndex = processSpeedQuestion.getNextQuestion();
+    //记录当前题目
+    questionList.add(imagesIndex);
     //准备展示题目
     Future.delayed(Duration(seconds: 1), () {
       //延时一秒后开始展示题目
@@ -129,23 +129,29 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
         });
         if (maxChoose == 0) {
           //进入答案判断
+          _timer.cancel();
           int index1 = indexList.indexOf(true),
               index2 = indexList.lastIndexOf(true);
+          answerTimeList.add(currentTime);
+          answerCorrect
+              .add(questionList.last[index1] == questionList.last[index2]);
+          //0.5秒之后显示对错，并重置标志位
           Future.delayed(Duration(milliseconds: 500), () {
             setState(() {
-              currentState =
-                  questionList.last[index1] == questionList.last[index2]
-                      ? CurrentState.questionCorrect
-                      : CurrentState.questionWrong;
+              currentState = answerCorrect.last
+                  ? CurrentState.questionCorrect
+                  : CurrentState.questionWrong;
+              indexList[index1] = indexList[index2] = false;
+              maxChoose = 2;
+              answerList.add([index1, index2]);
+              currentTime = 0;
             });
           });
-          _timer.cancel();
+          //再0.75秒之后显示下一道题目或结束答题
           Future.delayed(Duration(milliseconds: 1250), () {
             if (!processSpeedQuestion.questionAllDone()) {
               setState(() {
                 currentState = CurrentState.questionPrepare;
-                indexList[index1] = indexList[index2] = false;
-                maxChoose = 2;
               });
               prepareShowQuestion();
             } else {
@@ -169,7 +175,10 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
       color: Color.fromARGB(255, 48, 48, 48),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(
-          "当前题目：1/5",
+          "当前题目：" +
+              (processSpeedQuestion.currentIndex + 1).toString() +
+              "/" +
+              processSpeedQuestion.maxIndex.toString(),
           style: TextStyle(color: Colors.white, fontSize: setSp(55)),
         ),
       ]),
@@ -204,9 +213,9 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
 
     return Stack(
       children: [
-        currentState == CurrentState.doingQuestion ||
-                currentState == CurrentState.questionCorrect ||
-                currentState == CurrentState.questionWrong
+        currentState == CurrentState.doingQuestion
+            // ||currentState == CurrentState.questionCorrect
+            // ||currentState == CurrentState.questionWrong
             ? Center(
                 child: Container(
                   margin: EdgeInsets.only(bottom: setHeight(180)),
@@ -343,6 +352,28 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
         fontSize: setSp(45),
         fontWeight: FontWeight.bold,
         color: Colors.blueGrey);
+    List<TableRow> table = [];
+    for (int i = 0; i < answerTimeList.length;) {
+      int n = 3;
+      List<Widget> tableRow = [];
+      while (n-- > 0) {
+        tableRow.add(Container(
+          margin: EdgeInsets.only(left: setWidth(60)),
+          height: setHeight(100),
+          alignment: Alignment.centerLeft,
+            child:Text(
+            "第" +
+                (++i).toString().padLeft(2, '0') +
+                "关：" +
+                (answerCorrect[i - 1]
+                    ? (answerTimeList[i - 1] / 1000).toStringAsFixed(3) + "秒"
+                    : "错误"),
+            style: resultTextStyle)));
+      }
+      table.add(TableRow(
+        children: tableRow,
+      ));
+    }
     return Container(
       width: maxWidth,
       height: maxHeight,
@@ -352,8 +383,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
         children: [
           SizedBox(height: setHeight(200)),
           Container(
-            width: setWidth(800),
-            height: setHeight(450),
+            width: setWidth(1400),
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: Color.fromARGB(255, 229, 229, 229),
@@ -385,24 +415,17 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: setHeight(30)),
-                height: setHeight(230),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // SizedBox(height: setHeight(30)),
-                    Text("    正确数：" + "    ", style: resultTextStyle),
-                    // SizedBox(height: setHeight(15)),
-                    Text("    错误数：" + "    ", style: resultTextStyle),
-                    // SizedBox(height: setHeight(15)),
-                    Text("    正确率：" + "%    ", style: resultTextStyle),
-                  ],
+                width: setWidth(1400),
+                margin:
+                    EdgeInsets.only(top: setHeight(40), bottom: setHeight(40)),
+                child: Table(
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  children: table,
                 ),
               ),
             ]),
           ),
-          SizedBox(height: setHeight(300)),
+          SizedBox(height: setHeight(220)),
           Container(
             width: setWidth(500),
             height: setHeight(120),
@@ -513,7 +536,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
                     : Container(),
                 currentState == CurrentState.questionAllDone
                     ? Positioned(
-                        right: setWidth(400),
+                        right: setWidth(100),
                         bottom: 0,
                         child: Image.asset(
                           "images/v2.0/doctor_result.png",
