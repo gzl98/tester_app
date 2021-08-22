@@ -1,6 +1,7 @@
 import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
 import 'package:tester_app/Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
+import 'package:tester_app/Pages/PictureSequenceMemoryTest/PictureSequenceMemoryTestPage.dart';
 import 'package:tester_app/Pages/ShortTermMemoryTest/ShortTermMemoryPage.dart';
 
 import 'package:tester_app/pojo/QuestionInfo.dart';
@@ -52,7 +53,7 @@ final Map<String, String> questionFlashLight = {
   "questionAbility": "空间记忆能力",
   "questionTitle": "闪灯测试",
   "questionNavContent": "记住灯光闪烁的先后顺序。",
-  "questionNavPurpose": "主要评估短时空间记忆水平。。",
+  "questionNavPurpose": "主要评估短时空间记忆水平。",
   "benefitExample": "经过训练您的短时空间记忆能力会得到提升。",
   "questionImgPath": "images/v4.0/FlashLight/FlashLight.png",
   "nextPageRouter": FlashLightPage.routerName,
@@ -60,11 +61,11 @@ final Map<String, String> questionFlashLight = {
   "这项测验主要评估您的短时空间记忆能力，请记住灯光闪烁的先后次序，记得越多，记忆力越好。",
   //第一个页面
   "backgroundImagePath1":
-      "images/v4.0/FlashLight/FlashLight.png",
+      "images/v4.0/FlashLight/FlashLight1.jpg",
   //第二个页面
   "questionRules": "屏幕中的六个橙色方框回同时闪烁绿色框中的四种图片一段时间，消失后请按照刚才的位置，选择四张图片出现的位置。",
   "backgroundImagePath2":
-      "images/v4.0/FlashLight/FlashLight.png",
+      "images/v4.0/FlashLight/FlashLight2.jpg",
 };
 //配对学习测试
 final Map<String, String> questionPairAssoLearning = {
@@ -84,7 +85,7 @@ final Map<String, String> questionPairAssoLearning = {
   //第二个页面
   "questionRules": "屏幕中的灯光会按照一定的顺序依次闪烁，停止后请按照刚才的顺序依次点击对应的按钮。",
   "backgroundImagePath2":
-  "images/v4.0/PairAL/newPairAL.png",
+  "images/v4.0/PairAL/newPairALNote.png",
 };
 //钟表测试
 final Map<String, String> drawClockTest = {
@@ -144,6 +145,25 @@ final Map<String, String> shortTermMemoryTest = {
   "backgroundImagePath2":
   "images/v4.0/shortMemTest/shortMemTestNote.png",
 };
+//图片故事记忆
+final Map<String, String> pictureSequenceMemoryTest = {
+  //导航页面
+  "questionAbility": "情景记忆",
+  "questionTitle": "图片故事记忆",
+  "questionNavContent": "被测试者需要记住图片的位置，并将中间的图片拖入正确的框中。",
+  "questionNavPurpose": "训练被测试者的情景记忆能力。",
+  "benefitExample": "当所有图片依次出现后，所有图片回归出图区域随机位置，不能覆盖重叠，测试者需要将图片从出图区域正确的拖至选择区域。",
+  "questionImgPath": "images/v4.0/PictureSequenceMemoryTest/pictureSequenceMemoryTest.jpg",
+  "nextPageRouter": PictureSequenceMemoryTestPage.routerName,
+  "questionPurpose": "训练情景记忆能力。",
+  //第一个页面
+  "backgroundImagePath1":
+  "images/v4.0/PictureSequenceMemoryTest/pictureSequenceMemoryTest.jpg",
+  //第二个页面
+  "questionRules": "选择难度页面，需测试组选择难度，难度不同意味着需要记忆的图片数量不同。本测试有3个主题（医院，超市，游乐园），每次测试按随机顺序出现。",
+  "backgroundImagePath2":
+  "images/v4.0/PictureSequenceMemoryTest/pictureSequenceMemoryTest.jpg",
+};
 List testList = [
   QuestionInfo.fromMap(questionMemoryMatrix),
   QuestionInfo.fromMap(questionNumberReasoning),
@@ -152,6 +172,7 @@ List testList = [
   QuestionInfo.fromMap(drawClockTest),
   QuestionInfo.fromMap(gooseFlyingSouth),
   QuestionInfo.fromMap(shortTermMemoryTest),
+  QuestionInfo.fromMap(pictureSequenceMemoryTest),
 ];
 
 //创建每道题是否完成的列表

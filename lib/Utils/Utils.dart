@@ -108,6 +108,9 @@ initialScreenUtil(BuildContext context) {
   ScreenUtil.instance = ScreenUtil(width: 2560, height: 1600)..init(context);
   maxWidth = MediaQuery.of(context).size.width;
   maxHeight = MediaQuery.of(context).size.height;
+
+  print(maxWidth);
+  print(maxHeight);
 }
 
 setWidth(double width) {
