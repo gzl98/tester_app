@@ -26,29 +26,28 @@ class FlankerTestMainPage extends StatefulWidget {
 
 class FlankerTestMainPageState extends State<FlankerTestMainPage> {
 
-  //图片序号与名称对应，0左箭头，1右箭头
+  //图片序号与名称对应，0长左箭头，1长右箭头
   List<String> numToPicture=['long_left_arrow','long_right_arrow'];
-
-
-
-  //出题器
-  FlankerTestQuestion flankerTestQuestion;
-  //当前状态（初始为等待）
-  CurrentState currentState=CurrentState.waiting;
-  //总答对次数
-  int totalCorrectNum=0;
-  //总错误次数
-  int totalWrongNum=0;
-
-
-  //每次的答案矩阵
+  //按钮与名称对应，0左箭头，1右箭头
+  List<String> numtoButton=['left_arrow','right_arrow'];
+  //出题器，一定要初始化，called on null
+  FlankerTestQuestion flankerTestQuestion=new FlankerTestQuestion();
+  //当前状态（初始为测试题目）
+  CurrentState currentState=CurrentState.testQuestionPrepare;
+  //每次的答案列表
   List question;
+  //展示对号错号期间，题目图片隐去
+  bool showQuestionPicture=true;
+  //记录总的答题次数，前四次测试，后面二十次正式
+  int totalAnswerNum=0;
+  //当前点击的箭头朝向，0←1→
+  int arrow=-1;
   //对号图片隐藏
   bool showRightPic=true;
   //错号图片隐藏
   bool showWrongPic=true;
-  //到达上限数目，禁用点击
-  bool disabledButton=false;
+  //总答对次数
+  int totalCorrectNum=0;
 
   @override
   void initState() {
@@ -57,7 +56,7 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
-    //startGame();
+    startGame();
   }
 
   //强制退出
@@ -71,34 +70,59 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
   void startGame(){
     //循环初始化
     setState(() {
-      disabledButton=false;
-    });
-    //延迟一秒后开始显示题目
-    Future.delayed(Duration(seconds:1),(){
-      setState(() {
-        showRightPic=true;
-        showWrongPic=true;
-        currentState=CurrentState.questionPrepare;
-        question=flankerTestQuestion.getQuestion();
-        print("question列表："+question.toString());
-        //展示相应秒数后再次隐去
-        Future.delayed(Duration(seconds: 2),(){
-          setState(() {
-            currentState=CurrentState.doingQuestion;
-          });
+      arrow=-1;
+      showRightPic=true;
+      showWrongPic=true;
+      if(totalAnswerNum==0){
+        currentState=CurrentState.testQuestionPrepare;
+      }else if(totalAnswerNum==4){
+        currentState=CurrentState.mainQuestionPrepare;
+      }else{
+        currentState=CurrentState.nextQuestion;
+      }
+      question=flankerTestQuestion.getQuestion();
+      print("第"+(totalAnswerNum+1).toString()+"个question列表："+question.toString());
+      //题目展示1.5秒数后切换状态
+      Future.delayed(Duration(milliseconds: 1500),(){
+        setState(() {
+          currentState=CurrentState.doingQuestion;
+          checkButtonUnpressed();
         });
       });
     });
   }
 
-  //准备开始背景
-  Widget showPrepareBackground(){
+  //处理按钮未点击事件
+  checkButtonUnpressed(){
+    Future.delayed(Duration(seconds: 2),(){
+      setState(() {
+        if(arrow==-1){
+          print("未点击按钮");
+          currentState=CurrentState.showAnswer;
+          showWrongPic=false;
+          Future.delayed(Duration(seconds: 1),(){
+            totalAnswerNum++;
+            if(totalAnswerNum==24){
+              currentState=CurrentState.questionDone;
+            }else{
+              startGame();
+            }
+          });
+        }
+      });
+    });
+
+  }
+
+  //2560*1600
+  //文字层次感背景
+  Widget showTextBackground(){
     return Positioned(
       top: setHeight(630),
-      right: setWidth(860),
+      right: setWidth(630),
       child: Container(
         margin: EdgeInsets.only(bottom: setHeight(80)),
-        width: setWidth(820),
+        width: setWidth(1300),
         height: setHeight(120),
         decoration: BoxDecoration(
           boxShadow: [
@@ -113,15 +137,22 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     );
   }
 
-  //准备开始颜色
-  Widget showPrepare(){
+  //中间显示的文字
+  Map stateText = {
+    CurrentState.testQuestionPrepare: "模 拟 测 试 开 始",
+    CurrentState.mainQuestionPrepare: "正 式 测 试 开 始",
+    CurrentState.nextQuestion: "下 一 题",
+  };
+
+  //文字颜色
+  Widget showText(){
     return Positioned(
       top: setHeight(630),
-      right: setWidth(860),
+      right: setWidth(630),
       child: Container(
         margin: EdgeInsets.only(bottom: setHeight(80)),
         alignment: Alignment.center,
-        width: setWidth(850),
+        width: setWidth(1300),
         height: setHeight(120),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -135,7 +166,7 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
           ),
         ),
         child: Text(
-          "准 备 开 始",
+          stateText[currentState],
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: setSp(70), color: Colors.deepOrangeAccent),
@@ -146,7 +177,6 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
 
   //单个出题图片
   Widget arrowPicture(arrowNum){
-    List temp=[];
     return Expanded(
       flex: 1,
       child: Container(
@@ -170,7 +200,7 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     }
     Widget content;
     content = Expanded(
-      flex: 4,
+      flex: 2,
       child: Row(
         children: temp,
       )
@@ -222,12 +252,15 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
                     child: Row(
                       children: <Widget>[
                         Expanded(
-                          flex: 2,
+                          flex: 1,
                           child: Text(""),
                         ),
-                        arrow_line([1,0,1,0,1]),
+                        showQuestionPicture==false?Expanded(
+                            flex: 2,
+                            child: Text(""),
+                        ):arrow_line(question),
                         Expanded(
-                          flex: 2,
+                          flex: 1,
                           child: Text(""),
                         ),
                       ],
@@ -246,6 +279,100 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     );
   }
 
+  //箭头按钮组件
+  Widget arrowButton(buttonNum){
+    return Expanded(
+      flex: 1,
+      child: FlatButton(
+          color:Colors.transparent,
+          onPressed: currentState!=CurrentState.doingQuestion?null:(){
+            setState(() {
+              arrow=buttonNum;
+              //如果点击了按钮
+              if(arrow!=-1){
+                if(arrow==question[2]){
+                  print("correct");
+                  currentState=CurrentState.showAnswer;
+                  showRightPic=false;
+                  if(totalAnswerNum>=4){
+                    totalCorrectNum++;
+                    print("正式测试总共正确数为："+totalCorrectNum.toString());
+                  }
+                  Future.delayed(Duration(seconds: 1),(){
+                    totalAnswerNum++;
+                    if(totalAnswerNum==24){
+                      currentState=CurrentState.questionDone;
+                    }else{
+                      startGame();
+                    }
+                  });
+                }else{
+                  print("wrong");
+                  currentState=CurrentState.showAnswer;
+                  showWrongPic=false;
+                  Future.delayed(Duration(seconds: 1),(){
+                    totalAnswerNum++;
+                    if(totalAnswerNum==24){
+                      currentState=CurrentState.questionDone;
+                    }else{
+                      startGame();
+                    }
+                  });
+                }
+              }
+            });
+          },
+          child: Container(
+            width: maxWidth,
+            height: maxHeight,
+            decoration: BoxDecoration(
+              border:buttonNum==0?Border.all(width: 10.0, color: Color.fromARGB(255, 116, 137, 163)):Border.all(width: 10.0, color: Color.fromARGB(255, 140, 157, 143)),
+              color: buttonNum==0?Color.fromARGB(100, 204, 201, 203):Color.fromARGB(100, 206, 205, 197),
+            ),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(""),
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('images/v4.0/Flanker/'+numtoButton[buttonNum]+'.png'),
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(""),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(""),
+                ),
+              ],
+            ),
+          )
+      ),
+    );
+  }
+
   //按钮位置布局
   Widget buildBottomWidget() {
     return Expanded(
@@ -257,7 +384,24 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
           children: <Widget>[
             Expanded(
               flex: 1,
-              child: Text(""),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Text(""),
+                  ),
+                  arrowButton(0),
+                  Expanded(
+                    flex: 1,
+                    child: Text(""),
+                  ),
+                  arrowButton(1),
+                  Expanded(
+                    flex: 2,
+                    child: Text(""),
+                  ),
+                ],
+              ),
             )
           ],
         ),
@@ -265,159 +409,122 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     );
   }
 
-
-
-  // //构建结果列表列表
-  // Widget buildListWidget() {
-  //   TextStyle titleStyle = TextStyle(fontSize: setSp(45), fontWeight: FontWeight.w900, color: Colors.white);
-  //   TextStyle contentStyle = TextStyle(fontSize: setSp(40), fontWeight: FontWeight.bold);
-  //   List<TableRow> table = [
-  //     TableRow(
-  //         decoration: BoxDecoration(color: Colors.black54),
-  //         children: [
-  //           Container(
-  //               alignment: Alignment.center,
-  //               height: setHeight(120),
-  //               child: Text("关卡数", textAlign: TextAlign.center, style: titleStyle)
-  //           ),
-  //           Text("错误率", textAlign: TextAlign.center, style: titleStyle),
-  //         ]
-  //     )
-  //   ];
-  //
-  //   for(int i=0;i<5;i++){
-  //     List<Widget> tableRow = [];
-  //     tableRow.add(Container(
-  //       alignment: Alignment.center,
-  //       height: setHeight(100),
-  //       child: Text(i==4?"总错误率":(i+1).toString(),
-  //           textAlign: TextAlign.center, style: contentStyle),
-  //     ));
-  //     tableRow.add(Container(
-  //       alignment: Alignment.center,
-  //       height: setHeight(100),
-  //       child: Text(i==4?(totalWrongNum*100/(totalWrongNum+totalCorrectNum)).truncate().toString()+"%"
-  //           :((levelCorrectNum[i]+levelWrongNum[i]==0)?"本关卡未测试":(levelWrongNum[i]*100/(levelCorrectNum[i]+levelWrongNum[i])).truncate().toString()+"%"),
-  //           textAlign: TextAlign.center, style: contentStyle),
-  //     ));
-  //     table.add(TableRow(
-  //         decoration: BoxDecoration(
-  //             color: i % 2 == 0 ? Colors.white : Colors.grey[100],
-  //             border: Border(
-  //                 bottom: BorderSide(color: Color.fromARGB(255, 50, 50, 50)))),
-  //         children: tableRow));
-  //   }
-  //
-  //   return Container(
-  //     child: Table(
-  //       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-  //       children: table,
-  //     ),
-  //   );
-  // }
-
-
-
   double floatWindowRadios = 30;
   TextStyle resultTextStyle = TextStyle(
       fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blueGrey);
 
-  // //显示结果部件
-  // Widget buildResultWidget() {
-  //   return Container(
-  //     width: maxWidth,
-  //     height: maxHeight,
-  //     color: Color.fromARGB(220, 45, 45, 45),
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         SizedBox(height: setHeight(100)),
-  //         Container(
-  //           width: setWidth(800),
-  //           height: setHeight(800),
-  //           alignment: Alignment.center,
-  //           decoration: BoxDecoration(
-  //               color: Color.fromARGB(255, 229, 229, 229),
-  //               borderRadius: BorderRadius.all(
-  //                   Radius.circular(setWidth(floatWindowRadios))),
-  //               boxShadow: [
-  //                 BoxShadow(
-  //                     color: Color.fromARGB(255, 100, 100, 100),
-  //                     blurRadius: setWidth(10),
-  //                     offset: Offset(setWidth(1), setHeight(2)))
-  //               ]),
-  //           child: Column(children: [
-  //             Container(
-  //               height: setHeight(100),
-  //               alignment: Alignment.center,
-  //               decoration: BoxDecoration(
-  //                 boxShadow: [BoxShadow()],
-  //                 color: Color.fromARGB(255, 229, 229, 229),
-  //                 borderRadius: BorderRadius.only(
-  //                     topLeft: Radius.circular(setWidth(floatWindowRadios)),
-  //                     topRight: Radius.circular(setWidth(floatWindowRadios))),
-  //               ),
-  //               child: Text(
-  //                 "测验结果",
-  //                 style: TextStyle(
-  //                     fontSize: setSp(50),
-  //                     fontWeight: FontWeight.bold,
-  //                     color: Colors.blue),
-  //               ),
-  //             ),
-  //             buildListWidget(),
-  //           ]),
-  //         ),
-  //         SizedBox(height: setHeight(200)),
-  //         Container(
-  //           width: setWidth(500),
-  //           height: setHeight(120),
-  //           decoration: BoxDecoration(
-  //             // border: Border.all(color: Colors.white,width: setWidth(1)),
-  //             gradient: LinearGradient(
-  //               begin: Alignment.topCenter,
-  //               end: Alignment.bottomCenter,
-  //               colors: [
-  //                 Color.fromARGB(255, 253, 160, 60),
-  //                 Color.fromARGB(255, 217, 127, 63)
-  //               ],
-  //             ),
-  //             boxShadow: [
-  //               BoxShadow(
-  //                 color: Colors.black54,
-  //                 offset: Offset(setWidth(1), setHeight(1)),
-  //                 blurRadius: setWidth(5),
-  //               )
-  //             ],
-  //           ),
-  //           child: TextButton(
-  //             style: ButtonStyle(
-  //                 backgroundColor:
-  //                 MaterialStateProperty.all(Colors.transparent)),
-  //             onPressed: () {
-  //               //上传数据
-  //               // Map map = {
-  //               //   "关卡正确数": levelCorrectNum,
-  //               //   "关卡错误数": levelWrongNum,
-  //               // };
-  //               // String text = json.encode(map);
-  //               // setAnswer(questionIdPairAssoLearning,
-  //               //     score: totalCorrectNum, answerText: text);
-  //               Navigator.pushNamedAndRemoveUntil(
-  //                   context, TestNavPage.routerName, (route) => false);
-  //               //加入该题目结束标志
-  //               testFinishedList[questionIdPairAssoLearning]=true;
-  //             },
-  //             child: Text(
-  //               "结 束",
-  //               style: TextStyle(color: Colors.white, fontSize: setSp(60)),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  //显示结果部件
+  Widget buildResultWidget() {
+    return Container(
+      width: maxWidth,
+      height: maxHeight,
+      color: Color.fromARGB(220, 45, 45, 45),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: setHeight(100)),
+          Container(
+            width: setWidth(800),
+            height: setHeight(800),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 229, 229, 229),
+                borderRadius: BorderRadius.all(
+                    Radius.circular(setWidth(floatWindowRadios))),
+                boxShadow: [
+                  BoxShadow(
+                      color: Color.fromARGB(255, 100, 100, 100),
+                      blurRadius: setWidth(10),
+                      offset: Offset(setWidth(1), setHeight(2)))
+                ]),
+            child: Column(children: [
+              Container(
+                height: setHeight(100),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow()],
+                  color: Color.fromARGB(255, 229, 229, 229),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(setWidth(floatWindowRadios)),
+                      topRight: Radius.circular(setWidth(floatWindowRadios))),
+                ),
+                child: Text(
+                  "测验结果",
+                  style: TextStyle(
+                      fontSize: setSp(50),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: setHeight(30)),
+                height: setHeight(230),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // SizedBox(height: setHeight(30)),
+                    Text(
+                        "    正确数：" +
+                            totalCorrectNum.toString() +
+                            "    ",
+                        style: resultTextStyle),
+                    // SizedBox(height: setHeight(15)),
+                  ],
+                ),
+              ),
+            ]),
+          ),
+          SizedBox(height: setHeight(200)),
+          Container(
+            width: setWidth(500),
+            height: setHeight(120),
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.white,width: setWidth(1)),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromARGB(255, 253, 160, 60),
+                  Color.fromARGB(255, 217, 127, 63)
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black54,
+                  offset: Offset(setWidth(1), setHeight(1)),
+                  blurRadius: setWidth(5),
+                )
+              ],
+            ),
+            child: TextButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                  MaterialStateProperty.all(Colors.transparent)),
+              onPressed: () {
+                //上传数据
+                // Map map = {
+                //   "关卡正确数": levelCorrectNum,
+                //   "关卡错误数": levelWrongNum,
+                // };
+                // String text = json.encode(map);
+                // setAnswer(questionIdPairAssoLearning,
+                //     score: totalCorrectNum, answerText: text);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, TestNavPage.routerName, (route) => false);
+                //加入该题目结束标志
+                testFinishedList[questionIdPairAssoLearning]=true;
+              },
+              child: Text(
+                "结 束",
+                style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   //主界面布局
   @override
@@ -426,29 +533,32 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
     return Stack(
       children: <Widget>[
         Container(
-          color: Color.fromARGB(255, 218, 232, 252),
+          color: Colors.white,
           width: maxWidth,
           height: maxHeight,
           child: Column(
             children: <Widget>[
-              buildTopWidget(),
+              currentState==CurrentState.showAnswer?Expanded(flex: 4,child: Text(""),):buildTopWidget(),
               buildBottomWidget(),
+              Divider(height: 20.0, color: Colors.white,),
             ],
           ),
         ),
-        // showRightPic==false?Positioned(
-        //   top: setHeight(450),
-        //   right: setWidth(1020),
-        //   child: Image.asset("images/v2.0/correct.png", width: setWidth(480)),
-        // ):Container(),
-        // showWrongPic==false?Positioned(
-        //   top: setHeight(450),
-        //   right: setWidth(1035),
-        //   child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
-        // ):Container(),
-        // currentState==CurrentState.waiting?showPrepareBackground():Container(),
-        // currentState==CurrentState.waiting?showPrepare():Container(),
-        // currentState==CurrentState.questionDone?buildResultWidget():Container(),
+        showRightPic==false?Positioned(
+          top: setHeight(450),
+          right: setWidth(1020),
+          child: Image.asset("images/v2.0/correct.png", width: setWidth(480)),
+        ):Container(),
+        showWrongPic==false?Positioned(
+          top: setHeight(450),
+          right: setWidth(1035),
+          child: Image.asset("images/v2.0/wrong.png", width: setWidth(480)),
+        ):Container(),
+        (currentState==CurrentState.testQuestionPrepare)||(currentState==CurrentState.mainQuestionPrepare)
+            ||(currentState==CurrentState.nextQuestion)?showTextBackground():Container(),
+        (currentState==CurrentState.testQuestionPrepare)||(currentState==CurrentState.mainQuestionPrepare)
+            ||(currentState==CurrentState.nextQuestion)?showText():Container(),
+        currentState==CurrentState.questionDone?buildResultWidget():Container(),
       ],
     );
   }
@@ -467,8 +577,10 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
 
 //多个状态
 enum CurrentState {
-  waiting, //刚进入界面等待
-  questionPrepare, //题目闪烁
+  testQuestionPrepare, //模拟测试
+  mainQuestionPrepare, //正式闪烁
   doingQuestion, //答题时间
-  questionDone, //答题完毕
+  showAnswer, //展示正误图片
+  nextQuestion, //下一题图标
+  questionDone, //所有答题完毕
 }

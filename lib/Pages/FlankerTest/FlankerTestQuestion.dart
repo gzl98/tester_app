@@ -2,63 +2,72 @@ import 'dart:math';
 
 //出题器
 class FlankerTestQuestion {
-  //问题真值列表
+  //出题列表
   List _questions = [];
   Random _random = Random();
+  // 出题候选列表
+  List _candidateList = [
+    [0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1],
+    [0, 0, 1, 0, 0],
+    [1, 1, 0, 1, 1]
+  ];
+  //总出题次数
+  int _answerNum = 0;
+  //测试
+  int _test_consistent = 0;
+  int _test_inconsistent = 0;
+  //正式
+  int _main_consistent = 0;
+  int _main_inconsistent = 0;
 
-  //题目数量
-  int _questionSize;
-
-  PairALQuestion(int size) {
-    _questionSize = size;
-  }
-
-  //产生随机的图片位置以及图片选择，将之对应为一维矩阵，六个位置从上到下分别为0-5，四个图片的选择
+  //模拟测试为2次全等，2次不一致
+  //正式测试前2次为全等测试。正式测试后18次为随机出现的全等or不一致测试（8次全等，10次不一致随机出现）
   List getQuestion() {
-    List tempQuestion = new List<int>.generate(6, (int i) {
-      return -1;
-    });
-    List manyNum = [];
-    for (int m = 0; m < _questionSize; m++) {
-      int x = _random.nextInt(6);
-      int y = _random.nextInt(4);
-      //避免重复+过多出现
-      bool temp = true;
-      if (tempQuestion[x] != -1) {
-        temp = false;
-        m -= 1;
-      } else {
-        int index = manyNum.indexOf(y);
-        if (index != -1) {
-          temp = false;
-          m -= 1;
-        }
+    //测试
+    if(_answerNum<4) {
+      int temp=_random.nextInt(4);
+      if(temp<2){
+        _test_consistent++;
+      }else{
+        _test_inconsistent++;
       }
-      //真实赋值
-      if (tempQuestion[x]== -1 && temp) {
-        tempQuestion[x]= y;
+      //测试时一致或者不一致达到限定数量
+      if(_test_consistent>2){
+        temp+=2;
       }
-      //避免一道题出现多次，统计每个数字出现的次数
-      List tempPicNum = new List<int>.generate(4, (int i) {
-        return 0;
-      });
-      for (int i = 0; i < 6; i++) {
-        if (tempQuestion[i] != -1) {
-          tempPicNum[tempQuestion[i]]++;
-        }
+      if(_test_inconsistent>2){
+        temp-=2;
       }
-      for (int i = 0; i < 4; i++) {
-        if (tempPicNum[i] >= ((_questionSize / 2).ceil())) {
-          manyNum.add(i);
+      _questions=_candidateList[temp];
+      _answerNum++;
+    }else if(_answerNum<24 && _answerNum>=4)
+    //正式
+    {
+      //前两次是一致的
+      if(_answerNum<6){
+        int temp=_random.nextInt(2);
+        _questions=_candidateList[temp];
+        _answerNum++;
+      }else{
+        int temp=_random.nextInt(4);
+        if(temp<2){
+          _main_consistent++;
+        }else{
+          _main_inconsistent++;
         }
+        //正式时一致或者不一致达到限定数量
+        if(_main_consistent>8){
+          temp+=2;
+        }
+        if(_main_inconsistent>10){
+          temp-=2;
+        }
+        _questions=_candidateList[temp];
+        _answerNum++;
       }
     }
-    _questions = tempQuestion;
-    return _questions;
-  }
 
-  //获取答案，便于比较
-  List getAnswer() {
-    return _questions[_questionSize - 1];
+    return _questions;
   }
 }

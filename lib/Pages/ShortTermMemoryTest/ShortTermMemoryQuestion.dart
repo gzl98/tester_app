@@ -126,7 +126,6 @@ class SingleTestForShortMemory {
 
 //出题器
 class ShortTermTestQuestionFactory {
-
   List<SingleTestForShortMemory> getCheckTest(int checkPoint,int nums){
     Set<SingleTestForShortMemory> questionsSet = new Set();
     while(questionsSet.length<nums){
