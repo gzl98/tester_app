@@ -3,42 +3,55 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tester_app/Pages/RVIP/RVIPQuestion.dart';
+import 'package:tester_app/Pages/NblackTest/NbackTestInfo.dart';
+import 'package:tester_app/Pages/RVIPTest/RVIPQuestion.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/Utils.dart';
+
 //多个状态
 enum CurrentState {
-  waiting,          //刚进入界面等待
-  questionPrepare,  //题目闪烁
-  doingQuestion,    //答题时间
-  oneTestResult,    //答完一道显示结果
-  questionDone,     //答题完毕
+  waiting,            //刚进入界面等待
+  questionPrepare,    //题目闪烁
+  doingQuestion,      //答题时间
+  oneTestResult,      //答完一道显示结果
+  questionDone,       //答题完毕
 }
-class RVIPTestPage extends StatefulWidget{
-  static const routerName = "/RVIP";
+
+class NbackTestPage extends StatefulWidget {
+  static const routerName = "/Nback";
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return RVIPState();
+    return NbackState();
   }
 }
 
-class RVIPState extends State<RVIPTestPage> {
+class NbackState extends State<NbackTestPage> {
   //当前状态（初始为等待）
-  final int  seqLength = 50;
-  final int targetCount =3;
+  final int seqLength = 80;
+  final int targetCount = 10;
+  final int totalTime = 2 * 60 * 1000;
   CurrentState currentState = CurrentState.waiting;
-  bool _wordflag = true;
-  bool _rightFlag = false;
+  bool _wordflag = true;       // 没用
+  bool _rightFlag = false;     // 没用
+  bool _flashFlag = false;      // 闪烁标志
   // 题目生成器
   var _testGenerator;
+
   // 题目列表
-  String _testList;
+  List<int> _testList;
   RVIPtResultInfo _resultInfo = RVIPtResultInfo();
+
   // 当前显示的题目标号
   int _currentIndex = 0;
   Timer _timer;
+  Timer _timeFlash;
+  int _interTime; //间隔时间
+  List<Widget> _images = [];
+
+  //保存五个图片的View List
+  List<double> _alignmentList = [-1.0, -0.5, 0.0005, 0.5, 1.005];
 
   @override
   void initState() {
@@ -47,7 +60,18 @@ class RVIPState extends State<RVIPTestPage> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
-    _testGenerator = RVIPSingleTest(this.seqLength, this.targetCount);
+    _testGenerator = NbackTest(this.seqLength, this.targetCount);
+    //创建图片控件
+    for (var x in _alignmentList) {
+      _images.add(Image.asset(
+        "images/v4.0/ProcessSpeed/image.png",
+        width: setWidth(300),
+        height: setWidth(300),
+        fit: BoxFit.cover,
+        alignment: Alignment(x, 0),
+      ));
+    }
+    this._interTime = this.totalTime ~/ this.seqLength;
     startTest();
   }
 
@@ -56,13 +80,13 @@ class RVIPState extends State<RVIPTestPage> {
   void dispose() {
     super.dispose();
     if (_timer != null && _timer.isActive) _timer.cancel();
+    if (_timeFlash != null && _timeFlash.isActive) _timeFlash.cancel();
   }
 
   // 开始测试
   void startTest() {
     setState(() {
-      this._testList = this._testGenerator.generatorTestByCount(3);
-      print(this._testList);
+      this._testList = this._testGenerator.getTest();
     });
     if (this.currentState != CurrentState.questionDone) {
       Future.delayed(Duration(milliseconds: 1500), () {
@@ -70,90 +94,72 @@ class RVIPState extends State<RVIPTestPage> {
       });
     }
   }
-
   void doingTest() {
     setState(() {
       this.currentState = CurrentState.doingQuestion;
     });
     Future.delayed(Duration(milliseconds: 600), () {
       //读第一次的值
-      this._timer = Timer.periodic(Duration(milliseconds: 600), callbackTime);
+      this._timer = Timer.periodic(
+          Duration(milliseconds: this._interTime),
+          callbackTime);
     });
   }
+
   void callbackTime(timer) {
     setState(() {
       if (this._currentIndex < this._testList.length - 1) {
-        this._currentIndex ++;
-      }
-      else if (this._currentIndex == this._testList.length - 1) {
+        this._currentIndex++;
+        this._flashFlag = false;
+      } else if (this._currentIndex == this._testList.length - 1) {
         this.currentState = CurrentState.questionDone;
         this._timer.cancel();
       }
     });
   }
-  void pressButton(){
+
+  void pressButton() {
     if (currentState == CurrentState.doingQuestion) {
       bool result_flag = this._testGenerator.judgeInTargets(this._currentIndex);
       setState(() {
-        this._resultInfo.addSingleTimeResult(0, result_flag, this._currentIndex);
+        this
+            ._resultInfo
+            .addSingleTimeResult(0, result_flag, this._currentIndex);
       });
     } else {
       print("还未进入答题状态，无效确认");
     }
   }
 
-  Widget _buildNumCard(String num) {
+  Widget _buildCard() {
     var circleBoxDecoration = new BoxDecoration(
       border: new Border.all(color: Color(0xFFB9BBBB), width: 0.5), // 边色与边宽度
       borderRadius: new BorderRadius.circular((25)), // 圆角度
       color: Color(0xFFE2E4E6),
       //borderRadius: new BorderRadius.vertical(top: Radius.elliptical(20, 50)),
     );
-    var cardWordStyle = TextStyle(
-      fontSize: setSp(250),
+    var buttonStyle = ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFE2E4E6)),
     );
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: setHeight(40)),
-      child: this._wordflag == true
-          ? Text(
-        num,
-        style: cardWordStyle,
-      )
-          : this._rightFlag == true
-          ? Container(
-        child: Opacity(
-          opacity: 0.85,
-          child: Image.asset(
-            "images/v2.0/correct.png",
-            width: setWidth(350),
-          ),
-        ),
-      )
-          : Container(),
-      decoration: circleBoxDecoration,
-    );
-  }
-
-  Widget _buildTargetInfo() {
-    var circleBoxDecoration = new BoxDecoration(
-      border: new Border.all(color: Color(0xFFB9BBBB), width: 0.1), // 边色与边宽度
-      borderRadius: new BorderRadius.circular((25)), // 圆角度
-      color: Color(0xFFF8F8F8),
-      //borderRadius: new BorderRadius.vertical(top: Radius.elliptical(20, 50)),
-    );
-    return Container(
-      margin: EdgeInsets.only(top: setHeight(40)),
-      padding: EdgeInsets.only(left: setWidth(20)),
-      alignment: Alignment.topLeft,
-      child: Text(
-        "目标：\n" +
-            this._testGenerator.getTargetListStr(),
-        style: TextStyle(color: Colors.black, fontSize: setSp(80)),
+      child: ElevatedButton(
+        style: buttonStyle,
+        onPressed: null,
+        child: ((){
+          if(this._flashFlag == false){
+            return this._images[this._testList[this._currentIndex]];
+          }
+          else{
+            return null;
+          }
+        }()),
       ),
       decoration: circleBoxDecoration,
     );
   }
+
 
   Widget _buildTopWidget() {
     return Container(
@@ -163,7 +169,7 @@ class RVIPState extends State<RVIPTestPage> {
       height: setHeight(150),
       color: Color.fromARGB(255, 48, 48, 48),
       child: Text(
-        "快速视觉信息处理任务",
+        "Nback测试",
         style: TextStyle(color: Colors.white, fontSize: setSp(55)),
       ),
     );
@@ -184,22 +190,12 @@ class RVIPState extends State<RVIPTestPage> {
                 flex: 8,
                 child: Row(
                   children: [
+                    Expanded(flex: 1, child: Text("")),
                     Expanded(
-                        flex: 2,
-                        child: Text("")
+                      flex: 1,
+                      child:_buildCard(),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: _buildNumCard(this._testList[this._currentIndex]),
-                    ),
-                    Expanded(
-                        flex: 1,
-                        child: _buildTargetInfo()
-                    ),
-                    Expanded(
-                        flex: 2,
-                        child: Text("")
-                    ),
+                    Expanded(flex: 1, child: Text("")),
                   ],
                 ),
               ),
@@ -209,8 +205,7 @@ class RVIPState extends State<RVIPTestPage> {
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 
   //确认按钮
@@ -221,16 +216,19 @@ class RVIPState extends State<RVIPTestPage> {
           width: maxWidth,
           height: maxHeight,
           child: RaisedButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             color: Color.fromARGB(255, 213, 232, 212),
             onPressed: () => this.pressButton(),
-            child: Text("确认", style: TextStyle(fontSize: setSp(70),
-                fontWeight: FontWeight.bold,
-                color: Colors.blueGrey),),
+            child: Text(
+              "确认",
+              style: TextStyle(
+                  fontSize: setSp(70),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueGrey),
+            ),
           ),
-        )
-    );
+        ));
   }
 
   Widget _buildBottomWidget() {
@@ -259,12 +257,10 @@ class RVIPState extends State<RVIPTestPage> {
                         child: Text(""),
                       ),
                     ],
-                  )
-              ),
+                  )),
             ],
           ),
-        )
-    );
+        ));
   }
 
   //主界面布局
@@ -299,12 +295,12 @@ class RVIPState extends State<RVIPTestPage> {
             : Container(),
         currentState == CurrentState.questionDone
             ? Positioned(
-            right: setWidth(400),
-            bottom: 0,
-            child: Image.asset(
-              "images/v2.0/doctor_result.png",
-              width: setWidth(480),
-            ))
+                right: setWidth(400),
+                bottom: 0,
+                child: Image.asset(
+                  "images/v2.0/doctor_result.png",
+                  width: setWidth(480),
+                ))
             : Container(),
       ],
     );
@@ -366,17 +362,18 @@ class RVIPState extends State<RVIPTestPage> {
         child: Text(
           "准 备 开 始",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: setSp(70), color: Colors.deepOrangeAccent),
+          style: TextStyle(fontSize: setSp(70), color: Colors.deepOrangeAccent),
         ),
       ),
     );
   }
 
   Widget _buildResultFloatWidget() {
-    double floatWindowRadios =30;
+    double floatWindowRadios = 30;
     TextStyle resultTextStyle = TextStyle(
-        fontSize: setSp(45), fontWeight: FontWeight.bold, color: Colors.blueGrey);
+        fontSize: setSp(45),
+        fontWeight: FontWeight.bold,
+        color: Colors.blueGrey);
     return Container(
       width: maxWidth,
       height: maxHeight,
@@ -424,9 +421,18 @@ class RVIPState extends State<RVIPTestPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("错误数："+this._resultInfo.getErrorRectCount()+"      ", style: resultTextStyle),
-                    Text("正确反应数："+this._resultInfo.getRightCount()+"      ", style: resultTextStyle),
-                    Text("错过数目："+this._resultInfo.getMissingCount(this.targetCount)+"      ", style: resultTextStyle),
+                    Text(
+                        "错误数：" +
+                            this._resultInfo.getErrorRectCount() +
+                            "      ",
+                        style: resultTextStyle),
+                    Text("正确反应数：" + this._resultInfo.getRightCount() + "      ",
+                        style: resultTextStyle),
+                    Text(
+                        "错过数目：" +
+                            this._resultInfo.getMissingCount(this.targetCount) +
+                            "      ",
+                        style: resultTextStyle),
                     // Text("平均反应时间："+"0"+"ms    ", style: resultTextStyle),
                   ],
                 ),
@@ -458,7 +464,7 @@ class RVIPState extends State<RVIPTestPage> {
             child: TextButton(
               style: ButtonStyle(
                   backgroundColor:
-                  MaterialStateProperty.all(Colors.transparent)),
+                      MaterialStateProperty.all(Colors.transparent)),
               //调用接口向后端传参
               onPressed: () {
                 // Map map = {
@@ -501,5 +507,3 @@ class RVIPState extends State<RVIPTestPage> {
     );
   }
 }
-
-
