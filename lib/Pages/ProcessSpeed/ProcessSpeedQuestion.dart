@@ -1,13 +1,13 @@
 import 'dart:math';
 
-bool debug = true; //是否处于调试阶段
-// bool debug = false; //是否处于调试阶段
+// bool debug = true; //是否处于调试阶段
+bool debug = false; //是否处于调试阶段
 
 class ProcessSpeedQuestion {
   List<List> _questionList = [];
   Random _random = Random();
 
-  int _maxIndex = debug ? 3 : 15; //记录最大长度位数
+  int _maxIndex = debug ? 3 : 9; //记录最大长度位数
   int _currentIndex = -1;
   List<int> _spentTime; //记录所用时间，单位毫秒
   int _imageCount;
@@ -44,4 +44,10 @@ class ProcessSpeedQuestion {
   void setSpentTime(int time) {
     _spentTime[_currentIndex] = time;
   }
+
+  int get currentIndex {
+    return _currentIndex > 0 ? _currentIndex : 0;
+  }
+
+  int get maxIndex => _maxIndex;
 }
