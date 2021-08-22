@@ -9,6 +9,7 @@ import 'Pages/ClockDrawTest/ClockDrawTestView.dart';
 import 'Pages/MemoryMatrix/MemoryMatrix.dart';
 import 'Pages/PairAssoLearning/PairAssoLearningMainPage.dart';
 import 'Pages/ProcessSpeed/ProcessSpeedPage.dart';
+import 'Pages/FlankerTest/FlankerTestMainPage.dart';
 
 //记忆矩阵
 final Map<String, String> questionMemoryMatrix = {
@@ -173,6 +174,24 @@ final Map<String, String> questionProcessSpeed = {
   "questionRules": "测试者需要尽可能快地找出两个相同的图案。如果您不慎点错图案，可再次点击以取消选择，选择两个图案后自动判题。",
   "backgroundImagePath2": "images/v4.0/FlashLight/FlashLight2.jpg",
 };
+//抗干扰能力测试
+final Map<String, String> questionFlanketTest = {
+  //导航页面
+  "questionAbility": "抗干扰能力",
+  "questionTitle": "抗干扰能力测试",
+  "questionNavContent": "被测试者需要快速点击与最中间箭头指向相同的按钮。",
+  "questionNavPurpose": "训练被测试者的抵抗侧翼干扰的能力。",
+  "benefitExample": "训练后您的抗干扰能力会得到提升。",
+  "questionImgPath": "images/v4.0/Flanker/bgFlanker.png",
+  "nextPageRouter": FlankerTestMainPage.routerName,
+  "questionPurpose": "训练抗干扰能力。",
+  //第一个页面
+  "backgroundImagePath1": "images/v4.0/Flanker/bgFlanker.png",
+  //第二个页面
+  "questionRules": "本测试正式开始前提供4次模拟测试，不计入总成绩；正式测试共计20次。测试者需要在2s内点击与中间箭头方向相同的按钮，2s内未操作视为错误。",
+  "backgroundImagePath2": "images/v4.0/Flanker/bgFlanker.png",
+};
+
 List testList = [
   QuestionInfo.fromMap(questionMemoryMatrix),
   QuestionInfo.fromMap(questionNumberReasoning),
@@ -183,6 +202,7 @@ List testList = [
   QuestionInfo.fromMap(shortTermMemoryTest),
   QuestionInfo.fromMap(pictureSequenceMemoryTest),
   QuestionInfo.fromMap(questionProcessSpeed),
+  QuestionInfo.fromMap(questionFlanketTest),
 ];
 
 //创建每道题是否完成的列表
