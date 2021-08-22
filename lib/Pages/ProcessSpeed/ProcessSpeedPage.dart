@@ -55,6 +55,14 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
     player = AudioCache();
   }
 
+  void playCorrectSound() async {
+    audioPlayer = await player.play('sounds/correct.wav');
+  }
+
+  void playWrongSound() async {
+    audioPlayer = await player.play('sounds/wrong.wav');
+  }
+
   @override
   void dispose() {
     audioPlayer.release();
@@ -143,6 +151,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
           int index1 = indexList.indexOf(true), index2 = indexList.lastIndexOf(true);
           answerTimeList.add(currentTime);
           answerCorrect.add(questionList.last[index1] == questionList.last[index2]);
+          answerCorrect.last ? playCorrectSound() : playWrongSound();
           //0.5秒之后显示对错，并重置标志位
           Future.delayed(Duration(milliseconds: 500), () {
             setState(() {
