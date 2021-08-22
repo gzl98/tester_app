@@ -216,7 +216,9 @@ class PersistentTestMainPageState extends State<PersistentTestMainPage> {
                   Future.delayed(Duration(seconds: 1),(){
                     totalAnswerNum++;
                     if(totalAnswerNum==10){
-                      currentState=CurrentState.questionDone;
+                      setState(() {
+                        currentState=CurrentState.questionDone;
+                      });
                     }else{
                       startGame();
                     }
@@ -229,9 +231,11 @@ class PersistentTestMainPageState extends State<PersistentTestMainPage> {
                     totalAnswerNum++;
                     print("正式测试总共正确数为："+totalCorrectNum.toString());
                     if(totalAnswerNum==10){
-                      showRightPic=true;
-                      showWrongPic=true;
-                      currentState=CurrentState.questionDone;
+                      setState(() {
+                        showRightPic=true;
+                        showWrongPic=true;
+                        currentState=CurrentState.questionDone;
+                      });
                     }else{
                       startGame();
                     }
