@@ -171,7 +171,7 @@ final Map<String, String> questionProcessSpeed = {
   //第一个页面
   "backgroundImagePath1": "images/v4.0/FlashLight/FlashLight1.jpg",
   //第二个页面
-  "questionRules": "测试者需要尽可能快地找出两个相同的图案。如果您不慎点错图案，可再次点击以取消选择，选择两个图案后自动判题。",
+  "questionRules": "测试者需要尽可能快地找出两个相同的图案。如果您不慎点错图案，可再次点击以取消选择。请注意，当您选择两个图案后程序将自动判题。",
   "backgroundImagePath2": "images/v4.0/FlashLight/FlashLight2.jpg",
 };
 //抗干扰能力测试

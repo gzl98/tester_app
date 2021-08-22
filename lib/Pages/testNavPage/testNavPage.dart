@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tester_app/Fragments/FirstFragment.dart';
+import 'package:tester_app/Fragments/Fragment.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
@@ -411,7 +411,7 @@ class TestNav extends State<TestNavPage> {
           onPressed: () {
             //_start();
             if(!this._testFinishList[this._selectIndex]){
-              Navigator.pushNamed(context, FirstFragment.routerName,
+              Navigator.pushNamed(context, Fragment.routerName,
                   arguments: testList[_selectIndex]);
             }
           }),

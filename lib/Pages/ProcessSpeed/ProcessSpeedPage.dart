@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,13 +27,16 @@ class ProcessSpeedPage extends StatefulWidget {
 }
 
 class ProcessSpeedPageState extends State<ProcessSpeedPage> {
+  AudioPlayer audioPlayer;
+  AudioCache player;
+
   @override
   void initState() {
-    // 强制横屏
+    //强制横屏
     SystemChrome.setEnabledSystemUIOverlays([]);
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-
+    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    //初始化声音控件
+    initAudioPlayer();
     //创建图片控件
     for (var x in alignmentList) {
       images.add(Image.asset(
@@ -45,8 +50,15 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
     super.initState();
   }
 
+  void initAudioPlayer() {
+    audioPlayer = AudioPlayer();
+    player = AudioCache();
+  }
+
   @override
   void dispose() {
+    audioPlayer.release();
+    audioPlayer.dispose();
     super.dispose();
     if (_timer != null && _timer.isActive) _timer.cancel();
   }
@@ -55,8 +67,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
   int maxChoose = 2;
   Timer _timer; //计时器
   int currentTime = 0; //辅助计时器
-  ProcessSpeedQuestion processSpeedQuestion =
-      ProcessSpeedQuestion(); //初始化出题器，闪烁按钮个数为4
+  ProcessSpeedQuestion processSpeedQuestion = ProcessSpeedQuestion(); //初始化出题器，可定义共有几张图片，默认为5
   final millisecond = const Duration(milliseconds: 1); //定义1毫秒的Duration
   CurrentState currentState = CurrentState.questionBegin; //初始化当前页面状态为Begin
   List answerTimeList = []; //使用时间列表
@@ -112,8 +123,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
 
   void buttonClicked(index) {
     //触发方形按钮点击事件，index为按钮的id值
-    if (currentState != CurrentState.doingQuestion)
-      return; //如果不是开始答题状态，点击按钮没有效果
+    if (currentState != CurrentState.doingQuestion) return; //如果不是开始答题状态，点击按钮没有效果
     if (indexList[index]) {
       //清除一个选中
       setState(() {
@@ -130,17 +140,13 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
         if (maxChoose == 0) {
           //进入答案判断
           _timer.cancel();
-          int index1 = indexList.indexOf(true),
-              index2 = indexList.lastIndexOf(true);
+          int index1 = indexList.indexOf(true), index2 = indexList.lastIndexOf(true);
           answerTimeList.add(currentTime);
-          answerCorrect
-              .add(questionList.last[index1] == questionList.last[index2]);
+          answerCorrect.add(questionList.last[index1] == questionList.last[index2]);
           //0.5秒之后显示对错，并重置标志位
           Future.delayed(Duration(milliseconds: 500), () {
             setState(() {
-              currentState = answerCorrect.last
-                  ? CurrentState.questionCorrect
-                  : CurrentState.questionWrong;
+              currentState = answerCorrect.last ? CurrentState.questionCorrect : CurrentState.questionWrong;
               indexList[index1] = indexList[index2] = false;
               maxChoose = 2;
               answerList.add([index1, index2]);
@@ -175,10 +181,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
       color: Color.fromARGB(255, 48, 48, 48),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(
-          "当前题目：" +
-              (processSpeedQuestion.currentIndex + 1).toString() +
-              "/" +
-              processSpeedQuestion.maxIndex.toString(),
+          "当前题目：" + (processSpeedQuestion.currentIndex + 1).toString() + "/" + processSpeedQuestion.maxIndex.toString(),
           style: TextStyle(color: Colors.white, fontSize: setSp(55)),
         ),
       ]),
@@ -198,9 +201,8 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
               shadowColor: MaterialStateProperty.all(Colors.transparent),
               overlayColor: MaterialStateProperty.all(Colors.transparent),
               shape: indexList[i]
-                  ? MaterialStateProperty.all(ContinuousRectangleBorder(
-                      side: BorderSide(
-                          color: Colors.green[800], width: setWidth(18))))
+                  ? MaterialStateProperty.all(
+                      ContinuousRectangleBorder(side: BorderSide(color: Colors.green[800], width: setWidth(18))))
                   : null,
             ),
             onPressed: () {
@@ -265,9 +267,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
                   child: Text(
                     showText[currentState],
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: setSp(70),
-                        color: showTextColor[currentState]),
+                    style: TextStyle(fontSize: setSp(70), color: showTextColor[currentState]),
                   ),
                 ),
               )
@@ -295,8 +295,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: Color.fromARGB(255, 229, 229, 229),
-                borderRadius: BorderRadius.all(
-                    Radius.circular(setWidth(floatWindowRadios))),
+                borderRadius: BorderRadius.all(Radius.circular(setWidth(floatWindowRadios))),
                 boxShadow: [
                   BoxShadow(
                       color: Color.fromARGB(255, 100, 100, 100),
@@ -327,9 +326,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
                   )
                 ]),
             child: TextButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.transparent)),
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
                 setState(() {
                   currentState = CurrentState.questionPrepare;
@@ -348,27 +345,22 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
   }
 
   Widget buildResultFloatWidget() {
-    TextStyle resultTextStyle = TextStyle(
-        fontSize: setSp(45),
-        fontWeight: FontWeight.bold,
-        color: Colors.blueGrey);
+    TextStyle resultTextStyle = TextStyle(fontSize: setSp(45), fontWeight: FontWeight.bold, color: Colors.blueGrey);
     List<TableRow> table = [];
     for (int i = 0; i < answerTimeList.length;) {
       int n = 3;
       List<Widget> tableRow = [];
       while (n-- > 0) {
         tableRow.add(Container(
-          margin: EdgeInsets.only(left: setWidth(60)),
-          height: setHeight(100),
-          alignment: Alignment.centerLeft,
-            child:Text(
-            "第" +
-                (++i).toString().padLeft(2, '0') +
-                "关：" +
-                (answerCorrect[i - 1]
-                    ? (answerTimeList[i - 1] / 1000).toStringAsFixed(3) + "秒"
-                    : "错误"),
-            style: resultTextStyle)));
+            margin: EdgeInsets.only(left: setWidth(60)),
+            height: setHeight(100),
+            alignment: Alignment.centerLeft,
+            child: Text(
+                "第" +
+                    (++i).toString().padLeft(2, '0') +
+                    "关：" +
+                    (answerCorrect[i - 1] ? (answerTimeList[i - 1] / 1000).toStringAsFixed(3) + "秒" : "错误"),
+                style: resultTextStyle)));
       }
       table.add(TableRow(
         children: tableRow,
@@ -387,8 +379,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: Color.fromARGB(255, 229, 229, 229),
-                borderRadius: BorderRadius.all(
-                    Radius.circular(setWidth(floatWindowRadios))),
+                borderRadius: BorderRadius.all(Radius.circular(setWidth(floatWindowRadios))),
                 boxShadow: [
                   BoxShadow(
                       color: Color.fromARGB(255, 100, 100, 100),
@@ -408,16 +399,12 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
                 ),
                 child: Text(
                   "测验结果",
-                  style: TextStyle(
-                      fontSize: setSp(50),
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
+                  style: TextStyle(fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blue),
                 ),
               ),
               Container(
                 width: setWidth(1400),
-                margin:
-                    EdgeInsets.only(top: setHeight(40), bottom: setHeight(40)),
+                margin: EdgeInsets.only(top: setHeight(40), bottom: setHeight(40)),
                 child: Table(
                   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   children: table,
@@ -434,10 +421,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Color.fromARGB(255, 253, 160, 60),
-                  Color.fromARGB(255, 217, 127, 63)
-                ],
+                colors: [Color.fromARGB(255, 253, 160, 60), Color.fromARGB(255, 217, 127, 63)],
               ),
               boxShadow: [
                 BoxShadow(
@@ -448,13 +432,10 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
               ],
             ),
             child: TextButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.transparent)),
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
                 testFinishedList[questionIdProcessSpeed] = false;
-                Navigator.pushNamedAndRemoveUntil(
-                    context, TestNavPage.routerName, (route) => false);
+                Navigator.pushNamedAndRemoveUntil(context, TestNavPage.routerName, (route) => false);
               },
               child: Text(
                 "结 束",
@@ -482,29 +463,24 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
                 Container(
                   width: maxWidth,
                   height: maxHeight,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        buildTopWidget(),
-                        Container(
-                          width: maxWidth,
-                          height: setHeight(5),
-                          color: Colors.red,
-                        ),
-                        Container(
-                          width: maxWidth,
-                          height: maxHeight - setHeight(155),
-                          color: Color.fromARGB(255, 238, 241, 240),
-                          child: currentState == CurrentState.questionBegin ||
-                                  currentState == CurrentState.questionAllDone
-                              ? Container()
-                              : buildMainWidget(),
-                        ),
-                      ]),
+                  child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    buildTopWidget(),
+                    Container(
+                      width: maxWidth,
+                      height: setHeight(5),
+                      color: Colors.red,
+                    ),
+                    Container(
+                      width: maxWidth,
+                      height: maxHeight - setHeight(155),
+                      color: Color.fromARGB(255, 238, 241, 240),
+                      child: currentState == CurrentState.questionBegin || currentState == CurrentState.questionAllDone
+                          ? Container()
+                          : buildMainWidget(),
+                    ),
+                  ]),
                 ),
-                currentState == CurrentState.questionBegin
-                    ? buildFloatWidget()
-                    : Container(),
+                currentState == CurrentState.questionBegin ? buildFloatWidget() : Container(),
                 currentState == CurrentState.questionCorrect
                     ? Center(
                         child: Container(
@@ -531,9 +507,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
                             )),
                       )
                     : Container(),
-                currentState == CurrentState.questionAllDone
-                    ? buildResultFloatWidget()
-                    : Container(),
+                currentState == CurrentState.questionAllDone ? buildResultFloatWidget() : Container(),
                 currentState == CurrentState.questionAllDone
                     ? Positioned(
                         right: setWidth(100),

@@ -14,6 +14,7 @@ import 'package:tester_app/Pages/ShortTermMemoryTest/ShortTermMemoryPage.dart';
 import 'package:tester_app/Pages/FlankerTest/FlankerTestMainPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
+import 'Fragments/Fragment.dart';
 import 'Fragments/SecondFragment.dart';
 import 'Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
 import 'Pages/ProcessSpeed/ProcessSpeedPage.dart';
@@ -23,9 +24,9 @@ import 'Utils/Utils.dart';
 // String bootPage = GooseFlyingSouthPage.routerName;
 // String bootPage = FlankerTestMainPage.routerName;
 // String bootPage = ProcessSpeedPage.routerName;
-// String bootPage = ShowInfoPage.routerName;
+String bootPage = ShowInfoPage.routerName;
 // String bootPage = LoginPage.routerName;
-String bootPage = PersistentTestMainPage.routerName;
+// String bootPage = Fragment.routerName;
 
 void main() {
   runApp(MyApp());
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         ShowInfoPage.routerName: (context) => ShowInfoPage(),
         CompleteInfoPage.routerName: (context) => CompleteInfoPage(),
         TestNavPage.routerName: (context) => TestNavPage(),
+        Fragment.routerName: (context) => Fragment(),
         FirstFragment.routerName: (context) => FirstFragment(),
         SecondFragment.routerName: (context) => SecondFragment(),
         NumberReasoningPage.routerName: (context) => NumberReasoningPage(),
@@ -53,11 +55,11 @@ class MyApp extends StatelessWidget {
         FlashLightPage.routerName: (context) => FlashLightPage(),
         ClockDrawPage.routerName: (context) => ClockDrawPage(),
         GooseFlyingSouthPage.routerName: (context) => GooseFlyingSouthPage(),
-        ShortItemMemoryTestPage.routerName:(context) => ShortItemMemoryTestPage(),
+        ShortItemMemoryTestPage.routerName: (context) => ShortItemMemoryTestPage(),
         PictureSequenceMemoryTestPage.routerName: (context) => PictureSequenceMemoryTestPage(),
-        FlankerTestMainPage.routerName:(context) => FlankerTestMainPage(),
-        ProcessSpeedPage.routerName:(context) => ProcessSpeedPage(),
-        PersistentTestMainPage.routerName:(context) => PersistentTestMainPage(),
+        FlankerTestMainPage.routerName: (context) => FlankerTestMainPage(),
+        ProcessSpeedPage.routerName: (context) => ProcessSpeedPage(),
+        PersistentTestMainPage.routerName: (context) => PersistentTestMainPage(),
       },
     );
   }
@@ -86,11 +88,9 @@ class _BootPageState extends State<BootPage> {
         String mobile = await StorageUtil.getStringItem("mobile");
         if (mobile != null) {
           //  用户信息完整
-          Navigator.pushNamedAndRemoveUntil(
-              context, ShowInfoPage.routerName, (route) => false);
+          Navigator.pushNamedAndRemoveUntil(context, ShowInfoPage.routerName, (route) => false);
         } else {
-          Navigator.pushNamedAndRemoveUntil(
-              context, CompleteInfoPage.routerName, (route) => false);
+          Navigator.pushNamedAndRemoveUntil(context, CompleteInfoPage.routerName, (route) => false);
         }
       } catch (e) {
         print(e);
