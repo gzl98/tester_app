@@ -22,10 +22,8 @@ import 'Utils/Utils.dart';
 
 // String bootPage = GooseFlyingSouthPage.routerName;
 // String bootPage = FlankerTestMainPage.routerName;
-// String bootPage = ProcessSpeedPage.routerName;
+String bootPage = ProcessSpeedPage.routerName;
 // String bootPage = ShowInfoPage.routerName;
-//String bootPage = PersistentTestMainPage.routerName;
-String bootPage = LoginPage.routerName;
 
 void main() {
   runApp(MyApp());
