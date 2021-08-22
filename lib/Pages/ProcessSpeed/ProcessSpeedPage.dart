@@ -429,7 +429,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                testFinishedList[questionIdFlashLight] = false;
+                testFinishedList[questionIdProcessSpeed] = false;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
