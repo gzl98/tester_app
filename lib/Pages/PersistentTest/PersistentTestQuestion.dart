@@ -1,20 +1,18 @@
 import 'dart:math';
 
 //出题器
-class FlankerTestQuestion {
+class PersistentTestQuestion {
   //出题列表
   List _questions = [];
   Random _random = Random();
-  // 出题候选列表
-  List _candidateList = [
-    [0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1],
-    [0, 0, 1, 0, 0],
-    [1, 1, 0, 1, 1]
-  ];
 
+  // 定义左上0，右上1，左下2，右下3
   List getQuestion() {
+    List temp=[0,0,0,0];
+    int num=_random.nextInt(4);
+    temp[num]=1;
 
+    _questions=temp;
     return _questions;
   }
 }

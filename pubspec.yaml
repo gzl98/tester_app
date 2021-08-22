@@ -69,6 +69,7 @@ flutter:
     - images/v4.0/PictureSequenceMemoryTest/supermarket/
     - images/v4.0/Flanker/
     - images/v4.0/ProcessSpeed/
+    - images/v4.0/Persistent/
     - images/Goose/
     - assets/sounds/
   #   - images/a_dot_burr.jpeg

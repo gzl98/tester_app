@@ -29,3 +29,4 @@ const questionIdShortMemTest = 6;
 const questionIdPictureSequenceMemoryTest = 7;
 const questionIdProcessSpeed = 8;
 const questionIdFlankerTest = 9;
+const questionIdPersistentTest = 10;

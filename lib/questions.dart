@@ -10,6 +10,7 @@ import 'Pages/MemoryMatrix/MemoryMatrix.dart';
 import 'Pages/PairAssoLearning/PairAssoLearningMainPage.dart';
 import 'Pages/ProcessSpeed/ProcessSpeedPage.dart';
 import 'Pages/FlankerTest/FlankerTestMainPage.dart';
+import 'Pages/PersistentTest/PersistentTestMainPage.dart';
 
 //记忆矩阵
 final Map<String, String> questionMemoryMatrix = {
@@ -191,6 +192,23 @@ final Map<String, String> questionFlanketTest = {
   "questionRules": "本测试正式开始前提供4次模拟测试，不计入总成绩；正式测试共计20次。测试者需要在2s内点击与中间箭头方向相同的按钮，2s内未操作视为错误。",
   "backgroundImagePath2": "images/v4.0/Flanker/bgFlanker.png",
 };
+//持续警惕性测试
+final Map<String, String> questionPersistentTest = {
+  //导航页面
+  "questionAbility": "持续警惕性",
+  "questionTitle": "持续警惕性测试",
+  "questionNavContent": "被测试者需要快速点击一闪而过的绿色的圆。",
+  "questionNavPurpose": "训练被测试者的精神运动警戒的能力。",
+  "benefitExample": "训练后您的持续警惕能力会得到提升。",
+  "questionImgPath": "images/v4.0/Persistent/bgPersistent.png",
+  "nextPageRouter": PersistentTestMainPage.routerName,
+  "questionPurpose": "训练持续警惕能力。",
+  //第一个页面
+  "backgroundImagePath1": "images/v4.0/Persistent/bgPersistent.png",
+  //第二个页面
+  "questionRules": "在测试开始后，随机间隔从2-7秒，一个按钮的颜色变为绿色。测试者需要在0.6s内点击相应的按钮，否则记为错误，并跳至下一题。模拟测试2次，正式测试8次。",
+  "backgroundImagePath2": "images/v4.0/Persistent/bgPersistent.png",
+};
 
 List testList = [
   QuestionInfo.fromMap(questionMemoryMatrix),
@@ -203,6 +221,7 @@ List testList = [
   QuestionInfo.fromMap(pictureSequenceMemoryTest),
   QuestionInfo.fromMap(questionProcessSpeed),
   QuestionInfo.fromMap(questionFlanketTest),
+  QuestionInfo.fromMap(questionPersistentTest),
 ];
 
 //创建每道题是否完成的列表

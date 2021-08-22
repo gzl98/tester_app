@@ -312,7 +312,9 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
                   Future.delayed(Duration(seconds: 1),(){
                     totalAnswerNum++;
                     if(totalAnswerNum==24){
-                      currentState=CurrentState.questionDone;
+                      setState(() {
+                        currentState=CurrentState.questionDone;
+                      });
                     }else{
                       startGame();
                     }
@@ -325,9 +327,11 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
                     totalAnswerNum++;
                     print("正式测试总共正确数为："+totalCorrectNum.toString());
                     if(totalAnswerNum==24){
-                      showRightPic=true;
-                      showWrongPic=true;
-                      currentState=CurrentState.questionDone;
+                      setState(() {
+                        showRightPic=true;
+                        showWrongPic=true;
+                        currentState=CurrentState.questionDone;
+                      });
                     }else{
                       startGame();
                     }
