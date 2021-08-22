@@ -592,7 +592,7 @@ class FlankerTestMainPageState extends State<FlankerTestMainPage> {
 //多个状态
 enum CurrentState {
   testQuestionPrepare, //模拟测试
-  mainQuestionPrepare, //正式闪烁
+  mainQuestionPrepare, //正式测试
   doingQuestion, //答题时间
   showAnswer, //展示正误图片
   nextQuestion, //下一题图标
