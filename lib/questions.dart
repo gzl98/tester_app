@@ -1,7 +1,9 @@
 import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
 import 'package:tester_app/Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
+import 'package:tester_app/Pages/NblackTest/NbackTestPage.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 import 'package:tester_app/Pages/PictureSequenceMemoryTest/PictureSequenceMemoryTestPage.dart';
+import 'package:tester_app/Pages/RVIPTest/RVIPTestPage.dart';
 import 'package:tester_app/Pages/ShortTermMemoryTest/ShortTermMemoryPage.dart';
 
 import 'package:tester_app/pojo/QuestionInfo.dart';
@@ -210,6 +212,40 @@ final Map<String, String> questionPersistentTest = {
   "backgroundImagePath2": "images/v4.0/Persistent/bgPersistent.png",
 };
 
+//快速视觉信息处理任务
+final Map<String, String> RVIPTest = {
+  //导航页面
+  "questionAbility": "注意力工作记忆",
+  "questionTitle": "快速视觉信息处理测试",
+  "questionNavContent": "当测试者发现窗口出现提示栏中数字组合时，需要按下按键。",
+  "questionNavPurpose": "训练被测试者的视觉注意力以及工作记忆。",
+  "benefitExample": "训练后您的注意力以及工作记忆会得到提升。",
+  "questionImgPath": "images/v4.0/RVIP/RVIP.png",
+  "nextPageRouter": RVIPTestPage.routerName,
+  "questionPurpose": "训练持续警惕能力。",
+  //第一个页面
+  "backgroundImagePath1": "images/v4.0/RVIP/RVIP.png",
+  //第二个页面
+  "questionRules": "在测试开始后，随机出现数字2-9，速度为1分钟，出现100个数字，本次是共2分钟，一共出现200个数字。当测试者看到提示框中的数字序列时需要按下确定按钮。",
+  "backgroundImagePath2": "images/v4.0/RVIP/RVIP.png",
+};
+// Nback测试
+final Map<String, String> NbackTest = {
+  //导航页面
+  "questionAbility": "工作记忆",
+  "questionTitle": " N-back测试",
+  "questionNavContent": "当测试者发现当出现i与i-2位置的图形一样时，按下按键。",
+  "questionNavPurpose": "训练被测试者的连续工作以及。",
+  "benefitExample": "训练后您的表现工作记忆会得到提升。",
+  "questionImgPath": "images/v4.0/Nback/Nback.png",
+  "nextPageRouter": NbackTestPage.routerName,
+  "questionPurpose": "训练表现工作记忆。",
+  //第一个页面
+  "backgroundImagePath1": "images/v4.0/Nback/Nback.png",
+  //第二个页面
+  "questionRules": "在测试开始后，当出现i与i-2位置的图形一样时，按下按键。共有80个图形，10个正确的组合，在2分钟之内完成。",
+  "backgroundImagePath2": "images/v4.0/Nback/Nback.png",
+};
 List testList = [
   QuestionInfo.fromMap(questionMemoryMatrix),
   QuestionInfo.fromMap(questionNumberReasoning),
@@ -222,6 +258,8 @@ List testList = [
   QuestionInfo.fromMap(questionProcessSpeed),
   QuestionInfo.fromMap(questionFlanketTest),
   QuestionInfo.fromMap(questionPersistentTest),
+  QuestionInfo.fromMap(RVIPTest),
+  QuestionInfo.fromMap(NbackTest),
 ];
 
 //创建每道题是否完成的列表

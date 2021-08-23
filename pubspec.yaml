@@ -70,6 +70,8 @@ flutter:
     - images/v4.0/Flanker/
     - images/v4.0/ProcessSpeed/
     - images/v4.0/Persistent/
+    - images/v4.0/RVIP/
+    - images/v4.0/Nback/
     - images/Goose/
     - assets/sounds/
   #   - images/a_dot_burr.jpeg
