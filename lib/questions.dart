@@ -1,5 +1,6 @@
 import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
 import 'package:tester_app/Pages/GooseFlyingSouth/GooseFlyingSouth.dart';
+import 'package:tester_app/Pages/MultipleObjectTracking/MultipleObjectTracking.dart';
 import 'package:tester_app/Pages/NblackTest/NbackTestPage.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 import 'package:tester_app/Pages/PictureSequenceMemoryTest/PictureSequenceMemoryTestPage.dart';
@@ -246,6 +247,23 @@ final Map<String, String> NbackTest = {
   "questionRules": "在测试开始后，当出现i与i-2位置的图形一样时，按下按键。共有80个图形，10个正确的组合，在2分钟之内完成。",
   "backgroundImagePath2": "images/v4.0/Nback/Nback.png",
 };
+// 物体跟踪测试
+final Map<String, String> MultipleObjectTrackingTest = {
+  //导航页面
+  "questionAbility": "执行功能",
+  "questionTitle": "物体跟踪测试",
+  "questionNavContent": "测试者需要正确的点击，最初为粉色的球。",
+  "questionNavPurpose": "训练被测试者的执行功能。",
+  "benefitExample": "训练后您的执行功能会得到提升。",
+  "questionImgPath": "images/v4.0/MultipleObjectTracking/MultipleObjectTracking.jpg",
+  "nextPageRouter": MultipleObjectTrackingPage.routerName,
+  "questionPurpose": "训练执行功能。",
+  //第一个页面
+  "backgroundImagePath1": "images/v4.0/MultipleObjectTracking/MultipleObjectTracking.jpg",
+  //第二个页面
+  "questionRules": "测试者需要正确的点击，最初为粉色的球。",
+  "backgroundImagePath2": "images/v4.0/MultipleObjectTracking/MultipleObjectTracking.jpg",
+};
 List testList = [
   QuestionInfo.fromMap(questionMemoryMatrix),
   QuestionInfo.fromMap(questionNumberReasoning),
@@ -260,6 +278,7 @@ List testList = [
   QuestionInfo.fromMap(questionPersistentTest),
   QuestionInfo.fromMap(RVIPTest),
   QuestionInfo.fromMap(NbackTest),
+  QuestionInfo.fromMap(MultipleObjectTrackingTest),
 ];
 
 //创建每道题是否完成的列表

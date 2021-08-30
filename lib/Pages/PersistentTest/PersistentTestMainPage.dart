@@ -420,7 +420,7 @@ class PersistentTestMainPageState extends State<PersistentTestMainPage> {
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
                 //加入该题目结束标志
-                testFinishedList[questionIdPairAssoLearning]=true;
+                // testFinishedList[questionIdPairAssoLearning]=true;
               },
               child: Text(
                 "结 束",
