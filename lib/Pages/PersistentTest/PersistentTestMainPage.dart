@@ -101,7 +101,7 @@ class PersistentTestMainPageState extends State<PersistentTestMainPage> {
 
   //未在规定时间点击按钮
   checkButtonUnpressed(){
-    _timer=Timer.periodic(Duration(milliseconds: 600), (callback){
+    _timer=Timer.periodic(Duration(seconds: 1), (callback){
       //0.6s时进行判断
       setState((){
         if(buttonNum==-1){
