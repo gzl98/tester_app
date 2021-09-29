@@ -443,7 +443,7 @@ class ProcessSpeedPageState extends State<ProcessSpeedPage> {
             child: TextButton(
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.transparent)),
               onPressed: () {
-                testFinishedList[questionIdProcessSpeed] = false;
+                // testFinishedList[questionIdProcessSpeed] = false;
                 Navigator.pushNamedAndRemoveUntil(context, TestNavPage.routerName, (route) => false);
               },
               child: Text(

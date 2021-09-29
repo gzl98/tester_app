@@ -7,9 +7,12 @@ import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Pages/MemoryMatrix/MemoryMatrix.dart';
+import 'package:tester_app/Pages/MultipleObjectTracking/MultipleObjectTracking.dart';
+import 'package:tester_app/Pages/NblackTest/NbackTestPage.dart';
 import 'package:tester_app/Pages/NumberReasoning/NumberReasoningPage.dart';
 import 'package:tester_app/Pages/PairAssoLearning/PairAssoLearningMainPage.dart';
 import 'package:tester_app/Pages/PictureSequenceMemoryTest/PictureSequenceMemoryTestPage.dart';
+import 'package:tester_app/Pages/RVIPTest/RVIPTestPage.dart';
 import 'package:tester_app/Pages/ShortTermMemoryTest/ShortTermMemoryPage.dart';
 import 'package:tester_app/Pages/FlankerTest/FlankerTestMainPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
@@ -24,9 +27,9 @@ import 'Utils/Utils.dart';
 // String bootPage = GooseFlyingSouthPage.routerName;
 // String bootPage = FlankerTestMainPage.routerName;
 // String bootPage = ProcessSpeedPage.routerName;
-String bootPage = ShowInfoPage.routerName;
-// String bootPage = LoginPage.routerName;
+// String bootPage = ShowInfoPage.routerName;
 // String bootPage = Fragment.routerName;
+String bootPage = LoginPage.routerName;
 
 void main() {
   runApp(MyApp());
@@ -57,9 +60,12 @@ class MyApp extends StatelessWidget {
         GooseFlyingSouthPage.routerName: (context) => GooseFlyingSouthPage(),
         ShortItemMemoryTestPage.routerName: (context) => ShortItemMemoryTestPage(),
         PictureSequenceMemoryTestPage.routerName: (context) => PictureSequenceMemoryTestPage(),
+        MultipleObjectTrackingPage.routerName: (context) => MultipleObjectTrackingPage(),
         FlankerTestMainPage.routerName: (context) => FlankerTestMainPage(),
         ProcessSpeedPage.routerName: (context) => ProcessSpeedPage(),
         PersistentTestMainPage.routerName: (context) => PersistentTestMainPage(),
+        NbackTestPage.routerName:(context) => NbackTestPage(),
+        RVIPTestPage.routerName:(context) => RVIPTestPage(),
       },
     );
   }
