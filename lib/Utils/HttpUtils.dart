@@ -8,6 +8,7 @@ getUserInfoByToken(String token) async {
   Response response;
   Dio dio = Dio();
   try {
+    //restful api get post
     response = await dio.get(baseUrl + "users/me",
         options: getAuthorizationOptions(token));
     if (response.data["mobilephone"] != null) {

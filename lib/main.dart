@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tester_app/Fragments/FirstFragment.dart';
 import 'package:tester_app/Pages/ClockDrawTest/ClockDrawTestView.dart';
