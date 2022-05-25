@@ -13,7 +13,7 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 
 double maxHeight, maxWidth;
 
-String baseUrl = "http://39.96.37.82:8000/";
+String baseUrl = "http://10.0.2.2:8000/";
 
 class ScreenUtil {
   static ScreenUtil instance = new ScreenUtil();
@@ -34,8 +34,10 @@ class ScreenUtil {
   static double _textScaleFactor;
 
   ScreenUtil({
-    this.width = 1080,
-    this.height = 1920,
+    // this.width = 1080,
+    // this.height = 1920,
+    this.width = 1600,
+    this.height = 2560,
     this.allowFontScaling = false,
   });
 
@@ -289,27 +291,27 @@ Future<ui.Image> getAssetImage(String asset, {width, height}) async {
 //保存图片到相册
 saveToPictures(pngBytes) async {
   //Map<PermissionGroup,PermissionStatus> permissions= await PermissionHandler().requestPermissions([PermissionGroup.camera]);
-  print('执行保存图片');
-  var permission =
-      PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
-  print(permission.toString());
-  if (permission == PermissionStatus.denied) {
-    //无权限 显示设置
-    //bool isOpened=await PermissionHandler().openAppSettings();
-    print('无权限');
-  }
-
-  //添加保存照片到相册的权限
-  PermissionHandler().requestPermissions(<PermissionGroup>[
-    PermissionGroup.storage,
-  ]);
-  final result = await ImageGallerySaver.save(pngBytes.buffer.asUint8List());
-  print('保存图片');
-  print(result);
-  if (result) {
-    print('保存成功');
-    return result;
-  } else {
-    print('保存失败');
-  }
+  // print('执行保存图片');
+  // var permission =
+  //     PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+  // print(permission.toString());
+  // if (permission == PermissionStatus.denied) {
+  //   //无权限 显示设置
+  //   //bool isOpened=await PermissionHandler().openAppSettings();
+  //   print('无权限');
+  // }
+  //
+  // //添加保存照片到相册的权限
+  // PermissionHandler().requestPermissions(<PermissionGroup>[
+  //   PermissionGroup.storage,
+  // ]);
+  // final result = await ImageGallerySaver.save(pngBytes.buffer.asUint8List());
+  // print('保存图片');
+  // print(result);
+  // if (result) {
+  //   print('保存成功');
+  //   return result;
+  // } else {
+  //   print('保存失败');
+  // }
 }
