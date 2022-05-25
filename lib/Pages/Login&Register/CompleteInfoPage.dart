@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 
 import '../../Utils/Utils.dart';
 
@@ -357,7 +358,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
         await StorageUtil.setStringItem("IDcard", _IDCard);
         await StorageUtil.setStringItem("address", _address);
         Navigator.pushNamedAndRemoveUntil(
-            context, "/showInfo", (router) => false);
+            context, ShowInfoPage.routerName, (router) => false);
       }
     } catch (e) {
       print(e);

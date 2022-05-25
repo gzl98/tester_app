@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 
 import '../../Utils/Utils.dart';
 
@@ -319,7 +320,7 @@ class _RegisterPageState extends State<RegisterPage> {
         await StorageUtil.setStringItem(
             "token", response.data["token"]["access_token"]);
         Navigator.pushNamedAndRemoveUntil(
-            context, "/completeInfo", (router) => false);
+            context, CompleteInfoPage.routerName, (router) => false);
       }
     } catch (e) {
       print(e);

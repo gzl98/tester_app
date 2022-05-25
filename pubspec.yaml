@@ -38,7 +38,7 @@ dependencies:
   flutter_tts: 2.0.0
   audioplayers: 0.16.1
   # add this line to your dependencies
-  fluttertoast: ^8.0.8
+  fluttertoast: ^7.0.8
 
 dev_dependencies:
   flutter_test:
