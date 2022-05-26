@@ -326,7 +326,7 @@ final Map<String, String> questionFlashLight = {
   "questionNavContent": "记住灯光闪烁的先后顺序。",
   "questionNavPurpose": "主要评估短时空间记忆水平。",
   "benefitExample": "经过训练您的短时空间记忆能力会得到提升。",
-  "questionImgPath": "images/v4.0/FlashLight/FlashLight.png",
+  "questionImgPath": "images/v2.0/FlashLight.png",
   //第一个页面
   "questionName": "闪 灯 测 试",
   "questionPurpose": "这项测验主要评估您的短时空间记忆能力，请记住灯光闪烁的先后次序，记得越多，记忆力越好。",
