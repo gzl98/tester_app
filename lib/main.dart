@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tester_app/Fragments/QuestionFirstFragment.dart';
 import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
 import 'package:tester_app/Pages/COT/COTPage.dart';
+import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         TMTSpacePage.routerName: (context) => TMTSpacePage(),
         MazePage.routerName:(context) => MazePage(),
         OldTMTSpacePage.routerName:(context) => OldTMTSpacePage(),
+        FlashLightPage.routerName:(context) => FlashLightPage(),
       },
     );
   }

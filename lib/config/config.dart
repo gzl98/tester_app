@@ -4,7 +4,7 @@ const port = "9000";
 
 const protocol = "http";
 
-const questionIdTMT=0;
+const questionIdTMT = 0;
 //题目ID
 const questionIdSymbol = 1;
 const questionIdNewCharacter = 2;
@@ -23,5 +23,5 @@ const stroopWordColorID = 10;
 const MazeID = 11;
 const questionIDSDMT = 12;
 
-
 const IdOldTMT = 13;
+const questionIdFlashLight = 15;
