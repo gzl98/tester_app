@@ -7,9 +7,21 @@ import './CharacterTitle.dart';
 import './CharacterMiddle.dart';
 import './CharacterBottom.dart';
 
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
+
+import 'package:tester_app/Utils/HttpUtils.dart';
+import 'package:tester_app/config/config.dart';
+import '../../questions.dart';
+
 
 
 class CharacterPage extends StatefulWidget {
+
+  // static const routerName = "/CharacterPage";
+
+
   @override
   State<StatefulWidget> createState() {
     return CharacterPageState();

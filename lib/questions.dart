@@ -14,6 +14,29 @@ import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'Pages/NewTMT/TMTSpacePage.dart';
 import 'Pages/Symbol/SymbolMainPage.dart';
+import 'Pages/Character/CharacterWangPage.dart';
+
+
+//SDMT
+final Map<String, String> questionSDMT = {
+  "questionAbility": "视觉扫描",
+  "questionTitle": "符号编码",
+  "questionNavContent": "限定时间内尽可能多地写出每个符号对应的数字。",
+  "questionNavPurpose": "主要用于评估注意力分割、视知觉、眼球运动和短时记忆力。",
+  "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的视觉编码和短时记忆有显著提高。",
+  "questionName": "符号编码测验",
+  "questionImgPath": "images/v2.0/SDMTmain.jpg",
+  "questionPurpose": "这项测验主要评估您的视觉编码和短时记忆力，请在九十秒内尽可能多地写出每个符号对应的数字。",
+  "questionNotes": null,
+  "questionRules": "正式测试的符号图片会在测试结束后在左边出现，请判断每个符号对应的数字",
+  "questionRuleNotes": "请先在测试区域进行测试，正式开始后在左侧快速答题",
+  //"soundPath1": "sounds/Character1.wav",
+  //第二个页面
+  "nextPageRouter2": CharacterWangPage.routerName,
+  "questionRules2": null,
+  "questionRuleNotes2": null,
+  //"soundPath2": "sounds/Character2.wav",
+};
 
 //TMT
 final Map<String, String> questionTMTSpace = {
@@ -283,13 +306,14 @@ List testList = [
   QuestionInfo.fromMap(questionStroopColorWord),
   QuestionInfo.fromMap(questionStroopWordColor),
   QuestionInfo.fromMap(questionMaze),
+  QuestionInfo.fromMap(questionSDMT),
 ];
 //创建每道题是否完成的列表
 List<bool> testFinishedList = [];
 
 void initFragmentWidget() {
   initTMTWidget();
-  initSymbolCharacterWidget();
+  initSymbolCharacterSDMTWidget();
   initCotWidget();
   initWMSWidget();
   initStroopWidget();
@@ -304,8 +328,8 @@ void initTMTWidget() {
   questionTMT.questionRulesWidget = buildTMTSecondFragmentShowWidget();
 }
 
-//初始化Symbol和Character界面的控件
-void initSymbolCharacterWidget() {
+//初始化Symbol和Character界面的控件，以及新加入的SDMT界面
+void initSymbolCharacterSDMTWidget() {
   //Symbol
   QuestionInfo questionSymbol = testList[questionIdSymbol];
   questionSymbol.questionShowWidget = buildSymbolFirstFragmentShowWidget();
@@ -317,6 +341,11 @@ void initSymbolCharacterWidget() {
       buildCharacterFirstFragmentShowWidget();
   questionCharacter.questionRulesWidget =
       buildCharacterSecondFragmentShowWidget();
+
+  //SDMT
+  QuestionInfo questionSDMT = testList[questionIDSDMT];
+  questionSDMT.questionShowWidget = buildSDMTFirstFragmentShowWidget();
+  questionSDMT.questionRulesWidget = buildSDMTSecondFragmentShowWidget();
 }
 
 //初始化COT界面的控件

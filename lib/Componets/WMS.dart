@@ -43,6 +43,50 @@ Widget buildTMTSecondFragmentShowWidget(){
   );
 }
 
+
+//pixel 900*600
+Widget buildSDMTFirstFragmentShowWidget(){
+  return Container(
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+          image: AssetImage('images/v2.0/SDMTbackground.jpg'),
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.center),
+    ),
+  );
+}
+
+
+//pixel maxWidth*1000(内部必须包含一个Container，高度可以自定义，会影响下方文字的位置，但是必须指定)
+Widget buildSDMTSecondFragmentShowWidget(){
+  return Container(
+    alignment: Alignment.center,
+    width: maxWidth,
+    height: setHeight(1000),
+    child: Container(
+      margin: EdgeInsets.only(top: setHeight(400)),
+      alignment: Alignment.center,
+      width: setWidth(800),
+      height: setHeight(550),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('images/v2.0/SDMTbackground.jpg'),
+              fit: BoxFit.fill,
+              alignment: Alignment.center),
+        ),
+      ),
+      decoration: BoxDecoration(
+          border: Border.all(color: Color(0xFFBDBDBD), width: setWidth(1)),
+          color: Color.fromARGB(255, 226, 229, 228),
+          borderRadius: BorderRadius.all(Radius.circular(setWidth(25)))),
+    ),
+  );
+}
+
+
 //pixel 900*600
 Widget buildSymbolFirstFragmentShowWidget(){
   return Container(

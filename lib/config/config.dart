@@ -18,4 +18,8 @@ const questionIdWMSSpaceReverse = 7;
 const stroopWordID = 8;
 const stroopColorWordID = 9;
 const stroopWordColorID = 10;
+
+//SDMT符号编码
 const MazeID = 11;
+const questionIDSDMT = 12;
+

@@ -8,6 +8,9 @@ import 'CharacterMiddle.dart';
 import 'package:tester_app/Utils/EventBusType.dart';
 
 class CharacterNewPage extends StatefulWidget {
+
+  static const routerName = "/CharacterNewPage";
+
   @override
   State<StatefulWidget> createState() {
     return CharacterNewPageState();
@@ -46,6 +49,175 @@ class CharacterNewPageState extends State<CharacterNewPage> {
       child: CharacterPageMiddle(stop: stop),
     );
   }
+
+
+  double floatWindowRadios = 30;
+  TextStyle resultTextStyle = TextStyle(
+      fontSize: setSp(50), fontWeight: FontWeight.bold, color: Colors.blueGrey);
+
+
+  // //显示结果部件
+  // Widget buildResultWidget() {
+  //   return Container(
+  //     width: maxWidth,
+  //     height: maxHeight,
+  //     color: Color.fromARGB(220, 45, 45, 45),
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         SizedBox(height: setHeight(200)),
+  //         Container(
+  //           width: setWidth(800),
+  //           height: setHeight(450),
+  //           alignment: Alignment.center,
+  //           decoration: BoxDecoration(
+  //               color: Color.fromARGB(255, 229, 229, 229),
+  //               borderRadius: BorderRadius.all(
+  //                   Radius.circular(setWidth(floatWindowRadios))),
+  //               boxShadow: [
+  //                 BoxShadow(
+  //                     color: Color.fromARGB(255, 100, 100, 100),
+  //                     blurRadius: setWidth(10),
+  //                     offset: Offset(setWidth(1), setHeight(2)))
+  //               ]),
+  //           child: Column(children: [
+  //             Container(
+  //               height: setHeight(100),
+  //               alignment: Alignment.center,
+  //               decoration: BoxDecoration(
+  //                 boxShadow: [BoxShadow()],
+  //                 color: Color.fromARGB(255, 229, 229, 229),
+  //                 borderRadius: BorderRadius.only(
+  //                     topLeft: Radius.circular(setWidth(floatWindowRadios)),
+  //                     topRight: Radius.circular(setWidth(floatWindowRadios))),
+  //               ),
+  //               child: Text(
+  //                 "测验结果",
+  //                 style: TextStyle(
+  //                     fontSize: setSp(50),
+  //                     fontWeight: FontWeight.bold,
+  //                     color: Colors.blue),
+  //               ),
+  //             ),
+  //             Container(
+  //               margin: EdgeInsets.only(top: setHeight(30)),
+  //               height: setHeight(230),
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //                 children: [
+  //                   Row(
+  //                     children: [
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                       Expanded(
+  //                         flex: 5,
+  //                         child: Align(
+  //                           child:Text(
+  //                               "正确数：" +
+  //                                   correctNumber.toString() +
+  //                                   "      ",
+  //                               style: resultTextStyle),
+  //                           alignment: Alignment.centerLeft,
+  //                         ),
+  //                       ),
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   Row(
+  //                     children: [
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                       Expanded(
+  //                         flex: 5,
+  //                         child:Align(
+  //                           child:Text(
+  //                               "错误数：" + wrongNumber.toString() + "      ",
+  //                               style: resultTextStyle),
+  //                           alignment: Alignment.centerLeft,
+  //                         ),
+  //                       ),
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   Row(
+  //                     children: [
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                       Expanded(
+  //                           flex: 5,
+  //                           child:Align(
+  //                             child:Text(
+  //                                 "准确率：" + correctPercent.toString() + " %",
+  //                                 style: resultTextStyle),
+  //                             alignment: Alignment.centerLeft,
+  //                           )
+  //                       ),
+  //                       Expanded(
+  //                         flex: 3,
+  //                         child: Text(""),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ]),
+  //         ),
+  //         SizedBox(height: setHeight(300)),
+  //         Container(
+  //           width: setWidth(500),
+  //           height: setHeight(120),
+  //           decoration: BoxDecoration(
+  //             // border: Border.all(color: Colors.white,width: setWidth(1)),
+  //             gradient: LinearGradient(
+  //               begin: Alignment.topCenter,
+  //               end: Alignment.bottomCenter,
+  //               colors: [
+  //                 Color.fromARGB(255, 253, 160, 60),
+  //                 Color.fromARGB(255, 217, 127, 63)
+  //               ],
+  //             ),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.black54,
+  //                 offset: Offset(setWidth(1), setHeight(1)),
+  //                 blurRadius: setWidth(5),
+  //               )
+  //             ],
+  //           ),
+  //           child: TextButton(
+  //             style: ButtonStyle(
+  //                 backgroundColor:
+  //                 MaterialStateProperty.all(Colors.transparent)),
+  //             onPressed: () {
+  //               Navigator.pushNamedAndRemoveUntil(
+  //                   context, TestNavPage.routerName, (route) => false);
+  //               sendData();
+  //               //加入该题目结束标志
+  //               testFinishedList[questionIdSymbol]=true;
+  //             },
+  //             child: Text(
+  //               "结 束",
+  //               style: TextStyle(color: Colors.white, fontSize: setSp(60)),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   //TODO: 定义下一题按钮的函数体
   buildButtonNextQuestion() {
