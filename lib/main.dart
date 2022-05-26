@@ -6,10 +6,11 @@ import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
-import 'package:tester_app/Pages/Maze/MazeNewPage.dart';
 import 'package:tester_app/Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopColorWordPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopWordColorPage.dart';
+import 'package:tester_app/Pages/Maze/MazeNewPage.dart';
+import 'package:tester_app/Pages/OldTMT/OldTMTSpacePage.dart';
 import 'package:tester_app/Pages/STROOP/StroopWordPage.dart';
 import 'package:tester_app/Pages/Symbol/SymbolMainPage.dart';
 import 'package:tester_app/Pages/WMS/WMSDigitalPage.dart';
@@ -17,11 +18,13 @@ import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Pages/NewTMT/TMTSpacePage.dart';
+// import 'Pages/OldTMT/OldTMTSpacePage.dart';
 import 'Utils/Utils.dart';
 
-
-//String bootPage = MazePage.routerName;
+// String bootPage = TestNavPage.routerName;
+// String bootPage = QuestionFirstFragment.routerName;
 String bootPage = LoginPage.routerName;
+
 void main() {
   runApp(MyApp());
 }
@@ -53,6 +56,8 @@ class MyApp extends StatelessWidget {
             QuestionSecondFragment(),
         TMTSpacePage.routerName: (context) => TMTSpacePage(),
         MazePage.routerName:(context) => MazePage(),
+        OldTMTSpacePage.routerName: (context) => OldTMTSpacePage(),
+
       },
     );
   }

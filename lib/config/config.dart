@@ -19,3 +19,4 @@ const stroopWordID = 8;
 const stroopColorWordID = 9;
 const stroopWordColorID = 10;
 const MazeID = 11;
+const IdOldTMT = 12;

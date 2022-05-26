@@ -13,6 +13,47 @@ import 'package:tester_app/config/config.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'package:tester_app/questions.dart';
 
+//pixel 900*600
+Widget buildTMTFirstFragmentShowWidget(){
+  return Container(
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+          image: AssetImage('images/v2.0/TMTSpace.png'),
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.center),
+    ),
+  );
+}
+
+//pixel maxWidth*1000(内部必须包含一个Container，高度可以自定义，会影响下方文字的位置，但是必须指定)
+Widget buildTMTSecondFragmentShowWidget(){
+  return Container(
+    alignment: Alignment.center,
+    width: maxWidth,
+    height: setHeight(1000),
+    child: Container(
+      margin: EdgeInsets.only(top: setHeight(400)),
+      alignment: Alignment.center,
+      width: setWidth(800),
+      height: setHeight(550),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('images/v2.0/TMTSpaceFirst.png'),
+              fit: BoxFit.fill,
+              alignment: Alignment.center),
+        ),
+      ),
+      decoration: BoxDecoration(
+          border: Border.all(color: Color(0xFFBDBDBD), width: setWidth(1)),
+          color: Color.fromARGB(255, 226, 229, 228),
+          borderRadius: BorderRadius.all(Radius.circular(setWidth(25)))),
+    ),
+  );
+}
+
 
 class TMTSpacePage extends StatefulWidget {
   static const routerName = "/TMTSpacePage";
@@ -22,7 +63,6 @@ class TMTSpacePage extends StatefulWidget {
     return TMTSpacePageState();
   }
 }
-
 
 class StarView extends CustomPainter {
   StarView(this.lx, this.ly);

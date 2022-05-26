@@ -9,10 +9,12 @@ import 'package:tester_app/Pages/STROOP/StroopWordColorPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopWordPage.dart';
 import 'package:tester_app/Pages/WMS/WMSDigitalPage.dart';
 import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
+import 'package:tester_app/Pages/OldTMT/OldTMTSpacePage.dart';
 import 'package:tester_app/config/config.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
 import 'Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'Pages/NewTMT/TMTSpacePage.dart';
+import 'Pages/OldTMT/OldTMTSpacePage.dart';
 import 'Pages/Symbol/SymbolMainPage.dart';
 
 //TMT
@@ -38,6 +40,8 @@ final Map<String, String> questionTMTSpace = {
   //WMS页面特殊变量
   "reverse": "false",
 };
+
+
 //Symbol
 final Map<String, String> questionSymbol = {
   "questionAbility": "加工速度",
@@ -268,6 +272,29 @@ final Map<String, String> questionMaze = {
   "nextPageRouter2": MazePage.routerName,
   "soundPath2": "",
 };
+//OldTMT
+final Map<String, String> questionIdOldTMT = {
+  //导航页面
+  "questionAbility": "加工速度",
+  "questionTitle": "顺序连线",
+  "questionNavContent": "从小到大顺序找出25个数字。",
+  "questionNavPurpose": "主要评估大脑的加工速度。",
+  "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的反应速度有显著提高。",
+  "questionImgPath": "images/TMT.png",
+  //第一个页面
+  "questionName": "顺 序 连 线",
+  "questionPurpose":
+  "这项测验主要评估您的反应速度，请按照从小到大的顺序尽可能快地点击屏幕上的25个数字。",
+  "questionNotes": "请您尽可能快,尽可能准确地完成这个测验,您用时越短,成绩越好。",
+  "soundPath1": "sounds/TMTSpace1.wav",
+  //第二个页面
+  "questionRules": "请按照从小到大的顺序依次点击每个数字",
+  "questionRuleNotes": null,
+  "nextPageRouter2": OldTMTSpacePage.routerName,
+  "soundPath2": "sounds/TMTSpace2.wav",
+  //WMS页面特殊变量
+  "reverse": "false",
+};
 List testList = [
   QuestionInfo.fromMap(questionTMTSpace),
   QuestionInfo.fromMap(questionSymbol),
@@ -281,17 +308,20 @@ List testList = [
   QuestionInfo.fromMap(questionStroopColorWord),
   QuestionInfo.fromMap(questionStroopWordColor),
   QuestionInfo.fromMap(questionMaze),
+  QuestionInfo.fromMap(questionIdOldTMT),
 ];
 //创建每道题是否完成的列表
 List<bool> testFinishedList = [];
 
 void initFragmentWidget() {
   initTMTWidget();
+
   initSymbolCharacterWidget();
   initCotWidget();
   initWMSWidget();
   initStroopWidget();
   initMazeWidget();
+  initOldTMTWidget();
 }
 
 //初始化TMT页面的控件
@@ -301,6 +331,8 @@ void initTMTWidget() {
   questionTMT.questionShowWidget = buildTMTFirstFragmentShowWidget();
   questionTMT.questionRulesWidget = buildTMTSecondFragmentShowWidget();
 }
+
+
 
 //初始化Symbol和Character界面的控件
 void initSymbolCharacterWidget() {
@@ -323,6 +355,8 @@ void initCotWidget() {
   QuestionInfo questionCOT = testList[questionIdCOT];
   questionCOT.questionShowWidget = buildCOTFirstFragmentShowWidget();
 }
+
+
 
 //初始化WMS页面的控件
 void initWMSWidget() {
@@ -387,4 +421,12 @@ void initMazeWidget() {
   QuestionInfo questionMaze = testList[MazeID];
   questionMaze.questionShowWidget = buildMazeFirstFragment();
   questionMaze.questionRulesWidget = buildMazeSecondFragment();
+}
+
+//初始化OldTMT页面的控件
+void initOldTMTWidget() {
+  //OldTMT
+  QuestionInfo questionOldTMT = testList[IdOldTMT];
+  questionOldTMT.questionShowWidget = buildOldTMTFirstFragment();
+  questionOldTMT.questionRulesWidget = buildOldTMTSecondFragment();
 }

@@ -13,21 +13,23 @@ import 'package:tester_app/Utils/Utils.dart';
 import 'package:tester_app/config/config.dart';
 
 import '../../questions.dart';
-// 构建规则页面和注意页面的空间
-//第一个页面
-Widget buildMazeFirstFragment() {
+
+
+//pixel 900*600
+Widget buildOldTMTFirstFragmentShowWidget(){
   return Container(
     alignment: Alignment.center,
     decoration: BoxDecoration(
       image: DecorationImage(
-          image: AssetImage('images/migong.jpeg'),
+          image: AssetImage('images/TMT.png'),
           fit: BoxFit.scaleDown,
           alignment: Alignment.center),
     ),
   );
 }
-//第二个
-Widget buildMazeSecondFragment() {
+
+//pixel maxWidth*1000(内部必须包含一个Container，高度可以自定义，会影响下方文字的位置，但是必须指定)
+Widget buildOldTMTSecondFragmentShowWidget(){
   return Container(
     alignment: Alignment.center,
     width: maxWidth,
@@ -41,7 +43,7 @@ Widget buildMazeSecondFragment() {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/migong.jpeg'),
+              image: AssetImage('images/TMT.png'),
               fit: BoxFit.fill,
               alignment: Alignment.center),
         ),
@@ -54,15 +56,57 @@ Widget buildMazeSecondFragment() {
   );
 }
 
-class MazePage extends StatefulWidget {
-  static const routerName = "/MazePage";
+
+// 构建规则页面和注意页面的空间
+//第一个页面
+Widget buildOldTMTFirstFragment() {
+  return Container(
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+          image: AssetImage('images/TMT.png'),
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.center),
+    ),
+  );
+}
+//第二个
+Widget buildOldTMTSecondFragment() {
+  return Container(
+    alignment: Alignment.center,
+    width: maxWidth,
+    height: setHeight(1000),
+    child: Container(
+      margin: EdgeInsets.only(top: setHeight(400)),
+      alignment: Alignment.center,
+      width: setWidth(800),
+      height: setHeight(550),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('images/TMT.png'),
+              fit: BoxFit.fill,
+              alignment: Alignment.center),
+        ),
+      ),
+      decoration: BoxDecoration(
+          border: Border.all(color: Color(0xFFBDBDBD), width: setWidth(1)),
+          color: Color.fromARGB(255, 226, 229, 228),
+          borderRadius: BorderRadius.all(Radius.circular(setWidth(25)))),
+    ),
+  );
+}
+
+class OldTMTSpacePage extends StatefulWidget {
+  static const routerName = "/OldTMTSpacePage";
   @override
   State<StatefulWidget> createState() {
-    return MazePageState();
+    return OldTMTSpacePageState();
   }
 }
 
-class MazePageState extends State<MazePage> {
+class OldTMTSpacePageState extends State<OldTMTSpacePage> {
   @override
   void initState() {
     // 强制横屏
@@ -78,24 +122,21 @@ class MazePageState extends State<MazePage> {
     super.dispose();
     if (_timer != null && _timer.isActive) _timer.cancel();
   }
-  //TODO:定义题目名称，规则
-  final String questionTitle = "迷宫";
-  final String questionContent =
-      "\t\t\t\t本题目主要考察问题与解决问题的能力，请用画笔从迷宫开始到结束。";
 
   CurrentState currentState = CurrentState.questionBegin;
 
   //TODO：根据情况定义分数和时间，不定义即为不显示
   int score ;
-  int remainingTime = 30;
-  int totalTime = 30;
+  int remainingTime = 300;
+  int totalTime = 300;
   Timer _timer;
 
   //TODO: 定义主体布局，长宽分别为1960*1350像素，设置大小时统一使用setWidth和setHeight，setSp函数，使用maxWidth和maxHeight不需要使用上述3个函数
   Widget buildMainWidget() {
     return Container(
       // color: Colors.redAccent,
-        child: MyPainterPage(imgPath: 'images/migong.png',),
+      //TODO:
+      child: MyPainterPage(imgPath: 'images/TMT.png',),
     );
   }
 
@@ -221,10 +262,10 @@ class MazePageState extends State<MazePage> {
                 margin: EdgeInsets.only(top: setHeight(floatWindowRadios)),
                 height: setHeight(300),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text("用时："+(this.totalTime - this.remainingTime).toString()+"s      ", style: resultTextStyle),
-                  ]
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("用时："+(this.totalTime - this.remainingTime).toString()+"s      ", style: resultTextStyle),
+                    ]
                 ),
               ),
             ]),
@@ -266,10 +307,10 @@ class MazePageState extends State<MazePage> {
                 // map.addAll(_wmsQuestion.result);
                 String resultInfoStr = json.encode(map);
                 //print(resultInfoStr);
-                eventBus.fire(NextEvent(MazeID, this.totalTime - this.remainingTime));
-                //setAnswer(MazeID, score:this.totalTime - this.remainingTime, answerText: resultInfoStr);
+                eventBus.fire(NextEvent(IdOldTMT, this.totalTime - this.remainingTime));
+                //setAnswer(questionIdOldTMT, score:this.totalTime - this.remainingTime, answerText: resultInfoStr);
                 //加入该题目结束标志
-                testFinishedList[MazeID]=true;
+                testFinishedList[IdOldTMT]=true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, TestNavPage.routerName, (route) => false);
               },
