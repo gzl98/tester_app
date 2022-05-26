@@ -341,7 +341,6 @@ List<bool> testFinishedList = [];
 
 void initFragmentWidget() {
   initTMTWidget();
-  initSymbolCharacterSDMTWidget();
   initSymbolCharacterWidget();
   initCotWidget();
   initWMSWidget();
@@ -357,9 +356,6 @@ void initTMTWidget() {
   questionTMT.questionShowWidget = buildTMTFirstFragmentShowWidget();
   questionTMT.questionRulesWidget = buildTMTSecondFragmentShowWidget();
 }
-
-//初始化Symbol和Character界面的控件，以及新加入的SDMT界面
-void initSymbolCharacterSDMTWidget() {
 
 
 //初始化Symbol和Character界面的控件
