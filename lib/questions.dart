@@ -235,11 +235,13 @@ final Map<String, String> questionStroopWordColor = {
   "questionNavContent": "分辨文字的颜色和播放的声音一致的情况。",
   "questionNavPurpose": "主要评估执行抑制能力和速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的执行抑制能力和速度有显著提高。",
+
   "questionName": "Stroop词色",
   "questionImgPath": "images/v2.0/STROOP/stroopWordColor.png",
   "questionPurpose": "屏幕上不断出现文字同时会播放声音,当文字的颜色和播放的声音一致时,按空格键做出反应。",
   "questionNotes": "当听到的字的意思和看到的字的颜色一致时，您需要尽快按下空格键，如果不一致,请不要做任何反应，集中注意力等待下一个字的出现。",
   "soundPath1": "sounds/StroopWordColor1.wav",
+
   "questionRules": "当屏幕上出现的字的颜色和您听到的字的意思一致时请尽快按下空格键。",
   "questionRuleNotes": "请注意字的颜色,忽略字的意思。只有当看到的字的颜色和听到的一致时，您才需要按键，不一致时无需做任何反应",
   "questionRules2": null,
@@ -253,17 +255,17 @@ final Map<String, String> questionMaze = {
   "questionAbility": "执行测试",
   "questionTitle": "迷宫导航测试",
   "questionNavContent": "画出正确的走迷宫的方式。",
-  "questionNavPurpose": "本题目主要考察问题与解决问题的能力，请用画笔从迷宫开始到结束。",
-  "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的言语反应能力和速度有显著提高。",
+  "questionNavPurpose": "本题目主要考察测试计划和推理能力，请用画笔从迷宫开始到结束。",
+  "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的计划和推理能力有显著提高。",
   "questionImgPath": "images/v2.0/mazenav.png",
   //第一个页面
   "questionName": "迷宫导航测试",
-  "questionPurpose": "这项测验主要评估您的言语反应速度,屏幕上会顺序出现一个个关于颜色的字,每个字出现时您都会同时听到一个声音，当出现的字和听到的声音一致的时候,请尽快按下空格键。",
-  "questionNotes": "当听到的字和看到的字一致时,您需要尽快按下空格键如果不一致,请不要做任何反应，集中注意力等待下一个字的出现。",
+  "questionPurpose": "测试计划和推理能力",
+  "questionNotes": "屏幕上的会出现迷宫，测试者需要使用铅笔工具走出迷宫",
   "soundPath1": "",
   //第二个页面
-  "questionRules": "当屏幕上出现的字和您听到的字一致时请尽快按下空格键",
-  "questionRuleNotes": "只有当看到的和听到的一致时，您才需要按键，不一致时无需做任何反应。",
+  "questionRules": "注意迷宫走时，不能穿过墙壁",
+  "questionRuleNotes": "需要从入口画到出口",
   //TODO: 需要修改
   "nextPageRouter2": MazePage.routerName,
   "soundPath2": "",
