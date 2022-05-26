@@ -20,6 +20,8 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
   String _username;
   String _sex;
   int _testCount;
+  String _email;
+  String _birthDate;
 
   //防止多次生成问卷
   bool createFlag = true;
@@ -38,11 +40,15 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
   void initUserInfo() async {
     String username = await StorageUtil.getStringItem("username");
     int sexCode = await StorageUtil.getIntItem("sex");
+    String email = await StorageUtil.getStringItem("email");
+    String birthDate = await StorageUtil.getStringItem("birthDate");
     setState(() {
       _username = username;
       if (sexCode == 0)
-        _sex = "先生";
-      else if (sexCode == 1) _sex = "女士";
+        _sex = "男";
+      else if (sexCode == 1) _sex = "女";
+      _email = email;
+      _birthDate = birthDate;
     });
   }
 
@@ -75,56 +81,147 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: setHeight(200),
+              height: setHeight(250),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "$_username $_sex，您好！",
-                  style: TextStyle(
-                      fontSize: setSp(60), fontWeight: FontWeight.bold),
+                Container(
+                  margin: EdgeInsetsDirectional.only(top: setHeight(30)),
+                  width: setWidth(500),
+                  height: setHeight(500),
+                  // color: Colors.redAccent,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        "用户名：",
+                        style: TextStyle(
+                            fontSize: setSp(60), fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "性别：",
+                        style: TextStyle(
+                            fontSize: setSp(60), fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "邮箱：",
+                        style: TextStyle(
+                            fontSize: setSp(60), fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "出生日期：",
+                        style: TextStyle(
+                            fontSize: setSp(60), fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsetsDirectional.only(top: setHeight(40)),
+                  width: setWidth(800),
+                  height: setHeight(490),
+                  // color: Colors.redAccent,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "$_username",
+                        style: TextStyle(
+                            fontSize: setSp(60), fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "$_sex",
+                        style: TextStyle(
+                            fontSize: setSp(60), fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "$_email",
+                        style: TextStyle(
+                            fontSize: setSp(60), fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "$_birthDate",
+                        style: TextStyle(
+                            fontSize: setSp(60), fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "当前总测试数：$_testCount",
+                      style: TextStyle(
+                          fontSize: setSp(48),
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                      width: setWidth(800),
+                      // height: setHeight(500),
+                      child: FlatButton(
+                        // color: Colors.red,
+                        child: Text(
+                          "历 史 记 录",
+                          style: TextStyle(
+                            fontSize: setSp(150),
+                            color: Colors.lightBlueAccent,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        onPressed: () {
+                          // Navigator.pushNamedAndRemoveUntil(context,
+                          //     TestNavPage.routerName, (router) => false);
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: setHeight(50),
+                    ),
+                    Container(
+                      width: setWidth(800),
+                      // height: setHeight(500),
+                      child: FlatButton(
+                        // color: Colors.red,
+                        child: Text(
+                          "开 始 测 试",
+                          style: TextStyle(
+                            fontSize: setSp(150),
+                            color: Colors.green[700],
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        onPressed: () {
+                          if (this.createFlag) {
+                            _start(context); //开始答题
+                            _initTestListFnished();
+                          }
+                          setState(() {
+                            this.createFlag = false;
+                          });
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              TestNavPage.routerName, (router) => false);
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: setHeight(60),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   width: setWidth(100),
                 ),
-                Text(
-                  "当前总测试数：$_testCount",
-                  style: TextStyle(
-                      fontSize: setSp(60), fontWeight: FontWeight.bold),
-                ),
               ],
             ),
-            Container(
-              width: setWidth(2000),
-              height: setHeight(400),
-              margin: EdgeInsets.only(top: setHeight(30)),
-              child: FlatButton(
-                // color: Colors.red,
-                child: Text(
-                  "开 始 测 试",
-                  style: TextStyle(
-                    fontSize: setSp(180),
-                    color: Colors.green[700],
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-                onPressed: () {
-                  if (this.createFlag) {
-                    _start(context); //开始答题
-                    _initTestListFnished();
-                  }
-                  setState(() {
-                    this.createFlag = false;
-                  });
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, TestNavPage.routerName, (router) => false);
-                },
-              ),
-            ),
             SizedBox(
-              height: setHeight(380),
+              height: setHeight(350),
             ),
             FlatButton(
                 onPressed: () {

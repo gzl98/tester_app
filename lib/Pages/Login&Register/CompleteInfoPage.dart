@@ -8,6 +8,7 @@ import '../../Utils/Utils.dart';
 
 class CompleteInfoPage extends StatefulWidget {
   static const routerName = "/CompleteInfoPage";
+
   @override
   State<StatefulWidget> createState() {
     return _CompleteInfoPageState();
@@ -18,23 +19,28 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
   int sexValue = 0;
 
   bool _isSubmitting = false;
+  bool _isChecked = false;
   Color _sexManColor = Colors.lightBlueAccent;
   Color _sexWomanColor = Colors.transparent;
 
   String _mobile;
   String _IDCard;
   String _address;
+  String _birthDate = "请选择您的出生日期";
+  String _email;
   String _completeText = "提  交";
 
   final _formKey = GlobalKey<FormState>();
   final _formMobileKey = GlobalKey<FormFieldState>();
   final _formIDCardKey = GlobalKey<FormFieldState>();
   final _formAddressKey = GlobalKey<FormFieldState>();
+  final _formEmailKey = GlobalKey<FormFieldState>();
 
   //焦点
   FocusNode _focusNodeMobile = FocusNode();
   FocusNode _focusNodeIDCard = FocusNode();
   FocusNode _focusNodeAddress = FocusNode();
+  FocusNode _focusNodeEmail = FocusNode();
 
   @override
   void initState() {
@@ -56,6 +62,11 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
     _focusNodeAddress.addListener(() {
       if (!_focusNodeAddress.hasFocus) {
         _formAddressKey.currentState.validate();
+      }
+    });
+    _focusNodeEmail.addListener(() {
+      if (!_focusNodeEmail.hasFocus) {
+        _formEmailKey.currentState.validate();
       }
     });
     sexManStyle = sexStyleChecked;
@@ -157,23 +168,65 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
     );
   }
 
-  Widget buildIDCardText(context) {
+  // Widget buildIDCardText(context) {
+  //   return TextFormField(
+  //     key: _formIDCardKey,
+  //     focusNode: _focusNodeIDCard,
+  //     onSaved: (value) => _IDCard = value,
+  //     style: fontStyle,
+  //     decoration: InputDecoration(
+  //       labelText: '身份证号码',
+  //     ),
+  //     validator: (value) {
+  //       RegExp reg = RegExp(
+  //           r'^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$');
+  //       if (value.isEmpty) {
+  //         return '身份证号码不能为空';
+  //       }
+  //       if (!reg.hasMatch(value)) {
+  //         return '身份证号码格式错误';
+  //       }
+  //       _IDCard = value;
+  //       return null;
+  //     },
+  //   );
+  // }
+
+  // Widget buildAddressText(context) {
+  //   return TextFormField(
+  //     key: _formAddressKey,
+  //     focusNode: _focusNodeAddress,
+  //     onSaved: (value) => _address = value,
+  //     style: fontStyle,
+  //     decoration: InputDecoration(
+  //       labelText: '家庭住址',
+  //     ),
+  //     validator: (value) {
+  //       if (value.isEmpty) {
+  //         return '家庭住址不能为空';
+  //       }
+  //       return null;
+  //     },
+  //   );
+  // }
+
+  Widget buildEmailText(context) {
     return TextFormField(
-      key: _formIDCardKey,
-      focusNode: _focusNodeIDCard,
-      onSaved: (value) => _IDCard = value,
+      key: _formEmailKey,
+      focusNode: _focusNodeEmail,
+      onSaved: (value) => _email = value,
       style: fontStyle,
       decoration: InputDecoration(
-        labelText: '身份证号码',
+        labelText: '邮箱',
       ),
       validator: (value) {
         RegExp reg = RegExp(
-            r'^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$');
+            r'^([a-zA-Z\d][\w-]{2,})@(\w{2,})\.([a-z]{2,})(\.[a-z]{2,})?$');
         if (value.isEmpty) {
-          return '身份证号码不能为空';
+          return '邮箱不能为空';
         }
         if (!reg.hasMatch(value)) {
-          return '身份证号码格式错误';
+          return '邮箱格式错误';
         }
         _IDCard = value;
         return null;
@@ -181,21 +234,43 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
     );
   }
 
-  Widget buildAddressText(context) {
-    return TextFormField(
-      key: _formAddressKey,
-      focusNode: _focusNodeAddress,
-      onSaved: (value) => _address = value,
-      style: fontStyle,
-      decoration: InputDecoration(
-        labelText: '家庭住址',
+  void getDate(context) async {
+    final DateTime dateTime = await showDatePicker(
+      context: context,
+      //定义控件打开时默认选择日期
+      initialDate: DateTime.now(),
+      //定义控件最早可以选择的日期
+      firstDate: DateTime(1990, 1),
+      //定义控件最晚可以选择的日期
+      lastDate: DateTime.now(),
+    );
+    if (dateTime != null && dateTime != DateTime.now()) {
+      setState(() {
+        _birthDate = "${dateTime.year}年${dateTime.month}月${dateTime.day}日";
+      });
+    }
+  }
+
+  Widget buildBirthDateText(context) {
+    return FlatButton(
+      minWidth: setWidth(990),
+      height: setHeight(120),
+      // color: Colors.grey,
+      child: Text(
+        _birthDate,
+        style: TextStyle(
+            fontSize: setSp(50),
+            color: _isChecked && _birthDate == "请选择您的出生日期"
+                ? Colors.redAccent
+                : Color(0xff666666),
+            fontWeight: FontWeight.bold),
       ),
-      validator: (value) {
-        if (value.isEmpty) {
-          return '家庭住址不能为空';
-        }
-        return null;
+      onPressed: () {
+        getDate(context);
       },
+      shape: Border(
+          bottom: BorderSide(
+              color: Color(0xff999999), width: 1, style: BorderStyle.solid)),
     );
   }
 
@@ -211,13 +286,17 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
           ),
           color: Colors.blueGrey,
           onPressed: () {
+            setState(() {
+              _isChecked = true;
+            });
             _focusNodeMobile.unfocus();
             _focusNodeIDCard.unfocus();
             _focusNodeAddress.unfocus();
+            _focusNodeEmail.unfocus();
             if (_isSubmitting) {
               return;
             }
-            if (_formKey.currentState.validate()) {
+            if (_formKey.currentState.validate() && _birthDate != "请选择您的出生日期") {
               _formKey.currentState.save();
               setState(() {
                 _isSubmitting = true;
@@ -246,7 +325,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
               children: [
                 buildMobileText(context),
                 sizeBox,
-                buildIDCardText(context),
+                buildEmailText(context),
               ],
             ),
           ),
@@ -259,7 +338,10 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                 sizeBox,
                 buildSexRadioButton(context),
                 sizeBox,
-                buildAddressText(context),
+                sizeBox,
+                sizeBox,
+                buildBirthDateText(context),
+                sizeBox,
               ],
             ),
           ),
@@ -340,8 +422,8 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
             'role': 1,
             'sex': sexValue,
             'mobilephone': _mobile,
-            'IDcard': _IDCard,
-            'adress': _address,
+            'IDcard': _email,
+            'adress': _birthDate,
           }),
           options: Options(headers: {
             "Authorization": "Bearer $_token",
@@ -353,8 +435,8 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
         });
         await StorageUtil.setIntItem("sex", sexValue);
         await StorageUtil.setStringItem("mobilephone", _mobile);
-        await StorageUtil.setStringItem("IDcard", _IDCard);
-        await StorageUtil.setStringItem("address", _address);
+        await StorageUtil.setStringItem("IDcard", _email);
+        await StorageUtil.setStringItem("address", _birthDate);
         Navigator.pushNamedAndRemoveUntil(
             context, "/showInfo", (router) => false);
       }

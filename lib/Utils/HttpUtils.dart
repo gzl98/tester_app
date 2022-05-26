@@ -15,8 +15,8 @@ getUserInfoByToken(String token) async {
       await StorageUtil.setIntItem("id", response.data["id"]);
       await StorageUtil.setStringItem("username", response.data["username"]);
       await StorageUtil.setStringItem("mobile", response.data["mobilephone"]);
-      await StorageUtil.setStringItem("IDcard", response.data["IDcard"]);
-      await StorageUtil.setStringItem("address", response.data["address"]);
+      await StorageUtil.setStringItem("email", response.data["IDcard"]);
+      await StorageUtil.setStringItem("birthDate", response.data["address"]);
       await StorageUtil.setIntItem("sex", int.parse(response.data["sex"]));
     } else {
       await StorageUtil.setIntItem("id", response.data["id"]);
