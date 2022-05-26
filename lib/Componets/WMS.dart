@@ -2,11 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tester_app/Utils/Utils.dart';
 
-
-
-
 //pixel 900*600
-Widget buildSDMTFirstFragmentShowWidget(){
+Widget buildSDMTFirstFragmentShowWidget() {
   return Container(
     alignment: Alignment.center,
     decoration: BoxDecoration(
@@ -18,9 +15,8 @@ Widget buildSDMTFirstFragmentShowWidget(){
   );
 }
 
-
 //pixel maxWidth*1000(内部必须包含一个Container，高度可以自定义，会影响下方文字的位置，但是必须指定)
-Widget buildSDMTSecondFragmentShowWidget(){
+Widget buildSDMTSecondFragmentShowWidget() {
   return Container(
     alignment: Alignment.center,
     width: maxWidth,
@@ -47,9 +43,8 @@ Widget buildSDMTSecondFragmentShowWidget(){
   );
 }
 
-
 //pixel 900*600
-Widget buildSymbolFirstFragmentShowWidget(){
+Widget buildSymbolFirstFragmentShowWidget() {
   return Container(
     alignment: Alignment.center,
     decoration: BoxDecoration(
@@ -62,7 +57,7 @@ Widget buildSymbolFirstFragmentShowWidget(){
 }
 
 //pixel maxWidth*1000(内部必须包含一个Container，高度可以自定义，会影响下方文字的位置，但是必须指定)
-Widget buildSymbolSecondFragmentShowWidget(){
+Widget buildSymbolSecondFragmentShowWidget() {
   return Container(
     alignment: Alignment.center,
     width: maxWidth,
@@ -90,7 +85,7 @@ Widget buildSymbolSecondFragmentShowWidget(){
 }
 
 //pixel 900*600
-Widget buildCharacterFirstFragmentShowWidget(){
+Widget buildCharacterFirstFragmentShowWidget() {
   return Container(
     alignment: Alignment.center,
     decoration: BoxDecoration(
@@ -103,7 +98,7 @@ Widget buildCharacterFirstFragmentShowWidget(){
 }
 
 //pixel maxWidth*1000(内部必须包含一个Container，高度可以自定义，会影响下方文字的位置，但是必须指定)
-Widget buildCharacterSecondFragmentShowWidget(){
+Widget buildCharacterSecondFragmentShowWidget() {
   return Container(
     alignment: Alignment.center,
     width: maxWidth,
@@ -137,8 +132,7 @@ Widget buildCOTFirstFragmentShowWidget() {
     alignment: Alignment.center,
     decoration: BoxDecoration(
         color: Color.fromARGB(255, 229, 229, 229),
-        borderRadius:
-        BorderRadius.all(Radius.circular(setWidth(50))),
+        borderRadius: BorderRadius.all(Radius.circular(setWidth(50))),
         boxShadow: [
           BoxShadow(
               color: Color.fromARGB(255, 100, 100, 100),
@@ -454,6 +448,126 @@ Widget buildWMSSpaceSecondFragmentShowWidget() {
       alignment: Alignment.center,
       width: setWidth(800),
       height: setHeight(550),
+      child: Stack(
+        children: buttons,
+      ),
+      decoration: BoxDecoration(
+          border: Border.all(color: Color(0xFFBDBDBD), width: setWidth(1)),
+          color: Color.fromARGB(255, 226, 229, 228),
+          borderRadius: BorderRadius.all(Radius.circular(setWidth(25)))),
+    ),
+  );
+}
+
+//pixel 900*600
+Widget buildFlashLightFirstFragmentShowWidget() {
+  double centerX = 900 / 2;
+  double centerY = 600 / 2;
+  double spaceX = 240;
+  double spaceY = 160;
+  List<double> buttonX = [centerX, centerX - spaceX, centerX + spaceX, centerX];
+  List<double> buttonY = [centerY - spaceY, centerY, centerY, centerY + spaceY];
+  double buttonRadio = 120;
+  List<Color> buttonColors = [
+    Color.fromARGB(255, 130, 0, 0),
+    Color.fromARGB(255, 0, 130, 0),
+    Color.fromARGB(255, 0, 0, 130),
+    Color.fromARGB(255, 130, 130, 0),
+  ];
+  List<Color> buttonLightColors = [
+    Color.fromARGB(255, 245, 0, 0),
+    Color.fromARGB(255, 0, 245, 0),
+    Color.fromARGB(255, 0, 123, 255),
+    Color.fromARGB(255, 230, 230, 0),
+  ];
+  List<Widget> buttons = [];
+  for (int i = 0; i < buttonX.length; i++) {
+    ElevatedButton button = ElevatedButton(
+      child: Container(),
+      style: ButtonStyle(
+        animationDuration: Duration(milliseconds: 10),
+        overlayColor: MaterialStateProperty.all(buttonLightColors[i]),
+        backgroundColor: MaterialStateProperty.all(buttonColors[i]),
+        elevation: MaterialStateProperty.all(setWidth(10)),
+        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.all(Radius.circular(setWidth(buttonRadio))),
+        )),
+      ),
+    );
+    Positioned positioned = Positioned(
+      left: setWidth(buttonX[i] - buttonRadio / 2),
+      top: setHeight(buttonY[i] - buttonRadio / 2),
+      child: Container(
+        width: setWidth(buttonRadio),
+        height: setHeight(buttonRadio),
+        child: button,
+      ),
+    );
+    buttons.add(positioned);
+  }
+  return Stack(
+    children: buttons,
+  );
+}
+
+//pixel maxWidth*1000(内部必须包含一个Container，高度可以自定义，会影响下方文字的位置，但是必须指定)
+Widget buildFlashLightSecondFragmentShowWidget() {
+  double centerX = 900 / 2;
+  double centerY = 600 / 2;
+  double spaceX = 240;
+  double spaceY = 160;
+  List<double> buttonX = [centerX, centerX - spaceX, centerX + spaceX, centerX];
+  List<double> buttonY = [centerY - spaceY, centerY, centerY, centerY + spaceY];
+  double buttonRadio = 120;
+  List<Color> buttonColors = [
+    Color.fromARGB(255, 130, 0, 0),
+    Color.fromARGB(255, 0, 130, 0),
+    Color.fromARGB(255, 0, 0, 130),
+    Color.fromARGB(255, 130, 130, 0),
+  ];
+  List<Color> buttonLightColors = [
+    Color.fromARGB(255, 245, 0, 0),
+    Color.fromARGB(255, 0, 245, 0),
+    Color.fromARGB(255, 0, 123, 255),
+    Color.fromARGB(255, 230, 230, 0),
+  ];
+  List<Widget> buttons = [];
+  for (int i = 0; i < buttonX.length; i++) {
+    ElevatedButton button = ElevatedButton(
+      child: Container(),
+      style: ButtonStyle(
+        animationDuration: Duration(milliseconds: 10),
+        overlayColor: MaterialStateProperty.all(buttonLightColors[i]),
+        backgroundColor: MaterialStateProperty.all(
+            i == 2 ? buttonLightColors[i] : buttonColors[i]),
+        elevation: MaterialStateProperty.all(setWidth(10)),
+        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.all(Radius.circular(setWidth(buttonRadio))),
+        )),
+      ),
+    );
+    Positioned positioned = Positioned(
+      left: setWidth(buttonX[i] - buttonRadio / 2),
+      top: setHeight(buttonY[i] - buttonRadio / 2),
+      child: Container(
+        width: setWidth(buttonRadio),
+        height: setHeight(buttonRadio),
+        child: button,
+      ),
+    );
+    buttons.add(positioned);
+  }
+  return Container(
+    alignment: Alignment.center,
+    width: maxWidth,
+    height: setHeight(1000),
+    child: Container(
+      margin: EdgeInsets.only(top: setHeight(400)),
+      alignment: Alignment.center,
+      width: setWidth(900),
+      height: setHeight(600),
       child: Stack(
         children: buttons,
       ),

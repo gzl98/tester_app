@@ -12,12 +12,12 @@ import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
 import 'package:tester_app/Pages/OldTMT/OldTMTSpacePage.dart';
 import 'package:tester_app/config/config.dart';
 import 'package:tester_app/pojo/QuestionInfo.dart';
+import 'Pages/FlashLight/FlashLightPage.dart';
 import 'Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'Pages/NewTMT/TMTSpacePage.dart';
 import 'Pages/OldTMT/OldTMTSpacePage.dart';
 import 'Pages/Symbol/SymbolMainPage.dart';
 import 'Pages/Character/CharacterWangPage.dart';
-
 
 //SDMT
 final Map<String, String> questionSDMT = {
@@ -51,8 +51,7 @@ final Map<String, String> questionTMTSpace = {
   "questionImgPath": "images/v2.0/TMTSpace.png",
   //第一个页面
   "questionName": "顺 序 连 线",
-  "questionPurpose":
-      "这项测验主要评估您的反应速度，请按照从小到大的顺序尽可能快地点击屏幕上的25个数字。",
+  "questionPurpose": "这项测验主要评估您的反应速度，请按照从小到大的顺序尽可能快地点击屏幕上的25个数字。",
   "questionNotes": "请您尽可能快,尽可能准确地完成这个测验,您用时越短,成绩越好。",
   "soundPath1": "sounds/TMTSpace1.wav",
   //第二个页面
@@ -63,7 +62,6 @@ final Map<String, String> questionTMTSpace = {
   //WMS页面特殊变量
   "reverse": "false",
 };
-
 
 //Symbol
 final Map<String, String> questionSymbol = {
@@ -227,7 +225,8 @@ final Map<String, String> questionStroop = {
   "questionImgPath": "images/v2.0/STROOP/stroopWord.png",
   //第一个页面
   "questionName": "Stroop词语",
-  "questionPurpose": "这项测验主要评估您的言语反应速度,屏幕上会顺序出现一个个关于颜色的字,每个字出现时您都会同时听到一个声音，当出现的字和听到的声音一致的时候,请尽快按下空格键。",
+  "questionPurpose":
+      "这项测验主要评估您的言语反应速度,屏幕上会顺序出现一个个关于颜色的字,每个字出现时您都会同时听到一个声音，当出现的字和听到的声音一致的时候,请尽快按下空格键。",
   "questionNotes": "当听到的字和看到的字一致时,您需要尽快按下空格键如果不一致,请不要做任何反应，集中注意力等待下一个字的出现。",
   "soundPath1": "sounds/Stroop1.wav",
   //第二个页面
@@ -245,7 +244,8 @@ final Map<String, String> questionStroopColorWord = {
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的言语反应能力和速度有显著提高。",
   "questionName": "Stroop色词",
   "questionImgPath": "images/v2.0/STROOP/stroopColorWord.png",
-  "questionPurpose": "这项测验主要评估您的言语反应速度,屏幕上会顺序出现一个个关于颜色的字,每个字出现时您都会同时听到一个声音，当出现的字的意思和听到的声音一致的时候,请尽快按下空格键。",
+  "questionPurpose":
+      "这项测验主要评估您的言语反应速度,屏幕上会顺序出现一个个关于颜色的字,每个字出现时您都会同时听到一个声音，当出现的字的意思和听到的声音一致的时候,请尽快按下空格键。",
   "questionNotes": "当听到的字的意思和看到的字一致时，您需要尽快按下空格键，如果不一致,请不要做任何反应，集中注意力等待下一个字的出现。",
   "soundPath1": "sounds/StroopColorWord1.wav",
   "questionRules": "当屏幕上出现的字的意思和您听到的字一致时请尽快按下空格。",
@@ -262,13 +262,12 @@ final Map<String, String> questionStroopWordColor = {
   "questionNavContent": "分辨文字的颜色和播放的声音一致的情况。",
   "questionNavPurpose": "主要评估执行抑制能力和速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的执行抑制能力和速度有显著提高。",
-
   "questionName": "Stroop词色",
   "questionImgPath": "images/v2.0/STROOP/stroopWordColor.png",
   "questionPurpose": "屏幕上不断出现文字同时会播放声音,当文字的颜色和播放的声音一致时,按空格键做出反应。",
-  "questionNotes": "当听到的字的意思和看到的字的颜色一致时，您需要尽快按下空格键，如果不一致,请不要做任何反应，集中注意力等待下一个字的出现。",
+  "questionNotes":
+      "当听到的字的意思和看到的字的颜色一致时，您需要尽快按下空格键，如果不一致,请不要做任何反应，集中注意力等待下一个字的出现。",
   "soundPath1": "sounds/StroopWordColor1.wav",
-
   "questionRules": "当屏幕上出现的字的颜色和您听到的字的意思一致时请尽快按下空格键。",
   "questionRuleNotes": "请注意字的颜色,忽略字的意思。只有当看到的字的颜色和听到的一致时，您才需要按键，不一致时无需做任何反应",
   "questionRules2": null,
@@ -308,8 +307,7 @@ final Map<String, String> questionIdOldTMT = {
   "questionImgPath": "images/tmt.png",
   //第一个页面
   "questionName": "顺 序 连 线",
-  "questionPurpose":
-  "这项测验主要评估您的反应速度，请按照从小到大的顺序尽可能快地点击屏幕上的25个数字。",
+  "questionPurpose": "这项测验主要评估您的反应速度，请按照从小到大的顺序尽可能快地点击屏幕上的25个数字。",
   "questionNotes": "请您尽可能快,尽可能准确地完成这个测验,您用时越短,成绩越好。",
   "soundPath1": "sounds/TMTSpace1.wav",
   //第二个页面
@@ -319,6 +317,25 @@ final Map<String, String> questionIdOldTMT = {
   "soundPath2": "sounds/TMTSpace2.wav",
   //WMS页面特殊变量
   "reverse": "false",
+};
+//闪灯测试
+final Map<String, String> questionFlashLight = {
+  //导航页面
+  "questionAbility": "空间记忆能力",
+  "questionTitle": "闪灯测试",
+  "questionNavContent": "记住灯光闪烁的先后顺序。",
+  "questionNavPurpose": "主要评估短时空间记忆水平。",
+  "benefitExample": "经过训练您的短时空间记忆能力会得到提升。",
+  "questionImgPath": "images/v4.0/FlashLight/FlashLight.png",
+  //第一个页面
+  "questionName": "闪 灯 测 试",
+  "questionPurpose": "这项测验主要评估您的短时空间记忆能力，请记住灯光闪烁的先后次序，记得越多，记忆力越好。",
+  "soundPath1": "sounds/WMSSpace1.wav",
+  //第二个页面
+  "questionRules": "屏幕中的四个彩灯会按照一定的顺序依次闪烁，停止后请按照刚才的顺序依次点击对应的彩灯",
+  "questionRuleNotes": "请在闪烁停止后再按照相反的顺序依次点击",
+  "nextPageRouter2": FlashLightPage.routerName,
+  "soundPath2": "sounds/WMSSpace2.wav",
 };
 List testList = [
   QuestionInfo.fromMap(questionTMTSpace),
@@ -335,6 +352,7 @@ List testList = [
   QuestionInfo.fromMap(questionMaze),
   QuestionInfo.fromMap(questionSDMT),
   QuestionInfo.fromMap(questionIdOldTMT),
+  QuestionInfo.fromMap(questionFlashLight),
 ];
 //创建每道题是否完成的列表
 List<bool> testFinishedList = [];
@@ -347,6 +365,7 @@ void initFragmentWidget() {
   initStroopWidget();
   initMazeWidget();
   initOldTMTWidget();
+  initFlashLightWidget();
 }
 
 //初始化TMT页面的控件
@@ -356,7 +375,6 @@ void initTMTWidget() {
   questionTMT.questionShowWidget = buildTMTFirstFragmentShowWidget();
   questionTMT.questionRulesWidget = buildTMTSecondFragmentShowWidget();
 }
-
 
 //初始化Symbol和Character界面的控件
 void initSymbolCharacterWidget() {
@@ -440,6 +458,14 @@ void initStroopWidget() {
       buildWordCard("绿", Color(0xFFE30505));
   questionStroopWordColor.questionRulesWidget =
       buildSecondWordCard("绿", Color(0xFFE30707));
+}
+
+void initFlashLightWidget() {
+  QuestionInfo questionFlashLight = testList[questionIdFlashLight];
+  questionFlashLight.questionShowWidget =
+      buildFlashLightFirstFragmentShowWidget();
+  questionFlashLight.questionRulesWidget =
+      buildFlashLightSecondFragmentShowWidget();
 }
 
 // 初始化Maze页面空间

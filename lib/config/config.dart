@@ -24,4 +24,4 @@ const MazeID = 11;
 const questionIDSDMT = 12;
 
 const IdOldTMT = 13;
-const questionIdFlashLight = 15;
+const questionIdFlashLight = 14;
