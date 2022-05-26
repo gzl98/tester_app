@@ -305,7 +305,7 @@ final Map<String, String> questionIdOldTMT = {
   "questionNavContent": "从小到大顺序找出25个数字。",
   "questionNavPurpose": "主要评估大脑的加工速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的反应速度有显著提高。",
-  "questionImgPath": "images/TMT.png",
+  "questionImgPath": "images/tmt.png",
   //第一个页面
   "questionName": "顺 序 连 线",
   "questionPurpose":

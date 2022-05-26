@@ -21,7 +21,7 @@ Widget buildOldTMTFirstFragmentShowWidget(){
     alignment: Alignment.center,
     decoration: BoxDecoration(
       image: DecorationImage(
-          image: AssetImage('images/TMT.png'),
+          image: AssetImage('images/tmt.png'),
           fit: BoxFit.scaleDown,
           alignment: Alignment.center),
     ),
@@ -43,7 +43,7 @@ Widget buildOldTMTSecondFragmentShowWidget(){
         alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/TMT.png'),
+              image: AssetImage('images/tmt.png'),
               fit: BoxFit.fill,
               alignment: Alignment.center),
         ),
@@ -64,7 +64,7 @@ Widget buildOldTMTFirstFragment() {
     alignment: Alignment.center,
     decoration: BoxDecoration(
       image: DecorationImage(
-          image: AssetImage('images/TMT.png'),
+          image: AssetImage('images/tmt.png'),
           fit: BoxFit.scaleDown,
           alignment: Alignment.center),
     ),
@@ -85,7 +85,7 @@ Widget buildOldTMTSecondFragment() {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/TMT.png'),
+              image: AssetImage('images/tmt.png'),
               fit: BoxFit.fill,
               alignment: Alignment.center),
         ),
@@ -136,7 +136,7 @@ class OldTMTSpacePageState extends State<OldTMTSpacePage> {
     return Container(
       // color: Colors.redAccent,
       //TODO:
-      child: MyPainterPage(imgPath: 'images/TMT.png',),
+      child: MyPainterPage(imgPath: 'images/tmt.png',),
     );
   }
 

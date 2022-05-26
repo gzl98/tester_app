@@ -17,6 +17,7 @@ import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Pages/NewTMT/TMTSpacePage.dart';
+import 'Pages/OldTMT/OldTMTSpacePage.dart';
 import 'Utils/Utils.dart';
 
 
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
             QuestionSecondFragment(),
         TMTSpacePage.routerName: (context) => TMTSpacePage(),
         MazePage.routerName:(context) => MazePage(),
+        OldTMTSpacePage.routerName:(context) => OldTMTSpacePage(),
       },
     );
   }
