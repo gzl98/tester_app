@@ -177,7 +177,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
                             if (localPosition != null &&
                                 _pointsList[i] != null) {
                               if (_pointsList[i]
-                                  .eqOffset(localPosition, _paintStokeWidth)) {
+                                  .eqOffset(localPosition, _paintStokeWidth + 2)) {
                                 _pointsList[i].color = whiteColor;
                                 //_pointsList.removeAt(i);
                                 _pointsList[i] = null;
