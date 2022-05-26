@@ -1,6 +1,6 @@
-const host = "39.96.37.82";
+const host = "39.108.252.201";
 
-const port = "8000";
+const port = "9000";
 
 const protocol = "http";
 
@@ -18,3 +18,4 @@ const questionIdWMSSpaceReverse = 7;
 const stroopWordID = 8;
 const stroopColorWordID = 9;
 const stroopWordColorID = 10;
+const MazeID = 11;

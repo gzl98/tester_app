@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
+import 'package:tester_app/config/config.dart';
 import 'WpPainter.dart';
 import 'ColorPicker.dart';
 import 'dart:ui' as ui;
@@ -74,7 +75,7 @@ class MyPainterPage extends StatefulWidget {
 class _MyPainterPageState extends State<MyPainterPage> {
   List<WPPainter> _pointsList = <WPPainter>[];
   Color _paintColor = blackColor;
-  double _paintStokeWidth = 1.0;
+  double _paintStokeWidth = 2.0;
   double _bottomBarLeft = 44.0;
 
 
@@ -126,7 +127,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
           " imageFile= " +
           imageFile.path.toString());
       await imageFile.writeAsBytes(pngBytes);
-      //setAnswer(index, time, imagePath: imageFile.path.toString(),imageName: 'capture.png');
+      setAnswer(index, score: time, imagePath: imageFile.path.toString(),imageName: 'capture.png');
       //保存图片到相册的方法
       //saveToPictures(pngBytes);
       setState(() {});
@@ -139,7 +140,6 @@ class _MyPainterPageState extends State<MyPainterPage> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return CupertinoPageScaffold(
       child: OrientationBuilder(
         builder: (context, orientation) {
@@ -159,68 +159,50 @@ class _MyPainterPageState extends State<MyPainterPage> {
             child: Stack(
               children: <Widget>[
                 GestureDetector(
-                  child: RepaintBoundary(
-                    key: rootWidgetKey,
-                    child: CustomPaint(
-                      painter: SelfForePainter(_assetImageFrame),
-                      size: size,    //定义child时不需要定义size
-                      foregroundPainter: _MyPainter(_pointsList),
-                      //isComplex: true,
-                      // child:RepaintBoundary(
-                      //   child: Image.asset(_imgPath,)
-                      // )
+                    child: RepaintBoundary(
+                      key: rootWidgetKey,
+                      child: _getCustomPainter(),
                     ),
-                  ),
-                  onPanUpdate: (detail) {
-                    RenderBox referenceBox = context.findRenderObject();
-                    Offset localPosition =
-                        referenceBox.globalToLocal(detail.globalPosition);
-                    // print(this._paintColor.toString());
-                    // print(localPosition.toString());
-                    setState(() {
-                      if(_paintColor == whiteColor){
-                        //this._pointsList.removeWhere((element) => element)
-                        for (var i = 0; i < _pointsList.length; i++) {
-                          if (localPosition!=null&&_pointsList[i] != null ) {
-                              if(_pointsList[i].eqOffset(localPosition,_paintStokeWidth)){
-                                  _pointsList[i].color=whiteColor;
-                                  //_pointsList.removeAt(i);
-                                  _pointsList[i]=null;
-
+                    onPanUpdate: (detail) {
+                      RenderBox referenceBox = context.findRenderObject();
+                      Offset localPosition =
+                      referenceBox.globalToLocal(detail.globalPosition);
+                      // print(this._paintColor.toString());
+                      // print(localPosition.toString());
+                      setState(() {
+                        if (_paintColor == whiteColor) {
+                          //print("白色" + _pointsList.length.toString());
+                          //this._pointsList.removeWhere((element) => element)
+                          for (var i = 0; i < _pointsList.length; i++) {
+                            if (localPosition != null &&
+                                _pointsList[i] != null) {
+                              if (_pointsList[i]
+                                  .eqOffset(localPosition, _paintStokeWidth)) {
+                                _pointsList[i].color = whiteColor;
+                                //_pointsList.removeAt(i);
+                                _pointsList[i] = null;
+                                //print("删除了");
                               }
+                            }
                           }
+                          _pointsList = new List.from(_pointsList);
+                          //print("白色删除后" + _pointsList.length.toString());
+                        } else {
+                          _pointsList = new List.from(_pointsList)
+                            ..add(WPPainter(
+                                localPosition, _paintColor, _paintStokeWidth));
                         }
-                        _pointsList = new List.from(_pointsList);
-                      }
-                      else{
-                        _pointsList = new List.from(_pointsList)
-                          ..add(WPPainter(
-                              localPosition, _paintColor, _paintStokeWidth));
-                      }
-
-                    });
-                  },
-                  onPanEnd: (detail) => {
-                    setState((){
-                      _pointsList.add(null);
-                    })
-                  }
-                ),
+                      });
+                    },
+                    onPanEnd: (detail) => {
+                      setState(() {
+                        _pointsList.add(null);
+                      })
+                    }),
                 //白色按钮
                 bottomCircleColorButton(whiteColor, 0),
                 //红色按钮
-                bottomCircleColorButton(redColor, 1),
-                //黑色按钮
-                bottomCircleColorButton(blackColor, 2),
-                //其他颜色
-                bottomCircleColorButton(color3, 3),
-                //画笔大小
-                // bottomPencilWidthButton(0),
-                bottomPencilWidthButton(1),
-                bottomPencilWidthButton(2),
-                bottomPencilWidthButton(3),
-                bottomPencilWidthButton(4),
-                bottomPencilWidthButton(5),
+                bottomCircleColorButton(blackColor, 1),
               ],
             ),
           );
@@ -230,38 +212,57 @@ class _MyPainterPageState extends State<MyPainterPage> {
     );
   }
 
+  Widget _getCustomPainter(){
+    print("Custom imgPath:"+this._imgPath);
+    if(this._imgPath==""){
+      return CustomPaint(
+        painter: _MyPainter(_pointsList),
+        size: Size(setWidth(1400), setWidth(1000)),
+      );
+    }
+    else{
+      return CustomPaint(
+        //定义child时不需要定义size
+          foregroundPainter: _MyPainter(_pointsList),
+          //isComplex: true,
+          child: RepaintBoundary(
+              child: Container(
+                child: Image.asset(_imgPath, width: setWidth(2300)),
+              )
+          )
+      );
+    }
+  }
   ///
   /// @param color 按钮颜色
   /// @param index 第一个黑色 第二个红色 第三个选择
   ///
   Widget bottomCircleColorButton(Color color, int index) {
-    double left = _bottomBarLeft + index * 48 + 10 * index;
+    double left = _bottomBarLeft + index * 48 + 10 * index+400;
+    String imgPath = color == whiteColor ? "images/v4.0/ClockDraw/eraser.png":"images/v4.0/ClockDraw/pen.png";
     return Positioned(
-      bottom: 44,
+      top: 10,
       left: left,
       child: GestureDetector(
         child: Container(
           width: 48,
           height: 48,
+          child: Image.asset(imgPath),
           decoration: BoxDecoration(
-              color: color,
+            //color: color,
               boxShadow: _paintColor.value == color.value
                   ? [
-                      BoxShadow(
-                        color: Color(0xFF8E8E93),
-                        spreadRadius: 2.0,
-                      ),
-                    ]
+                BoxShadow(
+                  color: Color(0xFFA8A8A8),
+                  spreadRadius: 2.0,
+                ),
+              ]
                   : [],
               borderRadius: BorderRadius.all(Radius.circular(24))),
         ),
         onTap: () {
-          if (index == 0) {
-            _setPaintColor(whiteColor);
-          } else if (index == 1) {
-            _setPaintColor(redColor);
-          } else if (index == 2){
-            _setPaintColor(blackColor);
+          if (index == 0 || index == 1) {
+            _setPaintColor(color);
           } else {
             _pickerColor();
           }

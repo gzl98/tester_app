@@ -94,7 +94,7 @@ class MazePageBottomState extends State<MazePageBottom>{
           onPressed: () {
             if(value=='下一题'){
               //触发下一题事件
-              eventBus.fire(NextEvent(2,30-this._currentTime));
+              eventBus.fire(NextEvent(2, 30-this._currentTime));
               print('触发下一题！');
               Navigator.pushNamedAndRemoveUntil(
                   context, "/BVMT", (route) => false);

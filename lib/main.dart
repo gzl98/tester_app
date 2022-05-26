@@ -6,6 +6,7 @@ import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/LoginPage.dart';
 import 'package:tester_app/Pages/Login&Register/RegisterPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
+import 'package:tester_app/Pages/Maze/MazeNewPage.dart';
 import 'package:tester_app/Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopColorWordPage.dart';
 import 'package:tester_app/Pages/STROOP/StroopWordColorPage.dart';
@@ -18,10 +19,9 @@ import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Pages/NewTMT/TMTSpacePage.dart';
 import 'Utils/Utils.dart';
 
-// String bootPage = TestNavPage.routerName;
-// String bootPage = QuestionFirstFragment.routerName;
-String bootPage = LoginPage.routerName;
 
+//String bootPage = MazePage.routerName;
+String bootPage = LoginPage.routerName;
 void main() {
   runApp(MyApp());
 }
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         QuestionSecondFragment.routerName: (context) =>
             QuestionSecondFragment(),
         TMTSpacePage.routerName: (context) => TMTSpacePage(),
-
+        MazePage.routerName:(context) => MazePage(),
       },
     );
   }
