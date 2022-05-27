@@ -1,6 +1,7 @@
 import 'dart:math';
 
 bool debug = true; //是否处于调试阶段
+// bool debug = false; //是否处于调试阶段
 
 class WMSQuestion {
   List<int> _questionList = [];
