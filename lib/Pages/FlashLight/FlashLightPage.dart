@@ -233,7 +233,7 @@ class FlashLightPageState extends State<FlashLightPage> {
           };
           String text = json.encode(map);
           print(text);
-          setAnswer(reverse ? questionIdWMSSpaceReverse : questionIdWMSSpace,
+          setAnswer(questionIdFlashLight,
               score: _wmsQuestion.correctCounts, answerText: text);
           Future.delayed(pointOneSec, () {
             setState(() {
@@ -260,7 +260,7 @@ class FlashLightPageState extends State<FlashLightPage> {
             };
             String text = json.encode(map);
             print(text);
-            setAnswer(reverse ? questionIdWMSSpaceReverse : questionIdWMSSpace,
+            setAnswer(questionIdFlashLight,
                 score: _wmsQuestion.correctCounts, answerText: text);
             Future.delayed(pointOneSec, () {
               setState(() {
