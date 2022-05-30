@@ -366,6 +366,11 @@ final Map<String, String> questionBVMT = {
 };
 
 List testList = [
+  QuestionInfo.fromMap(questionIdOldTMT),
+  QuestionInfo.fromMap(questionSDMT),
+  QuestionInfo.fromMap(questionBVMT),
+  QuestionInfo.fromMap(questionMaze),
+  QuestionInfo.fromMap(questionFlashLight),
   QuestionInfo.fromMap(questionTMTSpace),
   QuestionInfo.fromMap(questionSymbol),
   QuestionInfo.fromMap(questionCharacter),
@@ -377,11 +382,6 @@ List testList = [
   QuestionInfo.fromMap(questionStroop),
   QuestionInfo.fromMap(questionStroopColorWord),
   QuestionInfo.fromMap(questionStroopWordColor),
-  QuestionInfo.fromMap(questionMaze),
-  QuestionInfo.fromMap(questionSDMT),
-  QuestionInfo.fromMap(questionIdOldTMT),
-  QuestionInfo.fromMap(questionFlashLight),
-  QuestionInfo.fromMap(questionBVMT),
 ];
 //创建每道题是否完成的列表
 List<bool> testFinishedList = [];

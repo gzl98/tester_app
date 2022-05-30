@@ -4,25 +4,28 @@ const port = "9000";
 
 const protocol = "http";
 
-const questionIdTMT = 0;
+
 //题目ID
-const questionIdSymbol = 1;
-const questionIdNewCharacter = 2;
-const questionIdCOT = 3;
+const IdOldTMT = 0;
+const questionIDSDMT = 1;
+const BVMTId=2;
+const MazeID = 3;
+const questionIdFlashLight = 4;
+const questionIdTMT = 5;
+const questionIdSymbol = 6;
+const questionIdNewCharacter = 7;
+const questionIdCOT = 8;
 //WMS记忆
-const questionIdWMSDigital = 4;
-const questionIdWMSDigitalReverse = 5;
-const questionIdWMSSpace = 6;
-const questionIdWMSSpaceReverse = 7;
-//Stroop测试
-const stroopWordID = 8;
-const stroopColorWordID = 9;
-const stroopWordColorID = 10;
+const questionIdWMSDigital = 9;
+const questionIdWMSDigitalReverse = 10;
+const questionIdWMSSpace = 11;
+const questionIdWMSSpaceReverse = 12;
+const stroopWordID = 13;
+const stroopColorWordID = 14;
+const stroopWordColorID = 15;
 
-//SDMT符号编码
-const MazeID = 11;
-const questionIDSDMT = 12;
 
-const IdOldTMT = 13;
-const questionIdFlashLight = 14;
-const BVMTId=15;
+
+
+
+
