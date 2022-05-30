@@ -19,6 +19,7 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Pages/NewTMT/TMTSpacePage.dart';
 import 'Pages/OldTMT/OldTMTSpacePage.dart';
+import 'Pages/BVMT-R/BVMTNewPage.dart';
 import 'Utils/Utils.dart';
 
 
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
       // home: LoginPage(),
       routes: {
         "/": (context) => BootPage(),
+
         LoginPage.routerName: (context) => LoginPage(),
         RegisterPage.routerName: (context) => RegisterPage(),
         ShowInfoPage.routerName: (context) => ShowInfoPage(),
@@ -58,6 +60,7 @@ class MyApp extends StatelessWidget {
         MazePage.routerName:(context) => MazePage(),
         OldTMTSpacePage.routerName:(context) => OldTMTSpacePage(),
         FlashLightPage.routerName:(context) => FlashLightPage(),
+        BVMTPage.routerName:(context) => BVMTPage(),
       },
     );
   }

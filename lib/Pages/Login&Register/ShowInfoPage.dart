@@ -210,13 +210,10 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                         },
                       ),
                     ),
-                    SizedBox(
-                      height: setHeight(60),
-                    ),
                   ],
                 ),
                 SizedBox(
-                  width: setWidth(100),
+                  width: setWidth(120),
                 ),
               ],
             ),

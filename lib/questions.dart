@@ -17,6 +17,7 @@ import 'Pages/NewCharacter/NewCharacterMainPage.dart';
 import 'Pages/NewTMT/TMTSpacePage.dart';
 import 'Pages/OldTMT/OldTMTSpacePage.dart';
 import 'Pages/Symbol/SymbolMainPage.dart';
+import 'Pages/BVMT-R/BVMTNewPage.dart';
 import 'Pages/Character/CharacterWangPage.dart';
 
 //SDMT
@@ -337,6 +338,33 @@ final Map<String, String> questionFlashLight = {
   "nextPageRouter2": FlashLightPage.routerName,
   "soundPath2": "sounds/WMSSpace2.wav",
 };
+//
+final Map<String, String> questionBVMT = {
+  //导航页面
+  //在本题中，您将要对六个几何图案进行记忆，                                       \n \n\n"
+  //六个几何图案是以2×3的形式排列在画板上的，      \n \n\n"
+  //首先您有10s的学习时间，在10s后，图案会消失，      \n \n\n"
+  //您需要在空白画板上尽可能在正确的位置绘制出相应图案，       \n\n\n"
+  //如果您已准备好，点击确认答题按钮，10s倒计时即将开始。       \n\n\n"),
+  "questionAbility": "视觉空间记忆",
+  "questionTitle": "简易视觉空间记忆测验",
+  "questionNavContent": "按照正确的几何位置画出正确的几何图案。",
+  "questionNavPurpose": "本题目主要考察视觉空间记忆，筛查严重的视力构造缺陷，对召回反应进行评分。",
+  "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的视觉学习和记忆有显著提高。",
+  "questionImgPath": "images/BVMT.jpg",
+  //第一个页面
+  "questionName": "视觉空间记忆测试",
+  "questionPurpose": "测试视觉学习和记忆能力",
+  "questionNotes": "屏幕上会出现六个几何图形，测试者有10s钟时间进行记忆，10s钟后，图像消失，测试者需要使用铅笔工具尽可能在正确的位置绘制出尽可能多的相应图案",
+  "soundPath1": "",
+  //第二个页面
+  "questionRules": "注意在正确的位置绘制对应图形",
+  "questionRuleNotes": "请在几何图形消失后开始绘制",
+  //TODO: 需要修改
+  "nextPageRouter2": BVMTPage.routerName,
+  "soundPath2": "",
+};
+
 List testList = [
   QuestionInfo.fromMap(questionTMTSpace),
   QuestionInfo.fromMap(questionSymbol),
@@ -353,6 +381,7 @@ List testList = [
   QuestionInfo.fromMap(questionSDMT),
   QuestionInfo.fromMap(questionIdOldTMT),
   QuestionInfo.fromMap(questionFlashLight),
+  QuestionInfo.fromMap(questionBVMT),
 ];
 //创建每道题是否完成的列表
 List<bool> testFinishedList = [];
@@ -366,6 +395,7 @@ void initFragmentWidget() {
   initMazeWidget();
   initOldTMTWidget();
   initFlashLightWidget();
+  initBVMTWidget();
 }
 
 //初始化TMT页面的控件
@@ -482,4 +512,11 @@ void initOldTMTWidget() {
   QuestionInfo questionOldTMT = testList[IdOldTMT];
   questionOldTMT.questionShowWidget = buildOldTMTFirstFragment();
   questionOldTMT.questionRulesWidget = buildOldTMTSecondFragment();
+}
+
+void initBVMTWidget() {
+  //OldTMT
+  QuestionInfo questionBVMT = testList[BVMTId];
+  questionBVMT.questionShowWidget = buildBVMTFirstFragment();
+  questionBVMT.questionRulesWidget = buildBVMTSecondFragment();
 }
