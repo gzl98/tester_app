@@ -17,6 +17,7 @@ import 'package:tester_app/Pages/STROOP/StroopWordPage.dart';
 import 'package:tester_app/Pages/Symbol/SymbolMainPage.dart';
 import 'package:tester_app/Pages/WMS/WMSDigitalPage.dart';
 import 'package:tester_app/Pages/WMS/WMSSpacePage.dart';
+import 'package:tester_app/Pages/Character/CharacterWangPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'Pages/NewTMT/TMTSpacePage.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
         OldTMTSpacePage.routerName:(context) => OldTMTSpacePage(),
         FlashLightPage.routerName:(context) => FlashLightPage(),
         BVMTPage.routerName:(context) => BVMTPage(),
+        CharacterWangPage.routerName:(context) => CharacterWangPage(),
       },
     );
   }
