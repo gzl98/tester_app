@@ -27,6 +27,10 @@ class AnswerTable extends DataTableSource {
   bool _isRowCountApproximate = false;
   int _rowCount = 100;
 
+  BuildContext context;
+  AnswerTable(BuildContext context) {
+    this.context = context;
+  }
   void setRowCount(int rowCount) {
     _rowCount = rowCount;
     notifyListeners();
@@ -102,8 +106,8 @@ class AnswerTable extends DataTableSource {
                     await StorageUtil.setStringItem('testerId', answer.id.toString());
                     await StorageUtil.setIntItem('testerSex', answer.sex);
                     //试卷详情的跳转路由
-                    await MyRouter.navigatorKey.currentState.pushNamed(QuestionAnswerPage.routerName);
-                    //Navigator.pushNamedAndRemoveUntil(context, QuestionAnswerPage.routerName, (router) => false);
+                    //await MyRouter.navigatorKey.currentState.pushNamed(QuestionAnswerPage.routerName);
+                    Navigator.pushNamedAndRemoveUntil(context, QuestionAnswerPage.routerName, (router) => false);
                   },
                   child: Text("查看"),
                 ),
@@ -151,13 +155,14 @@ class _PaginatedAnswerTableState extends State<PaginatedAnswerTable> {
   int _defaultRowPageCount = PaginatedDataTable.defaultRowsPerPage;
   int _sortColumnIndex;
   bool _sortAscending = false;
-  AnswerTable table = AnswerTable();
+  AnswerTable table;
   String warningText = '正在删除，请等待删除完成。';
   var dialogContext;
 
   @override
   void initState() {
     super.initState();
+    table = AnswerTable(context);
     List<Answer> answers = [];
     table.addAnswerData(answers);
     table._rowCount = 0;
@@ -199,6 +204,7 @@ class _PaginatedAnswerTableState extends State<PaginatedAnswerTable> {
       DataColumn(label: Text('身份证号')),
       DataColumn(label: Text('测试时间')),
       DataColumn(label: Text('操作')),
+
     ];
   }
 
@@ -219,6 +225,7 @@ class _PaginatedAnswerTableState extends State<PaginatedAnswerTable> {
 
   @override
   Widget build(BuildContext context) {
+    
     return SingleChildScrollView(
       child: PaginatedDataTable(
         rowsPerPage: _defaultRowPageCount,

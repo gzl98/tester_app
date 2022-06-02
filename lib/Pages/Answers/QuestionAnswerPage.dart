@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tester_app/Pages/Answers/AnswerPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'dart:async';
@@ -27,6 +28,7 @@ class QuestionAnswerPage extends StatefulWidget {
 class QuestionAnswerPageState extends State<QuestionAnswerPage> {
   List<double> data = [];
   List<String> questionTitles = [
+    // TODO: 需要修改题目顺序
     "顺序连线",
     "符号检索测试",
     "译码测验",
@@ -195,21 +197,41 @@ class QuestionAnswerPageState extends State<QuestionAnswerPage> {
       ),
     );
   }
-
+  Future<bool> showExitDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('确定返回吗?'),
+          actions: [
+            FlatButton(
+              child: Text('暂不'),
+              onPressed: () => Navigator.pop(context),
+            ),
+            FlatButton(
+              child: Text('确定'),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context, AnswerPage.routerName, (route) => false),
+            ),
+          ],
+        ));
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("答题详情"),
-        leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: () async => {
-              // await MyRouter.navigatorKey.currentState
-              //     .pushNamed(AnswerPage.routerName)
-            }
+    return
+      WillPopScope(
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text("答题详情"),
+              leading: new IconButton(
+                  icon: new Icon(Icons.arrow_back),
+                  onPressed: () async => {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, AnswerPage.routerName, (route) => false)
+                  }
+              ),
             ),
-      ),
-      body: dataReady ? buildMainWidget() : null,
-    );
+            body: dataReady ? buildMainWidget() : null,
+          ),
+          onWillPop: () => showExitDialog(context),);
   }
 }
