@@ -53,7 +53,7 @@ class CharacterWangPageState extends State<CharacterWangPage> {
   //声明变量
   Timer _timer;
   //正式倒计时90s答题时间
-  int _currentTime = 20;
+  int _currentTime = 90;
 
   //倒计时操作
   void startCountdownTimer() {
@@ -182,7 +182,7 @@ class CharacterWangPageState extends State<CharacterWangPage> {
     print(answerMerge.indexOf("&"));
     //上传数据到后台服务器
     //setAnswer(12,answerTimeDelta: answerTime, score: mainScore, answerText: answerMerge);
-    setAnswer(12, answerTimeDelta: 20-_currentTime, score: mainScore, answerText: answerMerge);
+    setAnswer(12, answerTimeDelta: 90-_currentTime, score: mainScore, answerText: answerMerge);
   }
 
 
@@ -1133,7 +1133,7 @@ class CharacterWangPageState extends State<CharacterWangPage> {
                             flex: 5,
                             child:Align(
                               child:Text(
-                                  "答题用时：" + (20-_currentTime).toString() + " s",
+                                  "答题用时：" + (90-_currentTime).toString() + " s",
                                   style: resultTextStyle),
                               alignment: Alignment.centerLeft,
                             )

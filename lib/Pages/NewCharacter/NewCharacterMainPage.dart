@@ -79,7 +79,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
   //声明变量
   Timer _timer;
   //正式倒计时120s答题时间
-  int _currentTime = 20;
+  int _currentTime = 120;
 
   //上传数据
   sendData(){
