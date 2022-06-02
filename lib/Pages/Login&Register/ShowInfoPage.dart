@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Pages/Answers/AnswerPage.dart';
 import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
@@ -175,8 +176,8 @@ class _ShowInfoPageState extends State<ShowInfoPage> {
                           ),
                         ),
                         onPressed: () {
-                          // Navigator.pushNamedAndRemoveUntil(context,
-                          //     TestNavPage.routerName, (router) => false);
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              AnswerPage.routerName, (router) => false);
                         },
                       ),
                     ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tester_app/Fragments/QuestionFirstFragment.dart';
 import 'package:tester_app/Fragments/QuestionSecondFragment.dart';
+import 'package:tester_app/Pages/Answers/AnswerPage.dart';
+import 'package:tester_app/Pages/Answers/QuestionAnswerPage.dart';
 import 'package:tester_app/Pages/COT/COTPage.dart';
 import 'package:tester_app/Pages/FlashLight/FlashLightPage.dart';
 import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
@@ -39,7 +41,8 @@ class MyApp extends StatelessWidget {
       // home: LoginPage(),
       routes: {
         "/": (context) => BootPage(),
-
+        AnswerPage.routerName:(context) => AnswerPage(),
+        QuestionAnswerPage.routerName:(context) => QuestionAnswerPage(),
         LoginPage.routerName: (context) => LoginPage(),
         RegisterPage.routerName: (context) => RegisterPage(),
         ShowInfoPage.routerName: (context) => ShowInfoPage(),

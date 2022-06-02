@@ -26,7 +26,22 @@ getUserInfoByToken(String token) async {
     throw e;
   }
 }
-
+getAnswerList() async {
+  String token = await StorageUtil.getStringItem("token");
+  String username = await StorageUtil.getStringItem("username");
+  Map<String, dynamic> params = {
+    // "QNid": 353,
+    "username": username,
+  };
+  Dio dio = Dio();
+  try {
+    Response response = await dio.get(baseUrl + 'queryQNwithUserinfo_username',
+        options: getAuthorizationOptions(token), queryParameters: params);
+    return response.data;
+  } catch (exception) {
+    throw exception;
+  }
+}
 Options getAuthorizationOptions(String token) {
   return Options(headers: {
     "Authorization": "Bearer $token",
@@ -76,3 +91,22 @@ setAnswer(int type,
     print(e.response.data);
   }
 }
+
+getAnswerQuestionDetail() async {
+  String token = await StorageUtil.getStringItem('token');
+  String id = await StorageUtil.getStringItem('questionnaireId');
+  Dio dio = Dio();
+
+  try {
+    print("get answer details");
+    Response response =
+    await dio.get(baseUrl + 'querysub_QNid?QNid=$id',
+        options: Options(headers: {
+          "Authorization": "Bearer $token",
+        }));
+    return response.data;
+  } catch (exception) {
+    throw exception;
+  }
+}
+
