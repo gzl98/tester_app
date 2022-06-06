@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 
 import '../../Utils/Utils.dart';
 
@@ -74,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
   );
 
   TextStyle fontStyle =
-      TextStyle(fontSize: setSp(50), fontWeight: FontWeight.bold);
+  TextStyle(fontSize: setSp(50), fontWeight: FontWeight.bold);
   TextStyle hintStyle = TextStyle(fontSize: setSp(35));
 
   Widget buildUsernameText(context) {
@@ -251,17 +252,17 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: setWidth(650),
                   decoration: BoxDecoration(
                       image:
-                          DecorationImage(image: AssetImage('images/logo.jpg')),
+                      DecorationImage(image: AssetImage('images/logo.jpg')),
                       border: Border.all(color: Colors.black26),
                       borderRadius:
-                          BorderRadius.all(Radius.circular(setWidth(150))),
+                      BorderRadius.all(Radius.circular(setWidth(150))),
                       boxShadow: [
                         BoxShadow(
                             color: Colors.black12,
                             offset: Offset(0.0, 8.0), //阴影xy轴偏移量
                             blurRadius: 15.0, //阴影模糊程度
                             spreadRadius: 1.0 //阴影扩散程度
-                            )
+                        )
                       ]),
                 ),
                 Column(
@@ -302,7 +303,7 @@ class _RegisterPageState extends State<RegisterPage> {
     Dio dio = Dio();
     Response response;
     try {
-      response = await dio.post(baseUrl + "registerwithtoken",
+      response = await dio.post(baseUrl + "register",
           data: FormData.fromMap({
             'username': _username,
             'password': _password,
@@ -319,7 +320,7 @@ class _RegisterPageState extends State<RegisterPage> {
         await StorageUtil.setStringItem(
             "token", response.data["token"]["access_token"]);
         Navigator.pushNamedAndRemoveUntil(
-            context, "/completeInfo", (router) => false);
+            context, CompleteInfoPage.routerName, (router) => false);
       }
     } catch (e) {
       print(e);

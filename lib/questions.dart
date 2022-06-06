@@ -127,7 +127,7 @@ final Map<String, String> questionCOT = {
 final Map<String, String> questionWMSDigital = {
   //导航页面
   "questionAbility": "言语工作记忆",
-  "questionTitle": "数字正背",
+  "questionTitle": "数字正背测试",
   "questionNavContent": "按顺序记住屏幕中出现的一连串数字。",
   "questionNavPurpose": "主要评估短时言语记忆水平。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的短时记忆能力有显著提高。",
@@ -152,7 +152,7 @@ final Map<String, String> questionWMSDigital = {
 final Map<String, String> questionWMSDigitalReverse = {
   //导航页面
   "questionAbility": "言语工作记忆",
-  "questionTitle": "数字倒背",
+  "questionTitle": "数字倒背测试",
   "questionNavContent": "按倒序记住屏幕中出现的一连串数字。",
   "questionNavPurpose": "主要评估短时言语工作记忆水平。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的工作记忆能力有显著提高。",
@@ -177,7 +177,7 @@ final Map<String, String> questionWMSDigitalReverse = {
 final Map<String, String> questionWMSSpace = {
   //导航页面
   "questionAbility": "视觉记忆",
-  "questionTitle": "空间广度",
+  "questionTitle": "空间广度测试2",
   "questionNavContent": "记住方块闪烁的先后次序。",
   "questionNavPurpose": "主要评估短时空间记忆水平。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的短时空间记忆水平有显著提高。",
@@ -198,7 +198,7 @@ final Map<String, String> questionWMSSpace = {
 final Map<String, String> questionWMSSpaceReverse = {
   //导航页面
   "questionAbility": "视觉记忆",
-  "questionTitle": "空间广度倒背",
+  "questionTitle": "空间广度倒背测试",
   "questionNavContent": "该评估包含熟悉操作，连续作对3次熟悉操作，才可以进入测查阶段。",
   "questionNavPurpose": "主要评估短时空间记忆水平。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的短时空间记忆水平有显著提高。",
@@ -322,8 +322,8 @@ final Map<String, String> questionIdOldTMT = {
 //闪灯测试
 final Map<String, String> questionFlashLight = {
   //导航页面
-  "questionAbility": "空间记忆能力",
-  "questionTitle": "闪灯测试",
+  "questionAbility": "视觉记忆",
+  "questionTitle": "空间广度测试1",
   "questionNavContent": "记住灯光闪烁的先后顺序。",
   "questionNavPurpose": "主要评估短时空间记忆水平。",
   "benefitExample": "经过训练您的短时空间记忆能力会得到提升。",
