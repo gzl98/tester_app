@@ -183,7 +183,7 @@ final Map<String, String> questionWMSSpace = {
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的短时空间记忆水平有显著提高。",
   "questionImgPath": "images/v2.0/WMS/WMSSpace.png",
   //第一个页面
-  "questionName": "空 间 广 度",
+  "questionName": "空 间 广 度 2",
   "questionPurpose": "这项测验主要评估您的空间记忆能力，请记住方块闪烁的先后次序，记得越多，记忆力越好。",
   "soundPath1": "sounds/WMSSpace1.wav",
   //第二个页面
@@ -329,7 +329,7 @@ final Map<String, String> questionFlashLight = {
   "benefitExample": "经过训练您的短时空间记忆能力会得到提升。",
   "questionImgPath": "images/v2.0/FlashLight.png",
   //第一个页面
-  "questionName": "闪 灯 测 试",
+  "questionName": "空 间 广 度 1",
   "questionPurpose": "这项测验主要评估您的短时空间记忆能力，请记住灯光闪烁的先后次序，记得越多，记忆力越好。",
   "soundPath1": "sounds/WMSSpace1.wav",
   //第二个页面
