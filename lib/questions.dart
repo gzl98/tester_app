@@ -351,7 +351,7 @@ final Map<String, String> questionBVMT = {
   "questionNavContent": "按照正确的几何位置画出正确的几何图案。",
   "questionNavPurpose": "本题目主要考察视觉空间记忆，筛查严重的视力构造缺陷，对召回反应进行评分。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的视觉学习和记忆有显著提高。",
-  "questionImgPath": "images/BVMT.jpg",
+  "questionImgPath": "images/bvmtexample.jpg",
   //第一个页面
   "questionName": "视觉空间记忆测试",
   "questionPurpose": "测试视觉学习和记忆能力",

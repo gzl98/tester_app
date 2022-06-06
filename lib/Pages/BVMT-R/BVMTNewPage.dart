@@ -20,7 +20,7 @@ Widget buildBVMTFirstFragment() {
     alignment: Alignment.center,
     decoration: BoxDecoration(
       image: DecorationImage(
-          image: AssetImage('images/BVMT.jpg'),
+          image: AssetImage('images/bvmtexample.jpg'),
           fit: BoxFit.scaleDown,
           alignment: Alignment.center),
     ),
@@ -41,7 +41,7 @@ Widget buildBVMTSecondFragment() {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/BVMT.jpg'),
+              image: AssetImage('images/bvmtexample.jpg'),
               fit: BoxFit.fill,
               alignment: Alignment.center),
         ),
@@ -441,7 +441,8 @@ class BVMTPageState extends State<BVMTPage> {
                           width: maxWidth,
                           height: maxHeight - setHeight(205),
                           color: Color.fromARGB(255, 238, 241, 240),
-                          child: buildMainWidget(),
+                          child: currentState==CurrentState.doingQuestion ?
+                          buildMainWidget() :Container(),
                         ),
                       ]),
                 ),
