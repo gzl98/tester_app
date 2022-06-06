@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tester_app/Pages/Answers/AnswerPage.dart';
+import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 import 'package:tester_app/Utils/HttpUtils.dart';
 import 'package:tester_app/Utils/Utils.dart';
 import 'dart:async';
@@ -28,25 +29,29 @@ class QuestionAnswerPage extends StatefulWidget {
 class QuestionAnswerPageState extends State<QuestionAnswerPage> {
   List<double> data = [];
   List<String> questionTitles = [
-    // TODO: 需要修改题目顺序
-    "顺序连线",
+    "TMT连线测试",
+    "SDMT符号编码测试",
+    "视觉空间记忆测验（BVMT-R）",
+    "迷宫导航测试",
+    "空间广度测试1",
+    "顺序连线测试",
     "符号检索测试",
     "译码测验",
-    "持续操作测试",
-    "数字广度顺序",
-    "数字广度倒序",
-    "空间广度顺序",
-    "空间广度倒序",
-    "Stroop文字",
-    "Stroop色词",
-    "Stroop词色"
+    "快速判断测试",
+    "数字正背测试",
+    "数字倒背测试",
+    "空间广度测试2",
+    "空间广度倒背测试",
+    "Stroop词语测试",
+    "Stroop色词测试",
+    "Stroop词色测试"
   ];
   bool dataReady = false;
 
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 16; i++) {
       data.add(-1);
     }
     getQuestionResult();
@@ -75,7 +80,7 @@ class QuestionAnswerPageState extends State<QuestionAnswerPage> {
             height: setHeight(120),
             child: Text("题目", textAlign: TextAlign.center, style: titleStyle)),
         Text("得分", textAlign: TextAlign.center, style: titleStyle),
-        Text("操作", textAlign: TextAlign.center, style: titleStyle),
+        // Text("操作", textAlign: TextAlign.center, style: titleStyle),
       ])
     ];
     int i = 0;
@@ -94,94 +99,7 @@ class QuestionAnswerPageState extends State<QuestionAnswerPage> {
         child: Text(row == -1 ? "此题未答" : row.toString(),
             textAlign: TextAlign.center, style: contentStyle),
       ));
-      tableRow.add(
-        RaisedButton(
-          onPressed: row == -1
-              ? null
-              : () async {
-            await StorageUtil.setIntItem("id", count);
-            print(i);
-            print(count);
-            //试卷详情的跳转路由
-            // switch (count) {
-            //   case 0:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(TMTPage.routerName);
-            //     }
-            //     break;
-            //   case 1:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(SymbolPage.routerName);
-            //     }
-            //     break;
-            //   case 2:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(NewCharacterPage.routerName);
-            //     }
-            //     break;
-            //   case 3:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(COTPage.routerName);
-            //     }
-            //     break;
-            //   case 4:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(WMSPage.routerName);
-            //     }
-            //     break;
-            //   case 5:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(WMSPage.routerName);
-            //     }
-            //     break;
-            //   case 6:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(WMSPage.routerName);
-            //     }
-            //     break;
-            //   case 7:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(WMSPage.routerName);
-            //     }
-            //     break;
-            //   case 8:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(StroopPage.routerName);
-            //     }
-            //     break;
-            //   case 9:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(StroopPage.routerName);
-            //     }
-            //     break;
-            //   case 10:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(StroopPage.routerName);
-            //     }
-            //     break;
-            //   default:
-            //     {
-            //       await MyRouter.navigatorKey.currentState
-            //           .pushNamed(AnswerPage.routerName);
-            //     }
-            //     break;
-            // }
-          },
-          child: Text("查看"),
-          color: Colors.blue,
-        ),
-      );
+
       table.add(TableRow(
           decoration: BoxDecoration(
               color: i % 2 == 0 ? Colors.white : Colors.grey[100],
@@ -217,21 +135,17 @@ class QuestionAnswerPageState extends State<QuestionAnswerPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return
-      WillPopScope(
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text("答题详情"),
-              leading: new IconButton(
-                  icon: new Icon(Icons.arrow_back),
-                  onPressed: () async => {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, AnswerPage.routerName, (route) => false)
-                  }
-              ),
+    return WillPopScope(child: Scaffold(
+      appBar: AppBar(
+        title: Text("答题详情"),
+        leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                context, AnswerPage.routerName, (route) => false),
             ),
-            body: dataReady ? buildMainWidget() : null,
-          ),
-          onWillPop: () => showExitDialog(context),);
+      ),
+      body: dataReady ? buildMainWidget() : null,
+    ),
+        onWillPop: () => showExitDialog(context),);
   }
 }
