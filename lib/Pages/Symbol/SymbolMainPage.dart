@@ -119,7 +119,7 @@ class SymbolMainPageState extends State<SymbolMainPage> {
     print("对照组符号："+contrast_temp);
     print("上传的字符串："+answerMerge);
 
-    setAnswer(1,score:correctNumber,answerText:answerMerge);
+    setAnswer(questionIdSymbol,score:correctNumber,answerText:answerMerge);
   }
 
   //倒计时操作

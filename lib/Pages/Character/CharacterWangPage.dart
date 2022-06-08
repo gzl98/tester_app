@@ -182,7 +182,7 @@ class CharacterWangPageState extends State<CharacterWangPage> {
     print(answerMerge.indexOf("&"));
     //上传数据到后台服务器
     //setAnswer(12,answerTimeDelta: answerTime, score: mainScore, answerText: answerMerge);
-    setAnswer(12, answerTimeDelta: 90-_currentTime, score: mainScore, answerText: answerMerge);
+    setAnswer(questionIDSDMT, answerTimeDelta: 90-_currentTime, score: mainScore, answerText: answerMerge);
   }
 
 
