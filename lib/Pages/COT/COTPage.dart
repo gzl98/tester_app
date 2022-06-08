@@ -64,7 +64,7 @@ class COTPageState extends State<COTPage> {
     audioPlayer.dispose();
   }
 
-  Timer _timer;
+  Timer _timer; //计时器
   int currentTime = 0; //ms
   int nextQuestionTime = 0; //ms
   final pointOneSec = const Duration(milliseconds: 10);
