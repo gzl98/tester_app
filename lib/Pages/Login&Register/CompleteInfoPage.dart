@@ -423,6 +423,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
             'sex': sexValue,
             'mobilephone': _mobile,
             'IDcard': _email,
+            'email': _email,
             'adress': _birthDate,
           }),
           options: Options(headers: {
