@@ -64,7 +64,7 @@ class COTPageState extends State<COTPage> {
     audioPlayer.dispose();
   }
 
-  Timer _timer;
+  Timer _timer; //计时器
   int currentTime = 0; //ms
   int nextQuestionTime = 0; //ms
   final pointOneSec = const Duration(milliseconds: 10);
@@ -127,7 +127,7 @@ class COTPageState extends State<COTPage> {
       result.add(_answerTime);
       result.add(_answerCorrectTime);
       String data = jsonEncode({'result': result});
-      setAnswer(3, answerText: data, score: _answerCorrectTimes);
+      setAnswer(questionIdCOT, answerText: data, score: _answerCorrectTimes);
     } else {
       _timer.cancel();
       Future.delayed(Duration(seconds: 1), () {
