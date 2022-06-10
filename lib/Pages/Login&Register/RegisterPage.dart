@@ -303,7 +303,7 @@ class _RegisterPageState extends State<RegisterPage> {
     Dio dio = Dio();
     Response response;
     try {
-      response = await dio.post(baseUrl + "register",
+      response = await dio.post(baseUrl + "registerwithtoken",
           data: FormData.fromMap({
             'username': _username,
             'password': _password,
