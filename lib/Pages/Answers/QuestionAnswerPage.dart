@@ -145,7 +145,6 @@ class QuestionAnswerPageState extends State<QuestionAnswerPage> {
             ),
       ),
       body: dataReady ? buildMainWidget() : null,
-    ),
-        onWillPop: () => showExitDialog(context),);
+    ), onWillPop: () => showExitDialog(context),);
   }
 }

@@ -105,7 +105,7 @@ class StroopWordColorPageState extends State<StroopWordColorPage> {
       this._timer.cancel();
       this.currentState = CurrentState.doingQuestionBegin;
       CreateStroopTest createTest = new CreateStroopTest();
-      //重新生成测试题
+      //重新生成正式的测试题
       this.testList = createTest.getListStroopWordColorTest(10);
       this._currentIndex = 1;
       this._rightFlag = false;
@@ -191,7 +191,7 @@ class StroopWordColorPageState extends State<StroopWordColorPage> {
               this._prepareFinishedFlag++;
               print(this._prepareFinishedFlag);
               //准备答对三次显示正式答题浮窗
-              if (this._prepareFinishedFlag == 3) initDoingQuestionBegin();
+              if (this._prepareFinishedFlag == 1) initDoingQuestionBegin();
             }
           });
         }

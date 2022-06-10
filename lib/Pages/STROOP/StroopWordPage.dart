@@ -192,7 +192,7 @@ class StroopPageState extends State<StroopPage> {
               this._prepareFinishedFlag++;
               print(this._prepareFinishedFlag);
               //准备答对三次显示正式答题浮窗
-              if (this._prepareFinishedFlag == 3) initDoingQuestionBegin();
+              if (this._prepareFinishedFlag == 1) initDoingQuestionBegin();
             }
           });
         }
