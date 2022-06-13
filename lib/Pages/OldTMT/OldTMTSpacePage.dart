@@ -446,8 +446,7 @@ class OldTMTSpacePageState extends State<OldTMTSpacePage> {
                           width: maxWidth,
                           height: maxHeight - setHeight(205),
                           color: Color.fromARGB(255, 238, 241, 240),
-                          child: currentState == CurrentState.doingQuestion ?
-                          buildMainWidget() : Container(),
+                          child: buildMainWidget() ,
                         ),
                       ]),
                 ),

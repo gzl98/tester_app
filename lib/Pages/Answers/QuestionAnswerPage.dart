@@ -27,7 +27,10 @@ class QuestionAnswerPage extends StatefulWidget {
 }
 
 class QuestionAnswerPageState extends State<QuestionAnswerPage> {
-  List<double> data = [];
+  List<int> data = [];
+  List<int> dataTime = [];
+  List<String> dataState = [];    // 1. 医生已经评分 则显示分数， 2. 医生未评分，但是已答了：显示（等待医生评分）3. 没做则显示此题未做
+  List<int> specialQType = [0, 2, 3];
   List<String> questionTitles = [
     "TMT连线测试",
     "SDMT符号编码测试",
@@ -53,6 +56,8 @@ class QuestionAnswerPageState extends State<QuestionAnswerPage> {
     super.initState();
     for (int i = 0; i < 16; i++) {
       data.add(-1);
+      dataTime.add(0);
+      dataState.add("此题未做");
     }
     getQuestionResult();
   }
@@ -62,7 +67,29 @@ class QuestionAnswerPageState extends State<QuestionAnswerPage> {
     setState(() {
       for (var result in results) {
         print(result);
-        data[result["type"]] = result["score"];
+        int QType = result["type"];
+        double score = result["score"];
+        int time = result["answer_timedelta"];
+        if (specialQType.contains(QType)) {
+            // 未做状态
+            if(score == -1 && time == 0) {
+              dataState[QType] = "此题未做";
+            }
+            // 已做等待医生评分
+            else if (score == -1 && time > 0) {
+              dataState[QType] = "已做等待医生评分";
+            } else {
+              // 评分完成
+              dataState[QType] = score.toString();
+            }
+        } else {
+            if(score == -1) {
+              dataState[QType] = "此题未做";
+            } else {
+              // 评分完成
+              dataState[QType] = score.toString();
+            }
+        }
       }
       dataReady = true;
     });
@@ -84,7 +111,7 @@ class QuestionAnswerPageState extends State<QuestionAnswerPage> {
       ])
     ];
     int i = 0;
-    for (var row in data) {
+    for (var row in dataState) {
       int count = i;
       List<Widget> tableRow = [];
       tableRow.add(Container(
@@ -96,7 +123,7 @@ class QuestionAnswerPageState extends State<QuestionAnswerPage> {
       tableRow.add(Container(
         alignment: Alignment.center,
         height: setHeight(100),
-        child: Text(row == -1 ? "此题未答" : row.toString(),
+        child: Text(row,
             textAlign: TextAlign.center, style: contentStyle),
       ));
 
