@@ -112,8 +112,8 @@ class _MyPainterPageState extends State<MyPainterPage> {
   capturePng(index,time) async {
     try {
       print('监听到下一题信号！-执行截图方法');
-      RenderRepaintBoundary boundary =
-          rootWidgetKey.currentContext.findRenderObject();
+      RenderRepaintBoundary boundary = rootWidgetKey.currentContext.findRenderObject();
+          // rootWidgetKey.currentContext.findRenderObject();
       var image = await boundary.toImage(pixelRatio: 3.0);
       ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
       Uint8List pngBytes = byteData.buffer.asUint8List();
@@ -130,7 +130,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
       setAnswer(index, score: time, imagePath: imageFile.path.toString(),imageName: 'capture.png');
       //保存图片到相册的方法
       //saveToPictures(pngBytes);
-      setState(() {});
+      print("上传图片");
       return pngBytes;
     } catch (e) {
       print(e);
@@ -224,6 +224,7 @@ class _MyPainterPageState extends State<MyPainterPage> {
       return CustomPaint(
         //定义child时不需要定义size
           foregroundPainter: _MyPainter(_pointsList),
+          //painter: SelfForePainter(_assetImageFrame),
           //isComplex: true,
           child: RepaintBoundary(
               child: Container(

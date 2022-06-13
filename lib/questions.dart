@@ -356,13 +356,13 @@ final Map<String, String> questionBVMT = {
   "questionName": "视觉空间记忆测试",
   "questionPurpose": "测试视觉学习和记忆能力",
   "questionNotes": "屏幕上会出现六个几何图形，测试者有10s钟时间进行记忆，10s钟后，图像消失，测试者需要使用铅笔工具尽可能在正确的位置绘制出尽可能多的相应图案",
-  "soundPath1": "",
+  "soundPath1": "sounds/TMTSpace2.wav",
   //第二个页面
   "questionRules": "注意在正确的位置绘制对应图形",
   "questionRuleNotes": "请在几何图形消失后开始绘制",
   //TODO: 需要修改
   "nextPageRouter2": BVMTPage.routerName,
-  "soundPath2": "",
+  "soundPath2": "sounds/TMTSpace2.wav",
 };
 
 List testList = [
