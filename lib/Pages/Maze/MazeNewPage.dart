@@ -90,12 +90,13 @@ class MazePageState extends State<MazePage> {
   int remainingTime = 30;
   int totalTime = 30;
   Timer _timer;
+  String _drawImage = 'images/migong.png'; //_drawImage = ;
 
   //TODO: 定义主体布局，长宽分别为1960*1350像素，设置大小时统一使用setWidth和setHeight，setSp函数，使用maxWidth和maxHeight不需要使用上述3个函数
   Widget buildMainWidget() {
     return Container(
-      // color: Colors.redAccent,
-        child: MyPainterPage(imgPath: 'images/migong.png',),
+        //color: Colors.redAccent,
+        child: MyPainterPage(imgPath: _drawImage,),
     );
   }
 
@@ -154,10 +155,10 @@ class MazePageState extends State<MazePage> {
                 setState(() {
                   if (currentState == CurrentState.questionBegin) {
                     currentState = CurrentState.doingQuestion;
+
                     startCountdownTimer();
                   }
                   else if(currentState == CurrentState.questionAllDone) {
-
                   }
                 });
               },
@@ -405,8 +406,7 @@ class MazePageState extends State<MazePage> {
                           width: maxWidth,
                           height: maxHeight - setHeight(205),
                           color: Color.fromARGB(255, 238, 241, 240),
-                          child: currentState == CurrentState.doingQuestion ?
-                          buildMainWidget() : Container(),
+                          child: buildMainWidget() ,
                         ),
                       ]),
                 ),

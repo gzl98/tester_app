@@ -109,7 +109,7 @@ class CharacterMainPageState extends State<CharacterMainPage> {
     print("答题情况："+answer_temp);
     print("上传的字符串："+answerMerge);
 
-    setAnswer(2,score:correctNumber,answerText:answerMerge);
+    setAnswer(questionIdNewCharacter,score:correctNumber,answerText:answerMerge);
   }
 
   //倒计时操作

@@ -15,7 +15,9 @@ class Answer {
 
   Answer(this.id, this.username, this.sex, this.age, this.time);
   getTimeStr() {
-    String res = this.time.toString();
+    var span = Duration(hours: 8);
+    DateTime showTime = this.time.add(span);
+    String res = showTime.toString();
     return res.substring(0, res.length - 4);
   }
 }

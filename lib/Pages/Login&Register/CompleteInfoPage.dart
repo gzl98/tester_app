@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../Utils/Utils.dart';
+import 'ShowInfoPage.dart';
 
 class CompleteInfoPage extends StatefulWidget {
   static const routerName = "/CompleteInfoPage";
@@ -435,11 +436,10 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
           _completeText = "提  交  成  功";
         });
         await StorageUtil.setIntItem("sex", sexValue);
-        await StorageUtil.setStringItem("mobilephone", _mobile);
-        await StorageUtil.setStringItem("IDcard", _email);
-        await StorageUtil.setStringItem("address", _birthDate);
+        await StorageUtil.setStringItem("email", _email);
+        await StorageUtil.setStringItem("birthDate", _birthDate);
         Navigator.pushNamedAndRemoveUntil(
-            context, "/showInfo", (router) => false);
+            context, ShowInfoPage.routerName, (router) => false);
       }
     } catch (e) {
       print(e);

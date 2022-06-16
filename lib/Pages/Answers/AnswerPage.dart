@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:tester_app/Pages/Answers/AnswerData.dart';
+import 'package:tester_app/Pages/Login&Register/CompleteInfoPage.dart';
 import 'package:tester_app/Pages/Login&Register/ShowInfoPage.dart';
 
 class _AnswerPageState extends State<AnswerPage> {
@@ -32,7 +33,11 @@ class _AnswerPageState extends State<AnswerPage> {
           appBar: AppBar(
             title: Text("我的试卷"),
             automaticallyImplyLeading: false,
-            leading: new IconButton(icon: new Icon(Icons.menu), onPressed: () => _globalKey.currentState.openDrawer()),
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context, ShowInfoPage.routerName, (route) => false),
+            ),
           ),
           body: new Container(
             width: double.infinity,
