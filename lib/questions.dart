@@ -107,7 +107,7 @@ final Map<String, String> questionCharacter = {
 //COT
 final Map<String, String> questionCOT = {
   "questionAbility": "注意力检测",
-  "questionTitle": "快速判断",
+  "questionTitle": "快速判断测试",
   "questionNavContent": "对你记住的图形迅速做出反应。",
   "questionNavPurpose": "主要评估反应速度和持续注意。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的反应速度和持续注意有显著提高。",
