@@ -23,11 +23,11 @@ import 'Pages/Character/CharacterWangPage.dart';
 //SDMT
 final Map<String, String> questionSDMT = {
   "questionAbility": "视觉扫描",
-  "questionTitle": "符号编码",
+  "questionTitle": "SDMT符号编码测试",
   "questionNavContent": "限定时间内尽可能多地写出每个符号对应的数字。",
   "questionNavPurpose": "主要用于评估注意力分割、视知觉、眼球运动和短时记忆力。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的视觉编码和短时记忆有显著提高。",
-  "questionName": "符号编码测验",
+  "questionName": "SDMT符号编码测试",
   "questionImgPath": "images/v2.0/SDMTmain.jpg",
   "questionPurpose": "这项测验主要评估您的视觉编码和短时记忆力，请在九十秒内尽可能多地写出每个符号对应的数字。",
   "questionNotes": null,
@@ -67,11 +67,11 @@ final Map<String, String> questionTMTSpace = {
 //Symbol
 final Map<String, String> questionSymbol = {
   "questionAbility": "加工速度",
-  "questionTitle": "符号检索",
+  "questionTitle": "符号检索测试",
   "questionNavContent": "判断右边是否出现与左边完全一致的图形。",
   "questionNavPurpose": "主要评估大脑的视觉加工速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的视觉搜索和反应速度有显著提高。",
-  "questionName": "符号检索",
+  "questionName": "符号检索测试",
   "questionImgPath": "images/v2.0/symbolmainback.png",
   "questionPurpose": "这项测验主要评估您的视觉搜索和反应速度，请在两分钟内尽可能多、尽可能正确地回答每个测试题。",
   "questionNotes": null,
