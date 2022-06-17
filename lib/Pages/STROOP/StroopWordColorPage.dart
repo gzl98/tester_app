@@ -476,7 +476,7 @@ class StroopWordColorPageState extends State<StroopWordColorPage> {
               onPressed: () {
                 Map map = {
                   //题目名称
-                  "testName":"Stroop词色",
+                  "testName":"Stroop词色测试",
                   //题目
                   "question": this.testList,
                   //测试者反应的题目序号

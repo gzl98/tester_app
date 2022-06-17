@@ -45,7 +45,7 @@ final Map<String, String> questionSDMT = {
 final Map<String, String> questionTMTSpace = {
   //导航页面
   "questionAbility": "加工速度",
-  "questionTitle": "顺序连线",
+  "questionTitle": "TMT连线测试",
   "questionNavContent": "从小到大顺序找出25个数字。",
   "questionNavPurpose": "主要评估大脑的加工速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的反应速度有显著提高。",
@@ -219,7 +219,7 @@ final Map<String, String> questionWMSSpaceReverse = {
 final Map<String, String> questionStroop = {
   //导航页面
   "questionAbility": "执行抑制",
-  "questionTitle": "Stroop词语",
+  "questionTitle": "Stroop词语测试",
   "questionNavContent": "分辨出现的字和听到的声音一致的情况。",
   "questionNavPurpose": "主要评估言语反应能力和速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的言语反应能力和速度有显著提高。",
@@ -239,7 +239,7 @@ final Map<String, String> questionStroop = {
 //Stroop色词
 final Map<String, String> questionStroopColorWord = {
   "questionAbility": "执行抑制",
-  "questionTitle": "Stroop色词",
+  "questionTitle": "Stroop色词测试",
   "questionNavContent": "分辨出现的字的意思和听到的声音一致的情况。",
   "questionNavPurpose": "主要评估言语反应能力和速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的言语反应能力和速度有显著提高。",
@@ -259,7 +259,7 @@ final Map<String, String> questionStroopColorWord = {
 //Stroop词色
 final Map<String, String> questionStroopWordColor = {
   "questionAbility": "执行抑制",
-  "questionTitle": "Stroop词色",
+  "questionTitle": "Stroop词色测试",
   "questionNavContent": "分辨文字的颜色和播放的声音一致的情况。",
   "questionNavPurpose": "主要评估执行抑制能力和速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的执行抑制能力和速度有显著提高。",
@@ -301,7 +301,7 @@ final Map<String, String> questionMaze = {
 final Map<String, String> questionIdOldTMT = {
   //导航页面
   "questionAbility": "加工速度",
-  "questionTitle": "顺序连线",
+  "questionTitle": "TMT连线测试",
   "questionNavContent": "从小到大顺序找出25个数字。",
   "questionNavPurpose": "主要评估大脑的加工速度。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的反应速度有显著提高。",
@@ -347,7 +347,7 @@ final Map<String, String> questionBVMT = {
   //您需要在空白画板上尽可能在正确的位置绘制出相应图案，       \n\n\n"
   //如果您已准备好，点击确认答题按钮，10s倒计时即将开始。       \n\n\n"),
   "questionAbility": "视觉空间记忆",
-  "questionTitle": "简易视觉空间记忆测验",
+  "questionTitle": "视觉空间记忆测验（BVMT-R）",
   "questionNavContent": "按照正确的几何位置画出正确的几何图案。",
   "questionNavPurpose": "本题目主要考察视觉空间记忆，筛查严重的视力构造缺陷，对召回反应进行评分。",
   "benefitExample": "评估后，治疗师会根据您的评估结果，实施个性化治疗，让您的视觉学习和记忆有显著提高。",

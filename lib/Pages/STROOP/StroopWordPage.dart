@@ -477,7 +477,7 @@ class StroopPageState extends State<StroopPage> {
               onPressed: () {
                 Map map = {
                   //题目名称
-                  "testName":"Stroop文字",
+                  "testName":"Stroop文字测试",
                   //题目
                   "question": this.testList,
                   //测试者反应的题目序号
