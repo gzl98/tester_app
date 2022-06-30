@@ -241,7 +241,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
       //定义控件打开时默认选择日期
       initialDate: DateTime.now(),
       //定义控件最早可以选择的日期
-      firstDate: DateTime(1990, 1),
+      firstDate: DateTime(1900, 1),
       //定义控件最晚可以选择的日期
       lastDate: DateTime.now(),
     );
