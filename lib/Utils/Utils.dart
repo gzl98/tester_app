@@ -15,7 +15,7 @@ import 'package:tester_app/Pages/testNavPage/testNavPage.dart';
 
 double maxHeight, maxWidth;
 
-String baseUrl = "http://39.108.252.201:9000/";
+String baseUrl = "http://192.168.0.39:9000/";
 
 class ScreenUtil {
   static ScreenUtil instance = new ScreenUtil();
